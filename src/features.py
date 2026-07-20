@@ -11,6 +11,13 @@ def build_features(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
     ever use information available before the month being predicted.
     """
     out = df.sort_values("date").reset_index(drop=True).copy()
+
+    # lag_12 and roll_3 are computed by row position, so they are only
+    # "last year" and "last quarter" if the series has no gaps or duplicates
+    expected = pd.date_range(out["date"].iloc[0], periods=len(out), freq="MS")
+    if not (out["date"].to_numpy() == expected.to_numpy()).all():
+        raise ValueError("expected a contiguous monthly series (no gaps or duplicate months)")
+
     out["t"] = range(len(out))
     out["lag_12"] = out["volume"].shift(12)
     out["roll_3"] = out["volume"].shift(1).rolling(3).mean()

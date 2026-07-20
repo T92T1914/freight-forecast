@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import pytest
 
 from src.features import build_features
 
@@ -29,6 +30,12 @@ def test_roll_3_uses_only_prior_months():
     # is exactly current - 2; any leakage of the current month breaks this
     feats, _ = build_features(_toy_frame(30))
     assert (feats["roll_3"] == feats["volume"] - 2).all()
+
+
+def test_rejects_series_with_a_missing_month():
+    df = _toy_frame(30).drop(index=5).reset_index(drop=True)
+    with pytest.raises(ValueError, match="contiguous"):
+        build_features(df)
 
 
 def test_month_dummies_are_one_hot():
