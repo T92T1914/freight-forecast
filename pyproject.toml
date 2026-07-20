@@ -1,0 +1,9 @@
+[project]
+name = "freight-forecast"
+version = "0.1.0"
+description = "Monthly household goods shipment volume forecasting, served as an API"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
