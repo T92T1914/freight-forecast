@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.generate_data import N_MONTHS, generate
+from src.generate_data import DATA_PATH, N_MONTHS, generate
 
 
 def test_shape_and_columns():
@@ -21,6 +21,16 @@ def test_peak_season_dominates_winter():
     peak_mean = df[month.between(5, 8)]["volume"].mean()
     winter_mean = df[month.isin([12, 1, 2])]["volume"].mean()
     assert peak_mean > 2 * winter_mean
+
+
+def test_committed_csv_matches_generator(tmp_path):
+    # training reads the committed CSV, so it must never drift from what
+    # generate() produces -- that would break end-to-end reproducibility
+    fresh_path = tmp_path / "shipments.csv"
+    generate().to_csv(fresh_path, index=False)
+    fresh = pd.read_csv(fresh_path, parse_dates=["date"])
+    committed = pd.read_csv(DATA_PATH, parse_dates=["date"])
+    pd.testing.assert_frame_equal(committed, fresh)
 
 
 def test_peak_totals_near_40k():

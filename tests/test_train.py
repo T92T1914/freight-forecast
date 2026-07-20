@@ -2,12 +2,15 @@ import joblib
 import pytest
 
 from src.features import build_features
-from src.train import TEST_MONTHS, load_data, train
+from src.generate_data import generate
+from src.train import TEST_MONTHS, train
 
 
+# tests build their data via generate() rather than load_data() so the
+# suite never writes into the repo tree and cannot depend on a stale CSV
 @pytest.fixture(scope="module")
 def artifact():
-    return train(load_data())
+    return train(generate())
 
 
 def test_model_beats_seasonal_naive(artifact):
@@ -21,7 +24,7 @@ def test_artifact_roundtrip(tmp_path, artifact):
     joblib.dump(artifact, path)
     loaded = joblib.load(path)
 
-    feats, feature_cols = build_features(load_data())
+    feats, feature_cols = build_features(generate())
     preds = loaded["model"].predict(feats[feature_cols].iloc[-TEST_MONTHS:])
     assert len(preds) == TEST_MONTHS
     assert (preds > 0).all()
@@ -31,7 +34,7 @@ def test_artifact_roundtrip(tmp_path, artifact):
 def test_predictions_are_in_volume_units(artifact):
     # the log transform must be inverted inside the model: forecasts for
     # peak months should be thousands of moves, not log-scale values
-    feats, feature_cols = build_features(load_data())
+    feats, feature_cols = build_features(generate())
     august = feats[feats["date"].dt.month == 8].iloc[[-1]]
     pred = artifact["model"].predict(august[feature_cols])[0]
     assert 5_000 < pred < 20_000
