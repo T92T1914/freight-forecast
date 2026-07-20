@@ -6,3 +6,9 @@ __pycache__/
 
 # Model artifacts are reproducible from train.py; binaries stay out of git
 models/
+
+# OS and editor junk
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
