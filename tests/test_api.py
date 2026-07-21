@@ -72,3 +72,48 @@ def test_out_of_range_months_are_rejected(client):
     assert client.post("/predict", json={"month": "2026-06"}).status_code == 400
     # before a full 12-month history exists
     assert client.post("/predict", json={"month": "2017-05"}).status_code == 400
+
+
+def test_range_gate_boundaries_are_exact(client):
+    """Pin the exact edges of the one-step-ahead gate, derived from the data.
+
+    An off-by-one in the gate would not 400 — it would admit a month with no
+    feature row and 500 on an empty frame — so the edges themselves must be
+    tested, not just far-out months."""
+    import pandas as pd
+    from src.generate_data import DATA_PATH
+
+    df = pd.read_csv(DATA_PATH, parse_dates=["date"])
+    first_ok = df["date"].iloc[0] + pd.DateOffset(months=12)
+    last_ok = df["date"].iloc[-1] + pd.DateOffset(months=1)
+
+    def status(ts):
+        return client.post("/predict", json={"month": f"{ts:%Y-%m}"}).status_code
+
+    assert status(first_ok) == 200
+    assert status(last_ok) == 200
+    assert status(first_ok - pd.DateOffset(months=1)) == 400
+    assert status(last_ok + pd.DateOffset(months=1)) == 400
+
+
+def test_placeholder_branch_matches_offline(client):
+    """The next-unobserved-month path builds features through a placeholder
+    row — the only serving-side construction that differs from training, and
+    the endpoint's actual production use. Pin it to the offline model."""
+    import pandas as pd
+    from src.features import build_features
+    from src.generate_data import DATA_PATH
+
+    artifact = joblib.load(train_mod.MODEL_PATH)
+    df = pd.read_csv(DATA_PATH, parse_dates=["date"])
+    next_month = df["date"].iloc[-1] + pd.DateOffset(months=1)
+    df = pd.concat(
+        [df, pd.DataFrame({"date": [next_month], "volume": [float("nan")]})],
+        ignore_index=True,
+    )
+    feats, _ = build_features(df)
+    row = feats[feats["date"] == next_month]
+    offline = float(artifact["model"].predict(row[artifact["feature_columns"]])[0])
+
+    api = client.post("/predict", json={"month": f"{next_month:%Y-%m}"}).json()
+    assert api["predicted_volume"] == round(offline)
