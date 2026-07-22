@@ -13,7 +13,6 @@ would be shipping a claim no evaluation supports.
 """
 
 from contextlib import asynccontextmanager
-from pathlib import Path
 
 import joblib
 import pandas as pd
