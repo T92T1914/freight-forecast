@@ -55,3 +55,28 @@ def test_ci_gates_image_build_on_lint_and_tests():
     jobs = ci["jobs"]
     assert {"lint", "test", "build-image"} <= set(jobs)
     assert set(jobs["build-image"]["needs"]) == {"lint", "test"}
+
+
+def test_pods_are_annotated_for_prometheus_scraping():
+    dep = _load("k8s/deployment.yaml")
+    annotations = dep["spec"]["template"]["metadata"]["annotations"]
+    assert annotations["prometheus.io/scrape"] == "true"
+    assert annotations["prometheus.io/path"] == "/metrics"
+    assert int(annotations["prometheus.io/port"]) == 8000
+
+
+def test_dashboard_queries_only_metrics_the_app_exports():
+    import json
+    import re
+
+    with open(ROOT / "monitoring/grafana-dashboard.json", encoding="utf-8") as f:
+        dashboard = json.load(f)
+    with open(ROOT / "src/serve.py", encoding="utf-8") as f:
+        serve_src = f.read()
+
+    exprs = [t["expr"] for p in dashboard["panels"] for t in p["targets"]]
+    assert exprs, "dashboard has no queries"
+    for expr in exprs:
+        for metric in re.findall(r"[a-z_]+_(?:total|bucket)", expr):
+            base = re.sub(r"_(total|bucket)$", "", metric)
+            assert base in serve_src, f"dashboard queries unknown metric {metric}"
