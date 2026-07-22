@@ -72,3 +72,26 @@ def test_unknown_paths_share_one_label(client):  # noqa: F811
     text = client.get("/metrics").text
     assert 'path="other"' in text
     assert "/does-not-exist" not in text
+
+
+def test_unhandled_errors_are_counted_as_500(client):  # noqa: F811
+    """An exception that never becomes a response must still be counted —
+    otherwise outages are invisible on the error-rate panel."""
+    from fastapi.testclient import TestClient
+
+    from src.serve import app
+
+    with TestClient(app, raise_server_exceptions=False) as c:
+        good = app.state.artifact
+        label = '{method="POST",path="/predict",status="500"}'
+        before = _metric_value(
+            c.get("/metrics").text, "http_requests_total", label)
+        try:
+            app.state.artifact = dict(good, model=None)  # forces a 500
+            assert c.post("/predict",
+                          json={"month": "2024-07"}).status_code == 500
+        finally:
+            app.state.artifact = good
+        after = _metric_value(
+            c.get("/metrics").text, "http_requests_total", label)
+        assert after == before + 1

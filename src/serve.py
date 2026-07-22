@@ -76,7 +76,15 @@ async def track_requests(request: Request, call_next):
     # unknown paths share one label so scanners can't explode cardinality
     path = request.url.path if request.url.path in _KNOWN_PATHS else "other"
     start = time.perf_counter()
-    response = await call_next(request)
+    try:
+        response = await call_next(request)
+    except Exception:
+        # unhandled errors never produce a response object here, so without
+        # this branch 500s would vanish from the very metrics meant to
+        # surface them — an error-rate panel reading zero during an outage
+        REQUEST_COUNT.labels(request.method, path, "500").inc()
+        REQUEST_LATENCY.labels(path).observe(time.perf_counter() - start)
+        raise
     REQUEST_COUNT.labels(request.method, path, str(response.status_code)).inc()
     REQUEST_LATENCY.labels(path).observe(time.perf_counter() - start)
     return response
