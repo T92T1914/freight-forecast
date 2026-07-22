@@ -12,11 +12,13 @@ horizon the model was evaluated at in training; serving further-out months
 would be shipping a claim no evaluation supports.
 """
 
+import time
 from contextlib import asynccontextmanager
 
 import joblib
 import pandas as pd
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from prometheus_client import Counter, Histogram, make_asgi_app
 from pydantic import BaseModel, Field
 
 from src.features import build_features
@@ -48,6 +50,39 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="freight-forecast", lifespan=lifespan)
+
+REQUEST_COUNT = Counter(
+    "http_requests_total", "HTTP requests served",
+    ["method", "path", "status"],
+)
+REQUEST_LATENCY = Histogram(
+    "http_request_duration_seconds", "HTTP request latency",
+    ["path"],
+)
+# buckets span the data's real range (~2.8k winter .. ~13k summer peak);
+# drift outside them is itself a signal worth alerting on
+PREDICTED_VOLUME = Histogram(
+    "predicted_volume_moves", "Distribution of predicted monthly volumes",
+    buckets=(2000, 3000, 4000, 5000, 6000, 8000, 10000, 12000, 14000),
+)
+
+_KNOWN_PATHS = {"/health", "/predict"}
+
+
+@app.middleware("http")
+async def track_requests(request: Request, call_next):
+    if request.url.path.startswith("/metrics"):
+        return await call_next(request)
+    # unknown paths share one label so scanners can't explode cardinality
+    path = request.url.path if request.url.path in _KNOWN_PATHS else "other"
+    start = time.perf_counter()
+    response = await call_next(request)
+    REQUEST_COUNT.labels(request.method, path, str(response.status_code)).inc()
+    REQUEST_LATENCY.labels(path).observe(time.perf_counter() - start)
+    return response
+
+
+app.mount("/metrics", make_asgi_app())
 
 
 def _forecastable_range(history: pd.DataFrame) -> tuple[pd.Timestamp, pd.Timestamp]:
@@ -98,6 +133,7 @@ def predict(req: PredictRequest):
     row = feats[feats["date"] == ts]
     X = row[artifact["feature_columns"]]
     predicted = float(artifact["model"].predict(X)[0])
+    PREDICTED_VOLUME.observe(predicted)
 
     return {
         "month": f"{ts:%Y-%m}",
