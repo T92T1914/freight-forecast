@@ -1,6 +1,10 @@
-pandas>=2.0
-scikit-learn>=1.4
-pytest>=8.0
-fastapi>=0.110
-uvicorn>=0.29
-httpx>=0.27
+# Runtime dependencies, pinned exactly so the Docker image is reproducible.
+# Direct deps only; full transitive locking (pip-tools/uv) is the production
+# upgrade if drift ever bites.
+pandas==3.0.3
+numpy==2.4.6
+scikit-learn==1.9.0
+joblib==1.5.3
+fastapi==0.139.2
+pydantic==2.13.4
+uvicorn==0.51.0
