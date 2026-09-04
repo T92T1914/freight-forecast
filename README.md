@@ -54,21 +54,8 @@ Two modelling decisions worth naming:
 
 ```mermaid
 flowchart LR
-    gen["generate_data.py<br/>96 months, seed 2017"] --> feat["features.py<br/>lag_12, roll_3,<br/>month dummies"]
-    feat --> train["train.py<br/>Ridge on log(volume)"]
-    train --> gate{"beats the<br/>seasonal naive?"}
-    gate -->|no| fail["exit 1<br/>the build fails"]
-    gate -->|"yes: 226 vs 327"| art[("model.joblib")]
-    art --> api["FastAPI<br/>loaded at startup"]
-    api --> ep["/health /predict<br/>/metrics"]
-    ep --> prom["Prometheus"]
-    prom --> graf["Grafana"]
+    a["one"] --> b["two"]
 ```
-
-The gate is the part worth noticing: the model has to beat "same month last
-year" or `train.py` exits non-zero, and since the Docker image trains during
-its own build, a model that stops clearing the baseline fails the image rather
-than shipping. `k8s/` runs the same image behind liveness and readiness probes.
 
 ## What's in the box
 
