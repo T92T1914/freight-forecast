@@ -54,33 +54,40 @@ Two modelling decisions worth naming:
 
 ```mermaid
 flowchart LR
-    subgraph build ["build · one command reproduces all of it"]
+    subgraph build["build - one command reproduces all of it"]
         gen["generate_data.py<br/>96 months, seed 2017"]
-        feat["features.py<br/>lag_12 · roll_3 · month dummies<br/><i>raises on a gapped series</i>"]
+        feat["features.py<br/>lag_12, roll_3, month dummies<br/>raises on a gapped series"]
         train["train.py<br/>Ridge on log(volume)"]
         gate{"beats the<br/>seasonal naive?"}
-        art[("model.joblib<br/>+ metrics")]
-        gen --> feat --> train --> gate
-        gate -- "no" --> fail["exit 1<br/><i>the build fails</i>"]
-        gate -- "yes · 226 vs 327 MAE" --> art
+        art[("model.joblib<br/>plus metrics")]
+        fail["exit 1<br/>the build fails"]
+        gen --> feat
+        feat --> train
+        train --> gate
+        gate -->|no| fail
+        gate -->|"yes: 226 vs 327 MAE"| art
     end
 
-    subgraph serve ["serve"]
+    subgraph serve["serve"]
         api["FastAPI<br/>model loaded at startup"]
-        art --> api
-        api --- health["/health<br/>reports the metrics<br/>it was accepted on"]
-        api --- pred["/predict<br/>validated month<br/>+ the naive number"]
-        api --- met["/metrics"]
+        health["/health<br/>reports the metrics<br/>it was accepted on"]
+        pred["/predict<br/>validated month<br/>plus the naive number"]
+        met["/metrics"]
+        api --> health
+        api --> pred
+        api --> met
     end
 
-    subgraph obs ["observe"]
+    subgraph obs["observe"]
         prom["Prometheus"]
         graf["Grafana"]
-        met --> prom --> graf
+        prom --> graf
     end
 
-    api -.->|"image trains<br/>during build"| docker["Docker"]
-    docker -.->|"liveness +<br/>readiness probes"| k8s["Kubernetes"]
+    art --> api
+    met --> prom
+    api -->|"image trains during build"| docker["Docker"]
+    docker -->|"liveness and readiness probes"| k8s["Kubernetes"]
 ```
 
 The gate is the part worth noticing: the model has to beat "same month last
