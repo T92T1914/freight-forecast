@@ -52,6 +52,70 @@ Two modelling decisions worth naming:
 
 ## How it fits together
 
+P1 (first 1 line(s)):
+```mermaid
+flowchart LR
+    gen["generate_data.py<br/>96 months, seed 2017"] --> feat["features.py<br/>lag_12, roll_3,<br/>month dummies"]
+```
+
+P2 (first 2 line(s)):
+```mermaid
+flowchart LR
+    gen["generate_data.py<br/>96 months, seed 2017"] --> feat["features.py<br/>lag_12, roll_3,<br/>month dummies"]
+    feat --> train["train.py<br/>Ridge on log(volume)"]
+```
+
+P3 (first 3 line(s)):
+```mermaid
+flowchart LR
+    gen["generate_data.py<br/>96 months, seed 2017"] --> feat["features.py<br/>lag_12, roll_3,<br/>month dummies"]
+    feat --> train["train.py<br/>Ridge on log(volume)"]
+    train --> gate{"beats the<br/>seasonal naive?"}
+```
+
+P4 (first 4 line(s)):
+```mermaid
+flowchart LR
+    gen["generate_data.py<br/>96 months, seed 2017"] --> feat["features.py<br/>lag_12, roll_3,<br/>month dummies"]
+    feat --> train["train.py<br/>Ridge on log(volume)"]
+    train --> gate{"beats the<br/>seasonal naive?"}
+    gate -->|no| fail["exit 1<br/>the build fails"]
+```
+
+P5 (first 5 line(s)):
+```mermaid
+flowchart LR
+    gen["generate_data.py<br/>96 months, seed 2017"] --> feat["features.py<br/>lag_12, roll_3,<br/>month dummies"]
+    feat --> train["train.py<br/>Ridge on log(volume)"]
+    train --> gate{"beats the<br/>seasonal naive?"}
+    gate -->|no| fail["exit 1<br/>the build fails"]
+    gate -->|"yes: 226 vs 327"| art[("model.joblib")]
+```
+
+P6 (first 6 line(s)):
+```mermaid
+flowchart LR
+    gen["generate_data.py<br/>96 months, seed 2017"] --> feat["features.py<br/>lag_12, roll_3,<br/>month dummies"]
+    feat --> train["train.py<br/>Ridge on log(volume)"]
+    train --> gate{"beats the<br/>seasonal naive?"}
+    gate -->|no| fail["exit 1<br/>the build fails"]
+    gate -->|"yes: 226 vs 327"| art[("model.joblib")]
+    art --> api["FastAPI<br/>loaded at startup"]
+```
+
+P7 (first 7 line(s)):
+```mermaid
+flowchart LR
+    gen["generate_data.py<br/>96 months, seed 2017"] --> feat["features.py<br/>lag_12, roll_3,<br/>month dummies"]
+    feat --> train["train.py<br/>Ridge on log(volume)"]
+    train --> gate{"beats the<br/>seasonal naive?"}
+    gate -->|no| fail["exit 1<br/>the build fails"]
+    gate -->|"yes: 226 vs 327"| art[("model.joblib")]
+    art --> api["FastAPI<br/>loaded at startup"]
+    api --> ep["/health /predict<br/>/metrics"]
+```
+
+P8 (first 8 line(s)):
 ```mermaid
 flowchart LR
     gen["generate_data.py<br/>96 months, seed 2017"] --> feat["features.py<br/>lag_12, roll_3,<br/>month dummies"]
@@ -63,11 +127,6 @@ flowchart LR
     api --> ep["/health /predict<br/>/metrics"]
     ep --> prom["Prometheus"] --> graf["Grafana"]
 ```
-
-The gate is the part worth noticing: the model has to beat "same month last
-year" or `train.py` exits non-zero, and since the Docker image trains during
-its own build, a model that stops clearing the baseline fails the image rather
-than shipping. `k8s/` runs the same image behind liveness and readiness probes.
 
 ## What's in the box
 
