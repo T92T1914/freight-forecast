@@ -54,40 +54,44 @@ Two modelling decisions worth naming:
 
 ```mermaid
 flowchart LR
-    subgraph build["build - one command reproduces all of it"]
-        gen["generate_data.py<br/>96 months, seed 2017"]
-        feat["features.py<br/>lag_12, roll_3, month dummies<br/>raises on a gapped series"]
-        train["train.py<br/>Ridge on log(volume)"]
-        gate{"beats the<br/>seasonal naive?"}
-        art[("model.joblib<br/>plus metrics")]
-        fail["exit 1<br/>the build fails"]
-        gen --> feat
-        feat --> train
-        train --> gate
-        gate -->|no| fail
-        gate -->|"yes: 226 vs 327 MAE"| art
-    end
+    a["plain"] --> b["nodes"]
+```
 
-    subgraph serve["serve"]
-        api["FastAPI<br/>model loaded at startup"]
-        health["/health<br/>reports the metrics<br/>it was accepted on"]
-        pred["/predict<br/>validated month<br/>plus the naive number"]
-        met["/metrics"]
-        api --> health
-        api --> pred
-        api --> met
-    end
+T2 subgraph:
 
-    subgraph obs["observe"]
-        prom["Prometheus"]
-        graf["Grafana"]
-        prom --> graf
+```mermaid
+flowchart LR
+    subgraph g["a subgraph"]
+        a["one"] --> b["two"]
     end
+```
 
-    art --> api
-    met --> prom
-    api -->|"image trains during build"| docker["Docker"]
-    docker -->|"liveness and readiness probes"| k8s["Kubernetes"]
+T3 br tags:
+
+```mermaid
+flowchart LR
+    a["line one<br/>line two"] --> b["x"]
+```
+
+T4 edge label:
+
+```mermaid
+flowchart LR
+    a --> |labelled| b
+```
+
+T5 cylinder + rhombus:
+
+```mermaid
+flowchart LR
+    g{"a question?"} --> d[("a store")]
+```
+
+T6 slash in label:
+
+```mermaid
+flowchart LR
+    a["/health"] --> b["/predict"]
 ```
 
 The gate is the part worth noticing: the model has to beat "same month last
