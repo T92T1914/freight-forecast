@@ -50,6 +50,44 @@ Two modelling decisions worth naming:
   meaning "last year" and the model would be training on leaked information
   with no visible symptom.
 
+## How it fits together
+
+```mermaid
+flowchart LR
+    subgraph build ["build · one command reproduces all of it"]
+        gen["generate_data.py<br/>96 months, seed 2017"]
+        feat["features.py<br/>lag_12 · roll_3 · month dummies<br/><i>raises on a gapped series</i>"]
+        train["train.py<br/>Ridge on log(volume)"]
+        gate{"beats the<br/>seasonal naive?"}
+        art[("model.joblib<br/>+ metrics")]
+        gen --> feat --> train --> gate
+        gate -- "no" --> fail["exit 1<br/><i>the build fails</i>"]
+        gate -- "yes · 226 vs 327 MAE" --> art
+    end
+
+    subgraph serve ["serve"]
+        api["FastAPI<br/>model loaded at startup"]
+        art --> api
+        api --- health["/health<br/>reports the metrics<br/>it was accepted on"]
+        api --- pred["/predict<br/>validated month<br/>+ the naive number"]
+        api --- met["/metrics"]
+    end
+
+    subgraph obs ["observe"]
+        prom["Prometheus"]
+        graf["Grafana"]
+        met --> prom --> graf
+    end
+
+    api -.->|"image trains<br/>during build"| docker["Docker"]
+    docker -.->|"liveness +<br/>readiness probes"| k8s["Kubernetes"]
+```
+
+The gate is the part worth noticing: the model has to beat "same month last
+year" or `train.py` exits non-zero, and since the Docker image trains during its
+own build, a model that stops clearing the baseline fails the image rather than
+shipping.
+
 ## What's in the box
 
 ```
