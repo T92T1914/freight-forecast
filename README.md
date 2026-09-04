@@ -123,6 +123,34 @@ docker compose -f monitoring/docker-compose.yml up   # API + Prometheus + Grafan
 
 CI runs lint, tests and the image build on every push.
 
+## What this does not do
+
+Stated because a project that only lists its wins is not worth much.
+
+- **The 226 MAE is a point estimate on 24 observations.** The absolute errors have
+  a standard deviation of 276, so the standard error on that mean is 56 and a 95%
+  interval runs from roughly 116 to 336. It clears the naive baseline of 327
+  comfortably and repeatedly, which is the claim being made — but "226" should not
+  be read as three significant figures of accuracy.
+- **The error is concentrated exactly where it matters.** Split the held-out months
+  by season: peak (May-Aug) MAE is **418**, off-peak is **130**. In relative terms
+  they are close (3.83% vs 3.11% MAPE) because peak volumes are roughly three times
+  larger, but capacity is committed in absolute moves, so the forecast is least
+  precise in the four months anyone actually plans around.
+- **The data is synthetic**, and its seasonality was specified rather than
+  discovered — the model is being asked to recover a pattern that was put there on
+  purpose. That makes it a fair test of the pipeline and a weak test of the model.
+  Real JPPSO data would bring regime changes (policy shifts, base realignments,
+  a pandemic) that a 60-month linear fit has no way to anticipate.
+- **Point predictions only.** Planning wants an interval, not a number — the useful
+  question is "how bad is the plausible worst case for August" and this cannot
+  answer it. Quantile regression or conformal prediction would be the next thing
+  I built, ahead of any more accurate point model.
+- **The monitoring watches, it does not act.** The prediction histogram will show
+  drift, but nothing alerts on it and nothing retrains. There is no data
+  versioning, so a rerun with different data would silently produce a different
+  model under the same tag.
+
 ## Verification
 
 `VERIFICATION.md` records what was executed and observed rather than intended:
