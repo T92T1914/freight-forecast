@@ -92,6 +92,14 @@ is only meaningful next to the thing it claims to beat.
 
 ## Monitoring
 
+![The provisioned Grafana dashboard under live traffic](docs/grafana-dashboard.png)
+
+*The stack from `monitoring/docker-compose.yml`, twelve minutes of traffic
+against the container. Two request bursts on `/predict`, p95 latency steady
+around 8-9 ms, the `400` line showing out-of-range months being refused
+rather than answered, and the prediction histogram sitting in the 3,000-14,000
+moves/month band the model was trained on.*
+
 Three Prometheus series: request count by endpoint and status, request latency,
 and a histogram of predicted volumes. The last one is the interesting one —
 latency and error rate tell you the service is alive, but a model can be
