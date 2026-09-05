@@ -8,6 +8,24 @@ Monthly shipment volume forecasting, served as a containerized API —
 scikit-learn, FastAPI, Docker, Kubernetes, Prometheus and Grafana, with the
 whole pipeline reproducible from one command.
 
+**226 vs 327 MAE on 24 held-out months, 31% under the seasonal-naive baseline;
+`train.py` exits non-zero if it ever loses, so a regression fails the image
+build.**
+
+[Results](#the-bar-beat-same-month-last-year) |
+[Run it](#run-it) |
+[How the numbers were measured](#how-the-numbers-were-measured) |
+[What this does not do](#what-this-does-not-do) |
+[VERIFICATION.md](VERIFICATION.md)
+
+![The provisioned Grafana dashboard under live traffic](docs/grafana-dashboard.png)
+
+*The stack from `monitoring/docker-compose.yml`, twelve minutes of traffic
+against the container. Two request bursts on `/predict`, p95 latency steady
+around 8-9 ms, the `400` line showing out-of-range months being refused
+rather than answered, and the prediction histogram sitting in the 3,000-14,000
+moves/month band the model was trained on.*
+
 I spent six years in Air Force logistics, much of it at a JPPSO moving
 household goods: freight rates, storage, and the annual PCS surge. Forecasting
 that demand cycle was the job, not a class exercise — every summer, roughly
@@ -17,6 +35,7 @@ committed months ahead of it. This project is that problem, built properly:
 a model that has to earn its place against the baseline a human planner
 already uses, and then the serving, deployment and monitoring around it.
 
+- [Quickstart](#quickstart)
 - [The bar: beat "same month last year"](#the-bar-beat-same-month-last-year)
 - [How it fits together](#how-it-fits-together)
 - [What's in the box](#whats-in-the-box)
@@ -25,6 +44,18 @@ already uses, and then the serving, deployment and monitoring around it.
 - [Run it](#run-it)
 - [What this does not do](#what-this-does-not-do)
 - [Verification](#verification)
+
+## Quickstart
+
+```bash
+make install
+make train
+make serve
+make test
+```
+
+The plain commands behind each target are listed under [Run it](#run-it),
+for machines without `make`.
 
 ## The bar: beat "same month last year"
 
@@ -158,14 +189,6 @@ is only meaningful next to the thing it claims to beat.
 
 ## Monitoring
 
-![The provisioned Grafana dashboard under live traffic](docs/grafana-dashboard.png)
-
-*The stack from `monitoring/docker-compose.yml`, twelve minutes of traffic
-against the container. Two request bursts on `/predict`, p95 latency steady
-around 8-9 ms, the `400` line showing out-of-range months being refused
-rather than answered, and the prediction histogram sitting in the 3,000-14,000
-moves/month band the model was trained on.*
-
 Three Prometheus series: request count by endpoint and status, request latency,
 and a histogram of predicted volumes. The last one is the interesting one —
 latency and error rate tell you the service is alive, but a model can be
@@ -182,6 +205,7 @@ equivalents are shown for machines without `make`.
 make install     # pip install -r requirements-dev.txt
 make train       # python -m src.train      regenerates data if missing, trains, evaluates
 make serve       # python -m uvicorn src.serve:app --reload   -> http://127.0.0.1:8000/docs
+make test        # python -m pytest -q
 make check       # ruff check + ruff format --check + pytest: CI's lint and test jobs
 ```
 
