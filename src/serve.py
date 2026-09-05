@@ -23,7 +23,7 @@ from pydantic import BaseModel, Field
 
 from src.features import build_features
 from src.generate_data import DATA_PATH
-from src.train import MODEL_PATH
+from src.train import MODEL_PATH, Artifact
 
 
 class PredictRequest(BaseModel):
@@ -105,7 +105,10 @@ def _forecastable_range(history: pd.DataFrame) -> tuple[pd.Timestamp, pd.Timesta
 
 @app.get("/health")
 def health():
-    artifact = app.state.artifact
+    """Liveness, plus provenance: a running instance reports the metrics its
+    artifact was accepted on, so it can be asked what it is rather than what
+    it was supposed to be."""
+    artifact: Artifact = app.state.artifact
     return {
         "status": "ok",
         "model_loaded": True,
@@ -117,10 +120,17 @@ def health():
 
 @app.post("/predict")
 def predict(req: PredictRequest):
+    """Forecast one month, and return the seasonal-naive number next to it.
+
+    A forecast only means something beside the thing it claims to beat, so
+    the response carries "same month last year" as well. Months outside the
+    forecastable range are a 400 with the range in the message, not a
+    confident number extrapolated from a lag that does not exist.
+    """
     ts = pd.Timestamp(f"{req.month}-01")
 
     history: pd.DataFrame = app.state.history
-    artifact = app.state.artifact
+    artifact: Artifact = app.state.artifact
     first, last = _forecastable_range(history)
     if not (first <= ts <= last):
         raise HTTPException(

@@ -34,6 +34,14 @@ DATA_PATH = Path(__file__).resolve().parent.parent / "data" / "shipments.csv"
 
 
 def generate(seed: int = SEED) -> pd.DataFrame:
+    """Return the (date, volume) series for `seed`.
+
+    The structure is multiplicative -- base level x trend x month factor x
+    noise -- so the summer peak scales with the overall level instead of
+    adding a fixed number of moves. That is the same assumption the model
+    makes by fitting log(volume), which is deliberate: the data is meant to
+    look like the cycle, not to hand the model an easy win by construction.
+    """
     rng = np.random.default_rng(seed)
     dates = pd.date_range(START_MONTH, periods=N_MONTHS, freq="MS")
     years_elapsed = (dates.year - dates.year[0]).to_numpy()

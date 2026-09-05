@@ -8,6 +8,7 @@ to be worth serving at all. Fails with exit code 1 if the model loses.
 
 import sys
 from pathlib import Path
+from typing import TypedDict
 
 import joblib
 import numpy as np
@@ -25,13 +26,31 @@ TEST_MONTHS = 24
 MODEL_PATH = Path(__file__).resolve().parent.parent / "models" / "model.joblib"
 
 
+class Artifact(TypedDict):
+    """What training saves and serving loads.
+
+    A plain dict on disk (joblib), typed here so the contract between
+    train.py and serve.py is written down in one place: the fitted model,
+    the exact feature columns it was fitted on so serving builds the same
+    matrix, the held-out metrics it was accepted on, and the last month it
+    saw.
+    """
+
+    model: TransformedTargetRegressor
+    feature_columns: list[str]
+    metrics: dict[str, float]
+    trained_through: str
+
+
 def load_data() -> pd.DataFrame:
+    """Read the committed dataset, generating it first if it is missing."""
     if not generate_data.DATA_PATH.exists():
         generate_data.main()
     return pd.read_csv(generate_data.DATA_PATH, parse_dates=["date"])
 
 
-def train(df: pd.DataFrame) -> dict:
+def train(df: pd.DataFrame) -> Artifact:
+    """Fit on all but the last TEST_MONTHS months and score on those."""
     feats, feature_cols = build_features(df)
     train_set = feats.iloc[:-TEST_MONTHS]
     test_set = feats.iloc[-TEST_MONTHS:]
@@ -56,12 +75,12 @@ def train(df: pd.DataFrame) -> dict:
         "naive_mae": mean_absolute_error(actual, naive),
         "naive_mape": mean_absolute_percentage_error(actual, naive),
     }
-    return {
-        "model": model,
-        "feature_columns": feature_cols,
-        "metrics": metrics,
-        "trained_through": str(train_set["date"].iloc[-1].date()),
-    }
+    return Artifact(
+        model=model,
+        feature_columns=feature_cols,
+        metrics=metrics,
+        trained_through=str(train_set["date"].iloc[-1].date()),
+    )
 
 
 def main() -> None:
