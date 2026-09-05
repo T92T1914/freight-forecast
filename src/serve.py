@@ -33,6 +33,23 @@ class PredictRequest(BaseModel):
     month: str = Field(pattern=r"^\d{4}-(0[1-9]|1[0-2])$", examples=["2025-01"])
 
 
+# Response models exist so /docs and /openapi.json state the contract a
+# consumer can rely on, instead of the fields merely happening to be there.
+class HealthResponse(BaseModel):
+    status: str
+    model_loaded: bool
+    trained_through: str
+    test_mae: float
+    test_mape: float
+
+
+class PredictResponse(BaseModel):
+    month: str
+    predicted_volume: int
+    naive_same_month_last_year: int
+    trained_through: str
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     if not MODEL_PATH.exists():
@@ -103,7 +120,7 @@ def _forecastable_range(history: pd.DataFrame) -> tuple[pd.Timestamp, pd.Timesta
     return first, last
 
 
-@app.get("/health")
+@app.get("/health", response_model=HealthResponse)
 def health():
     """Liveness, plus provenance: a running instance reports the metrics its
     artifact was accepted on, so it can be asked what it is rather than what
@@ -118,7 +135,7 @@ def health():
     }
 
 
-@app.post("/predict")
+@app.post("/predict", response_model=PredictResponse)
 def predict(req: PredictRequest):
     """Forecast one month, and return the seasonal-naive number next to it.
 

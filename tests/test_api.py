@@ -47,6 +47,25 @@ def test_prediction_matches_offline_model(client):
     assert api["predicted_volume"] == round(offline)
 
 
+def test_openapi_declares_the_response_fields(client):
+    """/docs is the contract a consumer reads. The response fields must be
+    declared there, not just happen to appear in the JSON."""
+    schemas = client.get("/openapi.json").json()["components"]["schemas"]
+    assert set(schemas["PredictResponse"]["required"]) == {
+        "month",
+        "predicted_volume",
+        "naive_same_month_last_year",
+        "trained_through",
+    }
+    assert set(schemas["HealthResponse"]["required"]) == {
+        "status",
+        "model_loaded",
+        "trained_through",
+        "test_mae",
+        "test_mape",
+    }
+
+
 def test_malformed_month_is_rejected(client):
     assert client.post("/predict", json={"month": "2025-13"}).status_code == 422
     assert client.post("/predict", json={"month": "not-a-month"}).status_code == 422
