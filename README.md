@@ -182,7 +182,7 @@ equivalents are shown for machines without `make`.
 make install     # pip install -r requirements-dev.txt
 make train       # python -m src.train      regenerates data if missing, trains, evaluates
 make serve       # python -m uvicorn src.serve:app --reload   -> http://127.0.0.1:8000/docs
-make check       # ruff check + ruff format --check + pytest, exactly what CI runs
+make check       # ruff check + ruff format --check + pytest: CI's lint and test jobs
 ```
 
 ```bash
