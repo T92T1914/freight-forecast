@@ -6,6 +6,8 @@ ports line up end to end, and the service selector actually matches the
 deployment's pod labels (the classic silent k8s failure).
 """
 
+import json
+import re
 from pathlib import Path
 
 import yaml
@@ -67,9 +69,6 @@ def test_pods_are_annotated_for_prometheus_scraping():
 
 
 def test_dashboard_queries_only_metrics_the_app_exports():
-    import json
-    import re
-
     with open(ROOT / "monitoring/grafana-dashboard.json", encoding="utf-8") as f:
         dashboard = json.load(f)
     with open(ROOT / "src/serve.py", encoding="utf-8") as f:

@@ -1,21 +1,11 @@
+"""Endpoint tests. The `client` fixture (conftest.py) serves a trained artifact."""
+
 import joblib
-import pytest
-from fastapi.testclient import TestClient
+import pandas as pd
 
 from src import train as train_mod
-from src.serve import app
-
-
-@pytest.fixture(scope="module")
-def client():
-    # serving requires the artifact; build it the same way a deployment would
-    if not train_mod.MODEL_PATH.exists():
-        artifact = train_mod.train(train_mod.load_data())
-        train_mod.MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
-        joblib.dump(artifact, train_mod.MODEL_PATH)
-    # context manager runs the lifespan (startup model load)
-    with TestClient(app) as c:
-        yield c
+from src.features import build_features
+from src.generate_data import DATA_PATH
 
 
 def test_health_reports_model(client):
@@ -47,11 +37,6 @@ def test_seasonality_is_visible_through_the_api(client):
 def test_prediction_matches_offline_model(client):
     """The API must serve the same number the artifact produces offline —
     a serving-skew guard."""
-    import pandas as pd
-
-    from src.features import build_features
-    from src.generate_data import DATA_PATH
-
     artifact = joblib.load(train_mod.MODEL_PATH)
     df = pd.read_csv(DATA_PATH, parse_dates=["date"])
     feats, _ = build_features(df)
@@ -81,10 +66,6 @@ def test_range_gate_boundaries_are_exact(client):
     An off-by-one in the gate would not 400 — it would admit a month with no
     feature row and 500 on an empty frame — so the edges themselves must be
     tested, not just far-out months."""
-    import pandas as pd
-
-    from src.generate_data import DATA_PATH
-
     df = pd.read_csv(DATA_PATH, parse_dates=["date"])
     first_ok = df["date"].iloc[0] + pd.DateOffset(months=12)
     last_ok = df["date"].iloc[-1] + pd.DateOffset(months=1)
@@ -102,11 +83,6 @@ def test_placeholder_branch_matches_offline(client):
     """The next-unobserved-month path builds features through a placeholder
     row — the only serving-side construction that differs from training, and
     the endpoint's actual production use. Pin it to the offline model."""
-    import pandas as pd
-
-    from src.features import build_features
-    from src.generate_data import DATA_PATH
-
     artifact = joblib.load(train_mod.MODEL_PATH)
     df = pd.read_csv(DATA_PATH, parse_dates=["date"])
     next_month = df["date"].iloc[-1] + pd.DateOffset(months=1)

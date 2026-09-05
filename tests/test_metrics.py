@@ -8,8 +8,9 @@ the session have already incremented the counters.
 import re
 
 import pytest
+from fastapi.testclient import TestClient
 
-from tests.test_api import client  # reuse the artifact-building fixture  # noqa: F401
+from src.serve import app
 
 
 def _metric_value(text: str, name: str, labels: str = "") -> float:
@@ -22,7 +23,7 @@ def _metric_value(text: str, name: str, labels: str = "") -> float:
     return total
 
 
-def test_predict_requests_are_counted_and_timed(client):  # noqa: F811
+def test_predict_requests_are_counted_and_timed(client):
     before = client.get("/metrics").text
     n_before = _metric_value(
         before, "http_requests_total", '{method="POST",path="/predict",status="200"}'
@@ -41,7 +42,7 @@ def test_predict_requests_are_counted_and_timed(client):  # noqa: F811
     assert latency_count >= n_after
 
 
-def test_prediction_distribution_is_observed(client):  # noqa: F811
+def test_prediction_distribution_is_observed(client):
     before = client.get("/metrics").text
     c_before = _metric_value(before, "predicted_volume_moves_count")
     s_before = _metric_value(before, "predicted_volume_moves_sum")
@@ -56,7 +57,7 @@ def test_prediction_distribution_is_observed(client):  # noqa: F811
     assert s_after - s_before == pytest.approx(july["predicted_volume"], abs=1)
 
 
-def test_rejected_requests_are_labeled_by_status(client):  # noqa: F811
+def test_rejected_requests_are_labeled_by_status(client):
     before = client.get("/metrics").text
     n_before = _metric_value(
         before, "http_requests_total", '{method="POST",path="/predict",status="400"}'
@@ -69,20 +70,16 @@ def test_rejected_requests_are_labeled_by_status(client):  # noqa: F811
     assert n_after == n_before + 1
 
 
-def test_unknown_paths_share_one_label(client):  # noqa: F811
+def test_unknown_paths_share_one_label(client):
     client.get("/does-not-exist")
     text = client.get("/metrics").text
     assert 'path="other"' in text
     assert "/does-not-exist" not in text
 
 
-def test_unhandled_errors_are_counted_as_500(client):  # noqa: F811
+def test_unhandled_errors_are_counted_as_500(client):
     """An exception that never becomes a response must still be counted —
     otherwise outages are invisible on the error-rate panel."""
-    from fastapi.testclient import TestClient
-
-    from src.serve import app
-
     with TestClient(app, raise_server_exceptions=False) as c:
         good = app.state.artifact
         label = '{method="POST",path="/predict",status="500"}'
