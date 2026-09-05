@@ -1,8 +1,26 @@
+# Not installed as a package: the app runs from the source tree
+# (uvicorn src.serve:app) and the dependencies are pinned in requirements.txt,
+# so there is no build-system table and no [project.dependencies]. This file
+# carries the project's identity and its tool configuration.
 [project]
 name = "freight-forecast"
 version = "0.1.0"
 description = "Monthly household goods shipment volume forecasting, served as an API"
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Trinidy Farris" }]
 requires-python = ">=3.11"
+keywords = ["forecasting", "time-series", "fastapi", "mlops", "prometheus", "kubernetes"]
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: FastAPI",
+]
+
+[project.urls]
+Repository = "https://github.com/T92T1914/freight-forecast"
+Issues = "https://github.com/T92T1914/freight-forecast/issues"
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
