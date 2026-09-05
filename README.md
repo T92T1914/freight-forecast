@@ -12,7 +12,7 @@ whole pipeline reproducible from one command.
 `train.py` exits non-zero if it ever loses, so a regression fails the image
 build.**
 
-[Results](#the-bar-beat-same-month-last-year) |
+[Results](#results-beat-same-month-last-year) |
 [Run it](#run-it) |
 [How the numbers were measured](#how-the-numbers-were-measured) |
 [What this does not do](#what-this-does-not-do) |
@@ -36,14 +36,12 @@ a model that has to earn its place against the baseline a human planner
 already uses, and then the serving, deployment and monitoring around it.
 
 - [Quickstart](#quickstart)
-- [The bar: beat "same month last year"](#the-bar-beat-same-month-last-year)
-- [How it fits together](#how-it-fits-together)
-- [What's in the box](#whats-in-the-box)
-- [The API](#the-api)
-- [Monitoring](#monitoring)
+- [Results: beat "same month last year"](#results-beat-same-month-last-year)
 - [Run it](#run-it)
+- [Architecture: how it fits together](#architecture-how-it-fits-together)
+- [CI and release](#ci-and-release)
 - [What this does not do](#what-this-does-not-do)
-- [Verification](#verification)
+- [License](#license)
 
 ## Quickstart
 
@@ -57,7 +55,7 @@ make test
 The plain commands behind each target are listed under [Run it](#run-it),
 for machines without `make`.
 
-## The bar: beat "same month last year"
+## Results: beat "same month last year"
 
 A planner with no model looks up last year's number for the same month. That
 seasonal-naive forecast is the honest baseline, and a model that can't clear
@@ -109,93 +107,6 @@ Two modelling decisions worth naming:
   meaning "last year" and the model would be training on leaked information
   with no visible symptom.
 
-## How it fits together
-
-```
-  generate_data.py          features.py               train.py
-  96 months, seed 2017  ->  lag_12 - roll_3      ->   Ridge on log(volume)
-                            month dummies             trained on 60 months
-                            (raises on a gap)                  |
-                                                               v
-                                                   beats the seasonal naive?
-                                                        |            |
-                                                    no  |            |  yes
-                                                        v            v   226 vs 327 MAE
-                                                     exit 1      model.joblib
-                                               the build fails        |
-                                                                      v
-                                                             FastAPI, loaded
-                                                               at startup
-                                                                      |
-                                        /health   /predict   /metrics <
-```
-
-`/metrics` is scraped by Prometheus and drawn by the Grafana dashboard below.
-`k8s/` runs the same image behind liveness and readiness probes.
-
-The gate is the part worth noticing: the model has to beat "same month last
-year" or `train.py` exits non-zero — and because the Docker image trains
-during its own build, a model that stops clearing the baseline fails the image
-rather than shipping.
-
-## What's in the box
-
-```
-src/
-  generate_data.py   synthetic monthly volumes, fixed seed, PCS-shaped
-  features.py        lags, rolling mean, month dummies + the contiguity guard
-  train.py           trains, evaluates against the naive, saves the artifact
-  serve.py           FastAPI app: /health, /predict, /metrics
-tests/               36 tests: features, data, training, API, metrics,
-                     manifests and workflows; conftest.py serves the artifact
-Makefile             the common commands; CI calls the same targets
-Dockerfile           trains during the build, so a broken model fails the image
-.github/workflows/   ci.yml: lint, tests on 3.11-3.13, image build, every push
-                     release.yml: a v* tag publishes the image to GHCR
-k8s/                 deployment with liveness + readiness probes, service
-monitoring/          Prometheus config, provisioned Grafana, dashboard JSON
-data/shipments.csv   96 months (2017–2024), regenerable from seed 2017
-VERIFICATION.md      what was actually run and observed, with output
-CHANGELOG.md         what changed, by milestone
-```
-
-The data is synthetic and says so. The shape is modelled on the JPPSO cycle —
-peak months carry factors summing to 7.45 against a 5,200/month base, which
-puts the May–August window near 38,700 moves — with a slight year-over-year
-drift and 4% noise. A fixed seed makes every number on this page reproducible.
-
-## The API
-
-Model loads once at startup, not per request. Input is validated by pattern
-(`^\d{4}-(0[1-9]|1[0-2])$`), and a month outside the forecastable range is a
-4xx with a reason rather than a confident number from an extrapolated lag.
-Responses are declared as models too, so `/docs` states the contract rather
-than leaving a consumer to infer it from one example.
-
-```
-GET  /health   -> {"status":"ok","model_loaded":true,"trained_through":"2022-12-01",
-                   "test_mae":226.2,"test_mape":0.0335}
-POST /predict  {"month":"2025-01"} -> {"month":"2025-01","predicted_volume":3297,
-                                       "naive_same_month_last_year":3477,
-                                       "trained_through":"2022-12-01"}
-GET  /metrics  -> Prometheus exposition
-GET  /docs     -> interactive OpenAPI documentation
-```
-
-`/health` reports the metrics the artifact was accepted on, so a deployed
-instance can be asked what it actually is instead of what it was supposed to
-be. `/predict` returns the naive number alongside its own, because a forecast
-is only meaningful next to the thing it claims to beat.
-
-## Monitoring
-
-Three Prometheus series: request count by endpoint and status, request latency,
-and a histogram of predicted volumes. The last one is the interesting one —
-latency and error rate tell you the service is alive, but a model can be
-perfectly healthy and quietly wrong. A prediction distribution that drifts away
-from its training range is the signal that the world changed, and it is visible
-before anyone files a ticket.
-
 ## Run it
 
 Every target in the Makefile is one plain command, listed by `make help`; the
@@ -223,6 +134,104 @@ make k8s         # kubectl apply -f k8s/                  deployment + service, 
 make monitor     # docker compose -f monitoring/docker-compose.yml up --build
                  #   API :8000, Prometheus :9090, Grafana :3000
 ```
+
+### Verification
+
+`VERIFICATION.md` records what was executed and observed rather than intended:
+identical predictions from the local run and the container, both replicas
+reaching Ready behind the readiness probe on a k3d cluster, and Grafana's own
+datasource returning `/predict` at 0.8 req/s with 70 observations in the
+prediction histogram after a traffic burst.
+
+## Architecture: how it fits together
+
+```
+  generate_data.py          features.py               train.py
+  96 months, seed 2017  ->  lag_12 - roll_3      ->   Ridge on log(volume)
+                            month dummies             trained on 60 months
+                            (raises on a gap)                  |
+                                                               v
+                                                   beats the seasonal naive?
+                                                        |            |
+                                                    no  |            |  yes
+                                                        v            v   226 vs 327 MAE
+                                                     exit 1      model.joblib
+                                               the build fails        |
+                                                                      v
+                                                             FastAPI, loaded
+                                                               at startup
+                                                                      |
+                                        /health   /predict   /metrics <
+```
+
+`/metrics` is scraped by Prometheus and drawn by the Grafana dashboard at the
+top of this page. `k8s/` runs the same image behind liveness and readiness
+probes.
+
+The gate is the part worth noticing: the model has to beat "same month last
+year" or `train.py` exits non-zero — and because the Docker image trains
+during its own build, a model that stops clearing the baseline fails the image
+rather than shipping.
+
+### What's in the box
+
+```
+src/
+  generate_data.py   synthetic monthly volumes, fixed seed, PCS-shaped
+  features.py        lags, rolling mean, month dummies + the contiguity guard
+  train.py           trains, evaluates against the naive, saves the artifact
+  serve.py           FastAPI app: /health, /predict, /metrics
+tests/               36 tests: features, data, training, API, metrics,
+                     manifests and workflows; conftest.py serves the artifact
+Makefile             the common commands; CI calls the same targets
+Dockerfile           trains during the build, so a broken model fails the image
+.github/workflows/   ci.yml: lint, tests on 3.11-3.13, image build, every push
+                     release.yml: a v* tag publishes the image to GHCR
+k8s/                 deployment with liveness + readiness probes, service
+monitoring/          Prometheus config, provisioned Grafana, dashboard JSON
+data/shipments.csv   96 months (2017–2024), regenerable from seed 2017
+VERIFICATION.md      what was actually run and observed, with output
+CHANGELOG.md         what changed, by milestone
+```
+
+The data is synthetic and says so. The shape is modelled on the JPPSO cycle —
+peak months carry factors summing to 7.45 against a 5,200/month base, which
+puts the May–August window near 38,700 moves — with a slight year-over-year
+drift and 4% noise. A fixed seed makes every number on this page reproducible.
+
+### The API
+
+Model loads once at startup, not per request. Input is validated by pattern
+(`^\d{4}-(0[1-9]|1[0-2])$`), and a month outside the forecastable range is a
+4xx with a reason rather than a confident number from an extrapolated lag.
+Responses are declared as models too, so `/docs` states the contract rather
+than leaving a consumer to infer it from one example.
+
+```
+GET  /health   -> {"status":"ok","model_loaded":true,"trained_through":"2022-12-01",
+                   "test_mae":226.2,"test_mape":0.0335}
+POST /predict  {"month":"2025-01"} -> {"month":"2025-01","predicted_volume":3297,
+                                       "naive_same_month_last_year":3477,
+                                       "trained_through":"2022-12-01"}
+GET  /metrics  -> Prometheus exposition
+GET  /docs     -> interactive OpenAPI documentation
+```
+
+`/health` reports the metrics the artifact was accepted on, so a deployed
+instance can be asked what it actually is instead of what it was supposed to
+be. `/predict` returns the naive number alongside its own, because a forecast
+is only meaningful next to the thing it claims to beat.
+
+### Monitoring
+
+Three Prometheus series: request count by endpoint and status, request latency,
+and a histogram of predicted volumes. The last one is the interesting one —
+latency and error rate tell you the service is alive, but a model can be
+perfectly healthy and quietly wrong. A prediction distribution that drifts away
+from its training range is the signal that the world changed, and it is visible
+before anyone files a ticket.
+
+## CI and release
 
 On every push, CI lints (ruff check and format), runs the tests on Python
 3.11, 3.12 and 3.13, and builds the image — which retrains the model and fails
@@ -258,12 +267,6 @@ Stated because a project that only lists its wins is not worth much.
   versioning, so a rerun with different data would silently produce a different
   model under the same tag.
 
-## Verification
+## License
 
-`VERIFICATION.md` records what was executed and observed rather than intended:
-identical predictions from the local run and the container, both replicas
-reaching Ready behind the readiness probe on a k3d cluster, and Grafana's own
-datasource returning `/predict` at 0.8 req/s with 70 observations in the
-prediction histogram after a traffic burst.
-
-MIT licensed.
+MIT licensed. The full text is in [LICENSE](LICENSE).

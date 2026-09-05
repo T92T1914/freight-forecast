@@ -26,6 +26,10 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 - `pyproject.toml` carries readme, license, authors, URLs and classifiers.
 - README restructured: how the numbers were measured, run-it section with
   the Makefile targets and their plain equivalents, contents list.
+- README first screen: the held-out result and the train.py gate in one
+  line under the tagline, the dashboard beneath it, a four-line quickstart
+  first; sections reordered to results, run it, architecture, CI and
+  release, limits, license.
 
 ### 2026-09-04 — README
 
