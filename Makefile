@@ -8,7 +8,7 @@ PY ?= python
 .DEFAULT_GOAL := help
 
 help: ## list the targets
-	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F ':.*## ' '{printf "  %-9s %s\n", $$1, $$2}'
+	@grep -E '^[a-z0-9-]+:.*## ' $(MAKEFILE_LIST) | awk -F ':.*## ' '{printf "  %-9s %s\n", $$1, $$2}'
 
 install: ## runtime + dev dependencies into the active interpreter
 	$(PY) -m pip install -r requirements-dev.txt
