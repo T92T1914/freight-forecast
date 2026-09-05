@@ -1,0 +1,45 @@
+name: Release
+
+# A version tag (v0.1.0, v1.2.3, ...) publishes the serving image to GHCR as
+# ghcr.io/<owner>/freight-forecast:<tag> and :latest. Branch pushes never
+# publish. ci.yml still runs on the tag push; this workflow re-checks anyway,
+# because a tag is not proof that CI passed on the commit it points at.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements*.txt
+      - run: make install
+      - run: make check
+
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Build and push
+        env:
+          VERSION: ${{ github.ref_name }}
+          SOURCE: ${{ github.server_url }}/${{ github.repository }}
+        run: |
+          # image references must be lowercase; GitHub logins need not be
+          image="ghcr.io/${GITHUB_REPOSITORY,,}"
+          # the source label is what links the package to this repository
+          docker build \
+            --label "org.opencontainers.image.source=$SOURCE" \
+            --label "org.opencontainers.image.revision=$GITHUB_SHA" \
+            --label "org.opencontainers.image.version=$VERSION" \
+            --label "org.opencontainers.image.licenses=MIT" \
+            -t "$image:$VERSION" -t "$image:latest" .
+          docker push --all-tags "$image"

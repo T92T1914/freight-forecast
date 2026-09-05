@@ -20,6 +20,13 @@ def _load(rel):
         return yaml.safe_load(f)
 
 
+def _workflow(rel):
+    wf = _load(rel)
+    # PyYAML follows YAML 1.1, where a bare `on` is the boolean True
+    wf["on"] = wf.pop(True, wf.get("on"))
+    return wf
+
+
 def test_deployment_probes_hit_the_real_health_endpoint():
     dep = _load("k8s/deployment.yaml")
     container = dep["spec"]["template"]["spec"]["containers"][0]
@@ -54,10 +61,30 @@ def test_deployment_sets_resource_limits():
 
 
 def test_ci_gates_image_build_on_lint_and_tests():
-    ci = _load(".github/workflows/ci.yml")
+    ci = _workflow(".github/workflows/ci.yml")
     jobs = ci["jobs"]
     assert {"lint", "test", "build-image"} <= set(jobs)
     assert set(jobs["build-image"]["needs"]) == {"lint", "test"}
+
+
+def test_ci_token_is_read_only():
+    ci = _workflow(".github/workflows/ci.yml")
+    assert ci["permissions"] == {"contents": "read"}
+
+
+def test_release_publishes_only_on_version_tags():
+    """Publishing is a side effect with an audience, so the trigger and the
+    token scope are contracts worth pinning: version tags only, packages
+    writable, and the tests run again before anything is pushed."""
+    release = _workflow(".github/workflows/release.yml")
+    assert release["on"] == {"push": {"tags": ["v*"]}}
+    assert release["permissions"] == {"contents": "read", "packages": "write"}
+    steps = release["jobs"]["publish-image"]["steps"]
+    runs = [s.get("run", "") for s in steps]
+    gate = next(i for i, r in enumerate(runs) if "make check" in r)
+    push = next(i for i, r in enumerate(runs) if "docker push" in r)
+    assert gate < push
+    assert any("ghcr.io" in r for r in runs)
 
 
 def test_pods_are_annotated_for_prometheus_scraping():
