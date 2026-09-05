@@ -29,6 +29,7 @@ from src.train import MODEL_PATH
 class PredictRequest(BaseModel):
     """A calendar month, e.g. {"month": "2025-01"}. The pattern rejects
     malformed input before any code runs (FastAPI returns 422)."""
+
     month: str = Field(pattern=r"^\d{4}-(0[1-9]|1[0-2])$", examples=["2025-01"])
 
 
@@ -36,13 +37,11 @@ class PredictRequest(BaseModel):
 async def lifespan(app: FastAPI):
     if not MODEL_PATH.exists():
         raise RuntimeError(
-            f"model artifact not found at {MODEL_PATH}; "
-            "run `python -m src.train` first"
+            f"model artifact not found at {MODEL_PATH}; run `python -m src.train` first"
         )
     if not DATA_PATH.exists():
         raise RuntimeError(
-            f"dataset not found at {DATA_PATH}; "
-            "run `python -m src.generate_data` first"
+            f"dataset not found at {DATA_PATH}; run `python -m src.generate_data` first"
         )
     app.state.artifact = joblib.load(MODEL_PATH)
     app.state.history = pd.read_csv(DATA_PATH, parse_dates=["date"])
@@ -52,17 +51,20 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="freight-forecast", lifespan=lifespan)
 
 REQUEST_COUNT = Counter(
-    "http_requests_total", "HTTP requests served",
+    "http_requests_total",
+    "HTTP requests served",
     ["method", "path", "status"],
 )
 REQUEST_LATENCY = Histogram(
-    "http_request_duration_seconds", "HTTP request latency",
+    "http_request_duration_seconds",
+    "HTTP request latency",
     ["path"],
 )
 # buckets span the data's real range (~2.8k winter .. ~13k summer peak);
 # drift outside them is itself a signal worth alerting on
 PREDICTED_VOLUME = Histogram(
-    "predicted_volume_moves", "Distribution of predicted monthly volumes",
+    "predicted_volume_moves",
+    "Distribution of predicted monthly volumes",
     buckets=(2000, 3000, 4000, 5000, 6000, 8000, 10000, 12000, 14000),
 )
 

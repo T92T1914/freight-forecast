@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 .venv/
 .pytest_cache/
+.ruff_cache/
 
 # Model artifacts are reproducible from train.py; binaries stay out of git
 models/

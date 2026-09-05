@@ -5,6 +5,7 @@ the contracts a live system would enforce: probes point at a real endpoint,
 ports line up end to end, and the service selector actually matches the
 deployment's pod labels (the classic silent k8s failure).
 """
+
 from pathlib import Path
 
 import yaml

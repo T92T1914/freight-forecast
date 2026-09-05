@@ -47,9 +47,10 @@ def test_seasonality_is_visible_through_the_api(client):
 def test_prediction_matches_offline_model(client):
     """The API must serve the same number the artifact produces offline —
     a serving-skew guard."""
+    import pandas as pd
+
     from src.features import build_features
     from src.generate_data import DATA_PATH
-    import pandas as pd
 
     artifact = joblib.load(train_mod.MODEL_PATH)
     df = pd.read_csv(DATA_PATH, parse_dates=["date"])
@@ -81,6 +82,7 @@ def test_range_gate_boundaries_are_exact(client):
     feature row and 500 on an empty frame — so the edges themselves must be
     tested, not just far-out months."""
     import pandas as pd
+
     from src.generate_data import DATA_PATH
 
     df = pd.read_csv(DATA_PATH, parse_dates=["date"])
@@ -101,6 +103,7 @@ def test_placeholder_branch_matches_offline(client):
     row — the only serving-side construction that differs from training, and
     the endpoint's actual production use. Pin it to the offline model."""
     import pandas as pd
+
     from src.features import build_features
     from src.generate_data import DATA_PATH
 

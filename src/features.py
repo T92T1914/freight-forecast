@@ -16,7 +16,9 @@ def build_features(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
     # "last year" and "last quarter" if the series has no gaps or duplicates
     expected = pd.date_range(out["date"].iloc[0], periods=len(out), freq="MS")
     if not (out["date"].to_numpy() == expected.to_numpy()).all():
-        raise ValueError("expected a contiguous monthly series (no gaps or duplicate months)")
+        raise ValueError(
+            "expected a contiguous monthly series (no gaps or duplicate months)"
+        )
 
     out["t"] = range(len(out))
     out["lag_12"] = out["volume"].shift(12)

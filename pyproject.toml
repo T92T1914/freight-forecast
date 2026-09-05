@@ -7,3 +7,13 @@ requires-python = ">=3.11"
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+
+[tool.ruff.lint]
+# E/W/F: pyflakes + pycodestyle (the defaults). I: import order, so diffs never
+# argue about it. UP: syntax the target version already supports. B: bugbear,
+# the "this is probably a bug" class. SIM: needless complexity.
+select = ["E", "W", "F", "I", "UP", "B", "SIM"]

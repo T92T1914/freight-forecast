@@ -20,11 +20,15 @@ NOISE_SD = 0.04
 
 # Seasonal multipliers. May-Aug factors sum to 7.45, so the four peak
 # months total ~38,700 moves at base level -- the "nearly 40,000" peak.
+# Kept as a grid (one row per third of the year) so the seasonal shape is
+# visible at a glance; the formatter would otherwise stack twelve lines.
+# fmt: off
 MONTH_FACTORS = {
     1: 0.55, 2: 0.55, 3: 0.70, 4: 0.95,
     5: 1.65, 6: 2.00, 7: 2.05, 8: 1.75,
     9: 1.05, 10: 0.85, 11: 0.65, 12: 0.55,
 }
+# fmt: on
 
 DATA_PATH = Path(__file__).resolve().parent.parent / "data" / "shipments.csv"
 

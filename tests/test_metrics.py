@@ -4,6 +4,7 @@ prometheus-client keeps one process-global registry, so these tests assert
 DELTAS around known requests rather than absolute values — other tests in
 the session have already incremented the counters.
 """
+
 import re
 
 import pytest
@@ -24,18 +25,19 @@ def _metric_value(text: str, name: str, labels: str = "") -> float:
 def test_predict_requests_are_counted_and_timed(client):  # noqa: F811
     before = client.get("/metrics").text
     n_before = _metric_value(
-        before, "http_requests_total",
-        '{method="POST",path="/predict",status="200"}')
+        before, "http_requests_total", '{method="POST",path="/predict",status="200"}'
+    )
 
     assert client.post("/predict", json={"month": "2024-07"}).status_code == 200
     after = client.get("/metrics").text
     n_after = _metric_value(
-        after, "http_requests_total",
-        '{method="POST",path="/predict",status="200"}')
+        after, "http_requests_total", '{method="POST",path="/predict",status="200"}'
+    )
     assert n_after == n_before + 1
 
     latency_count = _metric_value(
-        after, "http_request_duration_seconds_count", '{path="/predict"}')
+        after, "http_request_duration_seconds_count", '{path="/predict"}'
+    )
     assert latency_count >= n_after
 
 
@@ -57,13 +59,13 @@ def test_prediction_distribution_is_observed(client):  # noqa: F811
 def test_rejected_requests_are_labeled_by_status(client):  # noqa: F811
     before = client.get("/metrics").text
     n_before = _metric_value(
-        before, "http_requests_total",
-        '{method="POST",path="/predict",status="400"}')
+        before, "http_requests_total", '{method="POST",path="/predict",status="400"}'
+    )
     client.post("/predict", json={"month": "2026-06"})
     after = client.get("/metrics").text
     n_after = _metric_value(
-        after, "http_requests_total",
-        '{method="POST",path="/predict",status="400"}')
+        after, "http_requests_total", '{method="POST",path="/predict",status="400"}'
+    )
     assert n_after == n_before + 1
 
 
@@ -84,14 +86,11 @@ def test_unhandled_errors_are_counted_as_500(client):  # noqa: F811
     with TestClient(app, raise_server_exceptions=False) as c:
         good = app.state.artifact
         label = '{method="POST",path="/predict",status="500"}'
-        before = _metric_value(
-            c.get("/metrics").text, "http_requests_total", label)
+        before = _metric_value(c.get("/metrics").text, "http_requests_total", label)
         try:
             app.state.artifact = dict(good, model=None)  # forces a 500
-            assert c.post("/predict",
-                          json={"month": "2024-07"}).status_code == 500
+            assert c.post("/predict", json={"month": "2024-07"}).status_code == 500
         finally:
             app.state.artifact = good
-        after = _metric_value(
-            c.get("/metrics").text, "http_requests_total", label)
+        after = _metric_value(c.get("/metrics").text, "http_requests_total", label)
         assert after == before + 1
