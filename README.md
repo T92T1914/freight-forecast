@@ -1,6 +1,8 @@
 # freight-forecast
 
 [![CI](https://github.com/T92T1914/freight-forecast/actions/workflows/ci.yml/badge.svg)](https://github.com/T92T1914/freight-forecast/actions/workflows/ci.yml)
+![Python 3.11 | 3.12 | 3.13](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
 Monthly shipment volume forecasting, served as a containerized API —
 scikit-learn, FastAPI, Docker, Kubernetes, Prometheus and Grafana, with the
@@ -14,6 +16,15 @@ peak, and staffing, warehouse space and carrier capacity all have to be
 committed months ahead of it. This project is that problem, built properly:
 a model that has to earn its place against the baseline a human planner
 already uses, and then the serving, deployment and monitoring around it.
+
+- [The bar: beat "same month last year"](#the-bar-beat-same-month-last-year)
+- [How it fits together](#how-it-fits-together)
+- [What's in the box](#whats-in-the-box)
+- [The API](#the-api)
+- [Monitoring](#monitoring)
+- [Run it](#run-it)
+- [What this does not do](#what-this-does-not-do)
+- [Verification](#verification)
 
 ## The bar: beat "same month last year"
 
@@ -33,6 +44,23 @@ trains on **2018-01 → 2022-12 (60 months)** and is evaluated on **2023-01 →
 **31% lower error than the baseline.** `src/train.py` exits non-zero if the
 model ever loses to the naive predictor, so a regression fails CI rather than
 shipping quietly.
+
+### How the numbers were measured
+
+- **MAE** is the mean absolute error in moves per month; **MAPE** is the same
+  error as a fraction of the actual volume. Both come from scikit-learn's
+  `mean_absolute_error` and `mean_absolute_percentage_error`, applied to the 24
+  held-out months in `src/train.py`, for the model and for the naive predictor
+  side by side.
+- The naive predictor is literally the `lag_12` feature: the value observed
+  twelve rows earlier in the same series the model is scored on.
+- `python -m src.train` (or `make train`) prints the table above and refuses
+  to save the artifact if the model loses;
+  `tests/test_train.py::test_model_beats_seasonal_naive` asserts the same
+  thing on every CI run, on a dataset rebuilt from the seed.
+- What the numbers do and do not prove is spelled out under
+  [What this does not do](#what-this-does-not-do): a point estimate on 24
+  observations, with the error concentrated in the peak months.
 
 Two modelling decisions worth naming:
 
@@ -71,7 +99,7 @@ Two modelling decisions worth naming:
                                         /health   /predict   /metrics <
 ```
 
-`/metrics` is scraped by Prometheus and drawn by the Grafana dashboard above.
+`/metrics` is scraped by Prometheus and drawn by the Grafana dashboard below.
 `k8s/` runs the same image behind liveness and readiness probes.
 
 The gate is the part worth noticing: the model has to beat "same month last
@@ -87,12 +115,17 @@ src/
   features.py        lags, rolling mean, month dummies + the contiguity guard
   train.py           trains, evaluates against the naive, saves the artifact
   serve.py           FastAPI app: /health, /predict, /metrics
-tests/               33 tests: features, data, training, API, metrics, manifests
+tests/               36 tests: features, data, training, API, metrics,
+                     manifests and workflows; conftest.py serves the artifact
+Makefile             the common commands; CI calls the same targets
 Dockerfile           trains during the build, so a broken model fails the image
+.github/workflows/   ci.yml: lint, tests on 3.11-3.13, image build, every push
+                     release.yml: a v* tag publishes the image to GHCR
 k8s/                 deployment with liveness + readiness probes, service
 monitoring/          Prometheus config, provisioned Grafana, dashboard JSON
 data/shipments.csv   96 months (2017–2024), regenerable from seed 2017
 VERIFICATION.md      what was actually run and observed, with output
+CHANGELOG.md         what changed, by milestone
 ```
 
 The data is synthetic and says so. The shape is modelled on the JPPSO cycle —
@@ -105,13 +138,17 @@ drift and 4% noise. A fixed seed makes every number on this page reproducible.
 Model loads once at startup, not per request. Input is validated by pattern
 (`^\d{4}-(0[1-9]|1[0-2])$`), and a month outside the forecastable range is a
 4xx with a reason rather than a confident number from an extrapolated lag.
+Responses are declared as models too, so `/docs` states the contract rather
+than leaving a consumer to infer it from one example.
 
 ```
 GET  /health   -> {"status":"ok","model_loaded":true,"trained_through":"2022-12-01",
                    "test_mae":226.2,"test_mape":0.0335}
-POST /predict  {"month":"2025-01"} -> {"predicted_volume":3297,
-                                       "naive_same_month_last_year":3477}
+POST /predict  {"month":"2025-01"} -> {"month":"2025-01","predicted_volume":3297,
+                                       "naive_same_month_last_year":3477,
+                                       "trained_through":"2022-12-01"}
 GET  /metrics  -> Prometheus exposition
+GET  /docs     -> interactive OpenAPI documentation
 ```
 
 `/health` reports the metrics the artifact was accepted on, so a deployed
@@ -136,21 +173,38 @@ perfectly healthy and quietly wrong. A prediction distribution that drifts away
 from its training range is the signal that the world changed, and it is visible
 before anyone files a ticket.
 
-## Running it
+## Run it
+
+Every target in the Makefile is one plain command, listed by `make help`; the
+equivalents are shown for machines without `make`.
 
 ```bash
-pip install -r requirements.txt
-python -m src.train                     # regenerates data if missing, trains, evaluates
-uvicorn src.serve:app --reload          # http://127.0.0.1:8000/docs
-
-docker build -t freight-forecast .      # trains inside the build
-docker run -p 8000:8000 freight-forecast
-
-kubectl apply -f k8s/                   # deployment + service, probes wired
-docker compose -f monitoring/docker-compose.yml up   # API + Prometheus + Grafana
+make install     # pip install -r requirements-dev.txt
+make train       # python -m src.train      regenerates data if missing, trains, evaluates
+make serve       # python -m uvicorn src.serve:app --reload   -> http://127.0.0.1:8000/docs
+make check       # ruff check + ruff format --check + pytest, exactly what CI runs
 ```
 
-CI runs lint, tests and the image build on every push.
+```bash
+curl localhost:8000/health
+curl -X POST localhost:8000/predict -H 'content-type: application/json' -d '{"month":"2025-01"}'
+```
+
+The container, the cluster and the monitoring stack:
+
+```bash
+make image       # docker build -t freight-forecast .     trains inside the build
+make run         # docker run --rm -p 8000:8000 freight-forecast
+make k8s         # kubectl apply -f k8s/                  deployment + service, probes wired
+make monitor     # docker compose -f monitoring/docker-compose.yml up --build
+                 #   API :8000, Prometheus :9090, Grafana :3000
+```
+
+On every push, CI lints (ruff check and format), runs the tests on Python
+3.11, 3.12 and 3.13, and builds the image — which retrains the model and fails
+if it no longer beats the naive. Pushing a `v*` tag runs the checks again and
+publishes the image to GitHub Container Registry as
+`ghcr.io/t92t1914/freight-forecast:<tag>`.
 
 ## What this does not do
 
