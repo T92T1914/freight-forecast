@@ -4,9 +4,10 @@
 ![Python 3.11 | 3.12 | 3.13](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
-Monthly shipment volume forecasting, served as a containerized API —
-scikit-learn, FastAPI, Docker, Kubernetes, Prometheus and Grafana, with the
-whole pipeline reproducible from one command.
+Monthly shipment volume forecasting on a **seeded synthetic dataset**, served
+as a containerized API: scikit-learn, FastAPI, Docker, Kubernetes, Prometheus
+and Grafana. The data models a seasonal logistics problem; these results are
+not an evaluation on operational shipment records.
 
 **226 vs 327 MAE on 24 held-out months, 31% under the seasonal-naive baseline;
 `train.py` exits non-zero if it ever loses, so a regression fails the image
@@ -53,7 +54,25 @@ make test
 ```
 
 The plain commands behind each target are listed under [Run it](#run-it),
-for machines without `make`.
+for machines without `make`. In a second terminal after starting the service:
+
+```bash
+curl -X POST http://127.0.0.1:8000/predict -H 'content-type: application/json' -d '{"month":"2025-01"}'
+```
+
+```json
+{"month":"2025-01","predicted_volume":3297,"naive_same_month_last_year":3477,"trained_through":"2022-12-01"}
+```
+
+The checked-in artifact produces this response. The API accepts only historical
+months with a full lag history and the next unobserved month. Features are built
+once per startup and indexed by month; [the serving tests](tests/test_api.py)
+compare every supported response with uncached construction and verify refresh
+after a data change.
+
+**Code tour:** [features and leakage guards](src/features.py) →
+[chronological evaluation](src/train.py) → [API and metrics](src/serve.py) →
+[tests](tests/) → [deployment evidence](VERIFICATION.md).
 
 ## Results: beat "same month last year"
 
@@ -270,3 +289,7 @@ Stated because a project that only lists its wins is not worth much.
 ## License
 
 MIT licensed. The full text is in [LICENSE](LICENSE).
+
+## Serving performance
+
+[Feature reuse measurement](docs/serving-performance.md): a matched local in-process check measured 4.534 ms → 1.278 ms for one request shape, with identical predictions. The report includes raw samples, reproduction instructions and limits.
