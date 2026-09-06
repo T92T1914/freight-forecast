@@ -62,6 +62,21 @@ async def lifespan(app: FastAPI):
         )
     app.state.artifact = joblib.load(MODEL_PATH)
     app.state.history = pd.read_csv(DATA_PATH, parse_dates=["date"])
+    first, last = _forecastable_range(app.state.history)
+    # History is immutable for this app lifetime. Include the one unobserved
+    # month now: all lag/rolling inputs look backwards, so the placeholder
+    # cannot change any earlier feature row. A restart rebuilds this cache
+    # from the newly loaded data, including edits that keep the same dates.
+    extended = pd.concat(
+        [
+            app.state.history,
+            pd.DataFrame({"date": [last], "volume": [float("nan")]}),
+        ],
+        ignore_index=True,
+    )
+    feats, _ = build_features(extended)
+    app.state.features = feats.set_index("date")
+    app.state.forecastable_range = first, last
     yield
 
 
@@ -146,9 +161,8 @@ def predict(req: PredictRequest):
     """
     ts = pd.Timestamp(f"{req.month}-01")
 
-    history: pd.DataFrame = app.state.history
     artifact: Artifact = app.state.artifact
-    first, last = _forecastable_range(history)
+    first, last = app.state.forecastable_range
     if not (first <= ts <= last):
         raise HTTPException(
             status_code=400,
@@ -158,16 +172,7 @@ def predict(req: PredictRequest):
             ),
         )
 
-    df = history
-    if ts == last:
-        # next unobserved month: append a placeholder row so lag/rolling
-        # features (which only look backwards) can be built for it
-        df = pd.concat(
-            [history, pd.DataFrame({"date": [ts], "volume": [float("nan")]})],
-            ignore_index=True,
-        )
-    feats, _ = build_features(df)
-    row = feats[feats["date"] == ts]
+    row = app.state.features.loc[[ts]]
     X = row[artifact["feature_columns"]]
     predicted = float(artifact["model"].predict(X)[0])
     PREDICTED_VOLUME.observe(predicted)

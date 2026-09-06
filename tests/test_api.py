@@ -2,7 +2,9 @@
 
 import joblib
 import pandas as pd
+from fastapi.testclient import TestClient
 
+from src import serve
 from src import train as train_mod
 from src.features import build_features
 from src.generate_data import DATA_PATH
@@ -115,3 +117,48 @@ def test_placeholder_branch_matches_offline(client):
 
     api = client.post("/predict", json={"month": f"{next_month:%Y-%m}"}).json()
     assert api["predicted_volume"] == round(offline)
+
+
+def test_every_served_month_matches_uncached_features(client, monkeypatch):
+    """Every historical/next-month response matches the former per-call path."""
+    history = serve.app.state.history
+    artifact = serve.app.state.artifact
+    first, last = serve.app.state.forecastable_range
+
+    def unexpected_rebuild(*args, **kwargs):
+        raise AssertionError("feature construction belongs to startup")
+
+    monkeypatch.setattr(serve, "build_features", unexpected_rebuild)
+    for ts in pd.date_range(first, last, freq="MS"):
+        data = history
+        if ts == last:
+            data = pd.concat(
+                [data, pd.DataFrame({"date": [ts], "volume": [float("nan")]})],
+                ignore_index=True,
+            )
+        feats, _ = build_features(data)
+        row = feats[feats["date"] == ts]
+        expected = round(
+            float(artifact["model"].predict(row[artifact["feature_columns"]])[0])
+        )
+        response = client.post("/predict", json={"month": f"{ts:%Y-%m}"})
+        assert response.status_code == 200
+        assert response.json() == {
+            "month": f"{ts:%Y-%m}",
+            "predicted_volume": expected,
+            "naive_same_month_last_year": int(row["lag_12"].iloc[0]),
+            "trained_through": artifact["trained_through"],
+        }
+
+
+def test_restart_rebuilds_features_even_when_dates_and_row_count_match(
+    client, monkeypatch
+):
+    history = serve.app.state.history.copy()
+    before = serve.app.state.features.copy()
+    history.loc[len(history) - 12, "volume"] += 100
+    monkeypatch.setattr(serve.pd, "read_csv", lambda *args, **kwargs: history)
+    with TestClient(serve.app):
+        after = serve.app.state.features
+        assert before.index.equals(after.index)
+        assert after.iloc[-1]["lag_12"] == before.iloc[-1]["lag_12"] + 100
