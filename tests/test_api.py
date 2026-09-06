@@ -2,6 +2,7 @@
 
 import joblib
 import pandas as pd
+import pytest
 from fastapi.testclient import TestClient
 
 from src import serve
@@ -72,6 +73,16 @@ def test_malformed_month_is_rejected(client):
     assert client.post("/predict", json={"month": "2025-13"}).status_code == 422
     assert client.post("/predict", json={"month": "not-a-month"}).status_code == 422
     assert client.post("/predict", json={}).status_code == 422
+
+
+@pytest.mark.parametrize("month", ["0000-01", "٢٠٢٥-01", "２０２５-01"])
+def test_invalid_calendar_year_is_validation_error(client, month):
+    assert client.post("/predict", json={"month": month}).status_code == 422
+
+
+@pytest.mark.parametrize("month", ["0001-01", "9999-12"])
+def test_valid_extreme_years_are_outside_forecast_range(client, month):
+    assert client.post("/predict", json={"month": month}).status_code == 400
 
 
 def test_out_of_range_months_are_rejected(client):
@@ -162,3 +173,17 @@ def test_restart_rebuilds_features_even_when_dates_and_row_count_match(
         after = serve.app.state.features
         assert before.index.equals(after.index)
         assert after.iloc[-1]["lag_12"] == before.iloc[-1]["lag_12"] + 100
+
+
+def test_csv_row_order_does_not_change_forecast_range_or_predictions(
+    client, monkeypatch
+):
+    expected = client.post("/predict", json={"month": "2025-01"}).json()
+    before = serve.app.state.features.copy()
+    history = serve.app.state.history.iloc[::-1].reset_index(drop=True)
+    monkeypatch.setattr(serve.pd, "read_csv", lambda *args, **kwargs: history)
+    with TestClient(serve.app) as restarted:
+        pd.testing.assert_frame_equal(serve.app.state.features, before)
+        response = restarted.post("/predict", json={"month": "2025-01"})
+        assert response.status_code == 200
+        assert response.json() == expected

@@ -14,12 +14,13 @@ would be shipping a claim no evaluation supports.
 
 import time
 from contextlib import asynccontextmanager
+from datetime import date
 
 import joblib
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Request
 from prometheus_client import Counter, Histogram, make_asgi_app
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from src.features import build_features
 from src.generate_data import DATA_PATH
@@ -30,7 +31,15 @@ class PredictRequest(BaseModel):
     """A calendar month, e.g. {"month": "2025-01"}. The pattern rejects
     malformed input before any code runs (FastAPI returns 422)."""
 
-    month: str = Field(pattern=r"^\d{4}-(0[1-9]|1[0-2])$", examples=["2025-01"])
+    month: str = Field(pattern=r"^[0-9]{4}-(0[1-9]|1[0-2])$", examples=["2025-01"])
+
+    @field_validator("month")
+    @classmethod
+    def calendar_month(cls, value: str) -> str:
+        # Shape alone admits year 0000, which would fail inside the handler
+        # as a server error. Calendar validity belongs to request validation.
+        date.fromisoformat(f"{value}-01")
+        return value
 
 
 # Response models exist so /docs and /openapi.json state the contract a
@@ -61,7 +70,11 @@ async def lifespan(app: FastAPI):
             f"dataset not found at {DATA_PATH}; run `python -m src.generate_data` first"
         )
     app.state.artifact = joblib.load(MODEL_PATH)
-    app.state.history = pd.read_csv(DATA_PATH, parse_dates=["date"])
+    app.state.history = (
+        pd.read_csv(DATA_PATH, parse_dates=["date"])
+        .sort_values("date")
+        .reset_index(drop=True)
+    )
     first, last = _forecastable_range(app.state.history)
     # History is immutable for this app lifetime. Include the one unobserved
     # month now: all lag/rolling inputs look backwards, so the placeholder
