@@ -1,0 +1,159 @@
+{
+  "source_commit": "0813d2c",
+  "source": "src.train.train and data/shipments.csv",
+  "data_type": "seeded synthetic shipments",
+  "trained_through": "2022-12-01",
+  "evaluation": "24 chronological test months; actual prior observations update lag features",
+  "metrics": {
+    "model_mae": 226.16017469322387,
+    "model_mape": 0.0335447280950889,
+    "naive_mae": 326.8333333333333,
+    "naive_mape": 0.04752928059583656
+  },
+  "rows": [
+    {
+      "month": "2023-01",
+      "actual": 3047,
+      "model": 3158.048996531065,
+      "baseline": 3081.0
+    },
+    {
+      "month": "2023-02",
+      "actual": 3116,
+      "model": 3178.6525685880365,
+      "baseline": 3260.0
+    },
+    {
+      "month": "2023-03",
+      "actual": 4240,
+      "model": 3974.495654973887,
+      "baseline": 3978.0
+    },
+    {
+      "month": "2023-04",
+      "actual": 5330,
+      "model": 5504.545735933419,
+      "baseline": 5316.0
+    },
+    {
+      "month": "2023-05",
+      "actual": 9391,
+      "model": 10008.929415190496,
+      "baseline": 9865.0
+    },
+    {
+      "month": "2023-06",
+      "actual": 11828,
+      "model": 11770.470820088043,
+      "baseline": 11660.0
+    },
+    {
+      "month": "2023-07",
+      "actual": 11248,
+      "model": 12570.172598934401,
+      "baseline": 12460.0
+    },
+    {
+      "month": "2023-08",
+      "actual": 10267,
+      "model": 10275.207433642276,
+      "baseline": 10081.0
+    },
+    {
+      "month": "2023-09",
+      "actual": 5894,
+      "model": 6027.42340370693,
+      "baseline": 5799.0
+    },
+    {
+      "month": "2023-10",
+      "actual": 4571,
+      "model": 4695.232769594895,
+      "baseline": 4518.0
+    },
+    {
+      "month": "2023-11",
+      "actual": 3624,
+      "model": 3776.861200255969,
+      "baseline": 3822.0
+    },
+    {
+      "month": "2023-12",
+      "actual": 3105,
+      "model": 3128.2382788610794,
+      "baseline": 3228.0
+    },
+    {
+      "month": "2024-01",
+      "actual": 3477,
+      "model": 3171.549755995512,
+      "baseline": 3047.0
+    },
+    {
+      "month": "2024-02",
+      "actual": 3150,
+      "model": 3180.86575274136,
+      "baseline": 3116.0
+    },
+    {
+      "month": "2024-03",
+      "actual": 4164,
+      "model": 4078.8594897383728,
+      "baseline": 4240.0
+    },
+    {
+      "month": "2024-04",
+      "actual": 5661,
+      "model": 5570.5106208015995,
+      "baseline": 5330.0
+    },
+    {
+      "month": "2024-05",
+      "actual": 10238,
+      "model": 9839.519188536775,
+      "baseline": 9391.0
+    },
+    {
+      "month": "2024-06",
+      "actual": 12458,
+      "model": 12082.03119482961,
+      "baseline": 11828.0
+    },
+    {
+      "month": "2024-07",
+      "actual": 12343,
+      "model": 11974.840547307687,
+      "baseline": 11248.0
+    },
+    {
+      "month": "2024-08",
+      "actual": 10477,
+      "model": 10673.988383703798,
+      "baseline": 10267.0
+    },
+    {
+      "month": "2024-09",
+      "actual": 6373,
+      "model": 6199.079317825865,
+      "baseline": 5894.0
+    },
+    {
+      "month": "2024-10",
+      "actual": 4998,
+      "model": 4811.828157264609,
+      "baseline": 4571.0
+    },
+    {
+      "month": "2024-11",
+      "actual": 3764,
+      "model": 3795.9553863339065,
+      "baseline": 3624.0
+    },
+    {
+      "month": "2024-12",
+      "actual": 3287,
+      "model": 3156.0929840182985,
+      "baseline": 3105.0
+    }
+  ]
+}

@@ -76,6 +76,11 @@ after a data change.
 
 ## Results: beat "same month last year"
 
+[![Actual synthetic shipment volume, model predictions and a seasonal baseline over 24 test months.](docs/freight-forecast-example.png)](docs/visual-example.md)
+
+The model averages 226 moves of error per month, compared with 327 for the seasonal baseline. This is a chronological test on synthetic data, with prior observations available for each prediction.
+[Reproduce and inspect the values](docs/visual-example.md).
+
 A planner with no model looks up last year's number for the same month. That
 seasonal-naive forecast is the honest baseline, and a model that can't clear
 it is not worth deploying no matter how good its architecture looks.
