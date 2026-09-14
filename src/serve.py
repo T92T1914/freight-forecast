@@ -15,6 +15,7 @@ would be shipping a claim no evaluation supports.
 import time
 from contextlib import asynccontextmanager
 from datetime import date
+from math import isfinite
 
 import joblib
 import pandas as pd
@@ -75,6 +76,14 @@ async def lifespan(app: FastAPI):
         .sort_values("date")
         .reset_index(drop=True)
     )
+    if len(app.state.history) < 12:
+        raise ValueError("history must contain at least 12 observed months")
+    volumes = pd.to_numeric(app.state.history["volume"], errors="coerce")
+    if not volumes.map(isfinite).all() or (volumes < 0).any():
+        raise ValueError("observed history volumes must be finite, nonnegative numbers")
+    # Validate observations before adding the intentionally unknown future
+    # volume. Otherwise feature dropna can silently erase forecastable months.
+    app.state.history["volume"] = volumes
     first, last = _forecastable_range(app.state.history)
     # History is immutable for this app lifetime. Include the one unobserved
     # month now: all lag/rolling inputs look backwards, so the placeholder
