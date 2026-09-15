@@ -1,0 +1,47 @@
+name: Project access
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: access-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  development-environment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+      - run: npm install --global @devcontainers/cli@0.89.0
+      - name: Build the environment and run setup
+        run: devcontainer up --workspace-folder .
+      - name: Run a real project smoke check inside the container
+        run: devcontainer exec --workspace-folder . bash .devcontainer/smoke.sh
+  build-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - run: python tools/build_site.py
+      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
+        with:
+          path: _site
+  deploy-site:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: [build-site, development-environment]
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy the checked public site
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e
