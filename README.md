@@ -41,6 +41,8 @@ and inspected. The dataset is synthetic; it does not contain service records.
 * [What this does not do](#what-this-does-not-do)
 * [License](#license)
 
+[Explore the browser demo](https://t92t1914.github.io/freight-forecast/) · [Open in Codespaces](https://codespaces.new/T92T1914/freight-forecast)
+
 ## Quickstart
 
 ```bash
