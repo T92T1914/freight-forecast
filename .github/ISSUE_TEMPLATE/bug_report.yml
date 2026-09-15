@@ -1,0 +1,29 @@
+name: Report a bug
+description: A reproducible problem with code, results or documentation.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Explain the expected behavior and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How can I reproduce it?
+      description: Include the smallest input and the exact command. Remove private data and credentials.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and revision
+      description: Include the commit or version, Python version, operating system and relevant settings.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Output or evidence
+      description: Add relevant logs or a screenshot. For a result comparison, state the inputs, rules, seeds and budget.

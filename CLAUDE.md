@@ -1,4 +1,4 @@
-# freight-forecast
+# freight forecast
 
 Portfolio project. A shipment volume forecasting model served as a
 containerized API with CI, Kubernetes deployment, and monitoring.
@@ -12,7 +12,7 @@ defend it in interviews. Depth of understanding beats speed. Always.
 ## Stack
 
 Python 3.11+, pandas, scikit-learn, FastAPI, pytest, Docker,
-GitHub Actions, Kubernetes (k3d or minikube), prometheus-client.
+GitHub Actions, Kubernetes (k3d or minikube), prometheus client.
 
 ## Working rules
 
@@ -22,7 +22,7 @@ GitHub Actions, Kubernetes (k3d or minikube), prometheus-client.
    sentences and wait for approval.
 3. Small commits. One logical change each, clear message. Never
    one giant commit.
-4. Explain every non-obvious decision at the moment it is made,
+4. Explain every non obvious decision at the moment it is made,
    in plain language, including what the alternatives were.
 5. Never add a dependency without saying why it is needed.
 6. The owner writes the README section for each milestone
