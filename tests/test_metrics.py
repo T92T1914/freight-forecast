@@ -77,6 +77,35 @@ def test_unknown_paths_share_one_label(client):
     assert "/does-not-exist" not in text
 
 
+@pytest.mark.parametrize(
+    "prediction", [float("nan"), float("inf"), -float("inf"), -1.0]
+)
+def test_invalid_forecasts_do_not_poison_prediction_metrics(
+    client, monkeypatch, prediction
+):
+    monkeypatch.setattr(app.state.artifact["model"], "predict", lambda _: [prediction])
+    before = client.get("/metrics").text
+    label = '{method="POST",path="/predict",status="500"}'
+
+    response = client.post("/predict", json={"month": "2024-07"})
+
+    assert response.status_code == 500
+    assert response.json()["detail"] == "model produced an invalid forecast"
+    after = client.get("/metrics").text
+    for metric in ("predicted_volume_moves_count", "predicted_volume_moves_sum"):
+        assert _metric_value(after, metric) == _metric_value(before, metric)
+    assert _metric_value(after, "http_requests_total", label) == (
+        _metric_value(before, "http_requests_total", label) + 1
+    )
+
+
+def test_zero_forecast_is_valid(client, monkeypatch):
+    monkeypatch.setattr(app.state.artifact["model"], "predict", lambda _: [0.0])
+    response = client.post("/predict", json={"month": "2024-07"})
+    assert response.status_code == 200
+    assert response.json()["predicted_volume"] == 0
+
+
 def test_unhandled_errors_are_counted_as_500(client):
     """An exception that never becomes a response must still be counted —
     otherwise outages are invisible on the error-rate panel."""

@@ -197,6 +197,10 @@ def predict(req: PredictRequest):
     row = app.state.features.loc[[ts]]
     X = row[artifact["feature_columns"]]
     predicted = float(artifact["model"].predict(X)[0])
+    if not isfinite(predicted) or predicted < 0:
+        raise HTTPException(
+            status_code=500, detail="model produced an invalid forecast"
+        )
     PREDICTED_VOLUME.observe(predicted)
 
     return {
