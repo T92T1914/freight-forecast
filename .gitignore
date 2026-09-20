@@ -16,3 +16,6 @@ desktop.ini
 
 # Generated public site
 _site/
+
+# Local evaluation reports; the documented example is kept under docs/
+reports/

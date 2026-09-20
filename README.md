@@ -16,6 +16,7 @@ build.**
 [Results](#results-beat-same-month-last-year) |
 [Run it](#run-it) |
 [How the numbers were measured](#how-the-numbers-were-measured) |
+[Monthly backtest](docs/backtesting.md) |
 [What this does not do](#what-this-does-not-do) |
 [VERIFICATION.md](VERIFICATION.md)
 
@@ -81,6 +82,13 @@ after a data change.
 The model averages 226 moves of error per month, compared with 327 for the seasonal baseline. This is a chronological test on synthetic data, with prior observations available for each prediction.
 [Reproduce and inspect the values](docs/visual-example.md).
 
+I also tested a different operating policy: refit the model each month as new
+observations arrive. That [monthly backtest](docs/backtesting.md) averages
+**245 vs 327 MAE** over the same 24 target months. It beats the baseline overall
+but loses in 2023, and it does worse overall than the original fixed model.
+The report retains all monthly predictions, including the seven months where
+the seasonal baseline wins. Running it does not replace the serving model.
+
 A planner with no model looks up last year's number for the same month. That
 seasonal naive forecast is the honest baseline, and a model that can't clear
 it is not worth deploying no matter how good its architecture looks.
@@ -124,7 +132,7 @@ Two modelling decisions worth naming:
   raw volume asks a linear model to treat a 200 move miss in January as the
   same error as in July, which is not what a planner means by "wrong."
 * **Features can only see the past.** `lag_12` (same month last year) and
-  `roll_3` (previous quarter's mean) are both shifted beforeuse, and any row
+  `roll_3` (previous quarter's mean) are both shifted before use, and any row
   without a full 12 month history is dropped. `build_features` also *raises*
   if the series has gaps or duplicate months, because those lags are computed
   by row position. With a missing month, "12 rows back" can stop meaning
@@ -138,6 +146,7 @@ equivalents are shown for machines without `make`.
 ```bash
 make install     # pip install -r requirements-dev.txt
 make train       # python -m src.train      regenerates data if missing, trains, evaluates
+make backtest    # python -m src.backtest --output reports/backtest.json
 make serve       # python -m uvicorn src.serve:app --reload   -> http://127.0.0.1:8000/docs
 make test        # python -m pytest -q
 make check       # ruff check + ruff format --check + pytest: CI's lint and test jobs
@@ -203,6 +212,7 @@ src/
   generate_data.py   synthetic monthly volumes, fixed seed, PCS-shaped
   features.py        lags, rolling mean, month dummies + the contiguity guard
   train.py           trains, evaluates against the naive, saves the artifact
+  backtest.py        refits each month and records matched errors and provenance
   serve.py           FastAPI app: /health, /predict, /metrics
 tests/               checks for features, data, training, API, metrics,
                      manifests and workflows; conftest.py serves the artifact
@@ -268,7 +278,10 @@ These are the limits I would address before using this with operational data.
 * **The 226 MAE is a point estimate on 24 observations.** It is lower than
   the baseline on this test set. Repeating the same seeded experiment checks
   reproducibility, not statistical certainty. A claim about general improvement
-  would need more data and a comparison of paired prediction errors.
+  would need more data and a comparison of paired prediction errors. The
+  [monthly backtest](docs/backtesting.md) records paired errors under a refitting
+  policy, but it uses the same synthetic series and is not independent evidence
+  of accuracy on real shipments.
 * **The error is concentrated exactly where it matters.** Split the held out months
   by season: peak (May Aug) MAE is **418**, off peak is **130**. In relative terms
   they are close (3.83% vs 3.11% MAPE) because peak volumes are roughly three times

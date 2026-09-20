@@ -1,10 +1,21 @@
 # Changelog
 
-What changed and when, newest first, grouped by the milestones in
-`CLAUDE.md`. Dates are commit dates. No version has been tagged yet; the
+What changed and when, newest first. [Project notes](docs/project-notes.md)
+explain how the pieces fit together. Dates below are commit dates. No version has been tagged yet; the
 first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
+
+### 2026-09-20, monthly backtesting
+
+* Added an expanding window evaluation that refits each month using only prior
+  observations and compares every forecast with the seasonal baseline.
+* The JSON report includes individual predictions, yearly and seasonal errors,
+  input and implementation hashes, and numerical package versions.
+* Recorded the default synthetic example, including the year where the baseline
+  wins. The evaluation leaves the serving artifact and deployment policy alone.
+* Moved the project background into `docs/project-notes.md` and removed the
+  tool specific instruction file from the published tree.
 
 ### 2026-09-05, repository polish
 

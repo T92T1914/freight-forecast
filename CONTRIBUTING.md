@@ -39,6 +39,12 @@ Keep the train and test periods separate. Compare predictions on the same months
 
 Useful next work includes evaluating prediction intervals on held out months and testing a second dataset with a documented license. Those are research directions, not completed features or a promised release schedule.
 
+Run `python -m src.backtest --output reports/backtest.json` to evaluate monthly
+refitting without changing the serving model. The [backtest notes](docs/backtesting.md)
+explain the temporal split, raw prediction records, and interpretation limits.
+When changing evaluation logic, keep the tests that perturb future observations
+and independently reconcile the reported errors.
+
 ## Writing
 
 Use plain language and concrete examples. Avoid em dashes and unnecessary hyphens in authored prose. Preserve the exact spelling of code, commands, paths, package names, links and quoted evidence. Claims about performance should link to measurements and say what was actually tested.

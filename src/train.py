@@ -49,20 +49,24 @@ def load_data() -> pd.DataFrame:
     return pd.read_csv(generate_data.DATA_PATH, parse_dates=["date"])
 
 
+def make_model() -> TransformedTargetRegressor:
+    """Create the same unfitted estimator for training and backtesting."""
+    # Seasonality in shipment volume is multiplicative (the peak scales with
+    # the overall level), so the model fits log(volume) and predictions are
+    # mapped back to move counts inside the regressor itself.
+    return TransformedTargetRegressor(
+        regressor=make_pipeline(StandardScaler(), Ridge(alpha=1.0)),
+        func=np.log,
+        inverse_func=np.exp,
+    )
+
+
 def train(df: pd.DataFrame) -> Artifact:
     """Fit on all but the last TEST_MONTHS months and score on those."""
     feats, feature_cols = build_features(df)
     train_set = feats.iloc[:-TEST_MONTHS]
     test_set = feats.iloc[-TEST_MONTHS:]
-
-    # Seasonality in shipment volume is multiplicative (the peak scales with
-    # the overall level), so the model fits log(volume) and predictions are
-    # mapped back to move counts inside the regressor itself.
-    model = TransformedTargetRegressor(
-        regressor=make_pipeline(StandardScaler(), Ridge(alpha=1.0)),
-        func=np.log,
-        inverse_func=np.exp,
-    )
+    model = make_model()
     model.fit(train_set[feature_cols], train_set["volume"])
 
     preds = model.predict(test_set[feature_cols])
