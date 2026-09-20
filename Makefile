@@ -19,6 +19,9 @@ data: ## regenerate data/shipments.csv from the fixed seed
 train: ## train, evaluate against the seasonal naive, save models/model.joblib
 	$(PY) -m src.train
 
+backtest: ## evaluate monthly refitting; save evidence without replacing the model
+	$(PY) -m src.backtest --output reports/backtest.json
+
 serve: ## run the API locally with reload (http://127.0.0.1:8000/docs)
 	$(PY) -m uvicorn src.serve:app --reload
 
@@ -47,4 +50,4 @@ monitor: ## API + Prometheus + Grafana via docker compose
 k8s: ## apply the deployment and service to the current kubectl context
 	kubectl apply -f k8s/
 
-.PHONY: help install data train serve test lint format check image run monitor k8s
+.PHONY: help install data train backtest serve test lint format check image run monitor k8s

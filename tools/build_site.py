@@ -10,6 +10,8 @@ FILES = {
     "site/index.html": "index.html",
     "site/style.css": "style.css",
     "site/app.js": "app.js",
+    "site/backtest.js": "backtest.js",
+    "docs/backtest-example.json": "backtest.json",
     "docs/visual-example-data.json": "data.json",
     "docs/freight-forecast-example.svg": "example.svg",
 }
@@ -19,6 +21,9 @@ def main():
     data = json.loads((ROOT / "docs/visual-example-data.json").read_text())
     if not data.get("source_commit"):
         raise ValueError("Example data must retain its source revision.")
+    backtest = json.loads((ROOT / "docs/backtest-example.json").read_text())
+    if not backtest.get("provenance", {}).get("implementation_sha256"):
+        raise ValueError("Backtest data must retain its implementation hashes.")
     OUT.mkdir(exist_ok=True)
     for source, target in FILES.items():
         path = ROOT / source
