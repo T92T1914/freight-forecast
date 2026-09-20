@@ -77,6 +77,37 @@ def test_unknown_paths_share_one_label(client):
     assert "/does-not-exist" not in text
 
 
+def test_unknown_methods_share_one_label(client):
+    label = '{method="other",path="/health",status="405"}'
+    before = client.get("/metrics").text
+    for method in ("CUSTOMONE", "CUSTOMTWO", "CUSTOMTHREE"):
+        assert client.request(method, "/health").status_code == 405
+    after = client.get("/metrics").text
+    assert _metric_value(after, "http_requests_total", label) == (
+        _metric_value(before, "http_requests_total", label) + 3
+    )
+    assert not any(
+        method in after for method in ("CUSTOMONE", "CUSTOMTWO", "CUSTOMTHREE")
+    )
+
+
+def test_metrics_prefix_lookalike_is_counted_as_unknown_path(client):
+    label = '{method="GET",path="other",status="404"}'
+    before = client.get("/metrics").text
+    assert client.get("/metrics-missing").status_code == 404
+    after = client.get("/metrics").text
+    assert _metric_value(after, "http_requests_total", label) == (
+        _metric_value(before, "http_requests_total", label) + 1
+    )
+
+
+def test_scrapes_do_not_record_themselves(client):
+    before = _metric_value(client.get("/metrics").text, "http_requests_total")
+    client.get("/metrics/")
+    after = _metric_value(client.get("/metrics").text, "http_requests_total")
+    assert after == before
+
+
 @pytest.mark.parametrize(
     "prediction", [float("nan"), float("inf"), -float("inf"), -1.0]
 )

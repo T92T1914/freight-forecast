@@ -123,14 +123,27 @@ PREDICTED_VOLUME = Histogram(
 )
 
 _KNOWN_PATHS = {"/health", "/predict"}
+_KNOWN_METHODS = {
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS",
+    "TRACE",
+    "CONNECT",
+}
 
 
 @app.middleware("http")
 async def track_requests(request: Request, call_next):
-    if request.url.path.startswith("/metrics"):
+    if request.url.path == "/metrics" or request.url.path.startswith("/metrics/"):
         return await call_next(request)
-    # unknown paths share one label so scanners can't explode cardinality
+    # Both paths and methods come from requests. Bound both label dimensions
+    # so distinct unknown requests cannot keep creating new time series.
     path = request.url.path if request.url.path in _KNOWN_PATHS else "other"
+    method = request.method if request.method in _KNOWN_METHODS else "other"
     start = time.perf_counter()
     try:
         response = await call_next(request)
@@ -138,10 +151,10 @@ async def track_requests(request: Request, call_next):
         # unhandled errors never produce a response object here, so without
         # this branch 500s would vanish from the very metrics meant to
         # surface them — an error-rate panel reading zero during an outage
-        REQUEST_COUNT.labels(request.method, path, "500").inc()
+        REQUEST_COUNT.labels(method, path, "500").inc()
         REQUEST_LATENCY.labels(path).observe(time.perf_counter() - start)
         raise
-    REQUEST_COUNT.labels(request.method, path, str(response.status_code)).inc()
+    REQUEST_COUNT.labels(method, path, str(response.status_code)).inc()
     REQUEST_LATENCY.labels(path).observe(time.perf_counter() - start)
     return response
 

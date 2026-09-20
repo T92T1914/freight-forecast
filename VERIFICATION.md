@@ -31,3 +31,14 @@ came back through the ClusterIP service via `kubectl port-forward`.
 Grafana) came up; after a traffic burst, Grafana's own datasource query for
 the dashboard's request rate panel returned `/predict` at 0.8 req/s and the
 prediction distribution histogram held 70 observations.
+# September 20, 2026: request metrics
+
+The request middleware now bounds method labels as well as path labels. Three
+different unsupported methods share `method="other"`; their 405 responses still
+count. A request for `/metrics-missing` counts as an unknown-path 404, while
+scrapes of `/metrics` and `/metrics/` remain excluded.
+
+Checked in the local virtual environment: 106 tests passed, Ruff checks passed,
+and all 14 source/test files passed the format check. The test runner reports
+the existing Starlette/httpx deprecation warning. This check did not retrain the
+model or repeat the Docker, Kubernetes or Grafana deployment exercises below.
