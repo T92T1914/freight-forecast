@@ -9,9 +9,10 @@ as a containerized API: scikit-learn, FastAPI, Docker, Kubernetes, Prometheus
 and Grafana. The data models a seasonal logistics problem; these results are
 not an evaluation on operational shipment records.
 
-**226 vs 327 MAE on 24 held out months, 31% under the seasonal naive baseline;
-`train.py` exits non zero if it ever loses, so a regression fails the image
-build.**
+**226 vs 327 MAE on 24 held out months, 31% under the seasonal baseline.**
+The training check fails if the model no longer beats that baseline on the
+included dataset, which also fails the container build. It does not establish
+how the model will perform on new operational data.
 
 [Results](#results-beat-same-month-last-year) |
 [Run it](#run-it) |
@@ -49,8 +50,8 @@ and inspected. The dataset is synthetic; it does not contain service records.
 ```bash
 make install
 make train
-make serve
 make test
+make serve
 ```
 
 The plain commands behind each target are listed under [Run it](#run-it),

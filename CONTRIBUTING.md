@@ -1,6 +1,6 @@
-# Contributing to Freight Forecast
+# Working on Freight Forecast
 
-I welcome focused fixes, clearer examples and results that challenge an assumption in the project. If something looks wrong, I would rather have a small case I can run than a broad claim that it is broken.
+The question I care about is whether a change improves the forecast or the service, and whether someone else can reproduce that result. A smaller error on a different set of months does not answer the same question.
 
 ## Start locally
 
@@ -29,9 +29,9 @@ Start with [feature construction](src/features.py), [training](src/train.py) and
 
 ## Report a bug or propose a change
 
-Check the existing issues first. Include the revision, Python version, operating system, command, expected behavior and actual output. For a numerical issue, include the smallest input that demonstrates it. Remove credentials and private data from logs before posting.
+For a bug, include the command or API request, revision, expected result and actual output. For a model comparison, include the data source, split dates and monthly errors. Label generated data and keep operational or personal records out of public issues.
 
-Keep a pull request focused on one problem. Explain what changes for someone using the project, why the approach fits and which checks you ran. Add a regression test when it captures a real failure. Documentation changes should be checked against the current code and examples.
+For a speed claim, retain raw samples and machine conditions, and check the response values. The [serving measurements](docs/serving-performance.md) show the distinction between a faster response and a different forecast. Include regressions as well as gains.
 
 ## Evidence and scope
 
@@ -44,12 +44,6 @@ refitting without changing the serving model. The [backtest notes](docs/backtest
 explain the temporal split, raw prediction records, and interpretation limits.
 When changing evaluation logic, keep the tests that perturb future observations
 and independently reconcile the reported errors.
-
-## Writing
-
-Use plain language and concrete examples. Avoid em dashes and unnecessary hyphens in authored prose. Preserve the exact spelling of code, commands, paths, package names, links and quoted evidence. Claims about performance should link to measurements and say what was actually tested.
-
-Be respectful when discussing a change. Questions and disagreements are welcome; keep them about the work.
 
 ## Development container and public site
 
