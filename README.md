@@ -328,3 +328,13 @@ MIT licensed. The full text is in [LICENSE](LICENSE).
 ## Questions and contributions
 
 Found a problem or have a useful comparison? [Open an issue](https://github.com/T92T1914/freight-forecast/issues) with a small example I can run. The [contribution guide](CONTRIBUTING.md) covers setup, checks and the evidence to include with a change.
+
+## Engineering skills in this project
+
+I use this project to connect the operational questions I knew from logistics with the work of building and checking software. The forecast is one part. Keeping its data boundary, failure cases and serving behavior visible is the rest.
+
+- **Model evaluation.** Compare the forecast with a seasonal baseline on the same chronological test months. [Inspect the work](docs/backtesting.md).
+- **API design.** Inspect the forecast window, input validation and monitoring in the serving layer. [Inspect the work](src/serve.py).
+- **Operating evidence.** Follow the recorded container and monitoring checks, including their limits. [Inspect the work](VERIFICATION.md).
+
+These are transferable skills for backend and MLOps work. The data is synthetic, so this is not evidence of savings or accuracy in a live logistics operation.
