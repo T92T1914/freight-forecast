@@ -54,3 +54,19 @@ def test_twelve_observed_months_allow_one_future_prediction(monkeypatch):
         assert len(app.state.features) == 1
         assert app.state.features.index[0] == pd.Timestamp("2024-01-01")
         assert app.state.features.iloc[0]["lag_12"] == 0
+
+
+@pytest.mark.parametrize("hours", [1, 12, 23])
+def test_non_midnight_csv_cannot_advertise_unusable_forecasts(
+    monkeypatch, tmp_path, hours
+):
+    frame = history()
+    frame["date"] += pd.Timedelta(hours=hours)
+    path = tmp_path / "observations.csv"
+    frame.to_csv(path, index=False)
+    monkeypatch.setattr(serve, "DATA_PATH", path)
+    with (
+        pytest.raises(ValueError, match="contiguous monthly"),
+        TestClient(FastAPI(lifespan=serve.lifespan)),
+    ):
+        pytest.fail("invalid calendar reached readiness")

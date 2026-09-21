@@ -9,6 +9,8 @@ The lag and rolling inputs still need contiguous monthly observations. Keeping
 the most recent 12 observed months supports only the next unobserved month.
 Keeping more history also supports historical requests after their lag warmup.
 The service rejects history that begins before the saved training origin.
+Dates must be midnight on the first day of each month. A time of day is rejected
+rather than silently removed, so cached feature rows match month-only requests.
 
 Older artifacts do not record this origin. They fail startup with an explicit
 retraining instruction because guessing from a replacement CSV could return a
