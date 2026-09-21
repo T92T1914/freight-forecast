@@ -33,13 +33,14 @@ class Artifact(TypedDict):
     train.py and serve.py is written down in one place: the fitted model,
     the exact feature columns it was fitted on so serving builds the same
     matrix, the held-out metrics it was accepted on, and the last month it
-    saw.
+    saw. trend_origin fixes the time coordinate when serving a shorter history.
     """
 
     model: TransformedTargetRegressor
     feature_columns: list[str]
     metrics: dict[str, float]
     trained_through: str
+    trend_origin: str
 
 
 def load_data() -> pd.DataFrame:
@@ -84,6 +85,7 @@ def train(df: pd.DataFrame) -> Artifact:
         feature_columns=feature_cols,
         metrics=metrics,
         trained_through=str(train_set["date"].iloc[-1].date()),
+        trend_origin=str(df["date"].min().date()),
     )
 
 

@@ -29,6 +29,7 @@ def test_artifact_roundtrip(tmp_path, artifact):
     assert len(preds) == TEST_MONTHS
     assert (preds > 0).all()
     assert loaded["feature_columns"] == feature_cols
+    assert loaded["trend_origin"] == artifact["trend_origin"] == "2017-01-01"
 
 
 def test_predictions_are_in_volume_units(artifact):

@@ -3,12 +3,16 @@
 import pandas as pd
 
 
-def build_features(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
+def build_features(
+    df: pd.DataFrame, *, trend_origin: pd.Timestamp | None = None
+) -> tuple[pd.DataFrame, list[str]]:
     """Add model features to a (date, volume) frame sorted by date.
 
     Returns the frame with feature columns plus the list of feature names.
     Rows without a full 12-month history are dropped, so forecasts only
     ever use information available before the month being predicted.
+    Serving supplies the training origin so trimming old lag history cannot
+    reset the fitted time trend. Training defaults to the first source month.
     """
     out = df.sort_values("date").reset_index(drop=True).copy()
 
@@ -20,7 +24,10 @@ def build_features(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
             "expected a contiguous monthly series (no gaps or duplicate months)"
         )
 
-    out["t"] = range(len(out))
+    origin = out["date"].iloc[0] if trend_origin is None else trend_origin
+    out["t"] = (out["date"].dt.year - origin.year) * 12 + (
+        out["date"].dt.month - origin.month
+    )
     out["lag_12"] = out["volume"].shift(12)
     out["roll_3"] = out["volume"].shift(1).rolling(3).mean()
 
