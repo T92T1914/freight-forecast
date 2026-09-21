@@ -38,6 +38,17 @@ def test_rejects_series_with_a_missing_month():
         build_features(df)
 
 
+@pytest.mark.parametrize(
+    "offset",
+    [pd.Timedelta(hours=12), pd.Timedelta(microseconds=1), pd.Timedelta(nanoseconds=1)],
+)
+def test_rejects_month_starts_with_a_time_of_day(offset):
+    df = _toy_frame(30)
+    df["date"] += offset
+    with pytest.raises(ValueError, match="contiguous monthly"):
+        build_features(df)
+
+
 def test_month_dummies_are_one_hot():
     feats, feature_cols = build_features(_toy_frame(30))
     dummy_cols = [c for c in feature_cols if c.startswith("m_")]

@@ -18,10 +18,16 @@ def build_features(
 
     # lag_12 and roll_3 are computed by row position, so they are only
     # "last year" and "last quarter" if the series has no gaps or duplicates
-    expected = pd.date_range(out["date"].iloc[0], periods=len(out), freq="MS")
+    # A monthly offset preserves the first timestamp's time of day by default.
+    # Validate against midnight boundaries so serving's month-only requests
+    # cannot advertise a valid range with no matching cached feature rows.
+    expected = pd.date_range(
+        out["date"].iloc[0], periods=len(out), freq="MS", normalize=True
+    )
     if not (out["date"].to_numpy() == expected.to_numpy()).all():
         raise ValueError(
-            "expected a contiguous monthly series (no gaps or duplicate months)"
+            "expected a contiguous monthly series at midnight month starts "
+            "(no gaps or duplicate months)"
         )
 
     origin = out["date"].iloc[0] if trend_origin is None else trend_origin
