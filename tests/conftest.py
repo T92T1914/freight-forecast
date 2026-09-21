@@ -9,16 +9,24 @@ import joblib
 import pytest
 from fastapi.testclient import TestClient
 
+from src import serve
 from src import train as train_mod
 from src.serve import app
 
 
 @pytest.fixture(scope="session")
-def client():
-    if not train_mod.MODEL_PATH.exists():
-        artifact = train_mod.train(train_mod.load_data())
-        train_mod.MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
-        joblib.dump(artifact, train_mod.MODEL_PATH)
+def serving_artifact_path(tmp_path_factory):
+    path = tmp_path_factory.mktemp("serving-artifact") / "model.joblib"
+    joblib.dump(train_mod.train(train_mod.load_data()), path)
+    return path
+
+
+@pytest.fixture
+def client(monkeypatch, serving_artifact_path):
+    # Rebuild the contract under test without replacing the user's saved model.
+    # A fresh lifespan also prevents state changed by one API test leaking out.
+    monkeypatch.setattr(serve, "MODEL_PATH", serving_artifact_path)
+    monkeypatch.setattr(train_mod, "MODEL_PATH", serving_artifact_path)
     # entering the context runs the lifespan, i.e. the startup model load
     with TestClient(app) as c:
         yield c

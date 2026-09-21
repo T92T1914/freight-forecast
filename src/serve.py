@@ -74,10 +74,25 @@ class ForecastWindowResponse(BaseModel):
     refresh_policy: str
 
 
-def _validate_artifact(artifact: object, features: pd.DataFrame, columns: list[str]):
-    """Check the trusted local training artifact before advertising readiness."""
+def _trend_origin(artifact: object) -> pd.Timestamp:
+    """Never guess the origin of an already fitted trend from serving history."""
     if not isinstance(artifact, dict):
         raise ValueError("model artifact must be a mapping")
+    raw = artifact.get("trend_origin")
+    try:
+        origin = date.fromisoformat(raw)
+        if origin.day != 1 or origin.isoformat() != raw:
+            raise ValueError
+    except (TypeError, ValueError) as exc:
+        raise ValueError(
+            "model artifact trend_origin must be an ISO month start; "
+            "retrain with `python -m src.train`"
+        ) from exc
+    return pd.Timestamp(origin)
+
+
+def _validate_artifact(artifact: dict, features: pd.DataFrame, columns: list[str]):
+    """Check the trusted local training artifact before advertising readiness."""
     if artifact.get("feature_columns") != columns:
         raise ValueError("model artifact feature columns do not match serving features")
     trained = artifact.get("trained_through")
@@ -89,6 +104,8 @@ def _validate_artifact(artifact: object, features: pd.DataFrame, columns: list[s
         raise ValueError(
             "model artifact trained_through must be an ISO month start"
         ) from exc
+    if date.fromisoformat(artifact["trend_origin"]) > cutoff:
+        raise ValueError("model artifact trend_origin is after its training cutoff")
     metrics = artifact.get("metrics")
     for key in ("model_mae", "model_mape"):
         value = metrics.get(key) if isinstance(metrics, dict) else None
@@ -128,6 +145,7 @@ async def lifespan(app: FastAPI):
             f"dataset not found at {DATA_PATH}; run `python -m src.generate_data` first"
         )
     app.state.artifact = joblib.load(MODEL_PATH)
+    origin = _trend_origin(app.state.artifact)
     app.state.history = (
         pd.read_csv(DATA_PATH, parse_dates=["date"])
         .sort_values("date")
@@ -135,6 +153,8 @@ async def lifespan(app: FastAPI):
     )
     if len(app.state.history) < 12:
         raise ValueError("history must contain at least 12 observed months")
+    if origin > app.state.history["date"].iloc[0]:
+        raise ValueError("model artifact trend_origin is after the loaded history")
     volumes = pd.to_numeric(app.state.history["volume"], errors="coerce")
     if not volumes.map(isfinite).all() or (volumes < 0).any():
         raise ValueError("observed history volumes must be finite, nonnegative numbers")
@@ -153,7 +173,7 @@ async def lifespan(app: FastAPI):
         ],
         ignore_index=True,
     )
-    feats, columns = build_features(extended)
+    feats, columns = build_features(extended, trend_origin=origin)
     app.state.features = feats.set_index("date")
     _validate_artifact(app.state.artifact, app.state.features, columns)
     app.state.forecastable_range = first, last
