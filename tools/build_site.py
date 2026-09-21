@@ -10,6 +10,7 @@ FILES = {
     "site/index.html": "index.html",
     "site/style.css": "style.css",
     "site/app.js": "app.js",
+    "site/selection-state.mjs": "selection-state.mjs",
     "site/backtest.js": "backtest.js",
     "docs/backtest-example.json": "backtest.json",
     "docs/visual-example-data.json": "data.json",

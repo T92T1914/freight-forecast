@@ -1,3 +1,4 @@
+import {bindSelection} from './selection-state.mjs';
 const $ = id => document.getElementById(id);
 const project = document.body.dataset.project;
 const number = (value, digits=0) => value.toLocaleString('en-US', {maximumFractionDigits:digits, minimumFractionDigits:digits});
@@ -40,7 +41,7 @@ try {
     $('choice-label').textContent='Inspect an action';options(data.actions.map(a=>a.name));
     update=()=>{const a=data.actions[Number($('choice').value)],total=data.actions.reduce((n,x)=>n+x.visits,0);
       metrics([[number(a.reward,3),'mean shaped reward'],[number(a.visits),'visits'],[number(100*a.visits/total,1)+'%','share of recorded visits']]);
-      $('finding').textContent=a.name==='Spark'?'Spark has the highest recorded mean reward in this decision.':'A lower ranked action still received simulations so the search could compare it with the alternatives.';
+      $('finding').textContent=a.reward===Math.max(...data.actions.map(row=>row.reward))?a.name+' matches the highest recorded mean reward in this decision.':'A lower ranked action still received simulations so the search could compare it with the alternatives.';
       table(['Action','Mean reward','Visits'],data.actions.map(a=>[a.name,number(a.reward,3),number(a.visits)]),'All available actions in the recorded initial decision.');
     };
     $('context').textContent=data.conditions+'. '+data.precision+'.';
@@ -49,12 +50,12 @@ try {
     const labels={H:'Hit',S:'Stand',D:'Double'};
     update=()=>{const h=data.hands[Number($('choice').value)];
       metrics([[labels[h.action],'preferred action'],[number(h.values[h.action],6),'expected net return'],[number(h.margin,6),'margin over the next action']]);
-      $('finding').textContent='The preferred move is '+labels[h.action].toLowerCase()+'. The negative value still represents an expected loss under these rules.';
+      $('finding').textContent='The preferred move is '+labels[h.action].toLowerCase()+(h.values[h.action]<0?'. The value still represents an expected loss under these rules.':h.values[h.action]>0?'. The value represents an expected gain under these rules, not a guaranteed outcome.':'. The expected net return is zero under these rules.');
       table(['Action','Expected net return'],Object.entries(h.values).sort((a,b)=>b[1]-a[1]).map(([k,v])=>[labels[k],number(v,6)]),'The margin compares expected returns. It is not a confidence score or win probability.');
     };
     $('context').textContent=data.rules+'. No new hands are calculated by this static page.';
   }
-  if(update){update();$('choice').addEventListener('change',update);$('interactive').hidden=false;}
+  if(update){bindSelection($('choice'),$('example-link'),update);$('interactive').hidden=false;}
 } catch(error) {
   $('load-error').hidden=false;$('load-error').textContent='The interactive evidence did not load. You can still inspect the source data using the link below.';
 }
