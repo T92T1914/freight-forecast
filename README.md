@@ -72,6 +72,19 @@ once per startup and indexed by month; [the serving tests](tests/test_api.py)
 compare every supported response with uncached construction and verify refresh
 after a data change.
 
+Use `GET /forecast-window` before choosing a month. It returns the first and
+last supported months, the last observation, the next unobserved month and the
+model's training cutoff. The supported range includes historical queries;
+only one month beyond the loaded observations is forecastable. The response
+comes from the same startup state as `/predict`, so clients do not need to
+hardcode the dates in this example or discover the limits through failed requests.
+Updating observations does not retrain the model. Restart the service after
+replacing either file to load the new state.
+
+```bash
+curl http://127.0.0.1:8000/forecast-window
+```
+
 **Code tour:** [features and leakage guards](src/features.py) →
 [chronological evaluation](src/train.py) → [API and metrics](src/serve.py) →
 [tests](tests/) → [deployment evidence](VERIFICATION.md).

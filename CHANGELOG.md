@@ -6,6 +6,14 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-09-21, discoverable forecast window
+
+* Added `/forecast-window` so clients can inspect the supported month range
+  before requesting a prediction. It distinguishes observed history from the
+  model's training cutoff and the single unobserved month.
+* Verified both range boundaries, refresh after new observations, and discovery
+  without disk reads, feature construction or model execution.
+
 ### 2026-09-20, monthly backtesting
 
 * Added an expanding window evaluation that refits each month using only prior

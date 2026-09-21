@@ -60,6 +60,18 @@ class PredictResponse(BaseModel):
     trained_through: str
 
 
+class ForecastWindowResponse(BaseModel):
+    """Discover supported requests without probing invalid months."""
+
+    first_supported_month: str
+    last_supported_month: str
+    observed_through: str
+    next_unobserved_month: str
+    trained_through: str
+    horizon_months: int
+    refresh_policy: str
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     if not MODEL_PATH.exists():
@@ -122,7 +134,7 @@ PREDICTED_VOLUME = Histogram(
     buckets=(2000, 3000, 4000, 5000, 6000, 8000, 10000, 12000, 14000),
 )
 
-_KNOWN_PATHS = {"/health", "/predict"}
+_KNOWN_PATHS = {"/health", "/predict", "/forecast-window"}
 _KNOWN_METHODS = {
     "GET",
     "HEAD",
@@ -182,6 +194,26 @@ def health():
         "trained_through": artifact["trained_through"],
         "test_mae": round(artifact["metrics"]["model_mae"], 1),
         "test_mape": round(artifact["metrics"]["model_mape"], 4),
+    }
+
+
+@app.get("/forecast-window", response_model=ForecastWindowResponse)
+def forecast_window():
+    """Report the same loaded-history bounds used by /predict.
+
+    Earlier supported months are historical queries, not additional future
+    horizons. The training cutoff describes the model, while observed_through
+    describes the lag history available to that model at this startup.
+    """
+    first, last = app.state.forecastable_range
+    return {
+        "first_supported_month": f"{first:%Y-%m}",
+        "last_supported_month": f"{last:%Y-%m}",
+        "observed_through": f"{app.state.history['date'].iloc[-1]:%Y-%m}",
+        "next_unobserved_month": f"{last:%Y-%m}",
+        "trained_through": app.state.artifact["trained_through"],
+        "horizon_months": 1,
+        "refresh_policy": "loaded at startup; restart after updating history or model",
     }
 
 
