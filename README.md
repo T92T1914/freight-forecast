@@ -45,6 +45,10 @@ and inspected. The dataset is synthetic; it does not contain service records.
 
 [Explore the browser demo](https://t92t1914.github.io/freight-forecast/) · [Open in Codespaces](https://codespaces.new/T92T1914/freight-forecast)
 
+Use **Link to this example** in the browser demo to share the selected result.
+The URL keeps the example's visible label, and Back and Forward restore earlier
+selections. These links inspect saved evidence; they do not run a new calculation.
+
 ## Quickstart
 
 ```bash
