@@ -16,8 +16,10 @@ import time
 from contextlib import asynccontextmanager
 from datetime import date
 from math import isfinite
+from numbers import Real
 
 import joblib
+import numpy as np
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Request
 from prometheus_client import Counter, Histogram, make_asgi_app
@@ -72,6 +74,49 @@ class ForecastWindowResponse(BaseModel):
     refresh_policy: str
 
 
+def _validate_artifact(artifact: object, features: pd.DataFrame, columns: list[str]):
+    """Check the trusted local training artifact before advertising readiness."""
+    if not isinstance(artifact, dict):
+        raise ValueError("model artifact must be a mapping")
+    if artifact.get("feature_columns") != columns:
+        raise ValueError("model artifact feature columns do not match serving features")
+    trained = artifact.get("trained_through")
+    try:
+        cutoff = date.fromisoformat(trained)
+        if cutoff.day != 1 or cutoff.isoformat() != trained:
+            raise ValueError
+    except (TypeError, ValueError) as exc:
+        raise ValueError(
+            "model artifact trained_through must be an ISO month start"
+        ) from exc
+    metrics = artifact.get("metrics")
+    for key in ("model_mae", "model_mape"):
+        value = metrics.get(key) if isinstance(metrics, dict) else None
+        if (
+            isinstance(value, bool)
+            or not isinstance(value, Real)
+            or not isfinite(value)
+            or value < 0
+        ):
+            raise ValueError(f"model artifact {key} must be finite and nonnegative")
+    model = artifact.get("model")
+    if not callable(getattr(model, "predict", None)):
+        raise ValueError("model artifact must contain a predictive model")
+    # Exercise the fitted estimator as well as the manifest. An obsolete
+    # estimator can disagree with an otherwise valid feature-column list.
+    try:
+        predictions = np.asarray(model.predict(features.loc[:, columns].tail(1)))
+        if (
+            predictions.shape != (1,)
+            or predictions.dtype.kind not in "iuf"
+            or not np.isfinite(predictions).all()
+            or (predictions < 0).any()
+        ):
+            raise ValueError("expected one finite, nonnegative forecast")
+    except Exception as exc:
+        raise ValueError("model artifact failed startup prediction validation") from exc
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     if not MODEL_PATH.exists():
@@ -108,8 +153,9 @@ async def lifespan(app: FastAPI):
         ],
         ignore_index=True,
     )
-    feats, _ = build_features(extended)
+    feats, columns = build_features(extended)
     app.state.features = feats.set_index("date")
+    _validate_artifact(app.state.artifact, app.state.features, columns)
     app.state.forecastable_range = first, last
     yield
 
