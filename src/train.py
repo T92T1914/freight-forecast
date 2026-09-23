@@ -6,7 +6,9 @@ The naive predictor is "same month last year" -- the bar a model must clear
 to be worth serving at all. Fails with exit code 1 if the model loses.
 """
 
+import os
 import sys
+import tempfile
 from pathlib import Path
 from typing import TypedDict
 
@@ -89,6 +91,33 @@ def train(df: pd.DataFrame) -> Artifact:
     )
 
 
+def save_artifact(artifact: Artifact, destination: Path) -> None:
+    """Publish one complete file without truncating the previous model.
+
+    The temporary file shares the destination directory so replace stays on
+    one filesystem. A failed write or promotion leaves the old model available.
+    This protects readers from partial files, not arbitrary power-loss recovery.
+    """
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="wb",
+            dir=destination.parent,
+            prefix=".model-",
+            suffix=".tmp",
+            delete=False,
+        ) as stream:
+            temporary = Path(stream.name)
+            joblib.dump(artifact, stream)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, destination)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
 def main() -> None:
     artifact = train(load_data())
     m = artifact["metrics"]
@@ -102,8 +131,7 @@ def main() -> None:
         print("FAIL: model does not beat the seasonal naive; not saving artifact")
         sys.exit(1)
 
-    MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
-    joblib.dump(artifact, MODEL_PATH)
+    save_artifact(artifact, MODEL_PATH)
     print(f"Saved artifact to {MODEL_PATH}")
 
 
