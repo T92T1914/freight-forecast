@@ -59,6 +59,8 @@ def test_openapi_declares_the_response_fields(client):
         "predicted_volume",
         "naive_same_month_last_year",
         "trained_through",
+        "model_id",
+        "history_id",
     }
     assert set(schemas["HealthResponse"]["required"]) == {
         "status",
@@ -66,6 +68,8 @@ def test_openapi_declares_the_response_fields(client):
         "trained_through",
         "test_mae",
         "test_mape",
+        "model_id",
+        "history_id",
     }
 
 
@@ -159,20 +163,27 @@ def test_every_served_month_matches_uncached_features(client, monkeypatch):
             "predicted_volume": expected,
             "naive_same_month_last_year": int(row["lag_12"].iloc[0]),
             "trained_through": artifact["trained_through"],
+            "model_id": serve.app.state.model_id,
+            "history_id": serve.app.state.history_id,
         }
 
 
-def test_restart_rebuilds_features_even_when_dates_and_row_count_match(
-    client, monkeypatch
+def test_restart_rebuilds_features_for_a_retrained_corrected_history(
+    client, monkeypatch, tmp_path
 ):
     history = serve.app.state.history.copy()
     before = serve.app.state.features.copy()
     history.loc[len(history) - 12, "volume"] += 100
+    corrected_model = tmp_path / "corrected.joblib"
+    train_mod.save_artifact(train_mod.train(history), corrected_model)
+    before_identity = client.get("/health").json()["model_id"]
+    monkeypatch.setattr(serve, "MODEL_PATH", corrected_model)
     monkeypatch.setattr(serve.pd, "read_csv", lambda *args, **kwargs: history)
     with TestClient(serve.app):
         after = serve.app.state.features
         assert before.index.equals(after.index)
         assert after.iloc[-1]["lag_12"] == before.iloc[-1]["lag_12"] + 100
+        assert client.get("/health").json()["model_id"] != before_identity
 
 
 def test_csv_row_order_does_not_change_forecast_range_or_predictions(

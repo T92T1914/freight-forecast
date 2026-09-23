@@ -29,6 +29,10 @@ try {
   $('revision').href='https://github.com/T92T1914/'+project+'/tree/'+data.source_commit;
   let update;
   if(project==='freight-forecast') {
+    if(!/^[0-9a-f]{64}$/.test(data.model_id)||!/^[0-9a-f]{64}$/.test(data.history_id))throw new Error('Saved model identity is unavailable.');
+    $('model-id').textContent=data.model_id;
+    $('history-id').textContent=data.history_id;
+    $('model-cutoff').textContent=data.trained_through;
     $('choice-label').textContent='Inspect a test month';options(data.rows.map(row=>row.month));
     update=()=>{const row=data.rows[Number($('choice').value)];
       metrics([[number(row.actual),'actual moves'],[number(row.model,1),'model forecast'],[number(row.baseline,1),'seasonal baseline']]);
@@ -36,7 +40,7 @@ try {
       $('finding').textContent=modelError<baseError?'The model has the smaller absolute error in this month.':modelError>baseError?'The seasonal baseline has the smaller absolute error in this month.':'Both forecasts have the same absolute error in this month.';
       table(['Forecast','Absolute error'],[['Model',number(modelError,1)+' moves'],['Seasonal baseline',number(baseError,1)+' moves']],'Absolute error is the distance from the recorded actual value.');
     };
-    $('context').textContent='Across all 24 test months, mean absolute error is '+number(data.metrics.model_mae,1)+' moves for the model and '+number(data.metrics.naive_mae,1)+' for the seasonal baseline. A better average does not mean a better forecast in every month.';
+    $('context').textContent='Across all '+data.rows.length+' test months, mean absolute error is '+number(data.metrics.model_mae,1)+' moves for the model and '+number(data.metrics.naive_mae,1)+' for the seasonal baseline. A better average does not mean a better forecast in every month.';
   } else if(project==='mcts-combat-engine') {
     $('choice-label').textContent='Inspect an action';options(data.actions.map(a=>a.name));
     update=()=>{const a=data.actions[Number($('choice').value)],total=data.actions.reduce((n,x)=>n+x.visits,0);

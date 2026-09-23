@@ -23,6 +23,7 @@ from sklearn.preprocessing import StandardScaler
 
 from src import generate_data
 from src.features import build_features
+from src.provenance import make_provenance
 
 TEST_MONTHS = 24
 MODEL_PATH = Path(__file__).resolve().parent.parent / "models" / "model.joblib"
@@ -43,6 +44,7 @@ class Artifact(TypedDict):
     metrics: dict[str, float]
     trained_through: str
     trend_origin: str
+    provenance: dict
 
 
 def load_data() -> pd.DataFrame:
@@ -88,6 +90,7 @@ def train(df: pd.DataFrame) -> Artifact:
         metrics=metrics,
         trained_through=str(train_set["date"].iloc[-1].date()),
         trend_origin=str(df["date"].min().date()),
+        provenance=make_provenance(df, train_set, test_set, preds, feature_cols),
     )
 
 
