@@ -12,6 +12,8 @@ horizon the model was evaluated at in training; serving further-out months
 would be shipping a claim no evaluation supports.
 """
 
+import hashlib
+import io
 import time
 from contextlib import asynccontextmanager
 from datetime import date
@@ -27,6 +29,7 @@ from pydantic import BaseModel, Field, field_validator
 
 from src.features import build_features
 from src.generate_data import DATA_PATH
+from src.provenance import validate_provenance
 from src.train import MODEL_PATH, Artifact
 
 
@@ -53,6 +56,8 @@ class HealthResponse(BaseModel):
     trained_through: str
     test_mae: float
     test_mape: float
+    model_id: str
+    history_id: str
 
 
 class PredictResponse(BaseModel):
@@ -60,6 +65,8 @@ class PredictResponse(BaseModel):
     predicted_volume: int
     naive_same_month_last_year: int
     trained_through: str
+    model_id: str
+    history_id: str
 
 
 class ForecastWindowResponse(BaseModel):
@@ -72,6 +79,8 @@ class ForecastWindowResponse(BaseModel):
     trained_through: str
     horizon_months: int
     refresh_policy: str
+    model_id: str
+    history_id: str
 
 
 def _trend_origin(artifact: object) -> pd.Timestamp:
@@ -144,7 +153,11 @@ async def lifespan(app: FastAPI):
         raise RuntimeError(
             f"dataset not found at {DATA_PATH}; run `python -m src.generate_data` first"
         )
-    app.state.artifact = joblib.load(MODEL_PATH)
+    # Hash the exact bytes deserialized, even if publication replaces the file
+    # during startup. Artifacts must still come from a trusted local source.
+    model_bytes = MODEL_PATH.read_bytes()
+    app.state.artifact = joblib.load(io.BytesIO(model_bytes))
+    app.state.model_id = hashlib.sha256(model_bytes).hexdigest()
     origin = _trend_origin(app.state.artifact)
     app.state.history = (
         pd.read_csv(DATA_PATH, parse_dates=["date"])
@@ -165,7 +178,8 @@ async def lifespan(app: FastAPI):
     # History is immutable for this app lifetime. Include the one unobserved
     # month now: all lag/rolling inputs look backwards, so the placeholder
     # cannot change any earlier feature row. A restart rebuilds this cache
-    # from the newly loaded data, including edits that keep the same dates.
+    # from the newly loaded data. Changes to recorded observations need a
+    # matching retrained artifact. Appended observations do not imply refitting.
     extended = pd.concat(
         [
             app.state.history,
@@ -176,6 +190,7 @@ async def lifespan(app: FastAPI):
     feats, columns = build_features(extended, trend_origin=origin)
     app.state.features = feats.set_index("date")
     _validate_artifact(app.state.artifact, app.state.features, columns)
+    app.state.history_id = validate_provenance(app.state.artifact, app.state.history)
     app.state.forecastable_range = first, last
     yield
 
@@ -260,6 +275,8 @@ def health():
         "trained_through": artifact["trained_through"],
         "test_mae": round(artifact["metrics"]["model_mae"], 1),
         "test_mape": round(artifact["metrics"]["model_mape"], 4),
+        "model_id": app.state.model_id,
+        "history_id": app.state.history_id,
     }
 
 
@@ -280,6 +297,8 @@ def forecast_window():
         "trained_through": app.state.artifact["trained_through"],
         "horizon_months": 1,
         "refresh_policy": "loaded at startup; restart after updating history or model",
+        "model_id": app.state.model_id,
+        "history_id": app.state.history_id,
     }
 
 
@@ -319,4 +338,6 @@ def predict(req: PredictRequest):
         "predicted_volume": round(predicted),
         "naive_same_month_last_year": int(row["lag_12"].iloc[0]),
         "trained_through": artifact["trained_through"],
+        "model_id": app.state.model_id,
+        "history_id": app.state.history_id,
     }

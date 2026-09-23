@@ -19,7 +19,9 @@ def test_trimming_old_history_preserves_shared_forecasts(client, monkeypatch, dr
     with TestClient(serve.app) as restarted:
         after = restarted.post("/predict", json={"month": "2025-01"})
         assert after.status_code == 200
-        assert after.json() == before
+        observed = after.json()
+        assert observed.pop("history_id") != before.pop("history_id")
+        assert observed == before
         after_features = serve.app.state.features
         pd.testing.assert_frame_equal(
             before_features.loc[after_features.index], after_features

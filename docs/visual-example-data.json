@@ -1,159 +1,739 @@
 {
-  "source_commit": "0813d2c",
-  "source": "src.train.train and data/shipments.csv",
+  "source_commit": "3cd78f7316cd648aad5cc1407529a70131ca397c",
+  "source": "src.export_evidence and the validated model artifact",
   "data_type": "seeded synthetic shipments",
   "trained_through": "2022-12-01",
-  "evaluation": "24 chronological test months; actual prior observations update lag features",
+  "evaluation": "fixed fit, chronological held-out months, observed lag inputs",
   "metrics": {
     "model_mae": 226.16017469322387,
     "model_mape": 0.0335447280950889,
     "naive_mae": 326.8333333333333,
     "naive_mape": 0.04752928059583656
   },
+  "model_id": "4090021d852df6836982d070e59e20296a15fba76f3e96f3699dee78cadf22db",
+  "history_id": "b712495891006a5c46e4d45ac5cd6c334663942a58201c68e4796cea6987c44d",
+  "provenance": {
+    "schema_version": 1,
+    "feature_schema": "monthly-trend-lag12-roll3-month-dummies-v1",
+    "feature_columns": [
+      "t",
+      "lag_12",
+      "roll_3",
+      "m_1",
+      "m_2",
+      "m_3",
+      "m_4",
+      "m_5",
+      "m_6",
+      "m_7",
+      "m_8",
+      "m_9",
+      "m_10",
+      "m_11",
+      "m_12"
+    ],
+    "history": [
+      {
+        "date": "2017-01-01",
+        "volume": 3017.0
+      },
+      {
+        "date": "2017-02-01",
+        "volume": 2794.0
+      },
+      {
+        "date": "2017-03-01",
+        "volume": 3809.0
+      },
+      {
+        "date": "2017-04-01",
+        "volume": 4547.0
+      },
+      {
+        "date": "2017-05-01",
+        "volume": 8369.0
+      },
+      {
+        "date": "2017-06-01",
+        "volume": 10434.0
+      },
+      {
+        "date": "2017-07-01",
+        "volume": 11276.0
+      },
+      {
+        "date": "2017-08-01",
+        "volume": 8433.0
+      },
+      {
+        "date": "2017-09-01",
+        "volume": 5753.0
+      },
+      {
+        "date": "2017-10-01",
+        "volume": 4181.0
+      },
+      {
+        "date": "2017-11-01",
+        "volume": 3206.0
+      },
+      {
+        "date": "2017-12-01",
+        "volume": 2999.0
+      },
+      {
+        "date": "2018-01-01",
+        "volume": 3056.0
+      },
+      {
+        "date": "2018-02-01",
+        "volume": 2942.0
+      },
+      {
+        "date": "2018-03-01",
+        "volume": 3618.0
+      },
+      {
+        "date": "2018-04-01",
+        "volume": 5456.0
+      },
+      {
+        "date": "2018-05-01",
+        "volume": 9463.0
+      },
+      {
+        "date": "2018-06-01",
+        "volume": 9896.0
+      },
+      {
+        "date": "2018-07-01",
+        "volume": 10887.0
+      },
+      {
+        "date": "2018-08-01",
+        "volume": 9356.0
+      },
+      {
+        "date": "2018-09-01",
+        "volume": 5698.0
+      },
+      {
+        "date": "2018-10-01",
+        "volume": 4568.0
+      },
+      {
+        "date": "2018-11-01",
+        "volume": 3403.0
+      },
+      {
+        "date": "2018-12-01",
+        "volume": 2997.0
+      },
+      {
+        "date": "2019-01-01",
+        "volume": 2892.0
+      },
+      {
+        "date": "2019-02-01",
+        "volume": 3006.0
+      },
+      {
+        "date": "2019-03-01",
+        "volume": 3922.0
+      },
+      {
+        "date": "2019-04-01",
+        "volume": 4949.0
+      },
+      {
+        "date": "2019-05-01",
+        "volume": 9076.0
+      },
+      {
+        "date": "2019-06-01",
+        "volume": 10530.0
+      },
+      {
+        "date": "2019-07-01",
+        "volume": 10877.0
+      },
+      {
+        "date": "2019-08-01",
+        "volume": 9268.0
+      },
+      {
+        "date": "2019-09-01",
+        "volume": 5659.0
+      },
+      {
+        "date": "2019-10-01",
+        "volume": 4649.0
+      },
+      {
+        "date": "2019-11-01",
+        "volume": 3351.0
+      },
+      {
+        "date": "2019-12-01",
+        "volume": 2943.0
+      },
+      {
+        "date": "2020-01-01",
+        "volume": 3049.0
+      },
+      {
+        "date": "2020-02-01",
+        "volume": 3010.0
+      },
+      {
+        "date": "2020-03-01",
+        "volume": 3809.0
+      },
+      {
+        "date": "2020-04-01",
+        "volume": 5367.0
+      },
+      {
+        "date": "2020-05-01",
+        "volume": 9242.0
+      },
+      {
+        "date": "2020-06-01",
+        "volume": 10673.0
+      },
+      {
+        "date": "2020-07-01",
+        "volume": 10920.0
+      },
+      {
+        "date": "2020-08-01",
+        "volume": 9212.0
+      },
+      {
+        "date": "2020-09-01",
+        "volume": 6104.0
+      },
+      {
+        "date": "2020-10-01",
+        "volume": 4260.0
+      },
+      {
+        "date": "2020-11-01",
+        "volume": 3641.0
+      },
+      {
+        "date": "2020-12-01",
+        "volume": 2851.0
+      },
+      {
+        "date": "2021-01-01",
+        "volume": 3126.0
+      },
+      {
+        "date": "2021-02-01",
+        "volume": 2850.0
+      },
+      {
+        "date": "2021-03-01",
+        "volume": 3756.0
+      },
+      {
+        "date": "2021-04-01",
+        "volume": 5473.0
+      },
+      {
+        "date": "2021-05-01",
+        "volume": 9018.0
+      },
+      {
+        "date": "2021-06-01",
+        "volume": 11542.0
+      },
+      {
+        "date": "2021-07-01",
+        "volume": 11454.0
+      },
+      {
+        "date": "2021-08-01",
+        "volume": 9457.0
+      },
+      {
+        "date": "2021-09-01",
+        "volume": 5782.0
+      },
+      {
+        "date": "2021-10-01",
+        "volume": 4664.0
+      },
+      {
+        "date": "2021-11-01",
+        "volume": 3636.0
+      },
+      {
+        "date": "2021-12-01",
+        "volume": 2894.0
+      },
+      {
+        "date": "2022-01-01",
+        "volume": 3081.0
+      },
+      {
+        "date": "2022-02-01",
+        "volume": 3260.0
+      },
+      {
+        "date": "2022-03-01",
+        "volume": 3978.0
+      },
+      {
+        "date": "2022-04-01",
+        "volume": 5316.0
+      },
+      {
+        "date": "2022-05-01",
+        "volume": 9865.0
+      },
+      {
+        "date": "2022-06-01",
+        "volume": 11660.0
+      },
+      {
+        "date": "2022-07-01",
+        "volume": 12460.0
+      },
+      {
+        "date": "2022-08-01",
+        "volume": 10081.0
+      },
+      {
+        "date": "2022-09-01",
+        "volume": 5799.0
+      },
+      {
+        "date": "2022-10-01",
+        "volume": 4518.0
+      },
+      {
+        "date": "2022-11-01",
+        "volume": 3822.0
+      },
+      {
+        "date": "2022-12-01",
+        "volume": 3228.0
+      },
+      {
+        "date": "2023-01-01",
+        "volume": 3047.0
+      },
+      {
+        "date": "2023-02-01",
+        "volume": 3116.0
+      },
+      {
+        "date": "2023-03-01",
+        "volume": 4240.0
+      },
+      {
+        "date": "2023-04-01",
+        "volume": 5330.0
+      },
+      {
+        "date": "2023-05-01",
+        "volume": 9391.0
+      },
+      {
+        "date": "2023-06-01",
+        "volume": 11828.0
+      },
+      {
+        "date": "2023-07-01",
+        "volume": 11248.0
+      },
+      {
+        "date": "2023-08-01",
+        "volume": 10267.0
+      },
+      {
+        "date": "2023-09-01",
+        "volume": 5894.0
+      },
+      {
+        "date": "2023-10-01",
+        "volume": 4571.0
+      },
+      {
+        "date": "2023-11-01",
+        "volume": 3624.0
+      },
+      {
+        "date": "2023-12-01",
+        "volume": 3105.0
+      },
+      {
+        "date": "2024-01-01",
+        "volume": 3477.0
+      },
+      {
+        "date": "2024-02-01",
+        "volume": 3150.0
+      },
+      {
+        "date": "2024-03-01",
+        "volume": 4164.0
+      },
+      {
+        "date": "2024-04-01",
+        "volume": 5661.0
+      },
+      {
+        "date": "2024-05-01",
+        "volume": 10238.0
+      },
+      {
+        "date": "2024-06-01",
+        "volume": 12458.0
+      },
+      {
+        "date": "2024-07-01",
+        "volume": 12343.0
+      },
+      {
+        "date": "2024-08-01",
+        "volume": 10477.0
+      },
+      {
+        "date": "2024-09-01",
+        "volume": 6373.0
+      },
+      {
+        "date": "2024-10-01",
+        "volume": 4998.0
+      },
+      {
+        "date": "2024-11-01",
+        "volume": 3764.0
+      },
+      {
+        "date": "2024-12-01",
+        "volume": 3287.0
+      }
+    ],
+    "history_id": "b712495891006a5c46e4d45ac5cd6c334663942a58201c68e4796cea6987c44d",
+    "data_type": "seeded synthetic shipments",
+    "training_cutoff": "2022-12-01",
+    "training_rows": 60,
+    "evaluation": {
+      "method": "fixed fit, chronological held-out months, observed lag inputs",
+      "acceptance_rule": "model_mae < naive_mae",
+      "rows": [
+        {
+          "date": "2023-01-01",
+          "actual": 3047.0,
+          "prediction": 3158.048996531065,
+          "naive": 3081.0
+        },
+        {
+          "date": "2023-02-01",
+          "actual": 3116.0,
+          "prediction": 3178.6525685880365,
+          "naive": 3260.0
+        },
+        {
+          "date": "2023-03-01",
+          "actual": 4240.0,
+          "prediction": 3974.495654973887,
+          "naive": 3978.0
+        },
+        {
+          "date": "2023-04-01",
+          "actual": 5330.0,
+          "prediction": 5504.545735933419,
+          "naive": 5316.0
+        },
+        {
+          "date": "2023-05-01",
+          "actual": 9391.0,
+          "prediction": 10008.929415190496,
+          "naive": 9865.0
+        },
+        {
+          "date": "2023-06-01",
+          "actual": 11828.0,
+          "prediction": 11770.470820088043,
+          "naive": 11660.0
+        },
+        {
+          "date": "2023-07-01",
+          "actual": 11248.0,
+          "prediction": 12570.172598934401,
+          "naive": 12460.0
+        },
+        {
+          "date": "2023-08-01",
+          "actual": 10267.0,
+          "prediction": 10275.207433642276,
+          "naive": 10081.0
+        },
+        {
+          "date": "2023-09-01",
+          "actual": 5894.0,
+          "prediction": 6027.42340370693,
+          "naive": 5799.0
+        },
+        {
+          "date": "2023-10-01",
+          "actual": 4571.0,
+          "prediction": 4695.232769594895,
+          "naive": 4518.0
+        },
+        {
+          "date": "2023-11-01",
+          "actual": 3624.0,
+          "prediction": 3776.861200255969,
+          "naive": 3822.0
+        },
+        {
+          "date": "2023-12-01",
+          "actual": 3105.0,
+          "prediction": 3128.2382788610794,
+          "naive": 3228.0
+        },
+        {
+          "date": "2024-01-01",
+          "actual": 3477.0,
+          "prediction": 3171.549755995512,
+          "naive": 3047.0
+        },
+        {
+          "date": "2024-02-01",
+          "actual": 3150.0,
+          "prediction": 3180.86575274136,
+          "naive": 3116.0
+        },
+        {
+          "date": "2024-03-01",
+          "actual": 4164.0,
+          "prediction": 4078.8594897383728,
+          "naive": 4240.0
+        },
+        {
+          "date": "2024-04-01",
+          "actual": 5661.0,
+          "prediction": 5570.5106208015995,
+          "naive": 5330.0
+        },
+        {
+          "date": "2024-05-01",
+          "actual": 10238.0,
+          "prediction": 9839.519188536775,
+          "naive": 9391.0
+        },
+        {
+          "date": "2024-06-01",
+          "actual": 12458.0,
+          "prediction": 12082.03119482961,
+          "naive": 11828.0
+        },
+        {
+          "date": "2024-07-01",
+          "actual": 12343.0,
+          "prediction": 11974.840547307687,
+          "naive": 11248.0
+        },
+        {
+          "date": "2024-08-01",
+          "actual": 10477.0,
+          "prediction": 10673.988383703798,
+          "naive": 10267.0
+        },
+        {
+          "date": "2024-09-01",
+          "actual": 6373.0,
+          "prediction": 6199.079317825865,
+          "naive": 5894.0
+        },
+        {
+          "date": "2024-10-01",
+          "actual": 4998.0,
+          "prediction": 4811.828157264609,
+          "naive": 4571.0
+        },
+        {
+          "date": "2024-11-01",
+          "actual": 3764.0,
+          "prediction": 3795.9553863339065,
+          "naive": 3624.0
+        },
+        {
+          "date": "2024-12-01",
+          "actual": 3287.0,
+          "prediction": 3156.0929840182985,
+          "naive": 3105.0
+        }
+      ]
+    },
+    "estimator": {
+      "family": "log-target StandardScaler Ridge",
+      "alpha": 1.0
+    },
+    "implementation": {
+      "train.py": "c3a662676d3beec1dbcff4e5074a7716cbab488e13d9cf3762f26eaf257d2383",
+      "features.py": "a0a22f8b5c7322e1850f41cccd636dbee200906d84c647e7da7ab059c981c574",
+      "provenance.py": "7c2d6238ed82100762a686cd4f78edde0a75e62f2cf378c5083801e67b592e1f"
+    },
+    "dependencies": {
+      "python": "3.11.8",
+      "numpy": "2.4.6",
+      "pandas": "3.0.3",
+      "scikit-learn": "1.9.0",
+      "joblib": "1.5.3"
+    }
+  },
   "rows": [
     {
       "month": "2023-01",
-      "actual": 3047,
+      "actual": 3047.0,
       "model": 3158.048996531065,
       "baseline": 3081.0
     },
     {
       "month": "2023-02",
-      "actual": 3116,
+      "actual": 3116.0,
       "model": 3178.6525685880365,
       "baseline": 3260.0
     },
     {
       "month": "2023-03",
-      "actual": 4240,
+      "actual": 4240.0,
       "model": 3974.495654973887,
       "baseline": 3978.0
     },
     {
       "month": "2023-04",
-      "actual": 5330,
+      "actual": 5330.0,
       "model": 5504.545735933419,
       "baseline": 5316.0
     },
     {
       "month": "2023-05",
-      "actual": 9391,
+      "actual": 9391.0,
       "model": 10008.929415190496,
       "baseline": 9865.0
     },
     {
       "month": "2023-06",
-      "actual": 11828,
+      "actual": 11828.0,
       "model": 11770.470820088043,
       "baseline": 11660.0
     },
     {
       "month": "2023-07",
-      "actual": 11248,
+      "actual": 11248.0,
       "model": 12570.172598934401,
       "baseline": 12460.0
     },
     {
       "month": "2023-08",
-      "actual": 10267,
+      "actual": 10267.0,
       "model": 10275.207433642276,
       "baseline": 10081.0
     },
     {
       "month": "2023-09",
-      "actual": 5894,
+      "actual": 5894.0,
       "model": 6027.42340370693,
       "baseline": 5799.0
     },
     {
       "month": "2023-10",
-      "actual": 4571,
+      "actual": 4571.0,
       "model": 4695.232769594895,
       "baseline": 4518.0
     },
     {
       "month": "2023-11",
-      "actual": 3624,
+      "actual": 3624.0,
       "model": 3776.861200255969,
       "baseline": 3822.0
     },
     {
       "month": "2023-12",
-      "actual": 3105,
+      "actual": 3105.0,
       "model": 3128.2382788610794,
       "baseline": 3228.0
     },
     {
       "month": "2024-01",
-      "actual": 3477,
+      "actual": 3477.0,
       "model": 3171.549755995512,
       "baseline": 3047.0
     },
     {
       "month": "2024-02",
-      "actual": 3150,
+      "actual": 3150.0,
       "model": 3180.86575274136,
       "baseline": 3116.0
     },
     {
       "month": "2024-03",
-      "actual": 4164,
+      "actual": 4164.0,
       "model": 4078.8594897383728,
       "baseline": 4240.0
     },
     {
       "month": "2024-04",
-      "actual": 5661,
+      "actual": 5661.0,
       "model": 5570.5106208015995,
       "baseline": 5330.0
     },
     {
       "month": "2024-05",
-      "actual": 10238,
+      "actual": 10238.0,
       "model": 9839.519188536775,
       "baseline": 9391.0
     },
     {
       "month": "2024-06",
-      "actual": 12458,
+      "actual": 12458.0,
       "model": 12082.03119482961,
       "baseline": 11828.0
     },
     {
       "month": "2024-07",
-      "actual": 12343,
+      "actual": 12343.0,
       "model": 11974.840547307687,
       "baseline": 11248.0
     },
     {
       "month": "2024-08",
-      "actual": 10477,
+      "actual": 10477.0,
       "model": 10673.988383703798,
       "baseline": 10267.0
     },
     {
       "month": "2024-09",
-      "actual": 6373,
+      "actual": 6373.0,
       "model": 6199.079317825865,
       "baseline": 5894.0
     },
     {
       "month": "2024-10",
-      "actual": 4998,
+      "actual": 4998.0,
       "model": 4811.828157264609,
       "baseline": 4571.0
     },
     {
       "month": "2024-11",
-      "actual": 3764,
+      "actual": 3764.0,
       "model": 3795.9553863339065,
       "baseline": 3624.0
     },
     {
       "month": "2024-12",
-      "actual": 3287,
+      "actual": 3287.0,
       "model": 3156.0929840182985,
       "baseline": 3105.0
     }
-  ]
+  ],
+  "source_worktree_dirty": false
 }
