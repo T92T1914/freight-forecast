@@ -1,5 +1,5 @@
 {
-  "source_commit": "81a4804f66519b5c23f4995373aba6f964a4f0db",
+  "source_commit": "3cd78f7316cd648aad5cc1407529a70131ca397c",
   "source": "src.export_evidence and the validated model artifact",
   "data_type": "seeded synthetic shipments",
   "trained_through": "2022-12-01",
@@ -735,5 +735,5 @@
       "baseline": 3105.0
     }
   ],
-  "source_worktree_dirty": true
+  "source_worktree_dirty": false
 }
