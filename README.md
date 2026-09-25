@@ -49,6 +49,13 @@ Use **Link to this example** in the browser demo to share the selected result.
 The URL keeps the example's visible label, and Back and Forward restore earlier
 selections. These links inspect saved evidence; they do not run a new calculation.
 
+The browser page offers Auto, Clair and Obscur. The [BTS reading report](https://t92t1914.github.io/freight-forecast/real-data.html)
+adds a chart, all 72 saved test months, and separate Clair and Obscur SVG downloads.
+It keeps the real index separate from the synthetic shipment examples and retains
+the model's loss to last observation. [Generate the same report locally](docs/presentation.md)
+without training again. Inter is used when installed, with a system-font fallback
+and no font downloads.
+
 ## Quickstart
 
 ```bash
