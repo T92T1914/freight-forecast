@@ -87,4 +87,6 @@ timestamp at doubled body text size. Allowing that timestamp to wrap fixed the
 case while retaining its exact value.
 
 The existing `Project access` workflow builds and tests this same output before
-Pages deploys from main. The model CI and tag publication path remain separate.
+Pages deploys from main. It uses the runner's installed Chrome through Playwright's
+supported channel, with the browser sandbox enabled. The model CI and tag
+publication path remain separate.
