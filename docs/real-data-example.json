@@ -1,0 +1,5293 @@
+{
+  "schema_version": 1,
+  "evaluation_kind": "retrospective_latest_vintage_one_observation_step",
+  "units": "index_points_2000_average_100",
+  "protocol": {
+    "schema_version": 1,
+    "id": "bts-freight-tsi-latest-vintage-v1",
+    "declared_utc": "2026-09-25T02:03:24.7044127Z",
+    "data_start": "2000-01",
+    "training_end": "2009-12",
+    "development_start": "2010-01",
+    "development_end": "2019-12",
+    "test_start": "2020-01",
+    "test_end": "2025-12",
+    "model": "StandardScaler + Ridge(alpha=1.0), log target / exp inverse",
+    "policies": [
+      "fixed",
+      "monthly_refit"
+    ],
+    "selection": {
+      "metric": "development_mae",
+      "tie_break": "fixed",
+      "final_candidates": "selected_policy_only"
+    },
+    "baselines": [
+      "last_observation",
+      "seasonal_naive"
+    ],
+    "selection_clarified_utc": "2026-09-25T02:08:30.628299+00:00",
+    "selection_clarification": "Both policies are compared only on development. Only the chosen policy and both baselines enter final test. Clarified before any model evaluation.",
+    "data_access_disclosure": "Periods were declared before CSV values or any model errors were inspected. Subsequent official release research incidentally displayed some 2023-2025 actual index levels. No final-test model results informed this protocol.",
+    "release_lag": "One observation step, not a publication-date simulation. TSI data for a month are normally released in the second following calendar month.",
+    "vintage_limit": "Latest-vintage historical levels may depend on later source revisions and seasonal adjustment. Causal code cannot remove that retrospective information.",
+    "warmup_months": 12,
+    "metrics": [
+      "mae",
+      "rmse",
+      "mape"
+    ],
+    "seasonal_subgroups": null,
+    "final_policy_fit": "Refit through development end before final test. Fixed freezes estimator coefficients but updates observed lag features. Monthly_refit refits after each observed month.",
+    "serving_artifact": "No publication or replacement."
+  },
+  "development": {
+    "fixed": {
+      "policy": "fixed",
+      "months": 120,
+      "metrics": {
+        "model": {
+          "mae": 1.2727544924408476,
+          "rmse": 1.6604876623834741,
+          "mape": 0.010360989744290415
+        },
+        "last_observation": {
+          "mae": 0.9658333333333335,
+          "rmse": 1.2375042087470507,
+          "mape": 0.007962053968845325
+        },
+        "seasonal_naive": {
+          "mae": 4.234999999999999,
+          "rmse": 5.101584721110359,
+          "mape": 0.0351827545469972
+        }
+      },
+      "by_year": {
+        "2010": {
+          "model": {
+            "mae": 0.9610439411382465,
+            "rmse": 1.1747533649094286,
+            "mape": 0.009088462648500254
+          },
+          "last_observation": {
+            "mae": 0.7000000000000005,
+            "rmse": 0.9210501253098742,
+            "mape": 0.006597761795182038
+          },
+          "seasonal_naive": {
+            "mae": 8.050000000000002,
+            "rmse": 8.370483856982226,
+            "mape": 0.07556310034341855
+          }
+        },
+        "2011": {
+          "model": {
+            "mae": 1.0578247705355015,
+            "rmse": 1.4063170423030875,
+            "mape": 0.009501344903678306
+          },
+          "last_observation": {
+            "mae": 1.0416666666666667,
+            "rmse": 1.321930406640228,
+            "mape": 0.009368033537485589
+          },
+          "seasonal_naive": {
+            "mae": 4.349999999999998,
+            "rmse": 4.518111699961978,
+            "mape": 0.03919889980396418
+          }
+        },
+        "2012": {
+          "model": {
+            "mae": 1.0479183510639605,
+            "rmse": 1.2130603457080797,
+            "mape": 0.009376724700889738
+          },
+          "last_observation": {
+            "mae": 0.9250000000000007,
+            "rmse": 1.3200378782444064,
+            "mape": 0.008285597062845195
+          },
+          "seasonal_naive": {
+            "mae": 1.9083333333333325,
+            "rmse": 2.255179224215525,
+            "mape": 0.016990489138223912
+          }
+        },
+        "2013": {
+          "model": {
+            "mae": 1.1328918266146435,
+            "rmse": 1.6246103647855779,
+            "mape": 0.009784651402175906
+          },
+          "last_observation": {
+            "mae": 0.9083333333333338,
+            "rmse": 1.185678427455493,
+            "mape": 0.007817358277378013
+          },
+          "seasonal_naive": {
+            "mae": 4.066666666666666,
+            "rmse": 4.291076011134425,
+            "mape": 0.034953503116399776
+          }
+        },
+        "2014": {
+          "model": {
+            "mae": 1.2643759774176182,
+            "rmse": 1.5727571868543746,
+            "mape": 0.010538357315958242
+          },
+          "last_observation": {
+            "mae": 0.9333333333333336,
+            "rmse": 1.097724920005006,
+            "mape": 0.0078121298613226245
+          },
+          "seasonal_naive": {
+            "mae": 4.250000000000001,
+            "rmse": 4.428317965096906,
+            "mape": 0.03519304590216451
+          }
+        },
+        "2015": {
+          "model": {
+            "mae": 0.9217184952319452,
+            "rmse": 1.077202312747723,
+            "mape": 0.007572507551602246
+          },
+          "last_observation": {
+            "mae": 0.6749999999999995,
+            "rmse": 0.8341662504161447,
+            "mape": 0.0055446076377166685
+          },
+          "seasonal_naive": {
+            "mae": 2.4333333333333313,
+            "rmse": 2.8919428302325274,
+            "mape": 0.019944057843619127
+          }
+        },
+        "2016": {
+          "model": {
+            "mae": 1.1296623532177381,
+            "rmse": 1.4023554086123917,
+            "mape": 0.00917912332566224
+          },
+          "last_observation": {
+            "mae": 1.2916666666666643,
+            "rmse": 1.4625890286292533,
+            "mape": 0.010509070743756064
+          },
+          "seasonal_naive": {
+            "mae": 1.3999999999999986,
+            "rmse": 1.8009256878986786,
+            "mape": 0.01137243041320147
+          }
+        },
+        "2017": {
+          "model": {
+            "mae": 0.8686010237166725,
+            "rmse": 1.0944894085556678,
+            "mape": 0.0067718814965884964
+          },
+          "last_observation": {
+            "mae": 0.8583333333333355,
+            "rmse": 1.0988630487917956,
+            "mape": 0.0066565227640634295
+          },
+          "seasonal_naive": {
+            "mae": 4.949999999999998,
+            "rmse": 5.502120803229725,
+            "mape": 0.038423359702570575
+          }
+        },
+        "2018": {
+          "model": {
+            "mae": 1.7200170332448295,
+            "rmse": 2.1295491959711166,
+            "mape": 0.012637318850190577
+          },
+          "last_observation": {
+            "mae": 1.2250000000000039,
+            "rmse": 1.4239030865898155,
+            "mape": 0.009036910551884651
+          },
+          "seasonal_naive": {
+            "mae": 8.549999999999995,
+            "rmse": 8.754427451295712,
+            "mape": 0.06281861424310205
+          }
+        },
+        "2019": {
+          "model": {
+            "mae": 2.6234911522273214,
+            "rmse": 2.961440175114763,
+            "mape": 0.019159525247658137
+          },
+          "last_observation": {
+            "mae": 1.0999999999999968,
+            "rmse": 1.5149257407543066,
+            "mape": 0.007992547456818969
+          },
+          "seasonal_naive": {
+            "mae": 2.391666666666668,
+            "rmse": 2.8555501513135195,
+            "mape": 0.017370044963307876
+          }
+        }
+      },
+      "predictions": [
+        {
+          "month": "2010-01",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2009-12",
+          "actual": 103.1,
+          "model": 101.25793867064299,
+          "last_observation": 101.7,
+          "seasonal_naive": 98.6,
+          "absolute_errors": {
+            "model": 1.8420613293570085,
+            "last_observation": 1.3999999999999915,
+            "seasonal_naive": 4.5
+          }
+        },
+        {
+          "month": "2010-02",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2010-01",
+          "actual": 105.2,
+          "model": 102.47067214217488,
+          "last_observation": 103.1,
+          "seasonal_naive": 101.1,
+          "absolute_errors": {
+            "model": 2.729327857825126,
+            "last_observation": 2.1000000000000085,
+            "seasonal_naive": 4.1000000000000085
+          }
+        },
+        {
+          "month": "2010-03",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2010-02",
+          "actual": 105.4,
+          "model": 103.96153677865306,
+          "last_observation": 105.2,
+          "seasonal_naive": 95.8,
+          "absolute_errors": {
+            "model": 1.4384632213469501,
+            "last_observation": 0.20000000000000284,
+            "seasonal_naive": 9.600000000000009
+          }
+        },
+        {
+          "month": "2010-04",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2010-03",
+          "actual": 106.2,
+          "model": 105.29450097539136,
+          "last_observation": 105.4,
+          "seasonal_naive": 94.9,
+          "absolute_errors": {
+            "model": 0.9054990246086447,
+            "last_observation": 0.7999999999999972,
+            "seasonal_naive": 11.299999999999997
+          }
+        },
+        {
+          "month": "2010-05",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2010-04",
+          "actual": 106.3,
+          "model": 106.94079380691271,
+          "last_observation": 106.2,
+          "seasonal_naive": 95.1,
+          "absolute_errors": {
+            "model": 0.6407938069127113,
+            "last_observation": 0.09999999999999432,
+            "seasonal_naive": 11.200000000000003
+          }
+        },
+        {
+          "month": "2010-06",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2010-05",
+          "actual": 106.4,
+          "model": 107.04911409044082,
+          "last_observation": 106.3,
+          "seasonal_naive": 96.2,
+          "absolute_errors": {
+            "model": 0.6491140904408184,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 10.200000000000003
+          }
+        },
+        {
+          "month": "2010-07",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2010-06",
+          "actual": 106.9,
+          "model": 107.46607623958758,
+          "last_observation": 106.4,
+          "seasonal_naive": 98.4,
+          "absolute_errors": {
+            "model": 0.5660762395875736,
+            "last_observation": 0.5,
+            "seasonal_naive": 8.5
+          }
+        },
+        {
+          "month": "2010-08",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2010-07",
+          "actual": 106.7,
+          "model": 107.22863036687045,
+          "last_observation": 106.9,
+          "seasonal_naive": 99.2,
+          "absolute_errors": {
+            "model": 0.5286303668704448,
+            "last_observation": 0.20000000000000284,
+            "seasonal_naive": 7.5
+          }
+        },
+        {
+          "month": "2010-09",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2010-08",
+          "actual": 107.2,
+          "model": 107.55569016817635,
+          "last_observation": 106.7,
+          "seasonal_naive": 99.7,
+          "absolute_errors": {
+            "model": 0.355690168176352,
+            "last_observation": 0.5,
+            "seasonal_naive": 7.5
+          }
+        },
+        {
+          "month": "2010-10",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2010-09",
+          "actual": 107.8,
+          "model": 108.17766427803996,
+          "last_observation": 107.2,
+          "seasonal_naive": 98.6,
+          "absolute_errors": {
+            "model": 0.3776642780399584,
+            "last_observation": 0.5999999999999943,
+            "seasonal_naive": 9.200000000000003
+          }
+        },
+        {
+          "month": "2010-11",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2010-10",
+          "actual": 107.3,
+          "model": 108.0037474906703,
+          "last_observation": 107.8,
+          "seasonal_naive": 101.3,
+          "absolute_errors": {
+            "model": 0.7037474906703096,
+            "last_observation": 0.5,
+            "seasonal_naive": 6.0
+          }
+        },
+        {
+          "month": "2010-12",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2010-11",
+          "actual": 108.7,
+          "model": 107.90454058017694,
+          "last_observation": 107.3,
+          "seasonal_naive": 101.7,
+          "absolute_errors": {
+            "model": 0.7954594198230609,
+            "last_observation": 1.4000000000000057,
+            "seasonal_naive": 7.0
+          }
+        },
+        {
+          "month": "2011-01",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2010-12",
+          "actual": 110.0,
+          "model": 108.32689707649632,
+          "last_observation": 108.7,
+          "seasonal_naive": 103.1,
+          "absolute_errors": {
+            "model": 1.6731029235036772,
+            "last_observation": 1.2999999999999972,
+            "seasonal_naive": 6.900000000000006
+          }
+        },
+        {
+          "month": "2011-02",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2011-01",
+          "actual": 109.4,
+          "model": 108.85303519679123,
+          "last_observation": 110.0,
+          "seasonal_naive": 105.2,
+          "absolute_errors": {
+            "model": 0.5469648032087804,
+            "last_observation": 0.5999999999999943,
+            "seasonal_naive": 4.200000000000003
+          }
+        },
+        {
+          "month": "2011-03",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2011-02",
+          "actual": 110.9,
+          "model": 109.1190750162404,
+          "last_observation": 109.4,
+          "seasonal_naive": 105.4,
+          "absolute_errors": {
+            "model": 1.7809249837596042,
+            "last_observation": 1.5,
+            "seasonal_naive": 5.5
+          }
+        },
+        {
+          "month": "2011-04",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2011-03",
+          "actual": 110.3,
+          "model": 109.77032596059784,
+          "last_observation": 110.9,
+          "seasonal_naive": 106.2,
+          "absolute_errors": {
+            "model": 0.5296740394021526,
+            "last_observation": 0.6000000000000085,
+            "seasonal_naive": 4.099999999999994
+          }
+        },
+        {
+          "month": "2011-05",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2011-04",
+          "actual": 108.5,
+          "model": 110.48480479694547,
+          "last_observation": 110.3,
+          "seasonal_naive": 106.3,
+          "absolute_errors": {
+            "model": 1.9848047969454683,
+            "last_observation": 1.7999999999999972,
+            "seasonal_naive": 2.200000000000003
+          }
+        },
+        {
+          "month": "2011-06",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2011-05",
+          "actual": 110.3,
+          "model": 109.99970948486902,
+          "last_observation": 108.5,
+          "seasonal_naive": 106.4,
+          "absolute_errors": {
+            "model": 0.3002905151309818,
+            "last_observation": 1.7999999999999972,
+            "seasonal_naive": 3.8999999999999915
+          }
+        },
+        {
+          "month": "2011-07",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2011-06",
+          "actual": 110.1,
+          "model": 110.06135808644204,
+          "last_observation": 110.3,
+          "seasonal_naive": 106.9,
+          "absolute_errors": {
+            "model": 0.03864191355795299,
+            "last_observation": 0.20000000000000284,
+            "seasonal_naive": 3.1999999999999886
+          }
+        },
+        {
+          "month": "2011-08",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2011-07",
+          "actual": 110.6,
+          "model": 109.61818393401586,
+          "last_observation": 110.1,
+          "seasonal_naive": 106.7,
+          "absolute_errors": {
+            "model": 0.981816065984134,
+            "last_observation": 0.5,
+            "seasonal_naive": 3.8999999999999915
+          }
+        },
+        {
+          "month": "2011-09",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2011-08",
+          "actual": 111.2,
+          "model": 110.56424075104988,
+          "last_observation": 110.6,
+          "seasonal_naive": 107.2,
+          "absolute_errors": {
+            "model": 0.6357592489501229,
+            "last_observation": 0.6000000000000085,
+            "seasonal_naive": 4.0
+          }
+        },
+        {
+          "month": "2011-10",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2011-09",
+          "actual": 111.5,
+          "model": 111.02937488859475,
+          "last_observation": 111.2,
+          "seasonal_naive": 107.8,
+          "absolute_errors": {
+            "model": 0.47062511140525487,
+            "last_observation": 0.29999999999999716,
+            "seasonal_naive": 3.700000000000003
+          }
+        },
+        {
+          "month": "2011-11",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2011-10",
+          "actual": 111.8,
+          "model": 111.42854471016712,
+          "last_observation": 111.5,
+          "seasonal_naive": 107.3,
+          "absolute_errors": {
+            "model": 0.37145528983288045,
+            "last_observation": 0.29999999999999716,
+            "seasonal_naive": 4.5
+          }
+        },
+        {
+          "month": "2011-12",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2011-11",
+          "actual": 114.8,
+          "model": 111.42016244525499,
+          "last_observation": 111.8,
+          "seasonal_naive": 108.7,
+          "absolute_errors": {
+            "model": 3.3798375547450092,
+            "last_observation": 3.0,
+            "seasonal_naive": 6.099999999999994
+          }
+        },
+        {
+          "month": "2012-01",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2011-12",
+          "actual": 111.2,
+          "model": 112.63805675669698,
+          "last_observation": 114.8,
+          "seasonal_naive": 110.0,
+          "absolute_errors": {
+            "model": 1.4380567566969802,
+            "last_observation": 3.5999999999999943,
+            "seasonal_naive": 1.2000000000000028
+          }
+        },
+        {
+          "month": "2012-02",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2012-01",
+          "actual": 111.7,
+          "model": 112.60372890329764,
+          "last_observation": 111.2,
+          "seasonal_naive": 109.4,
+          "absolute_errors": {
+            "model": 0.9037289032976332,
+            "last_observation": 0.5,
+            "seasonal_naive": 2.299999999999997
+          }
+        },
+        {
+          "month": "2012-03",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2012-02",
+          "actual": 111.6,
+          "model": 111.90916113174791,
+          "last_observation": 111.7,
+          "seasonal_naive": 110.9,
+          "absolute_errors": {
+            "model": 0.3091611317479135,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 0.6999999999999886
+          }
+        },
+        {
+          "month": "2012-04",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2012-03",
+          "actual": 111.8,
+          "model": 110.78320087233176,
+          "last_observation": 111.6,
+          "seasonal_naive": 110.3,
+          "absolute_errors": {
+            "model": 1.0167991276682358,
+            "last_observation": 0.20000000000000284,
+            "seasonal_naive": 1.5
+          }
+        },
+        {
+          "month": "2012-05",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2012-04",
+          "actual": 112.7,
+          "model": 111.85006279843283,
+          "last_observation": 111.8,
+          "seasonal_naive": 108.5,
+          "absolute_errors": {
+            "model": 0.8499372015671725,
+            "last_observation": 0.9000000000000057,
+            "seasonal_naive": 4.200000000000003
+          }
+        },
+        {
+          "month": "2012-06",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2012-05",
+          "actual": 113.5,
+          "model": 111.83954738184771,
+          "last_observation": 112.7,
+          "seasonal_naive": 110.3,
+          "absolute_errors": {
+            "model": 1.6604526181522914,
+            "last_observation": 0.7999999999999972,
+            "seasonal_naive": 3.200000000000003
+          }
+        },
+        {
+          "month": "2012-07",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2012-06",
+          "actual": 113.2,
+          "model": 112.90698636130128,
+          "last_observation": 113.5,
+          "seasonal_naive": 110.1,
+          "absolute_errors": {
+            "model": 0.2930136386987243,
+            "last_observation": 0.29999999999999716,
+            "seasonal_naive": 3.1000000000000085
+          }
+        },
+        {
+          "month": "2012-08",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2012-07",
+          "actual": 112.5,
+          "model": 112.95292922263015,
+          "last_observation": 113.2,
+          "seasonal_naive": 110.6,
+          "absolute_errors": {
+            "model": 0.45292922263014646,
+            "last_observation": 0.7000000000000028,
+            "seasonal_naive": 1.9000000000000057
+          }
+        },
+        {
+          "month": "2012-09",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2012-08",
+          "actual": 111.8,
+          "model": 113.06321730380435,
+          "last_observation": 112.5,
+          "seasonal_naive": 111.2,
+          "absolute_errors": {
+            "model": 1.2632173038043533,
+            "last_observation": 0.7000000000000028,
+            "seasonal_naive": 0.5999999999999943
+          }
+        },
+        {
+          "month": "2012-10",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2012-09",
+          "actual": 110.2,
+          "model": 112.61719074363226,
+          "last_observation": 111.8,
+          "seasonal_naive": 111.5,
+          "absolute_errors": {
+            "model": 2.4171907436322613,
+            "last_observation": 1.5999999999999943,
+            "seasonal_naive": 1.2999999999999972
+          }
+        },
+        {
+          "month": "2012-11",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2012-10",
+          "actual": 111.8,
+          "model": 111.31145359192831,
+          "last_observation": 110.2,
+          "seasonal_naive": 111.8,
+          "absolute_errors": {
+            "model": 0.48854640807168437,
+            "last_observation": 1.5999999999999943,
+            "seasonal_naive": 0.0
+          }
+        },
+        {
+          "month": "2012-12",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2012-11",
+          "actual": 111.9,
+          "model": 110.41801284319988,
+          "last_observation": 111.8,
+          "seasonal_naive": 114.8,
+          "absolute_errors": {
+            "model": 1.4819871568001304,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 2.8999999999999915
+          }
+        },
+        {
+          "month": "2013-01",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2012-12",
+          "actual": 114.1,
+          "model": 110.96143449814345,
+          "last_observation": 111.9,
+          "seasonal_naive": 111.2,
+          "absolute_errors": {
+            "model": 3.1385655018565473,
+            "last_observation": 2.1999999999999886,
+            "seasonal_naive": 2.8999999999999915
+          }
+        },
+        {
+          "month": "2013-02",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2013-01",
+          "actual": 115.6,
+          "model": 112.3207754991954,
+          "last_observation": 114.1,
+          "seasonal_naive": 111.7,
+          "absolute_errors": {
+            "model": 3.279224500804588,
+            "last_observation": 1.5,
+            "seasonal_naive": 3.8999999999999915
+          }
+        },
+        {
+          "month": "2013-03",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2013-02",
+          "actual": 115.5,
+          "model": 113.25955919246509,
+          "last_observation": 115.6,
+          "seasonal_naive": 111.6,
+          "absolute_errors": {
+            "model": 2.2404408075349096,
+            "last_observation": 0.09999999999999432,
+            "seasonal_naive": 3.9000000000000057
+          }
+        },
+        {
+          "month": "2013-04",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2013-03",
+          "actual": 114.7,
+          "model": 114.53382819441408,
+          "last_observation": 115.5,
+          "seasonal_naive": 111.8,
+          "absolute_errors": {
+            "model": 0.16617180558591826,
+            "last_observation": 0.7999999999999972,
+            "seasonal_naive": 2.9000000000000057
+          }
+        },
+        {
+          "month": "2013-05",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2013-04",
+          "actual": 115.7,
+          "model": 115.28940666478621,
+          "last_observation": 114.7,
+          "seasonal_naive": 112.7,
+          "absolute_errors": {
+            "model": 0.4105933352137896,
+            "last_observation": 1.0,
+            "seasonal_naive": 3.0
+          }
+        },
+        {
+          "month": "2013-06",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2013-05",
+          "actual": 116.2,
+          "model": 115.06862976720811,
+          "last_observation": 115.7,
+          "seasonal_naive": 113.5,
+          "absolute_errors": {
+            "model": 1.1313702327918946,
+            "last_observation": 0.5,
+            "seasonal_naive": 2.700000000000003
+          }
+        },
+        {
+          "month": "2013-07",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2013-06",
+          "actual": 115.8,
+          "model": 115.72573893347878,
+          "last_observation": 116.2,
+          "seasonal_naive": 113.2,
+          "absolute_errors": {
+            "model": 0.07426106652121689,
+            "last_observation": 0.4000000000000057,
+            "seasonal_naive": 2.5999999999999943
+          }
+        },
+        {
+          "month": "2013-08",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2013-07",
+          "actual": 116.3,
+          "model": 115.81430388063787,
+          "last_observation": 115.8,
+          "seasonal_naive": 112.5,
+          "absolute_errors": {
+            "model": 0.48569611936213164,
+            "last_observation": 0.5,
+            "seasonal_naive": 3.799999999999997
+          }
+        },
+        {
+          "month": "2013-09",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2013-08",
+          "actual": 116.4,
+          "model": 116.3989472746015,
+          "last_observation": 116.3,
+          "seasonal_naive": 111.8,
+          "absolute_errors": {
+            "model": 0.0010527253985088691,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 4.6000000000000085
+          }
+        },
+        {
+          "month": "2013-10",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2013-09",
+          "actual": 116.3,
+          "model": 116.9081658330159,
+          "last_observation": 116.4,
+          "seasonal_naive": 110.2,
+          "absolute_errors": {
+            "model": 0.608165833015903,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 6.099999999999994
+          }
+        },
+        {
+          "month": "2013-11",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2013-10",
+          "actual": 118.7,
+          "model": 116.71092180456854,
+          "last_observation": 116.3,
+          "seasonal_naive": 111.8,
+          "absolute_errors": {
+            "model": 1.9890781954314605,
+            "last_observation": 2.4000000000000057,
+            "seasonal_naive": 6.900000000000006
+          }
+        },
+        {
+          "month": "2013-12",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2013-11",
+          "actual": 117.4,
+          "model": 117.32991820414115,
+          "last_observation": 118.7,
+          "seasonal_naive": 111.9,
+          "absolute_errors": {
+            "model": 0.07008179585885443,
+            "last_observation": 1.2999999999999972,
+            "seasonal_naive": 5.5
+          }
+        },
+        {
+          "month": "2014-01",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2013-12",
+          "actual": 115.9,
+          "model": 117.49233085583137,
+          "last_observation": 117.4,
+          "seasonal_naive": 114.1,
+          "absolute_errors": {
+            "model": 1.5923308558313636,
+            "last_observation": 1.5,
+            "seasonal_naive": 1.8000000000000114
+          }
+        },
+        {
+          "month": "2014-02",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2014-01",
+          "actual": 117.8,
+          "model": 117.14374154493385,
+          "last_observation": 115.9,
+          "seasonal_naive": 115.6,
+          "absolute_errors": {
+            "model": 0.6562584550661512,
+            "last_observation": 1.8999999999999915,
+            "seasonal_naive": 2.200000000000003
+          }
+        },
+        {
+          "month": "2014-03",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2014-02",
+          "actual": 119.7,
+          "model": 116.32483287385888,
+          "last_observation": 117.8,
+          "seasonal_naive": 115.5,
+          "absolute_errors": {
+            "model": 3.375167126141122,
+            "last_observation": 1.9000000000000057,
+            "seasonal_naive": 4.200000000000003
+          }
+        },
+        {
+          "month": "2014-04",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2014-03",
+          "actual": 120.2,
+          "model": 117.26618215745653,
+          "last_observation": 119.7,
+          "seasonal_naive": 114.7,
+          "absolute_errors": {
+            "model": 2.933817842543476,
+            "last_observation": 0.5,
+            "seasonal_naive": 5.5
+          }
+        },
+        {
+          "month": "2014-05",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2014-04",
+          "actual": 120.7,
+          "model": 119.46044266727758,
+          "last_observation": 120.2,
+          "seasonal_naive": 115.7,
+          "absolute_errors": {
+            "model": 1.239557332722427,
+            "last_observation": 0.5,
+            "seasonal_naive": 5.0
+          }
+        },
+        {
+          "month": "2014-06",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2014-05",
+          "actual": 119.4,
+          "model": 120.36642332385077,
+          "last_observation": 120.7,
+          "seasonal_naive": 116.2,
+          "absolute_errors": {
+            "model": 0.966423323850762,
+            "last_observation": 1.2999999999999972,
+            "seasonal_naive": 3.200000000000003
+          }
+        },
+        {
+          "month": "2014-07",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2014-06",
+          "actual": 120.1,
+          "model": 120.67281608575057,
+          "last_observation": 119.4,
+          "seasonal_naive": 115.8,
+          "absolute_errors": {
+            "model": 0.5728160857505742,
+            "last_observation": 0.6999999999999886,
+            "seasonal_naive": 4.299999999999997
+          }
+        },
+        {
+          "month": "2014-08",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2014-07",
+          "actual": 120.4,
+          "model": 120.13239698972825,
+          "last_observation": 120.1,
+          "seasonal_naive": 116.3,
+          "absolute_errors": {
+            "model": 0.26760301027175615,
+            "last_observation": 0.30000000000001137,
+            "seasonal_naive": 4.1000000000000085
+          }
+        },
+        {
+          "month": "2014-09",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2014-08",
+          "actual": 121.5,
+          "model": 120.27745560602852,
+          "last_observation": 120.4,
+          "seasonal_naive": 116.4,
+          "absolute_errors": {
+            "model": 1.222544393971475,
+            "last_observation": 1.0999999999999943,
+            "seasonal_naive": 5.099999999999994
+          }
+        },
+        {
+          "month": "2014-10",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2014-09",
+          "actual": 122.3,
+          "model": 121.35201781657769,
+          "last_observation": 121.5,
+          "seasonal_naive": 116.3,
+          "absolute_errors": {
+            "model": 0.9479821834223117,
+            "last_observation": 0.7999999999999972,
+            "seasonal_naive": 6.0
+          }
+        },
+        {
+          "month": "2014-11",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2014-10",
+          "actual": 122.9,
+          "model": 121.71271151656137,
+          "last_observation": 122.3,
+          "seasonal_naive": 118.7,
+          "absolute_errors": {
+            "model": 1.1872884834386355,
+            "last_observation": 0.6000000000000085,
+            "seasonal_naive": 4.200000000000003
+          }
+        },
+        {
+          "month": "2014-12",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2014-11",
+          "actual": 122.8,
+          "model": 122.58927736399863,
+          "last_observation": 122.9,
+          "seasonal_naive": 117.4,
+          "absolute_errors": {
+            "model": 0.2107226360013641,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 5.3999999999999915
+          }
+        },
+        {
+          "month": "2015-01",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2014-12",
+          "actual": 122.6,
+          "model": 123.38691093939697,
+          "last_observation": 122.8,
+          "seasonal_naive": 115.9,
+          "absolute_errors": {
+            "model": 0.7869109393969751,
+            "last_observation": 0.20000000000000284,
+            "seasonal_naive": 6.699999999999989
+          }
+        },
+        {
+          "month": "2015-02",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2015-01",
+          "actual": 121.7,
+          "model": 123.2472410318541,
+          "last_observation": 122.6,
+          "seasonal_naive": 117.8,
+          "absolute_errors": {
+            "model": 1.5472410318540994,
+            "last_observation": 0.8999999999999915,
+            "seasonal_naive": 3.9000000000000057
+          }
+        },
+        {
+          "month": "2015-03",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2015-02",
+          "actual": 122.6,
+          "model": 121.99370795698002,
+          "last_observation": 121.7,
+          "seasonal_naive": 119.7,
+          "absolute_errors": {
+            "model": 0.6062920430199767,
+            "last_observation": 0.8999999999999915,
+            "seasonal_naive": 2.8999999999999915
+          }
+        },
+        {
+          "month": "2015-04",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2015-03",
+          "actual": 121.6,
+          "model": 121.80505663752078,
+          "last_observation": 122.6,
+          "seasonal_naive": 120.2,
+          "absolute_errors": {
+            "model": 0.20505663752078362,
+            "last_observation": 1.0,
+            "seasonal_naive": 1.3999999999999915
+          }
+        },
+        {
+          "month": "2015-05",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2015-04",
+          "actual": 121.7,
+          "model": 122.02443622266256,
+          "last_observation": 121.6,
+          "seasonal_naive": 120.7,
+          "absolute_errors": {
+            "model": 0.32443622266255545,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 1.0
+          }
+        },
+        {
+          "month": "2015-06",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2015-05",
+          "actual": 121.3,
+          "model": 122.03627245189152,
+          "last_observation": 121.7,
+          "seasonal_naive": 119.4,
+          "absolute_errors": {
+            "model": 0.7362724518915229,
+            "last_observation": 0.4000000000000057,
+            "seasonal_naive": 1.8999999999999915
+          }
+        },
+        {
+          "month": "2015-07",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2015-06",
+          "actual": 122.4,
+          "model": 121.79889360330094,
+          "last_observation": 121.3,
+          "seasonal_naive": 120.1,
+          "absolute_errors": {
+            "model": 0.6011063966990662,
+            "last_observation": 1.1000000000000085,
+            "seasonal_naive": 2.3000000000000114
+          }
+        },
+        {
+          "month": "2015-08",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2015-07",
+          "actual": 122.9,
+          "model": 121.63720236950633,
+          "last_observation": 122.4,
+          "seasonal_naive": 120.4,
+          "absolute_errors": {
+            "model": 1.2627976304936794,
+            "last_observation": 0.5,
+            "seasonal_naive": 2.5
+          }
+        },
+        {
+          "month": "2015-09",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2015-08",
+          "actual": 123.1,
+          "model": 122.24540359157356,
+          "last_observation": 122.9,
+          "seasonal_naive": 121.5,
+          "absolute_errors": {
+            "model": 0.8545964084264313,
+            "last_observation": 0.19999999999998863,
+            "seasonal_naive": 1.5999999999999943
+          }
+        },
+        {
+          "month": "2015-10",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2015-09",
+          "actual": 122.6,
+          "model": 123.09333708751987,
+          "last_observation": 123.1,
+          "seasonal_naive": 122.3,
+          "absolute_errors": {
+            "model": 0.49333708751987615,
+            "last_observation": 0.5,
+            "seasonal_naive": 0.29999999999999716
+          }
+        },
+        {
+          "month": "2015-11",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2015-10",
+          "actual": 120.7,
+          "model": 122.90228627876822,
+          "last_observation": 122.6,
+          "seasonal_naive": 122.9,
+          "absolute_errors": {
+            "model": 2.202286278768213,
+            "last_observation": 1.8999999999999915,
+            "seasonal_naive": 2.200000000000003
+          }
+        },
+        {
+          "month": "2015-12",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2015-11",
+          "actual": 120.3,
+          "model": 121.74028881453016,
+          "last_observation": 120.7,
+          "seasonal_naive": 122.8,
+          "absolute_errors": {
+            "model": 1.440288814530163,
+            "last_observation": 0.4000000000000057,
+            "seasonal_naive": 2.5
+          }
+        },
+        {
+          "month": "2016-01",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2015-12",
+          "actual": 122.1,
+          "model": 120.7287632666361,
+          "last_observation": 120.3,
+          "seasonal_naive": 122.6,
+          "absolute_errors": {
+            "model": 1.3712367333639008,
+            "last_observation": 1.7999999999999972,
+            "seasonal_naive": 0.5
+          }
+        },
+        {
+          "month": "2016-02",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2016-01",
+          "actual": 121.4,
+          "model": 120.6535482396809,
+          "last_observation": 122.1,
+          "seasonal_naive": 121.7,
+          "absolute_errors": {
+            "model": 0.7464517603191041,
+            "last_observation": 0.6999999999999886,
+            "seasonal_naive": 0.29999999999999716
+          }
+        },
+        {
+          "month": "2016-03",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2016-02",
+          "actual": 120.4,
+          "model": 120.30320652237991,
+          "last_observation": 121.4,
+          "seasonal_naive": 122.6,
+          "absolute_errors": {
+            "model": 0.09679347762009627,
+            "last_observation": 1.0,
+            "seasonal_naive": 2.1999999999999886
+          }
+        },
+        {
+          "month": "2016-04",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2016-03",
+          "actual": 122.8,
+          "model": 120.43597394331557,
+          "last_observation": 120.4,
+          "seasonal_naive": 121.6,
+          "absolute_errors": {
+            "model": 2.3640260566844233,
+            "last_observation": 2.3999999999999915,
+            "seasonal_naive": 1.2000000000000028
+          }
+        },
+        {
+          "month": "2016-05",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2016-04",
+          "actual": 122.0,
+          "model": 121.37821821645282,
+          "last_observation": 122.8,
+          "seasonal_naive": 121.7,
+          "absolute_errors": {
+            "model": 0.6217817835471777,
+            "last_observation": 0.7999999999999972,
+            "seasonal_naive": 0.29999999999999716
+          }
+        },
+        {
+          "month": "2016-06",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2016-05",
+          "actual": 122.8,
+          "model": 121.50599653448171,
+          "last_observation": 122.0,
+          "seasonal_naive": 121.3,
+          "absolute_errors": {
+            "model": 1.294003465518287,
+            "last_observation": 0.7999999999999972,
+            "seasonal_naive": 1.5
+          }
+        },
+        {
+          "month": "2016-07",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2016-06",
+          "actual": 125.2,
+          "model": 122.68815601702629,
+          "last_observation": 122.8,
+          "seasonal_naive": 122.4,
+          "absolute_errors": {
+            "model": 2.5118439829737156,
+            "last_observation": 2.4000000000000057,
+            "seasonal_naive": 2.799999999999997
+          }
+        },
+        {
+          "month": "2016-08",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2016-07",
+          "actual": 123.2,
+          "model": 123.13929037716677,
+          "last_observation": 125.2,
+          "seasonal_naive": 122.9,
+          "absolute_errors": {
+            "model": 0.06070962283322956,
+            "last_observation": 2.0,
+            "seasonal_naive": 0.29999999999999716
+          }
+        },
+        {
+          "month": "2016-09",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2016-08",
+          "actual": 121.9,
+          "model": 123.87918162129867,
+          "last_observation": 123.2,
+          "seasonal_naive": 123.1,
+          "absolute_errors": {
+            "model": 1.9791816212986646,
+            "last_observation": 1.2999999999999972,
+            "seasonal_naive": 1.1999999999999886
+          }
+        },
+        {
+          "month": "2016-10",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2016-09",
+          "actual": 122.9,
+          "model": 123.82339487114893,
+          "last_observation": 121.9,
+          "seasonal_naive": 122.6,
+          "absolute_errors": {
+            "model": 0.923394871148929,
+            "last_observation": 1.0,
+            "seasonal_naive": 0.30000000000001137
+          }
+        },
+        {
+          "month": "2016-11",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2016-10",
+          "actual": 123.0,
+          "model": 122.96873749093481,
+          "last_observation": 122.9,
+          "seasonal_naive": 120.7,
+          "absolute_errors": {
+            "model": 0.03126250906518635,
+            "last_observation": 0.09999999999999432,
+            "seasonal_naive": 2.299999999999997
+          }
+        },
+        {
+          "month": "2016-12",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2016-11",
+          "actual": 124.2,
+          "model": 122.64473764575986,
+          "last_observation": 123.0,
+          "seasonal_naive": 120.3,
+          "absolute_errors": {
+            "model": 1.555262354240142,
+            "last_observation": 1.2000000000000028,
+            "seasonal_naive": 3.9000000000000057
+          }
+        },
+        {
+          "month": "2017-01",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2016-12",
+          "actual": 123.8,
+          "model": 123.39165160786388,
+          "last_observation": 124.2,
+          "seasonal_naive": 122.1,
+          "absolute_errors": {
+            "model": 0.4083483921361193,
+            "last_observation": 0.4000000000000057,
+            "seasonal_naive": 1.7000000000000028
+          }
+        },
+        {
+          "month": "2017-02",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2017-01",
+          "actual": 124.6,
+          "model": 123.85187525808817,
+          "last_observation": 123.8,
+          "seasonal_naive": 121.4,
+          "absolute_errors": {
+            "model": 0.7481247419118233,
+            "last_observation": 0.7999999999999972,
+            "seasonal_naive": 3.1999999999999886
+          }
+        },
+        {
+          "month": "2017-03",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2017-02",
+          "actual": 124.9,
+          "model": 124.11801193388386,
+          "last_observation": 124.6,
+          "seasonal_naive": 120.4,
+          "absolute_errors": {
+            "model": 0.781988066116142,
+            "last_observation": 0.30000000000001137,
+            "seasonal_naive": 4.5
+          }
+        },
+        {
+          "month": "2017-04",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2017-03",
+          "actual": 125.3,
+          "model": 124.0277207321372,
+          "last_observation": 124.9,
+          "seasonal_naive": 122.8,
+          "absolute_errors": {
+            "model": 1.2722792678627997,
+            "last_observation": 0.3999999999999915,
+            "seasonal_naive": 2.5
+          }
+        },
+        {
+          "month": "2017-05",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2017-04",
+          "actual": 125.9,
+          "model": 125.45059253278585,
+          "last_observation": 125.3,
+          "seasonal_naive": 122.0,
+          "absolute_errors": {
+            "model": 0.4494074672141579,
+            "last_observation": 0.6000000000000085,
+            "seasonal_naive": 3.9000000000000057
+          }
+        },
+        {
+          "month": "2017-06",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2017-05",
+          "actual": 125.8,
+          "model": 125.70166910852687,
+          "last_observation": 125.9,
+          "seasonal_naive": 122.8,
+          "absolute_errors": {
+            "model": 0.09833089147312535,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 3.0
+          }
+        },
+        {
+          "month": "2017-07",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2017-06",
+          "actual": 128.2,
+          "model": 126.1219957720304,
+          "last_observation": 125.8,
+          "seasonal_naive": 125.2,
+          "absolute_errors": {
+            "model": 2.0780042279695863,
+            "last_observation": 2.3999999999999915,
+            "seasonal_naive": 2.999999999999986
+          }
+        },
+        {
+          "month": "2017-08",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2017-07",
+          "actual": 128.9,
+          "model": 127.14620673509289,
+          "last_observation": 128.2,
+          "seasonal_naive": 123.2,
+          "absolute_errors": {
+            "model": 1.7537932649071166,
+            "last_observation": 0.700000000000017,
+            "seasonal_naive": 5.700000000000003
+          }
+        },
+        {
+          "month": "2017-09",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2017-08",
+          "actual": 128.8,
+          "model": 128.87901742545787,
+          "last_observation": 128.9,
+          "seasonal_naive": 121.9,
+          "absolute_errors": {
+            "model": 0.07901742545786306,
+            "last_observation": 0.09999999999999432,
+            "seasonal_naive": 6.900000000000006
+          }
+        },
+        {
+          "month": "2017-10",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2017-09",
+          "actual": 130.1,
+          "model": 130.25314584247892,
+          "last_observation": 128.8,
+          "seasonal_naive": 122.9,
+          "absolute_errors": {
+            "model": 0.1531458424789207,
+            "last_observation": 1.299999999999983,
+            "seasonal_naive": 7.199999999999989
+          }
+        },
+        {
+          "month": "2017-11",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2017-10",
+          "actual": 131.7,
+          "model": 130.84739191057875,
+          "last_observation": 130.1,
+          "seasonal_naive": 123.0,
+          "absolute_errors": {
+            "model": 0.8526080894212384,
+            "last_observation": 1.5999999999999943,
+            "seasonal_naive": 8.699999999999989
+          }
+        },
+        {
+          "month": "2017-12",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2017-11",
+          "actual": 133.3,
+          "model": 131.55183539234883,
+          "last_observation": 131.7,
+          "seasonal_naive": 124.2,
+          "absolute_errors": {
+            "model": 1.7481646076511765,
+            "last_observation": 1.6000000000000227,
+            "seasonal_naive": 9.100000000000009
+          }
+        },
+        {
+          "month": "2018-01",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2017-12",
+          "actual": 131.3,
+          "model": 133.63388695743083,
+          "last_observation": 133.3,
+          "seasonal_naive": 123.8,
+          "absolute_errors": {
+            "model": 2.3338869574308205,
+            "last_observation": 2.0,
+            "seasonal_naive": 7.500000000000014
+          }
+        },
+        {
+          "month": "2018-02",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2018-01",
+          "actual": 133.7,
+          "model": 134.03945872794094,
+          "last_observation": 131.3,
+          "seasonal_naive": 124.6,
+          "absolute_errors": {
+            "model": 0.33945872794095067,
+            "last_observation": 2.3999999999999773,
+            "seasonal_naive": 9.099999999999994
+          }
+        },
+        {
+          "month": "2018-03",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2018-02",
+          "actual": 135.3,
+          "model": 134.30824353277006,
+          "last_observation": 133.7,
+          "seasonal_naive": 124.9,
+          "absolute_errors": {
+            "model": 0.9917564672299477,
+            "last_observation": 1.6000000000000227,
+            "seasonal_naive": 10.400000000000006
+          }
+        },
+        {
+          "month": "2018-04",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2018-03",
+          "actual": 135.2,
+          "model": 135.0818708932732,
+          "last_observation": 135.3,
+          "seasonal_naive": 125.3,
+          "absolute_errors": {
+            "model": 0.11812910672679777,
+            "last_observation": 0.10000000000002274,
+            "seasonal_naive": 9.899999999999991
+          }
+        },
+        {
+          "month": "2018-05",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2018-04",
+          "actual": 136.2,
+          "model": 137.49124838736927,
+          "last_observation": 135.2,
+          "seasonal_naive": 125.9,
+          "absolute_errors": {
+            "model": 1.2912483873692793,
+            "last_observation": 1.0,
+            "seasonal_naive": 10.299999999999983
+          }
+        },
+        {
+          "month": "2018-06",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2018-05",
+          "actual": 136.9,
+          "model": 138.44578499635637,
+          "last_observation": 136.2,
+          "seasonal_naive": 125.8,
+          "absolute_errors": {
+            "model": 1.5457849963563604,
+            "last_observation": 0.700000000000017,
+            "seasonal_naive": 11.100000000000009
+          }
+        },
+        {
+          "month": "2018-07",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2018-06",
+          "actual": 135.6,
+          "model": 139.22641988138915,
+          "last_observation": 136.9,
+          "seasonal_naive": 128.2,
+          "absolute_errors": {
+            "model": 3.626419881389154,
+            "last_observation": 1.3000000000000114,
+            "seasonal_naive": 7.400000000000006
+          }
+        },
+        {
+          "month": "2018-08",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2018-07",
+          "actual": 136.2,
+          "model": 138.79832358510237,
+          "last_observation": 135.6,
+          "seasonal_naive": 128.9,
+          "absolute_errors": {
+            "model": 2.598323585102378,
+            "last_observation": 0.5999999999999943,
+            "seasonal_naive": 7.299999999999983
+          }
+        },
+        {
+          "month": "2018-09",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2018-08",
+          "actual": 138.0,
+          "model": 139.1330482746408,
+          "last_observation": 136.2,
+          "seasonal_naive": 128.8,
+          "absolute_errors": {
+            "model": 1.1330482746407995,
+            "last_observation": 1.8000000000000114,
+            "seasonal_naive": 9.199999999999989
+          }
+        },
+        {
+          "month": "2018-10",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2018-09",
+          "actual": 139.1,
+          "model": 139.70057670081218,
+          "last_observation": 138.0,
+          "seasonal_naive": 130.1,
+          "absolute_errors": {
+            "model": 0.6005767008121836,
+            "last_observation": 1.0999999999999943,
+            "seasonal_naive": 9.0
+          }
+        },
+        {
+          "month": "2018-11",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2018-10",
+          "actual": 139.2,
+          "model": 140.8370197194004,
+          "last_observation": 139.1,
+          "seasonal_naive": 131.7,
+          "absolute_errors": {
+            "model": 1.6370197194003993,
+            "last_observation": 0.09999999999999432,
+            "seasonal_naive": 7.5
+          }
+        },
+        {
+          "month": "2018-12",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2018-11",
+          "actual": 137.2,
+          "model": 141.62455159453887,
+          "last_observation": 139.2,
+          "seasonal_naive": 133.3,
+          "absolute_errors": {
+            "model": 4.424551594538883,
+            "last_observation": 2.0,
+            "seasonal_naive": 3.8999999999999773
+          }
+        },
+        {
+          "month": "2019-01",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2018-12",
+          "actual": 137.5,
+          "model": 141.65136130928684,
+          "last_observation": 137.2,
+          "seasonal_naive": 131.3,
+          "absolute_errors": {
+            "model": 4.151361309286841,
+            "last_observation": 0.30000000000001137,
+            "seasonal_naive": 6.199999999999989
+          }
+        },
+        {
+          "month": "2019-02",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2019-01",
+          "actual": 136.3,
+          "model": 140.53806473081465,
+          "last_observation": 137.5,
+          "seasonal_naive": 133.7,
+          "absolute_errors": {
+            "model": 4.238064730814642,
+            "last_observation": 1.1999999999999886,
+            "seasonal_naive": 2.6000000000000227
+          }
+        },
+        {
+          "month": "2019-03",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2019-02",
+          "actual": 136.4,
+          "model": 138.3852906879783,
+          "last_observation": 136.3,
+          "seasonal_naive": 135.3,
+          "absolute_errors": {
+            "model": 1.9852906879783063,
+            "last_observation": 0.09999999999999432,
+            "seasonal_naive": 1.0999999999999943
+          }
+        },
+        {
+          "month": "2019-04",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2019-03",
+          "actual": 137.6,
+          "model": 137.99323579668388,
+          "last_observation": 136.4,
+          "seasonal_naive": 135.2,
+          "absolute_errors": {
+            "model": 0.3932357966838822,
+            "last_observation": 1.1999999999999886,
+            "seasonal_naive": 2.4000000000000057
+          }
+        },
+        {
+          "month": "2019-05",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2019-04",
+          "actual": 137.4,
+          "model": 138.6616510560123,
+          "last_observation": 137.6,
+          "seasonal_naive": 136.2,
+          "absolute_errors": {
+            "model": 1.2616510560122833,
+            "last_observation": 0.19999999999998863,
+            "seasonal_naive": 1.200000000000017
+          }
+        },
+        {
+          "month": "2019-06",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2019-05",
+          "actual": 136.6,
+          "model": 138.86398551244613,
+          "last_observation": 137.4,
+          "seasonal_naive": 136.9,
+          "absolute_errors": {
+            "model": 2.2639855124461405,
+            "last_observation": 0.8000000000000114,
+            "seasonal_naive": 0.30000000000001137
+          }
+        },
+        {
+          "month": "2019-07",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2019-06",
+          "actual": 138.6,
+          "model": 139.5847411779378,
+          "last_observation": 136.6,
+          "seasonal_naive": 135.6,
+          "absolute_errors": {
+            "model": 0.9847411779377921,
+            "last_observation": 2.0,
+            "seasonal_naive": 3.0
+          }
+        },
+        {
+          "month": "2019-08",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2019-07",
+          "actual": 140.7,
+          "model": 139.44382971483685,
+          "last_observation": 138.6,
+          "seasonal_naive": 136.2,
+          "absolute_errors": {
+            "model": 1.2561702851631367,
+            "last_observation": 2.0999999999999943,
+            "seasonal_naive": 4.5
+          }
+        },
+        {
+          "month": "2019-09",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2019-08",
+          "actual": 137.0,
+          "model": 140.99477770697834,
+          "last_observation": 140.7,
+          "seasonal_naive": 138.0,
+          "absolute_errors": {
+            "model": 3.99477770697834,
+            "last_observation": 3.6999999999999886,
+            "seasonal_naive": 1.0
+          }
+        },
+        {
+          "month": "2019-10",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2019-09",
+          "actual": 137.0,
+          "model": 141.27834236855773,
+          "last_observation": 137.0,
+          "seasonal_naive": 139.1,
+          "absolute_errors": {
+            "model": 4.27834236855773,
+            "last_observation": 0.0,
+            "seasonal_naive": 2.0999999999999943
+          }
+        },
+        {
+          "month": "2019-11",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2019-10",
+          "actual": 136.7,
+          "model": 140.31102671027546,
+          "last_observation": 137.0,
+          "seasonal_naive": 139.2,
+          "absolute_errors": {
+            "model": 3.6110267102754676,
+            "last_observation": 0.30000000000001137,
+            "seasonal_naive": 2.5
+          }
+        },
+        {
+          "month": "2019-12",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2019-11",
+          "actual": 135.4,
+          "model": 138.4632464845933,
+          "last_observation": 136.7,
+          "seasonal_naive": 137.2,
+          "absolute_errors": {
+            "model": 3.063246484593293,
+            "last_observation": 1.299999999999983,
+            "seasonal_naive": 1.799999999999983
+          }
+        }
+      ]
+    },
+    "monthly_refit": {
+      "policy": "monthly_refit",
+      "months": 120,
+      "metrics": {
+        "model": {
+          "mae": 1.1678774977261421,
+          "rmse": 1.5136706977528351,
+          "mape": 0.009585009643918795
+        },
+        "last_observation": {
+          "mae": 0.9658333333333335,
+          "rmse": 1.2375042087470507,
+          "mape": 0.007962053968845325
+        },
+        "seasonal_naive": {
+          "mae": 4.234999999999999,
+          "rmse": 5.101584721110359,
+          "mape": 0.0351827545469972
+        }
+      },
+      "by_year": {
+        "2010": {
+          "model": {
+            "mae": 1.0803704887632886,
+            "rmse": 1.2436116008083888,
+            "mape": 0.010193672220088126
+          },
+          "last_observation": {
+            "mae": 0.7000000000000005,
+            "rmse": 0.9210501253098742,
+            "mape": 0.006597761795182038
+          },
+          "seasonal_naive": {
+            "mae": 8.050000000000002,
+            "rmse": 8.370483856982226,
+            "mape": 0.07556310034341855
+          }
+        },
+        "2011": {
+          "model": {
+            "mae": 0.8714102248217372,
+            "rmse": 1.2685311812730338,
+            "mape": 0.007822851182013894
+          },
+          "last_observation": {
+            "mae": 1.0416666666666667,
+            "rmse": 1.321930406640228,
+            "mape": 0.009368033537485589
+          },
+          "seasonal_naive": {
+            "mae": 4.349999999999998,
+            "rmse": 4.518111699961978,
+            "mape": 0.03919889980396418
+          }
+        },
+        "2012": {
+          "model": {
+            "mae": 1.1479778086200803,
+            "rmse": 1.3296235676139705,
+            "mape": 0.010279071828814814
+          },
+          "last_observation": {
+            "mae": 0.9250000000000007,
+            "rmse": 1.3200378782444064,
+            "mape": 0.008285597062845195
+          },
+          "seasonal_naive": {
+            "mae": 1.9083333333333325,
+            "rmse": 2.255179224215525,
+            "mape": 0.016990489138223912
+          }
+        },
+        "2013": {
+          "model": {
+            "mae": 1.0448706605987752,
+            "rmse": 1.4015875804647786,
+            "mape": 0.009019728088819198
+          },
+          "last_observation": {
+            "mae": 0.9083333333333338,
+            "rmse": 1.185678427455493,
+            "mape": 0.007817358277378013
+          },
+          "seasonal_naive": {
+            "mae": 4.066666666666666,
+            "rmse": 4.291076011134425,
+            "mape": 0.034953503116399776
+          }
+        },
+        "2014": {
+          "model": {
+            "mae": 1.1859410607408922,
+            "rmse": 1.457316616523059,
+            "mape": 0.009903623274522958
+          },
+          "last_observation": {
+            "mae": 0.9333333333333336,
+            "rmse": 1.097724920005006,
+            "mape": 0.0078121298613226245
+          },
+          "seasonal_naive": {
+            "mae": 4.250000000000001,
+            "rmse": 4.428317965096906,
+            "mape": 0.03519304590216451
+          }
+        },
+        "2015": {
+          "model": {
+            "mae": 1.1640586798983878,
+            "rmse": 1.3921413704751926,
+            "mape": 0.00957383441530244
+          },
+          "last_observation": {
+            "mae": 0.6749999999999995,
+            "rmse": 0.8341662504161447,
+            "mape": 0.0055446076377166685
+          },
+          "seasonal_naive": {
+            "mae": 2.4333333333333313,
+            "rmse": 2.8919428302325274,
+            "mape": 0.019944057843619127
+          }
+        },
+        "2016": {
+          "model": {
+            "mae": 1.0309218350520766,
+            "rmse": 1.2513216063712496,
+            "mape": 0.008384631347004654
+          },
+          "last_observation": {
+            "mae": 1.2916666666666643,
+            "rmse": 1.4625890286292533,
+            "mape": 0.010509070743756064
+          },
+          "seasonal_naive": {
+            "mae": 1.3999999999999986,
+            "rmse": 1.8009256878986786,
+            "mape": 0.01137243041320147
+          }
+        },
+        "2017": {
+          "model": {
+            "mae": 0.5505548588948356,
+            "rmse": 0.7782900914441706,
+            "mape": 0.0042692919894604525
+          },
+          "last_observation": {
+            "mae": 0.8583333333333355,
+            "rmse": 1.0988630487917956,
+            "mape": 0.0066565227640634295
+          },
+          "seasonal_naive": {
+            "mae": 4.949999999999998,
+            "rmse": 5.502120803229725,
+            "mape": 0.038423359702570575
+          }
+        },
+        "2018": {
+          "model": {
+            "mae": 1.6358068610115357,
+            "rmse": 2.100524200519236,
+            "mape": 0.012051546088200341
+          },
+          "last_observation": {
+            "mae": 1.2250000000000039,
+            "rmse": 1.4239030865898155,
+            "mape": 0.009036910551884651
+          },
+          "seasonal_naive": {
+            "mae": 8.549999999999995,
+            "rmse": 8.754427451295712,
+            "mape": 0.06281861424310205
+          }
+        },
+        "2019": {
+          "model": {
+            "mae": 1.9668624988598136,
+            "rmse": 2.319122593007823,
+            "mape": 0.01435184600496107
+          },
+          "last_observation": {
+            "mae": 1.0999999999999968,
+            "rmse": 1.5149257407543066,
+            "mape": 0.007992547456818969
+          },
+          "seasonal_naive": {
+            "mae": 2.391666666666668,
+            "rmse": 2.8555501513135195,
+            "mape": 0.017370044963307876
+          }
+        }
+      },
+      "predictions": [
+        {
+          "month": "2010-01",
+          "trained_through": "2009-12",
+          "training_months": 108,
+          "observed_through": "2009-12",
+          "actual": 103.1,
+          "model": 101.25793867064299,
+          "last_observation": 101.7,
+          "seasonal_naive": 98.6,
+          "absolute_errors": {
+            "model": 1.8420613293570085,
+            "last_observation": 1.3999999999999915,
+            "seasonal_naive": 4.5
+          }
+        },
+        {
+          "month": "2010-02",
+          "trained_through": "2010-01",
+          "training_months": 109,
+          "observed_through": "2010-01",
+          "actual": 105.2,
+          "model": 102.80390591166966,
+          "last_observation": 103.1,
+          "seasonal_naive": 101.1,
+          "absolute_errors": {
+            "model": 2.3960940883303437,
+            "last_observation": 2.1000000000000085,
+            "seasonal_naive": 4.1000000000000085
+          }
+        },
+        {
+          "month": "2010-03",
+          "trained_through": "2010-02",
+          "training_months": 110,
+          "observed_through": "2010-02",
+          "actual": 105.4,
+          "model": 104.87764208603517,
+          "last_observation": 105.2,
+          "seasonal_naive": 95.8,
+          "absolute_errors": {
+            "model": 0.5223579139648393,
+            "last_observation": 0.20000000000000284,
+            "seasonal_naive": 9.600000000000009
+          }
+        },
+        {
+          "month": "2010-04",
+          "trained_through": "2010-03",
+          "training_months": 111,
+          "observed_through": "2010-03",
+          "actual": 106.2,
+          "model": 106.39131064953945,
+          "last_observation": 105.4,
+          "seasonal_naive": 94.9,
+          "absolute_errors": {
+            "model": 0.19131064953944588,
+            "last_observation": 0.7999999999999972,
+            "seasonal_naive": 11.299999999999997
+          }
+        },
+        {
+          "month": "2010-05",
+          "trained_through": "2010-04",
+          "training_months": 112,
+          "observed_through": "2010-04",
+          "actual": 106.3,
+          "model": 108.04521197753664,
+          "last_observation": 106.2,
+          "seasonal_naive": 95.1,
+          "absolute_errors": {
+            "model": 1.7452119775366413,
+            "last_observation": 0.09999999999999432,
+            "seasonal_naive": 11.200000000000003
+          }
+        },
+        {
+          "month": "2010-06",
+          "trained_through": "2010-05",
+          "training_months": 113,
+          "observed_through": "2010-05",
+          "actual": 106.4,
+          "model": 107.80268461134023,
+          "last_observation": 106.3,
+          "seasonal_naive": 96.2,
+          "absolute_errors": {
+            "model": 1.40268461134022,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 10.200000000000003
+          }
+        },
+        {
+          "month": "2010-07",
+          "trained_through": "2010-06",
+          "training_months": 114,
+          "observed_through": "2010-06",
+          "actual": 106.9,
+          "model": 107.97124900399972,
+          "last_observation": 106.4,
+          "seasonal_naive": 98.4,
+          "absolute_errors": {
+            "model": 1.0712490039997107,
+            "last_observation": 0.5,
+            "seasonal_naive": 8.5
+          }
+        },
+        {
+          "month": "2010-08",
+          "trained_through": "2010-07",
+          "training_months": 115,
+          "observed_through": "2010-07",
+          "actual": 106.7,
+          "model": 107.61400169086795,
+          "last_observation": 106.9,
+          "seasonal_naive": 99.2,
+          "absolute_errors": {
+            "model": 0.9140016908679485,
+            "last_observation": 0.20000000000000284,
+            "seasonal_naive": 7.5
+          }
+        },
+        {
+          "month": "2010-09",
+          "trained_through": "2010-08",
+          "training_months": 116,
+          "observed_through": "2010-08",
+          "actual": 107.2,
+          "model": 107.86568045093168,
+          "last_observation": 106.7,
+          "seasonal_naive": 99.7,
+          "absolute_errors": {
+            "model": 0.6656804509316743,
+            "last_observation": 0.5,
+            "seasonal_naive": 7.5
+          }
+        },
+        {
+          "month": "2010-10",
+          "trained_through": "2010-09",
+          "training_months": 117,
+          "observed_through": "2010-09",
+          "actual": 107.8,
+          "model": 108.46317790403988,
+          "last_observation": 107.2,
+          "seasonal_naive": 98.6,
+          "absolute_errors": {
+            "model": 0.663177904039884,
+            "last_observation": 0.5999999999999943,
+            "seasonal_naive": 9.200000000000003
+          }
+        },
+        {
+          "month": "2010-11",
+          "trained_through": "2010-10",
+          "training_months": 118,
+          "observed_through": "2010-10",
+          "actual": 107.3,
+          "model": 108.20476880728131,
+          "last_observation": 107.8,
+          "seasonal_naive": 101.3,
+          "absolute_errors": {
+            "model": 0.9047688072813145,
+            "last_observation": 0.5,
+            "seasonal_naive": 6.0
+          }
+        },
+        {
+          "month": "2010-12",
+          "trained_through": "2010-11",
+          "training_months": 119,
+          "observed_through": "2010-11",
+          "actual": 108.7,
+          "model": 108.05415256202957,
+          "last_observation": 107.3,
+          "seasonal_naive": 101.7,
+          "absolute_errors": {
+            "model": 0.6458474379704313,
+            "last_observation": 1.4000000000000057,
+            "seasonal_naive": 7.0
+          }
+        },
+        {
+          "month": "2011-01",
+          "trained_through": "2010-12",
+          "training_months": 120,
+          "observed_through": "2010-12",
+          "actual": 110.0,
+          "model": 108.69635851010817,
+          "last_observation": 108.7,
+          "seasonal_naive": 103.1,
+          "absolute_errors": {
+            "model": 1.303641489891831,
+            "last_observation": 1.2999999999999972,
+            "seasonal_naive": 6.900000000000006
+          }
+        },
+        {
+          "month": "2011-02",
+          "trained_through": "2011-01",
+          "training_months": 121,
+          "observed_through": "2011-01",
+          "actual": 109.4,
+          "model": 109.33965425059178,
+          "last_observation": 110.0,
+          "seasonal_naive": 105.2,
+          "absolute_errors": {
+            "model": 0.06034574940822779,
+            "last_observation": 0.5999999999999943,
+            "seasonal_naive": 4.200000000000003
+          }
+        },
+        {
+          "month": "2011-03",
+          "trained_through": "2011-02",
+          "training_months": 122,
+          "observed_through": "2011-02",
+          "actual": 110.9,
+          "model": 109.45903077983608,
+          "last_observation": 109.4,
+          "seasonal_naive": 105.4,
+          "absolute_errors": {
+            "model": 1.4409692201639217,
+            "last_observation": 1.5,
+            "seasonal_naive": 5.5
+          }
+        },
+        {
+          "month": "2011-04",
+          "trained_through": "2011-03",
+          "training_months": 123,
+          "observed_through": "2011-03",
+          "actual": 110.3,
+          "model": 110.08447144395619,
+          "last_observation": 110.9,
+          "seasonal_naive": 106.2,
+          "absolute_errors": {
+            "model": 0.21552855604380738,
+            "last_observation": 0.6000000000000085,
+            "seasonal_naive": 4.099999999999994
+          }
+        },
+        {
+          "month": "2011-05",
+          "trained_through": "2011-04",
+          "training_months": 124,
+          "observed_through": "2011-04",
+          "actual": 108.5,
+          "model": 110.6523761105393,
+          "last_observation": 110.3,
+          "seasonal_naive": 106.3,
+          "absolute_errors": {
+            "model": 2.1523761105392936,
+            "last_observation": 1.7999999999999972,
+            "seasonal_naive": 2.200000000000003
+          }
+        },
+        {
+          "month": "2011-06",
+          "trained_through": "2011-05",
+          "training_months": 125,
+          "observed_through": "2011-05",
+          "actual": 110.3,
+          "model": 110.09987140924632,
+          "last_observation": 108.5,
+          "seasonal_naive": 106.4,
+          "absolute_errors": {
+            "model": 0.20012859075367828,
+            "last_observation": 1.7999999999999972,
+            "seasonal_naive": 3.8999999999999915
+          }
+        },
+        {
+          "month": "2011-07",
+          "trained_through": "2011-06",
+          "training_months": 126,
+          "observed_through": "2011-06",
+          "actual": 110.1,
+          "model": 110.17145731146894,
+          "last_observation": 110.3,
+          "seasonal_naive": 106.9,
+          "absolute_errors": {
+            "model": 0.07145731146894718,
+            "last_observation": 0.20000000000000284,
+            "seasonal_naive": 3.1999999999999886
+          }
+        },
+        {
+          "month": "2011-08",
+          "trained_through": "2011-07",
+          "training_months": 127,
+          "observed_through": "2011-07",
+          "actual": 110.6,
+          "model": 109.73304322866296,
+          "last_observation": 110.1,
+          "seasonal_naive": 106.7,
+          "absolute_errors": {
+            "model": 0.8669567713370299,
+            "last_observation": 0.5,
+            "seasonal_naive": 3.8999999999999915
+          }
+        },
+        {
+          "month": "2011-09",
+          "trained_through": "2011-08",
+          "training_months": 128,
+          "observed_through": "2011-08",
+          "actual": 111.2,
+          "model": 110.71392904708112,
+          "last_observation": 110.6,
+          "seasonal_naive": 107.2,
+          "absolute_errors": {
+            "model": 0.4860709529188796,
+            "last_observation": 0.6000000000000085,
+            "seasonal_naive": 4.0
+          }
+        },
+        {
+          "month": "2011-10",
+          "trained_through": "2011-09",
+          "training_months": 129,
+          "observed_through": "2011-09",
+          "actual": 111.5,
+          "model": 111.18405758446157,
+          "last_observation": 111.2,
+          "seasonal_naive": 107.8,
+          "absolute_errors": {
+            "model": 0.31594241553843005,
+            "last_observation": 0.29999999999999716,
+            "seasonal_naive": 3.700000000000003
+          }
+        },
+        {
+          "month": "2011-11",
+          "trained_through": "2011-10",
+          "training_months": 130,
+          "observed_through": "2011-10",
+          "actual": 111.8,
+          "model": 111.56508315803937,
+          "last_observation": 111.5,
+          "seasonal_naive": 107.3,
+          "absolute_errors": {
+            "model": 0.2349168419606258,
+            "last_observation": 0.29999999999999716,
+            "seasonal_naive": 4.5
+          }
+        },
+        {
+          "month": "2011-12",
+          "trained_through": "2011-11",
+          "training_months": 131,
+          "observed_through": "2011-11",
+          "actual": 114.8,
+          "model": 111.69141131216382,
+          "last_observation": 111.8,
+          "seasonal_naive": 108.7,
+          "absolute_errors": {
+            "model": 3.108588687836175,
+            "last_observation": 3.0,
+            "seasonal_naive": 6.099999999999994
+          }
+        },
+        {
+          "month": "2012-01",
+          "trained_through": "2011-12",
+          "training_months": 132,
+          "observed_through": "2011-12",
+          "actual": 111.2,
+          "model": 113.25263008113926,
+          "last_observation": 114.8,
+          "seasonal_naive": 110.0,
+          "absolute_errors": {
+            "model": 2.052630081139256,
+            "last_observation": 3.5999999999999943,
+            "seasonal_naive": 1.2000000000000028
+          }
+        },
+        {
+          "month": "2012-02",
+          "trained_through": "2012-01",
+          "training_months": 133,
+          "observed_through": "2012-01",
+          "actual": 111.7,
+          "model": 113.1474117834021,
+          "last_observation": 111.2,
+          "seasonal_naive": 109.4,
+          "absolute_errors": {
+            "model": 1.447411783402103,
+            "last_observation": 0.5,
+            "seasonal_naive": 2.299999999999997
+          }
+        },
+        {
+          "month": "2012-03",
+          "trained_through": "2012-02",
+          "training_months": 134,
+          "observed_through": "2012-02",
+          "actual": 111.6,
+          "model": 112.36329871566979,
+          "last_observation": 111.7,
+          "seasonal_naive": 110.9,
+          "absolute_errors": {
+            "model": 0.7632987156697908,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 0.6999999999999886
+          }
+        },
+        {
+          "month": "2012-04",
+          "trained_through": "2012-03",
+          "training_months": 135,
+          "observed_through": "2012-03",
+          "actual": 111.8,
+          "model": 111.05846692927935,
+          "last_observation": 111.6,
+          "seasonal_naive": 110.3,
+          "absolute_errors": {
+            "model": 0.7415330707206493,
+            "last_observation": 0.20000000000000284,
+            "seasonal_naive": 1.5
+          }
+        },
+        {
+          "month": "2012-05",
+          "trained_through": "2012-04",
+          "training_months": 136,
+          "observed_through": "2012-04",
+          "actual": 112.7,
+          "model": 111.7985920649391,
+          "last_observation": 111.8,
+          "seasonal_naive": 108.5,
+          "absolute_errors": {
+            "model": 0.9014079350609023,
+            "last_observation": 0.9000000000000057,
+            "seasonal_naive": 4.200000000000003
+          }
+        },
+        {
+          "month": "2012-06",
+          "trained_through": "2012-05",
+          "training_months": 137,
+          "observed_through": "2012-05",
+          "actual": 113.5,
+          "model": 111.9895564046304,
+          "last_observation": 112.7,
+          "seasonal_naive": 110.3,
+          "absolute_errors": {
+            "model": 1.510443595369594,
+            "last_observation": 0.7999999999999972,
+            "seasonal_naive": 3.200000000000003
+          }
+        },
+        {
+          "month": "2012-07",
+          "trained_through": "2012-06",
+          "training_months": 138,
+          "observed_through": "2012-06",
+          "actual": 113.2,
+          "model": 113.08149006712036,
+          "last_observation": 113.5,
+          "seasonal_naive": 110.1,
+          "absolute_errors": {
+            "model": 0.11850993287964684,
+            "last_observation": 0.29999999999999716,
+            "seasonal_naive": 3.1000000000000085
+          }
+        },
+        {
+          "month": "2012-08",
+          "trained_through": "2012-07",
+          "training_months": 139,
+          "observed_through": "2012-07",
+          "actual": 112.5,
+          "model": 113.21213109969085,
+          "last_observation": 113.2,
+          "seasonal_naive": 110.6,
+          "absolute_errors": {
+            "model": 0.7121310996908505,
+            "last_observation": 0.7000000000000028,
+            "seasonal_naive": 1.9000000000000057
+          }
+        },
+        {
+          "month": "2012-09",
+          "trained_through": "2012-08",
+          "training_months": 140,
+          "observed_through": "2012-08",
+          "actual": 111.8,
+          "model": 113.28421269534468,
+          "last_observation": 112.5,
+          "seasonal_naive": 111.2,
+          "absolute_errors": {
+            "model": 1.4842126953446808,
+            "last_observation": 0.7000000000000028,
+            "seasonal_naive": 0.5999999999999943
+          }
+        },
+        {
+          "month": "2012-10",
+          "trained_through": "2012-09",
+          "training_months": 141,
+          "observed_through": "2012-09",
+          "actual": 110.2,
+          "model": 112.78828888853666,
+          "last_observation": 111.8,
+          "seasonal_naive": 111.5,
+          "absolute_errors": {
+            "model": 2.5882888885366526,
+            "last_observation": 1.5999999999999943,
+            "seasonal_naive": 1.2999999999999972
+          }
+        },
+        {
+          "month": "2012-11",
+          "trained_through": "2012-10",
+          "training_months": 142,
+          "observed_through": "2012-10",
+          "actual": 111.8,
+          "model": 111.3858725147614,
+          "last_observation": 110.2,
+          "seasonal_naive": 111.8,
+          "absolute_errors": {
+            "model": 0.4141274852385948,
+            "last_observation": 1.5999999999999943,
+            "seasonal_naive": 0.0
+          }
+        },
+        {
+          "month": "2012-12",
+          "trained_through": "2012-11",
+          "training_months": 143,
+          "observed_through": "2012-11",
+          "actual": 111.9,
+          "model": 110.85826157961176,
+          "last_observation": 111.8,
+          "seasonal_naive": 114.8,
+          "absolute_errors": {
+            "model": 1.041738420388242,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 2.8999999999999915
+          }
+        },
+        {
+          "month": "2013-01",
+          "trained_through": "2012-12",
+          "training_months": 144,
+          "observed_through": "2012-12",
+          "actual": 114.1,
+          "model": 111.31987962905097,
+          "last_observation": 111.9,
+          "seasonal_naive": 111.2,
+          "absolute_errors": {
+            "model": 2.780120370949021,
+            "last_observation": 2.1999999999999886,
+            "seasonal_naive": 2.8999999999999915
+          }
+        },
+        {
+          "month": "2013-02",
+          "trained_through": "2013-01",
+          "training_months": 145,
+          "observed_through": "2013-01",
+          "actual": 115.6,
+          "model": 112.75650056760678,
+          "last_observation": 114.1,
+          "seasonal_naive": 111.7,
+          "absolute_errors": {
+            "model": 2.843499432393216,
+            "last_observation": 1.5,
+            "seasonal_naive": 3.8999999999999915
+          }
+        },
+        {
+          "month": "2013-03",
+          "trained_through": "2013-02",
+          "training_months": 146,
+          "observed_through": "2013-02",
+          "actual": 115.5,
+          "model": 113.79060939518989,
+          "last_observation": 115.6,
+          "seasonal_naive": 111.6,
+          "absolute_errors": {
+            "model": 1.7093906048101104,
+            "last_observation": 0.09999999999999432,
+            "seasonal_naive": 3.9000000000000057
+          }
+        },
+        {
+          "month": "2013-04",
+          "trained_through": "2013-03",
+          "training_months": 147,
+          "observed_through": "2013-03",
+          "actual": 114.7,
+          "model": 115.05805277674821,
+          "last_observation": 115.5,
+          "seasonal_naive": 111.8,
+          "absolute_errors": {
+            "model": 0.35805277674820957,
+            "last_observation": 0.7999999999999972,
+            "seasonal_naive": 2.9000000000000057
+          }
+        },
+        {
+          "month": "2013-05",
+          "trained_through": "2013-04",
+          "training_months": 148,
+          "observed_through": "2013-04",
+          "actual": 115.7,
+          "model": 115.42284113455933,
+          "last_observation": 114.7,
+          "seasonal_naive": 112.7,
+          "absolute_errors": {
+            "model": 0.2771588654406685,
+            "last_observation": 1.0,
+            "seasonal_naive": 3.0
+          }
+        },
+        {
+          "month": "2013-06",
+          "trained_through": "2013-05",
+          "training_months": 149,
+          "observed_through": "2013-05",
+          "actual": 116.2,
+          "model": 115.46548129572972,
+          "last_observation": 115.7,
+          "seasonal_naive": 113.5,
+          "absolute_errors": {
+            "model": 0.7345187042702861,
+            "last_observation": 0.5,
+            "seasonal_naive": 2.700000000000003
+          }
+        },
+        {
+          "month": "2013-07",
+          "trained_through": "2013-06",
+          "training_months": 150,
+          "observed_through": "2013-06",
+          "actual": 115.8,
+          "model": 116.01617127681077,
+          "last_observation": 116.2,
+          "seasonal_naive": 113.2,
+          "absolute_errors": {
+            "model": 0.2161712768107691,
+            "last_observation": 0.4000000000000057,
+            "seasonal_naive": 2.5999999999999943
+          }
+        },
+        {
+          "month": "2013-08",
+          "trained_through": "2013-07",
+          "training_months": 151,
+          "observed_through": "2013-07",
+          "actual": 116.3,
+          "model": 116.13055093209022,
+          "last_observation": 115.8,
+          "seasonal_naive": 112.5,
+          "absolute_errors": {
+            "model": 0.1694490679097811,
+            "last_observation": 0.5,
+            "seasonal_naive": 3.799999999999997
+          }
+        },
+        {
+          "month": "2013-09",
+          "trained_through": "2013-08",
+          "training_months": 152,
+          "observed_through": "2013-08",
+          "actual": 116.4,
+          "model": 116.64827760021211,
+          "last_observation": 116.3,
+          "seasonal_naive": 111.8,
+          "absolute_errors": {
+            "model": 0.24827760021210565,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 4.6000000000000085
+          }
+        },
+        {
+          "month": "2013-10",
+          "trained_through": "2013-09",
+          "training_months": 153,
+          "observed_through": "2013-09",
+          "actual": 116.3,
+          "model": 117.05918645590594,
+          "last_observation": 116.4,
+          "seasonal_naive": 110.2,
+          "absolute_errors": {
+            "model": 0.7591864559059474,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 6.099999999999994
+          }
+        },
+        {
+          "month": "2013-11",
+          "trained_through": "2013-10",
+          "training_months": 154,
+          "observed_through": "2013-10",
+          "actual": 118.7,
+          "model": 117.0339358718281,
+          "last_observation": 116.3,
+          "seasonal_naive": 111.8,
+          "absolute_errors": {
+            "model": 1.6660641281718966,
+            "last_observation": 2.4000000000000057,
+            "seasonal_naive": 6.900000000000006
+          }
+        },
+        {
+          "month": "2013-12",
+          "trained_through": "2013-11",
+          "training_months": 155,
+          "observed_through": "2013-11",
+          "actual": 117.4,
+          "model": 118.1765586435633,
+          "last_observation": 118.7,
+          "seasonal_naive": 111.9,
+          "absolute_errors": {
+            "model": 0.7765586435632912,
+            "last_observation": 1.2999999999999972,
+            "seasonal_naive": 5.5
+          }
+        },
+        {
+          "month": "2014-01",
+          "trained_through": "2013-12",
+          "training_months": 156,
+          "observed_through": "2013-12",
+          "actual": 115.9,
+          "model": 118.26306353972043,
+          "last_observation": 117.4,
+          "seasonal_naive": 114.1,
+          "absolute_errors": {
+            "model": 2.3630635397204287,
+            "last_observation": 1.5,
+            "seasonal_naive": 1.8000000000000114
+          }
+        },
+        {
+          "month": "2014-02",
+          "trained_through": "2014-01",
+          "training_months": 157,
+          "observed_through": "2014-01",
+          "actual": 117.8,
+          "model": 117.86203520344225,
+          "last_observation": 115.9,
+          "seasonal_naive": 115.6,
+          "absolute_errors": {
+            "model": 0.062035203442249554,
+            "last_observation": 1.8999999999999915,
+            "seasonal_naive": 2.200000000000003
+          }
+        },
+        {
+          "month": "2014-03",
+          "trained_through": "2014-02",
+          "training_months": 158,
+          "observed_through": "2014-02",
+          "actual": 119.7,
+          "model": 116.98930900995825,
+          "last_observation": 117.8,
+          "seasonal_naive": 115.5,
+          "absolute_errors": {
+            "model": 2.710690990041755,
+            "last_observation": 1.9000000000000057,
+            "seasonal_naive": 4.200000000000003
+          }
+        },
+        {
+          "month": "2014-04",
+          "trained_through": "2014-03",
+          "training_months": 159,
+          "observed_through": "2014-03",
+          "actual": 120.2,
+          "model": 117.80125528549986,
+          "last_observation": 119.7,
+          "seasonal_naive": 114.7,
+          "absolute_errors": {
+            "model": 2.3987447145001397,
+            "last_observation": 0.5,
+            "seasonal_naive": 5.5
+          }
+        },
+        {
+          "month": "2014-05",
+          "trained_through": "2014-04",
+          "training_months": 160,
+          "observed_through": "2014-04",
+          "actual": 120.7,
+          "model": 119.7141225410034,
+          "last_observation": 120.2,
+          "seasonal_naive": 115.7,
+          "absolute_errors": {
+            "model": 0.9858774589965975,
+            "last_observation": 0.5,
+            "seasonal_naive": 5.0
+          }
+        },
+        {
+          "month": "2014-06",
+          "trained_through": "2014-05",
+          "training_months": 161,
+          "observed_through": "2014-05",
+          "actual": 119.4,
+          "model": 120.95892297572425,
+          "last_observation": 120.7,
+          "seasonal_naive": 116.2,
+          "absolute_errors": {
+            "model": 1.5589229757242435,
+            "last_observation": 1.2999999999999972,
+            "seasonal_naive": 3.200000000000003
+          }
+        },
+        {
+          "month": "2014-07",
+          "trained_through": "2014-06",
+          "training_months": 162,
+          "observed_through": "2014-06",
+          "actual": 120.1,
+          "model": 121.01069497850773,
+          "last_observation": 119.4,
+          "seasonal_naive": 115.8,
+          "absolute_errors": {
+            "model": 0.9106949785077347,
+            "last_observation": 0.6999999999999886,
+            "seasonal_naive": 4.299999999999997
+          }
+        },
+        {
+          "month": "2014-08",
+          "trained_through": "2014-07",
+          "training_months": 163,
+          "observed_through": "2014-07",
+          "actual": 120.4,
+          "model": 120.4914207457503,
+          "last_observation": 120.1,
+          "seasonal_naive": 116.3,
+          "absolute_errors": {
+            "model": 0.09142074575029824,
+            "last_observation": 0.30000000000001137,
+            "seasonal_naive": 4.1000000000000085
+          }
+        },
+        {
+          "month": "2014-09",
+          "trained_through": "2014-08",
+          "training_months": 164,
+          "observed_through": "2014-08",
+          "actual": 121.5,
+          "model": 120.5158167302975,
+          "last_observation": 120.4,
+          "seasonal_naive": 116.4,
+          "absolute_errors": {
+            "model": 0.9841832697024984,
+            "last_observation": 1.0999999999999943,
+            "seasonal_naive": 5.099999999999994
+          }
+        },
+        {
+          "month": "2014-10",
+          "trained_through": "2014-09",
+          "training_months": 165,
+          "observed_through": "2014-09",
+          "actual": 122.3,
+          "model": 121.45364226345484,
+          "last_observation": 121.5,
+          "seasonal_naive": 116.3,
+          "absolute_errors": {
+            "model": 0.8463577365451584,
+            "last_observation": 0.7999999999999972,
+            "seasonal_naive": 6.0
+          }
+        },
+        {
+          "month": "2014-11",
+          "trained_through": "2014-10",
+          "training_months": 166,
+          "observed_through": "2014-10",
+          "actual": 122.9,
+          "model": 122.22643914757697,
+          "last_observation": 122.3,
+          "seasonal_naive": 118.7,
+          "absolute_errors": {
+            "model": 0.6735608524230372,
+            "last_observation": 0.6000000000000085,
+            "seasonal_naive": 4.200000000000003
+          }
+        },
+        {
+          "month": "2014-12",
+          "trained_through": "2014-11",
+          "training_months": 167,
+          "observed_through": "2014-11",
+          "actual": 122.8,
+          "model": 123.44574026353656,
+          "last_observation": 122.9,
+          "seasonal_naive": 117.4,
+          "absolute_errors": {
+            "model": 0.6457402635365668,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 5.3999999999999915
+          }
+        },
+        {
+          "month": "2015-01",
+          "trained_through": "2014-12",
+          "training_months": 168,
+          "observed_through": "2014-12",
+          "actual": 122.6,
+          "model": 124.09093763091764,
+          "last_observation": 122.8,
+          "seasonal_naive": 115.9,
+          "absolute_errors": {
+            "model": 1.4909376309176423,
+            "last_observation": 0.20000000000000284,
+            "seasonal_naive": 6.699999999999989
+          }
+        },
+        {
+          "month": "2015-02",
+          "trained_through": "2015-01",
+          "training_months": 169,
+          "observed_through": "2015-01",
+          "actual": 121.7,
+          "model": 124.08684334984696,
+          "last_observation": 122.6,
+          "seasonal_naive": 117.8,
+          "absolute_errors": {
+            "model": 2.3868433498469557,
+            "last_observation": 0.8999999999999915,
+            "seasonal_naive": 3.9000000000000057
+          }
+        },
+        {
+          "month": "2015-03",
+          "trained_through": "2015-02",
+          "training_months": 170,
+          "observed_through": "2015-02",
+          "actual": 122.6,
+          "model": 122.89786627214636,
+          "last_observation": 121.7,
+          "seasonal_naive": 119.7,
+          "absolute_errors": {
+            "model": 0.29786627214636496,
+            "last_observation": 0.8999999999999915,
+            "seasonal_naive": 2.8999999999999915
+          }
+        },
+        {
+          "month": "2015-04",
+          "trained_through": "2015-03",
+          "training_months": 171,
+          "observed_through": "2015-03",
+          "actual": 121.6,
+          "model": 122.46472404369572,
+          "last_observation": 122.6,
+          "seasonal_naive": 120.2,
+          "absolute_errors": {
+            "model": 0.8647240436957304,
+            "last_observation": 1.0,
+            "seasonal_naive": 1.3999999999999915
+          }
+        },
+        {
+          "month": "2015-05",
+          "trained_through": "2015-04",
+          "training_months": 172,
+          "observed_through": "2015-04",
+          "actual": 121.7,
+          "model": 122.21676348997713,
+          "last_observation": 121.6,
+          "seasonal_naive": 120.7,
+          "absolute_errors": {
+            "model": 0.516763489977123,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 1.0
+          }
+        },
+        {
+          "month": "2015-06",
+          "trained_through": "2015-05",
+          "training_months": 173,
+          "observed_through": "2015-05",
+          "actual": 121.3,
+          "model": 122.36099150989561,
+          "last_observation": 121.7,
+          "seasonal_naive": 119.4,
+          "absolute_errors": {
+            "model": 1.060991509895615,
+            "last_observation": 0.4000000000000057,
+            "seasonal_naive": 1.8999999999999915
+          }
+        },
+        {
+          "month": "2015-07",
+          "trained_through": "2015-06",
+          "training_months": 174,
+          "observed_through": "2015-06",
+          "actual": 122.4,
+          "model": 121.92980889538177,
+          "last_observation": 121.3,
+          "seasonal_naive": 120.1,
+          "absolute_errors": {
+            "model": 0.47019110461823743,
+            "last_observation": 1.1000000000000085,
+            "seasonal_naive": 2.3000000000000114
+          }
+        },
+        {
+          "month": "2015-08",
+          "trained_through": "2015-07",
+          "training_months": 175,
+          "observed_through": "2015-07",
+          "actual": 122.9,
+          "model": 121.88708400510558,
+          "last_observation": 122.4,
+          "seasonal_naive": 120.4,
+          "absolute_errors": {
+            "model": 1.0129159948944277,
+            "last_observation": 0.5,
+            "seasonal_naive": 2.5
+          }
+        },
+        {
+          "month": "2015-09",
+          "trained_through": "2015-08",
+          "training_months": 176,
+          "observed_through": "2015-08",
+          "actual": 123.1,
+          "model": 122.46714570716502,
+          "last_observation": 122.9,
+          "seasonal_naive": 121.5,
+          "absolute_errors": {
+            "model": 0.6328542928349776,
+            "last_observation": 0.19999999999998863,
+            "seasonal_naive": 1.5999999999999943
+          }
+        },
+        {
+          "month": "2015-10",
+          "trained_through": "2015-09",
+          "training_months": 177,
+          "observed_through": "2015-09",
+          "actual": 122.6,
+          "model": 123.14951509647004,
+          "last_observation": 123.1,
+          "seasonal_naive": 122.3,
+          "absolute_errors": {
+            "model": 0.5495150964700457,
+            "last_observation": 0.5,
+            "seasonal_naive": 0.29999999999999716
+          }
+        },
+        {
+          "month": "2015-11",
+          "trained_through": "2015-10",
+          "training_months": 178,
+          "observed_through": "2015-10",
+          "actual": 120.7,
+          "model": 123.34497269941939,
+          "last_observation": 122.6,
+          "seasonal_naive": 122.9,
+          "absolute_errors": {
+            "model": 2.644972699419384,
+            "last_observation": 1.8999999999999915,
+            "seasonal_naive": 2.200000000000003
+          }
+        },
+        {
+          "month": "2015-12",
+          "trained_through": "2015-11",
+          "training_months": 179,
+          "observed_through": "2015-11",
+          "actual": 120.3,
+          "model": 122.34012867406415,
+          "last_observation": 120.7,
+          "seasonal_naive": 122.8,
+          "absolute_errors": {
+            "model": 2.0401286740641495,
+            "last_observation": 0.4000000000000057,
+            "seasonal_naive": 2.5
+          }
+        },
+        {
+          "month": "2016-01",
+          "trained_through": "2015-12",
+          "training_months": 180,
+          "observed_through": "2015-12",
+          "actual": 122.1,
+          "model": 121.0870975996008,
+          "last_observation": 120.3,
+          "seasonal_naive": 122.6,
+          "absolute_errors": {
+            "model": 1.0129024003991987,
+            "last_observation": 1.7999999999999972,
+            "seasonal_naive": 0.5
+          }
+        },
+        {
+          "month": "2016-02",
+          "trained_through": "2016-01",
+          "training_months": 181,
+          "observed_through": "2016-01",
+          "actual": 121.4,
+          "model": 121.19153474802462,
+          "last_observation": 122.1,
+          "seasonal_naive": 121.7,
+          "absolute_errors": {
+            "model": 0.20846525197538313,
+            "last_observation": 0.6999999999999886,
+            "seasonal_naive": 0.29999999999999716
+          }
+        },
+        {
+          "month": "2016-03",
+          "trained_through": "2016-02",
+          "training_months": 182,
+          "observed_through": "2016-02",
+          "actual": 120.4,
+          "model": 121.11591299305113,
+          "last_observation": 121.4,
+          "seasonal_naive": 122.6,
+          "absolute_errors": {
+            "model": 0.7159129930511199,
+            "last_observation": 1.0,
+            "seasonal_naive": 2.1999999999999886
+          }
+        },
+        {
+          "month": "2016-04",
+          "trained_through": "2016-03",
+          "training_months": 183,
+          "observed_through": "2016-03",
+          "actual": 122.8,
+          "model": 120.97426699875734,
+          "last_observation": 120.4,
+          "seasonal_naive": 121.6,
+          "absolute_errors": {
+            "model": 1.8257330012426536,
+            "last_observation": 2.3999999999999915,
+            "seasonal_naive": 1.2000000000000028
+          }
+        },
+        {
+          "month": "2016-05",
+          "trained_through": "2016-04",
+          "training_months": 184,
+          "observed_through": "2016-04",
+          "actual": 122.0,
+          "model": 121.53905497983938,
+          "last_observation": 122.8,
+          "seasonal_naive": 121.7,
+          "absolute_errors": {
+            "model": 0.4609450201606222,
+            "last_observation": 0.7999999999999972,
+            "seasonal_naive": 0.29999999999999716
+          }
+        },
+        {
+          "month": "2016-06",
+          "trained_through": "2016-05",
+          "training_months": 185,
+          "observed_through": "2016-05",
+          "actual": 122.8,
+          "model": 121.77795139447917,
+          "last_observation": 122.0,
+          "seasonal_naive": 121.3,
+          "absolute_errors": {
+            "model": 1.0220486055208227,
+            "last_observation": 0.7999999999999972,
+            "seasonal_naive": 1.5
+          }
+        },
+        {
+          "month": "2016-07",
+          "trained_through": "2016-06",
+          "training_months": 186,
+          "observed_through": "2016-06",
+          "actual": 125.2,
+          "model": 122.89035040552645,
+          "last_observation": 122.8,
+          "seasonal_naive": 122.4,
+          "absolute_errors": {
+            "model": 2.309649594473555,
+            "last_observation": 2.4000000000000057,
+            "seasonal_naive": 2.799999999999997
+          }
+        },
+        {
+          "month": "2016-08",
+          "trained_through": "2016-07",
+          "training_months": 187,
+          "observed_through": "2016-07",
+          "actual": 123.2,
+          "model": 123.52757273944226,
+          "last_observation": 125.2,
+          "seasonal_naive": 122.9,
+          "absolute_errors": {
+            "model": 0.3275727394422603,
+            "last_observation": 2.0,
+            "seasonal_naive": 0.29999999999999716
+          }
+        },
+        {
+          "month": "2016-09",
+          "trained_through": "2016-08",
+          "training_months": 188,
+          "observed_through": "2016-08",
+          "actual": 121.9,
+          "model": 124.18467795721311,
+          "last_observation": 123.2,
+          "seasonal_naive": 123.1,
+          "absolute_errors": {
+            "model": 2.2846779572131055,
+            "last_observation": 1.2999999999999972,
+            "seasonal_naive": 1.1999999999999886
+          }
+        },
+        {
+          "month": "2016-10",
+          "trained_through": "2016-09",
+          "training_months": 189,
+          "observed_through": "2016-09",
+          "actual": 122.9,
+          "model": 123.8379892775241,
+          "last_observation": 121.9,
+          "seasonal_naive": 122.6,
+          "absolute_errors": {
+            "model": 0.9379892775240961,
+            "last_observation": 1.0,
+            "seasonal_naive": 0.30000000000001137
+          }
+        },
+        {
+          "month": "2016-11",
+          "trained_through": "2016-10",
+          "training_months": 190,
+          "observed_through": "2016-10",
+          "actual": 123.0,
+          "model": 123.26132110509205,
+          "last_observation": 122.9,
+          "seasonal_naive": 120.7,
+          "absolute_errors": {
+            "model": 0.2613211050920512,
+            "last_observation": 0.09999999999999432,
+            "seasonal_naive": 2.299999999999997
+          }
+        },
+        {
+          "month": "2016-12",
+          "trained_through": "2016-11",
+          "training_months": 191,
+          "observed_through": "2016-11",
+          "actual": 124.2,
+          "model": 123.19615592546995,
+          "last_observation": 123.0,
+          "seasonal_naive": 120.3,
+          "absolute_errors": {
+            "model": 1.0038440745300505,
+            "last_observation": 1.2000000000000028,
+            "seasonal_naive": 3.9000000000000057
+          }
+        },
+        {
+          "month": "2017-01",
+          "trained_through": "2016-12",
+          "training_months": 192,
+          "observed_through": "2016-12",
+          "actual": 123.8,
+          "model": 123.92581043677365,
+          "last_observation": 124.2,
+          "seasonal_naive": 122.1,
+          "absolute_errors": {
+            "model": 0.1258104367736479,
+            "last_observation": 0.4000000000000057,
+            "seasonal_naive": 1.7000000000000028
+          }
+        },
+        {
+          "month": "2017-02",
+          "trained_through": "2017-01",
+          "training_months": 193,
+          "observed_through": "2017-01",
+          "actual": 124.6,
+          "model": 124.47467881533824,
+          "last_observation": 123.8,
+          "seasonal_naive": 121.4,
+          "absolute_errors": {
+            "model": 0.12532118466175746,
+            "last_observation": 0.7999999999999972,
+            "seasonal_naive": 3.1999999999999886
+          }
+        },
+        {
+          "month": "2017-03",
+          "trained_through": "2017-02",
+          "training_months": 194,
+          "observed_through": "2017-02",
+          "actual": 124.9,
+          "model": 124.97120089281105,
+          "last_observation": 124.6,
+          "seasonal_naive": 120.4,
+          "absolute_errors": {
+            "model": 0.07120089281104924,
+            "last_observation": 0.30000000000001137,
+            "seasonal_naive": 4.5
+          }
+        },
+        {
+          "month": "2017-04",
+          "trained_through": "2017-03",
+          "training_months": 195,
+          "observed_through": "2017-03",
+          "actual": 125.3,
+          "model": 124.74773786624053,
+          "last_observation": 124.9,
+          "seasonal_naive": 122.8,
+          "absolute_errors": {
+            "model": 0.55226213375947,
+            "last_observation": 0.3999999999999915,
+            "seasonal_naive": 2.5
+          }
+        },
+        {
+          "month": "2017-05",
+          "trained_through": "2017-04",
+          "training_months": 196,
+          "observed_through": "2017-04",
+          "actual": 125.9,
+          "model": 125.6610314775281,
+          "last_observation": 125.3,
+          "seasonal_naive": 122.0,
+          "absolute_errors": {
+            "model": 0.23896852247190736,
+            "last_observation": 0.6000000000000085,
+            "seasonal_naive": 3.9000000000000057
+          }
+        },
+        {
+          "month": "2017-06",
+          "trained_through": "2017-05",
+          "training_months": 197,
+          "observed_through": "2017-05",
+          "actual": 125.8,
+          "model": 126.04344088917725,
+          "last_observation": 125.9,
+          "seasonal_naive": 122.8,
+          "absolute_errors": {
+            "model": 0.2434408891772506,
+            "last_observation": 0.10000000000000853,
+            "seasonal_naive": 3.0
+          }
+        },
+        {
+          "month": "2017-07",
+          "trained_through": "2017-06",
+          "training_months": 198,
+          "observed_through": "2017-06",
+          "actual": 128.2,
+          "model": 126.45264588396027,
+          "last_observation": 125.8,
+          "seasonal_naive": 125.2,
+          "absolute_errors": {
+            "model": 1.7473541160397161,
+            "last_observation": 2.3999999999999915,
+            "seasonal_naive": 2.999999999999986
+          }
+        },
+        {
+          "month": "2017-08",
+          "trained_through": "2017-07",
+          "training_months": 199,
+          "observed_through": "2017-07",
+          "actual": 128.9,
+          "model": 127.49036424349444,
+          "last_observation": 128.2,
+          "seasonal_naive": 123.2,
+          "absolute_errors": {
+            "model": 1.4096357565055655,
+            "last_observation": 0.700000000000017,
+            "seasonal_naive": 5.700000000000003
+          }
+        },
+        {
+          "month": "2017-09",
+          "trained_through": "2017-08",
+          "training_months": 200,
+          "observed_through": "2017-08",
+          "actual": 128.8,
+          "model": 129.0323645940824,
+          "last_observation": 128.9,
+          "seasonal_naive": 121.9,
+          "absolute_errors": {
+            "model": 0.23236459408238375,
+            "last_observation": 0.09999999999999432,
+            "seasonal_naive": 6.900000000000006
+          }
+        },
+        {
+          "month": "2017-10",
+          "trained_through": "2017-09",
+          "training_months": 201,
+          "observed_through": "2017-09",
+          "actual": 130.1,
+          "model": 130.1951048894491,
+          "last_observation": 128.8,
+          "seasonal_naive": 122.9,
+          "absolute_errors": {
+            "model": 0.09510488944911799,
+            "last_observation": 1.299999999999983,
+            "seasonal_naive": 7.199999999999989
+          }
+        },
+        {
+          "month": "2017-11",
+          "trained_through": "2017-10",
+          "training_months": 202,
+          "observed_through": "2017-10",
+          "actual": 131.7,
+          "model": 131.09084849076325,
+          "last_observation": 130.1,
+          "seasonal_naive": 123.0,
+          "absolute_errors": {
+            "model": 0.6091515092367388,
+            "last_observation": 1.5999999999999943,
+            "seasonal_naive": 8.699999999999989
+          }
+        },
+        {
+          "month": "2017-12",
+          "trained_through": "2017-11",
+          "training_months": 203,
+          "observed_through": "2017-11",
+          "actual": 133.3,
+          "model": 132.1439566182306,
+          "last_observation": 131.7,
+          "seasonal_naive": 124.2,
+          "absolute_errors": {
+            "model": 1.1560433817694218,
+            "last_observation": 1.6000000000000227,
+            "seasonal_naive": 9.100000000000009
+          }
+        },
+        {
+          "month": "2018-01",
+          "trained_through": "2017-12",
+          "training_months": 204,
+          "observed_through": "2017-12",
+          "actual": 131.3,
+          "model": 134.14035511974123,
+          "last_observation": 133.3,
+          "seasonal_naive": 123.8,
+          "absolute_errors": {
+            "model": 2.8403551197412185,
+            "last_observation": 2.0,
+            "seasonal_naive": 7.500000000000014
+          }
+        },
+        {
+          "month": "2018-02",
+          "trained_through": "2018-01",
+          "training_months": 205,
+          "observed_through": "2018-01",
+          "actual": 133.7,
+          "model": 134.54647032044028,
+          "last_observation": 131.3,
+          "seasonal_naive": 124.6,
+          "absolute_errors": {
+            "model": 0.8464703204402895,
+            "last_observation": 2.3999999999999773,
+            "seasonal_naive": 9.099999999999994
+          }
+        },
+        {
+          "month": "2018-03",
+          "trained_through": "2018-02",
+          "training_months": 206,
+          "observed_through": "2018-02",
+          "actual": 135.3,
+          "model": 135.00392535257984,
+          "last_observation": 133.7,
+          "seasonal_naive": 124.9,
+          "absolute_errors": {
+            "model": 0.29607464742016987,
+            "last_observation": 1.6000000000000227,
+            "seasonal_naive": 10.400000000000006
+          }
+        },
+        {
+          "month": "2018-04",
+          "trained_through": "2018-03",
+          "training_months": 207,
+          "observed_through": "2018-03",
+          "actual": 135.2,
+          "model": 135.6814347031718,
+          "last_observation": 135.3,
+          "seasonal_naive": 125.3,
+          "absolute_errors": {
+            "model": 0.48143470317180004,
+            "last_observation": 0.10000000000002274,
+            "seasonal_naive": 9.899999999999991
+          }
+        },
+        {
+          "month": "2018-05",
+          "trained_through": "2018-04",
+          "training_months": 208,
+          "observed_through": "2018-04",
+          "actual": 136.2,
+          "model": 137.4384338587289,
+          "last_observation": 135.2,
+          "seasonal_naive": 125.9,
+          "absolute_errors": {
+            "model": 1.2384338587289108,
+            "last_observation": 1.0,
+            "seasonal_naive": 10.299999999999983
+          }
+        },
+        {
+          "month": "2018-06",
+          "trained_through": "2018-05",
+          "training_months": 209,
+          "observed_through": "2018-05",
+          "actual": 136.9,
+          "model": 138.42419236275506,
+          "last_observation": 136.2,
+          "seasonal_naive": 125.8,
+          "absolute_errors": {
+            "model": 1.524192362755059,
+            "last_observation": 0.700000000000017,
+            "seasonal_naive": 11.100000000000009
+          }
+        },
+        {
+          "month": "2018-07",
+          "trained_through": "2018-06",
+          "training_months": 210,
+          "observed_through": "2018-06",
+          "actual": 135.6,
+          "model": 139.26592028887376,
+          "last_observation": 136.9,
+          "seasonal_naive": 128.2,
+          "absolute_errors": {
+            "model": 3.665920288873764,
+            "last_observation": 1.3000000000000114,
+            "seasonal_naive": 7.400000000000006
+          }
+        },
+        {
+          "month": "2018-08",
+          "trained_through": "2018-07",
+          "training_months": 211,
+          "observed_through": "2018-07",
+          "actual": 136.2,
+          "model": 138.66745259187306,
+          "last_observation": 135.6,
+          "seasonal_naive": 128.9,
+          "absolute_errors": {
+            "model": 2.4674525918730694,
+            "last_observation": 0.5999999999999943,
+            "seasonal_naive": 7.299999999999983
+          }
+        },
+        {
+          "month": "2018-09",
+          "trained_through": "2018-08",
+          "training_months": 212,
+          "observed_through": "2018-08",
+          "actual": 138.0,
+          "model": 138.5906573526997,
+          "last_observation": 136.2,
+          "seasonal_naive": 128.8,
+          "absolute_errors": {
+            "model": 0.5906573526997079,
+            "last_observation": 1.8000000000000114,
+            "seasonal_naive": 9.199999999999989
+          }
+        },
+        {
+          "month": "2018-10",
+          "trained_through": "2018-09",
+          "training_months": 213,
+          "observed_through": "2018-09",
+          "actual": 139.1,
+          "model": 138.94460688464136,
+          "last_observation": 138.0,
+          "seasonal_naive": 130.1,
+          "absolute_errors": {
+            "model": 0.15539311535863476,
+            "last_observation": 1.0999999999999943,
+            "seasonal_naive": 9.0
+          }
+        },
+        {
+          "month": "2018-11",
+          "trained_through": "2018-10",
+          "training_months": 214,
+          "observed_through": "2018-10",
+          "actual": 139.2,
+          "model": 140.40726064637911,
+          "last_observation": 139.1,
+          "seasonal_naive": 131.7,
+          "absolute_errors": {
+            "model": 1.207260646379126,
+            "last_observation": 0.09999999999999432,
+            "seasonal_naive": 7.5
+          }
+        },
+        {
+          "month": "2018-12",
+          "trained_through": "2018-11",
+          "training_months": 215,
+          "observed_through": "2018-11",
+          "actual": 137.2,
+          "model": 141.51603732469667,
+          "last_observation": 139.2,
+          "seasonal_naive": 133.3,
+          "absolute_errors": {
+            "model": 4.31603732469668,
+            "last_observation": 2.0,
+            "seasonal_naive": 3.8999999999999773
+          }
+        },
+        {
+          "month": "2019-01",
+          "trained_through": "2018-12",
+          "training_months": 216,
+          "observed_through": "2018-12",
+          "actual": 137.5,
+          "model": 141.0309404740673,
+          "last_observation": 137.2,
+          "seasonal_naive": 131.3,
+          "absolute_errors": {
+            "model": 3.5309404740673074,
+            "last_observation": 0.30000000000001137,
+            "seasonal_naive": 6.199999999999989
+          }
+        },
+        {
+          "month": "2019-02",
+          "trained_through": "2019-01",
+          "training_months": 217,
+          "observed_through": "2019-01",
+          "actual": 136.3,
+          "model": 140.09228925153843,
+          "last_observation": 137.5,
+          "seasonal_naive": 133.7,
+          "absolute_errors": {
+            "model": 3.7922892515384206,
+            "last_observation": 1.1999999999999886,
+            "seasonal_naive": 2.6000000000000227
+          }
+        },
+        {
+          "month": "2019-03",
+          "trained_through": "2019-02",
+          "training_months": 218,
+          "observed_through": "2019-02",
+          "actual": 136.4,
+          "model": 138.22514929687813,
+          "last_observation": 136.3,
+          "seasonal_naive": 135.3,
+          "absolute_errors": {
+            "model": 1.8251492968781236,
+            "last_observation": 0.09999999999999432,
+            "seasonal_naive": 1.0999999999999943
+          }
+        },
+        {
+          "month": "2019-04",
+          "trained_through": "2019-03",
+          "training_months": 219,
+          "observed_through": "2019-03",
+          "actual": 137.6,
+          "model": 137.66961152291785,
+          "last_observation": 136.4,
+          "seasonal_naive": 135.2,
+          "absolute_errors": {
+            "model": 0.06961152291785311,
+            "last_observation": 1.1999999999999886,
+            "seasonal_naive": 2.4000000000000057
+          }
+        },
+        {
+          "month": "2019-05",
+          "trained_through": "2019-04",
+          "training_months": 220,
+          "observed_through": "2019-04",
+          "actual": 137.4,
+          "model": 137.71027044951012,
+          "last_observation": 137.6,
+          "seasonal_naive": 136.2,
+          "absolute_errors": {
+            "model": 0.3102704495101136,
+            "last_observation": 0.19999999999998863,
+            "seasonal_naive": 1.200000000000017
+          }
+        },
+        {
+          "month": "2019-06",
+          "trained_through": "2019-05",
+          "training_months": 221,
+          "observed_through": "2019-05",
+          "actual": 136.6,
+          "model": 137.98234504843023,
+          "last_observation": 137.4,
+          "seasonal_naive": 136.9,
+          "absolute_errors": {
+            "model": 1.3823450484302384,
+            "last_observation": 0.8000000000000114,
+            "seasonal_naive": 0.30000000000001137
+          }
+        },
+        {
+          "month": "2019-07",
+          "trained_through": "2019-06",
+          "training_months": 222,
+          "observed_through": "2019-06",
+          "actual": 138.6,
+          "model": 138.66009484191008,
+          "last_observation": 136.6,
+          "seasonal_naive": 135.6,
+          "absolute_errors": {
+            "model": 0.06009484191008596,
+            "last_observation": 2.0,
+            "seasonal_naive": 3.0
+          }
+        },
+        {
+          "month": "2019-08",
+          "trained_through": "2019-07",
+          "training_months": 223,
+          "observed_through": "2019-07",
+          "actual": 140.7,
+          "model": 138.53717912541742,
+          "last_observation": 138.6,
+          "seasonal_naive": 136.2,
+          "absolute_errors": {
+            "model": 2.1628208745825646,
+            "last_observation": 2.0999999999999943,
+            "seasonal_naive": 4.5
+          }
+        },
+        {
+          "month": "2019-09",
+          "trained_through": "2019-08",
+          "training_months": 224,
+          "observed_through": "2019-08",
+          "actual": 137.0,
+          "model": 139.84574644632067,
+          "last_observation": 140.7,
+          "seasonal_naive": 138.0,
+          "absolute_errors": {
+            "model": 2.8457464463206747,
+            "last_observation": 3.6999999999999886,
+            "seasonal_naive": 1.0
+          }
+        },
+        {
+          "month": "2019-10",
+          "trained_through": "2019-09",
+          "training_months": 225,
+          "observed_through": "2019-09",
+          "actual": 137.0,
+          "model": 139.8801467476214,
+          "last_observation": 137.0,
+          "seasonal_naive": 139.1,
+          "absolute_errors": {
+            "model": 2.88014674762141,
+            "last_observation": 0.0,
+            "seasonal_naive": 2.0999999999999943
+          }
+        },
+        {
+          "month": "2019-11",
+          "trained_through": "2019-10",
+          "training_months": 226,
+          "observed_through": "2019-10",
+          "actual": 136.7,
+          "model": 139.18361808846595,
+          "last_observation": 137.0,
+          "seasonal_naive": 139.2,
+          "absolute_errors": {
+            "model": 2.4836180884659598,
+            "last_observation": 0.30000000000001137,
+            "seasonal_naive": 2.5
+          }
+        },
+        {
+          "month": "2019-12",
+          "trained_through": "2019-11",
+          "training_months": 227,
+          "observed_through": "2019-11",
+          "actual": 135.4,
+          "model": 137.65931694407502,
+          "last_observation": 136.7,
+          "seasonal_naive": 137.2,
+          "absolute_errors": {
+            "model": 2.2593169440750103,
+            "last_observation": 1.299999999999983,
+            "seasonal_naive": 1.799999999999983
+          }
+        }
+      ]
+    }
+  },
+  "selected_policy": "monthly_refit",
+  "test": {
+    "policy": "monthly_refit",
+    "months": 72,
+    "metrics": {
+      "model": {
+        "mae": 1.7775648673175355,
+        "rmse": 2.475706850608838,
+        "mape": 0.013279319430007337
+      },
+      "last_observation": {
+        "mae": 1.2597222222222209,
+        "rmse": 1.8932262293649842,
+        "mape": 0.009414269159324508
+      },
+      "seasonal_naive": {
+        "mae": 2.783333333333333,
+        "rmse": 4.082448883806003,
+        "mape": 0.020809673193776843
+      }
+    },
+    "by_year": {
+      "2020": {
+        "model": {
+          "mae": 3.3121175891323618,
+          "rmse": 4.520203040861459,
+          "mape": 0.025672763973985314
+        },
+        "last_observation": {
+          "mae": 2.1416666666666635,
+          "rmse": 3.4211352891498845,
+          "mape": 0.016732767831646497
+        },
+        "seasonal_naive": {
+          "mae": 6.024999999999998,
+          "rmse": 7.236308911777233,
+          "mape": 0.04673813977656191
+        }
+      },
+      "2021": {
+        "model": {
+          "mae": 1.9333375874054302,
+          "rmse": 2.332663012191844,
+          "mape": 0.014455315157198508
+        },
+        "last_observation": {
+          "mae": 1.6749999999999996,
+          "rmse": 1.977582699492825,
+          "mape": 0.012505576429458834
+        },
+        "seasonal_naive": {
+          "mae": 3.591666666666663,
+          "rmse": 5.130220917920263,
+          "mape": 0.02663263772651965
+        }
+      },
+      "2022": {
+        "model": {
+          "mae": 1.7784924791611658,
+          "rmse": 2.151598212258193,
+          "mape": 0.0130067499009016
+        },
+        "last_observation": {
+          "mae": 0.9250000000000019,
+          "rmse": 1.1258330249197726,
+          "mape": 0.006749397901627977
+        },
+        "seasonal_naive": {
+          "mae": 3.366666666666672,
+          "rmse": 3.8375339303603178,
+          "mape": 0.024432834927763037
+        }
+      },
+      "2023": {
+        "model": {
+          "mae": 1.0986762893012312,
+          "rmse": 1.2666071724023908,
+          "mape": 0.00797928481304904
+        },
+        "last_observation": {
+          "mae": 0.7833333333333267,
+          "rmse": 1.0496030995889145,
+          "mape": 0.005681557521865846
+        },
+        "seasonal_naive": {
+          "mae": 1.3749999999999976,
+          "rmse": 1.5861378670636825,
+          "mape": 0.009982466753612931
+        }
+      },
+      "2024": {
+        "model": {
+          "mae": 1.381970144547715,
+          "rmse": 1.673420411125901,
+          "mape": 0.010101343195785222
+        },
+        "last_observation": {
+          "mae": 1.3750000000000024,
+          "rmse": 1.7036725037400853,
+          "mape": 0.010029313751353517
+        },
+        "seasonal_naive": {
+          "mae": 1.275000000000001,
+          "rmse": 1.5096909175942854,
+          "mape": 0.009311437083719417
+        }
+      },
+      "2025": {
+        "model": {
+          "mae": 1.1607951143573085,
+          "rmse": 1.3664515115076226,
+          "mape": 0.008460459539124337
+        },
+        "last_observation": {
+          "mae": 0.6583333333333314,
+          "rmse": 0.7868714422741919,
+          "mape": 0.004787001519994367
+        },
+        "seasonal_naive": {
+          "mae": 1.06666666666667,
+          "rmse": 1.3391539617733832,
+          "mape": 0.007760522894484125
+        }
+      }
+    },
+    "predictions": [
+      {
+        "month": "2020-01",
+        "trained_through": "2019-12",
+        "training_months": 228,
+        "observed_through": "2019-12",
+        "actual": 135.6,
+        "model": 136.6814506816605,
+        "last_observation": 135.4,
+        "seasonal_naive": 137.5,
+        "absolute_errors": {
+          "model": 1.081450681660499,
+          "last_observation": 0.19999999999998863,
+          "seasonal_naive": 1.9000000000000057
+        }
+      },
+      {
+        "month": "2020-02",
+        "trained_through": "2020-01",
+        "training_months": 229,
+        "observed_through": "2020-01",
+        "actual": 135.1,
+        "model": 136.48957779033276,
+        "last_observation": 135.6,
+        "seasonal_naive": 136.3,
+        "absolute_errors": {
+          "model": 1.3895777903327655,
+          "last_observation": 0.5,
+          "seasonal_naive": 1.200000000000017
+        }
+      },
+      {
+        "month": "2020-03",
+        "trained_through": "2020-02",
+        "training_months": 230,
+        "observed_through": "2020-02",
+        "actual": 133.9,
+        "model": 135.62410661134965,
+        "last_observation": 135.1,
+        "seasonal_naive": 136.4,
+        "absolute_errors": {
+          "model": 1.7241066113496402,
+          "last_observation": 1.1999999999999886,
+          "seasonal_naive": 2.5
+        }
+      },
+      {
+        "month": "2020-04",
+        "trained_through": "2020-03",
+        "training_months": 231,
+        "observed_through": "2020-03",
+        "actual": 123.7,
+        "model": 134.69422708245193,
+        "last_observation": 133.9,
+        "seasonal_naive": 137.6,
+        "absolute_errors": {
+          "model": 10.994227082451928,
+          "last_observation": 10.200000000000003,
+          "seasonal_naive": 13.899999999999991
+        }
+      },
+      {
+        "month": "2020-05",
+        "trained_through": "2020-04",
+        "training_months": 232,
+        "observed_through": "2020-04",
+        "actual": 125.5,
+        "model": 129.73702170417332,
+        "last_observation": 123.7,
+        "seasonal_naive": 137.4,
+        "absolute_errors": {
+          "model": 4.237021704173316,
+          "last_observation": 1.7999999999999972,
+          "seasonal_naive": 11.900000000000006
+        }
+      },
+      {
+        "month": "2020-06",
+        "trained_through": "2020-05",
+        "training_months": 233,
+        "observed_through": "2020-05",
+        "actual": 128.5,
+        "model": 125.84617576876079,
+        "last_observation": 125.5,
+        "seasonal_naive": 136.6,
+        "absolute_errors": {
+          "model": 2.653824231239213,
+          "last_observation": 3.0,
+          "seasonal_naive": 8.099999999999994
+        }
+      },
+      {
+        "month": "2020-07",
+        "trained_through": "2020-06",
+        "training_months": 234,
+        "observed_through": "2020-06",
+        "actual": 132.5,
+        "model": 124.02382067211512,
+        "last_observation": 128.5,
+        "seasonal_naive": 138.6,
+        "absolute_errors": {
+          "model": 8.476179327884878,
+          "last_observation": 4.0,
+          "seasonal_naive": 6.099999999999994
+        }
+      },
+      {
+        "month": "2020-08",
+        "trained_through": "2020-07",
+        "training_months": 235,
+        "observed_through": "2020-07",
+        "actual": 130.8,
+        "model": 127.23557716508772,
+        "last_observation": 132.5,
+        "seasonal_naive": 140.7,
+        "absolute_errors": {
+          "model": 3.5644228349122926,
+          "last_observation": 1.6999999999999886,
+          "seasonal_naive": 9.899999999999977
+        }
+      },
+      {
+        "month": "2020-09",
+        "trained_through": "2020-08",
+        "training_months": 236,
+        "observed_through": "2020-08",
+        "actual": 131.1,
+        "model": 129.86076535613486,
+        "last_observation": 130.8,
+        "seasonal_naive": 137.0,
+        "absolute_errors": {
+          "model": 1.2392346438651316,
+          "last_observation": 0.29999999999998295,
+          "seasonal_naive": 5.900000000000006
+        }
+      },
+      {
+        "month": "2020-10",
+        "trained_through": "2020-09",
+        "training_months": 237,
+        "observed_through": "2020-09",
+        "actual": 132.0,
+        "model": 131.03379130044098,
+        "last_observation": 131.1,
+        "seasonal_naive": 137.0,
+        "absolute_errors": {
+          "model": 0.9662086995590187,
+          "last_observation": 0.9000000000000057,
+          "seasonal_naive": 5.0
+        }
+      },
+      {
+        "month": "2020-11",
+        "trained_through": "2020-10",
+        "training_months": 238,
+        "observed_through": "2020-10",
+        "actual": 132.3,
+        "model": 131.02651120325353,
+        "last_observation": 132.0,
+        "seasonal_naive": 136.7,
+        "absolute_errors": {
+          "model": 1.2734887967464772,
+          "last_observation": 0.30000000000001137,
+          "seasonal_naive": 4.399999999999977
+        }
+      },
+      {
+        "month": "2020-12",
+        "trained_through": "2020-11",
+        "training_months": 239,
+        "observed_through": "2020-11",
+        "actual": 133.9,
+        "model": 131.75433133458682,
+        "last_observation": 132.3,
+        "seasonal_naive": 135.4,
+        "absolute_errors": {
+          "model": 2.145668665413183,
+          "last_observation": 1.5999999999999943,
+          "seasonal_naive": 1.5
+        }
+      },
+      {
+        "month": "2021-01",
+        "trained_through": "2020-12",
+        "training_months": 240,
+        "observed_through": "2020-12",
+        "actual": 136.2,
+        "model": 132.72516514256174,
+        "last_observation": 133.9,
+        "seasonal_naive": 135.6,
+        "absolute_errors": {
+          "model": 3.4748348574382533,
+          "last_observation": 2.299999999999983,
+          "seasonal_naive": 0.5999999999999943
+        }
+      },
+      {
+        "month": "2021-02",
+        "trained_through": "2021-01",
+        "training_months": 241,
+        "observed_through": "2021-01",
+        "actual": 131.7,
+        "model": 134.70494531872947,
+        "last_observation": 136.2,
+        "seasonal_naive": 135.1,
+        "absolute_errors": {
+          "model": 3.004945318729483,
+          "last_observation": 4.5,
+          "seasonal_naive": 3.4000000000000057
+        }
+      },
+      {
+        "month": "2021-03",
+        "trained_through": "2021-02",
+        "training_months": 242,
+        "observed_through": "2021-02",
+        "actual": 134.6,
+        "model": 134.41798580539395,
+        "last_observation": 131.7,
+        "seasonal_naive": 133.9,
+        "absolute_errors": {
+          "model": 0.1820141946060403,
+          "last_observation": 2.9000000000000057,
+          "seasonal_naive": 0.6999999999999886
+        }
+      },
+      {
+        "month": "2021-04",
+        "trained_through": "2021-03",
+        "training_months": 243,
+        "observed_through": "2021-03",
+        "actual": 136.2,
+        "model": 135.53660927049285,
+        "last_observation": 134.6,
+        "seasonal_naive": 123.7,
+        "absolute_errors": {
+          "model": 0.6633907295071424,
+          "last_observation": 1.5999999999999943,
+          "seasonal_naive": 12.499999999999986
+        }
+      },
+      {
+        "month": "2021-05",
+        "trained_through": "2021-04",
+        "training_months": 244,
+        "observed_through": "2021-04",
+        "actual": 135.1,
+        "model": 135.7692897641916,
+        "last_observation": 136.2,
+        "seasonal_naive": 125.5,
+        "absolute_errors": {
+          "model": 0.6692897641916034,
+          "last_observation": 1.0999999999999943,
+          "seasonal_naive": 9.599999999999994
+        }
+      },
+      {
+        "month": "2021-06",
+        "trained_through": "2021-05",
+        "training_months": 245,
+        "observed_through": "2021-05",
+        "actual": 134.0,
+        "model": 136.93101575278197,
+        "last_observation": 135.1,
+        "seasonal_naive": 128.5,
+        "absolute_errors": {
+          "model": 2.931015752781974,
+          "last_observation": 1.0999999999999943,
+          "seasonal_naive": 5.5
+        }
+      },
+      {
+        "month": "2021-07",
+        "trained_through": "2021-06",
+        "training_months": 246,
+        "observed_through": "2021-06",
+        "actual": 132.9,
+        "model": 136.91144641654583,
+        "last_observation": 134.0,
+        "seasonal_naive": 132.5,
+        "absolute_errors": {
+          "model": 4.011446416545823,
+          "last_observation": 1.0999999999999943,
+          "seasonal_naive": 0.4000000000000057
+        }
+      },
+      {
+        "month": "2021-08",
+        "trained_through": "2021-07",
+        "training_months": 247,
+        "observed_through": "2021-07",
+        "actual": 131.7,
+        "model": 135.22371435898188,
+        "last_observation": 132.9,
+        "seasonal_naive": 130.8,
+        "absolute_errors": {
+          "model": 3.5237143589818913,
+          "last_observation": 1.200000000000017,
+          "seasonal_naive": 0.8999999999999773
+        }
+      },
+      {
+        "month": "2021-09",
+        "trained_through": "2021-08",
+        "training_months": 248,
+        "observed_through": "2021-08",
+        "actual": 132.8,
+        "model": 133.56159883892343,
+        "last_observation": 131.7,
+        "seasonal_naive": 131.1,
+        "absolute_errors": {
+          "model": 0.761598838923419,
+          "last_observation": 1.1000000000000227,
+          "seasonal_naive": 1.700000000000017
+        }
+      },
+      {
+        "month": "2021-10",
+        "trained_through": "2021-09",
+        "training_months": 249,
+        "observed_through": "2021-09",
+        "actual": 134.5,
+        "model": 133.08858762613073,
+        "last_observation": 132.8,
+        "seasonal_naive": 132.0,
+        "absolute_errors": {
+          "model": 1.4114123738692683,
+          "last_observation": 1.6999999999999886,
+          "seasonal_naive": 2.5
+        }
+      },
+      {
+        "month": "2021-11",
+        "trained_through": "2021-10",
+        "training_months": 250,
+        "observed_through": "2021-10",
+        "actual": 135.5,
+        "model": 133.8256211737179,
+        "last_observation": 134.5,
+        "seasonal_naive": 132.3,
+        "absolute_errors": {
+          "model": 1.6743788262820942,
+          "last_observation": 1.0,
+          "seasonal_naive": 3.1999999999999886
+        }
+      },
+      {
+        "month": "2021-12",
+        "trained_through": "2021-11",
+        "training_months": 251,
+        "observed_through": "2021-11",
+        "actual": 136.0,
+        "model": 135.10799038299183,
+        "last_observation": 135.5,
+        "seasonal_naive": 133.9,
+        "absolute_errors": {
+          "model": 0.8920096170081706,
+          "last_observation": 0.5,
+          "seasonal_naive": 2.0999999999999943
+        }
+      },
+      {
+        "month": "2022-01",
+        "trained_through": "2021-12",
+        "training_months": 252,
+        "observed_through": "2021-12",
+        "actual": 137.4,
+        "model": 136.00057027789165,
+        "last_observation": 136.0,
+        "seasonal_naive": 136.2,
+        "absolute_errors": {
+          "model": 1.3994297221083514,
+          "last_observation": 1.4000000000000057,
+          "seasonal_naive": 1.200000000000017
+        }
+      },
+      {
+        "month": "2022-02",
+        "trained_through": "2022-01",
+        "training_months": 253,
+        "observed_through": "2022-01",
+        "actual": 137.4,
+        "model": 137.66081346800527,
+        "last_observation": 137.4,
+        "seasonal_naive": 131.7,
+        "absolute_errors": {
+          "model": 0.26081346800526717,
+          "last_observation": 0.0,
+          "seasonal_naive": 5.700000000000017
+        }
+      },
+      {
+        "month": "2022-03",
+        "trained_through": "2022-02",
+        "training_months": 254,
+        "observed_through": "2022-02",
+        "actual": 139.1,
+        "model": 138.02363610626585,
+        "last_observation": 137.4,
+        "seasonal_naive": 134.6,
+        "absolute_errors": {
+          "model": 1.0763638937341398,
+          "last_observation": 1.6999999999999886,
+          "seasonal_naive": 4.5
+        }
+      },
+      {
+        "month": "2022-04",
+        "trained_through": "2022-03",
+        "training_months": 255,
+        "observed_through": "2022-03",
+        "actual": 138.4,
+        "model": 138.5332843457949,
+        "last_observation": 139.1,
+        "seasonal_naive": 136.2,
+        "absolute_errors": {
+          "model": 0.13328434579489112,
+          "last_observation": 0.6999999999999886,
+          "seasonal_naive": 2.200000000000017
+        }
+      },
+      {
+        "month": "2022-05",
+        "trained_through": "2022-04",
+        "training_months": 256,
+        "observed_through": "2022-04",
+        "actual": 138.0,
+        "model": 139.4914227792376,
+        "last_observation": 138.4,
+        "seasonal_naive": 135.1,
+        "absolute_errors": {
+          "model": 1.4914227792376096,
+          "last_observation": 0.4000000000000057,
+          "seasonal_naive": 2.9000000000000057
+        }
+      },
+      {
+        "month": "2022-06",
+        "trained_through": "2022-05",
+        "training_months": 257,
+        "observed_through": "2022-05",
+        "actual": 138.2,
+        "model": 139.98245006930344,
+        "last_observation": 138.0,
+        "seasonal_naive": 134.0,
+        "absolute_errors": {
+          "model": 1.7824500693034508,
+          "last_observation": 0.19999999999998863,
+          "seasonal_naive": 4.199999999999989
+        }
+      },
+      {
+        "month": "2022-07",
+        "trained_through": "2022-06",
+        "training_months": 258,
+        "observed_through": "2022-06",
+        "actual": 137.0,
+        "model": 140.51057744110088,
+        "last_observation": 138.2,
+        "seasonal_naive": 132.9,
+        "absolute_errors": {
+          "model": 3.510577441100878,
+          "last_observation": 1.1999999999999886,
+          "seasonal_naive": 4.099999999999994
+        }
+      },
+      {
+        "month": "2022-08",
+        "trained_through": "2022-07",
+        "training_months": 259,
+        "observed_through": "2022-07",
+        "actual": 137.8,
+        "model": 139.5025499152433,
+        "last_observation": 137.0,
+        "seasonal_naive": 131.7,
+        "absolute_errors": {
+          "model": 1.7025499152432815,
+          "last_observation": 0.8000000000000114,
+          "seasonal_naive": 6.100000000000023
+        }
+      },
+      {
+        "month": "2022-09",
+        "trained_through": "2022-08",
+        "training_months": 260,
+        "observed_through": "2022-08",
+        "actual": 138.3,
+        "model": 139.13983256181777,
+        "last_observation": 137.8,
+        "seasonal_naive": 132.8,
+        "absolute_errors": {
+          "model": 0.839832561817758,
+          "last_observation": 0.5,
+          "seasonal_naive": 5.5
+        }
+      },
+      {
+        "month": "2022-10",
+        "trained_through": "2022-09",
+        "training_months": 261,
+        "observed_through": "2022-09",
+        "actual": 137.0,
+        "model": 139.1853537287534,
+        "last_observation": 138.3,
+        "seasonal_naive": 134.5,
+        "absolute_errors": {
+          "model": 2.185353728753398,
+          "last_observation": 1.3000000000000114,
+          "seasonal_naive": 2.5
+        }
+      },
+      {
+        "month": "2022-11",
+        "trained_through": "2022-10",
+        "training_months": 262,
+        "observed_through": "2022-10",
+        "actual": 134.7,
+        "model": 139.1860788556383,
+        "last_observation": 137.0,
+        "seasonal_naive": 135.5,
+        "absolute_errors": {
+          "model": 4.486078855638311,
+          "last_observation": 2.3000000000000114,
+          "seasonal_naive": 0.8000000000000114
+        }
+      },
+      {
+        "month": "2022-12",
+        "trained_through": "2022-11",
+        "training_months": 263,
+        "observed_through": "2022-11",
+        "actual": 135.3,
+        "model": 137.77375296919666,
+        "last_observation": 134.7,
+        "seasonal_naive": 136.0,
+        "absolute_errors": {
+          "model": 2.473752969196653,
+          "last_observation": 0.6000000000000227,
+          "seasonal_naive": 0.6999999999999886
+        }
+      },
+      {
+        "month": "2023-01",
+        "trained_through": "2022-12",
+        "training_months": 264,
+        "observed_through": "2022-12",
+        "actual": 138.1,
+        "model": 136.31169876039644,
+        "last_observation": 135.3,
+        "seasonal_naive": 137.4,
+        "absolute_errors": {
+          "model": 1.7883012396035554,
+          "last_observation": 2.799999999999983,
+          "seasonal_naive": 0.6999999999999886
+        }
+      },
+      {
+        "month": "2023-02",
+        "trained_through": "2023-01",
+        "training_months": 265,
+        "observed_through": "2023-01",
+        "actual": 139.0,
+        "model": 136.5921818261737,
+        "last_observation": 138.1,
+        "seasonal_naive": 137.4,
+        "absolute_errors": {
+          "model": 2.407818173826314,
+          "last_observation": 0.9000000000000057,
+          "seasonal_naive": 1.5999999999999943
+        }
+      },
+      {
+        "month": "2023-03",
+        "trained_through": "2023-02",
+        "training_months": 266,
+        "observed_through": "2023-02",
+        "actual": 137.7,
+        "model": 138.1680409036953,
+        "last_observation": 139.0,
+        "seasonal_naive": 139.1,
+        "absolute_errors": {
+          "model": 0.4680409036953108,
+          "last_observation": 1.3000000000000114,
+          "seasonal_naive": 1.4000000000000057
+        }
+      },
+      {
+        "month": "2023-04",
+        "trained_through": "2023-03",
+        "training_months": 267,
+        "observed_through": "2023-03",
+        "actual": 137.0,
+        "model": 138.612775080363,
+        "last_observation": 137.7,
+        "seasonal_naive": 138.4,
+        "absolute_errors": {
+          "model": 1.6127750803630079,
+          "last_observation": 0.6999999999999886,
+          "seasonal_naive": 1.4000000000000057
+        }
+      },
+      {
+        "month": "2023-05",
+        "trained_through": "2023-04",
+        "training_months": 268,
+        "observed_through": "2023-04",
+        "actual": 136.8,
+        "model": 138.54549103438748,
+        "last_observation": 137.0,
+        "seasonal_naive": 138.0,
+        "absolute_errors": {
+          "model": 1.74549103438747,
+          "last_observation": 0.19999999999998863,
+          "seasonal_naive": 1.1999999999999886
+        }
+      },
+      {
+        "month": "2023-06",
+        "trained_through": "2023-05",
+        "training_months": 269,
+        "observed_through": "2023-05",
+        "actual": 137.0,
+        "model": 137.72878217331035,
+        "last_observation": 136.8,
+        "seasonal_naive": 138.2,
+        "absolute_errors": {
+          "model": 0.7287821733103499,
+          "last_observation": 0.19999999999998863,
+          "seasonal_naive": 1.1999999999999886
+        }
+      },
+      {
+        "month": "2023-07",
+        "trained_through": "2023-06",
+        "training_months": 270,
+        "observed_through": "2023-06",
+        "actual": 137.7,
+        "model": 138.27281172647432,
+        "last_observation": 137.0,
+        "seasonal_naive": 137.0,
+        "absolute_errors": {
+          "model": 0.5728117264743275,
+          "last_observation": 0.6999999999999886,
+          "seasonal_naive": 0.6999999999999886
+        }
+      },
+      {
+        "month": "2023-08",
+        "trained_through": "2023-07",
+        "training_months": 271,
+        "observed_through": "2023-07",
+        "actual": 137.0,
+        "model": 137.9916906220531,
+        "last_observation": 137.7,
+        "seasonal_naive": 137.8,
+        "absolute_errors": {
+          "model": 0.9916906220531132,
+          "last_observation": 0.6999999999999886,
+          "seasonal_naive": 0.8000000000000114
+        }
+      },
+      {
+        "month": "2023-09",
+        "trained_through": "2023-08",
+        "training_months": 272,
+        "observed_through": "2023-08",
+        "actual": 137.5,
+        "model": 137.9214687355331,
+        "last_observation": 137.0,
+        "seasonal_naive": 138.3,
+        "absolute_errors": {
+          "model": 0.4214687355330966,
+          "last_observation": 0.5,
+          "seasonal_naive": 0.8000000000000114
+        }
+      },
+      {
+        "month": "2023-10",
+        "trained_through": "2023-09",
+        "training_months": 273,
+        "observed_through": "2023-09",
+        "actual": 137.7,
+        "model": 138.44919019268028,
+        "last_observation": 137.5,
+        "seasonal_naive": 137.0,
+        "absolute_errors": {
+          "model": 0.7491901926802882,
+          "last_observation": 0.19999999999998863,
+          "seasonal_naive": 0.6999999999999886
+        }
+      },
+      {
+        "month": "2023-11",
+        "trained_through": "2023-10",
+        "training_months": 274,
+        "observed_through": "2023-10",
+        "actual": 137.5,
+        "model": 138.77682808831352,
+        "last_observation": 137.7,
+        "seasonal_naive": 134.7,
+        "absolute_errors": {
+          "model": 1.276828088313522,
+          "last_observation": 0.19999999999998863,
+          "seasonal_naive": 2.8000000000000114
+        }
+      },
+      {
+        "month": "2023-12",
+        "trained_through": "2023-11",
+        "training_months": 275,
+        "observed_through": "2023-11",
+        "actual": 138.5,
+        "model": 138.92091750137442,
+        "last_observation": 137.5,
+        "seasonal_naive": 135.3,
+        "absolute_errors": {
+          "model": 0.42091750137441863,
+          "last_observation": 1.0,
+          "seasonal_naive": 3.1999999999999886
+        }
+      },
+      {
+        "month": "2024-01",
+        "trained_through": "2023-12",
+        "training_months": 276,
+        "observed_through": "2023-12",
+        "actual": 135.2,
+        "model": 139.08257117405554,
+        "last_observation": 138.5,
+        "seasonal_naive": 138.1,
+        "absolute_errors": {
+          "model": 3.882571174055556,
+          "last_observation": 3.3000000000000114,
+          "seasonal_naive": 2.9000000000000057
+        }
+      },
+      {
+        "month": "2024-02",
+        "trained_through": "2024-01",
+        "training_months": 277,
+        "observed_through": "2024-01",
+        "actual": 136.7,
+        "model": 137.77293359118093,
+        "last_observation": 135.2,
+        "seasonal_naive": 139.0,
+        "absolute_errors": {
+          "model": 1.0729335911809414,
+          "last_observation": 1.5,
+          "seasonal_naive": 2.3000000000000114
+        }
+      },
+      {
+        "month": "2024-03",
+        "trained_through": "2024-02",
+        "training_months": 278,
+        "observed_through": "2024-02",
+        "actual": 136.7,
+        "model": 137.53009202893296,
+        "last_observation": 136.7,
+        "seasonal_naive": 137.7,
+        "absolute_errors": {
+          "model": 0.8300920289329667,
+          "last_observation": 0.0,
+          "seasonal_naive": 1.0
+        }
+      },
+      {
+        "month": "2024-04",
+        "trained_through": "2024-03",
+        "training_months": 279,
+        "observed_through": "2024-03",
+        "actual": 135.2,
+        "model": 136.26104171553877,
+        "last_observation": 136.7,
+        "seasonal_naive": 137.0,
+        "absolute_errors": {
+          "model": 1.061041715538778,
+          "last_observation": 1.5,
+          "seasonal_naive": 1.8000000000000114
+        }
+      },
+      {
+        "month": "2024-05",
+        "trained_through": "2024-04",
+        "training_months": 280,
+        "observed_through": "2024-04",
+        "actual": 138.6,
+        "model": 136.60635779334686,
+        "last_observation": 135.2,
+        "seasonal_naive": 136.8,
+        "absolute_errors": {
+          "model": 1.993642206653135,
+          "last_observation": 3.4000000000000057,
+          "seasonal_naive": 1.799999999999983
+        }
+      },
+      {
+        "month": "2024-06",
+        "trained_through": "2024-05",
+        "training_months": 281,
+        "observed_through": "2024-05",
+        "actual": 138.0,
+        "model": 137.50455459050295,
+        "last_observation": 138.6,
+        "seasonal_naive": 137.0,
+        "absolute_errors": {
+          "model": 0.4954454094970515,
+          "last_observation": 0.5999999999999943,
+          "seasonal_naive": 1.0
+        }
+      },
+      {
+        "month": "2024-07",
+        "trained_through": "2024-06",
+        "training_months": 282,
+        "observed_through": "2024-06",
+        "actual": 137.3,
+        "model": 138.62832477264547,
+        "last_observation": 138.0,
+        "seasonal_naive": 137.7,
+        "absolute_errors": {
+          "model": 1.328324772645459,
+          "last_observation": 0.6999999999999886,
+          "seasonal_naive": 0.39999999999997726
+        }
+      },
+      {
+        "month": "2024-08",
+        "trained_through": "2024-07",
+        "training_months": 283,
+        "observed_through": "2024-07",
+        "actual": 138.8,
+        "model": 139.06830593782794,
+        "last_observation": 137.3,
+        "seasonal_naive": 137.0,
+        "absolute_errors": {
+          "model": 0.26830593782793244,
+          "last_observation": 1.5,
+          "seasonal_naive": 1.8000000000000114
+        }
+      },
+      {
+        "month": "2024-09",
+        "trained_through": "2024-08",
+        "training_months": 284,
+        "observed_through": "2024-08",
+        "actual": 137.3,
+        "model": 139.03106848397127,
+        "last_observation": 138.8,
+        "seasonal_naive": 137.5,
+        "absolute_errors": {
+          "model": 1.7310684839712565,
+          "last_observation": 1.5,
+          "seasonal_naive": 0.19999999999998863
+        }
+      },
+      {
+        "month": "2024-10",
+        "trained_through": "2024-09",
+        "training_months": 285,
+        "observed_through": "2024-09",
+        "actual": 138.3,
+        "model": 138.8644080616193,
+        "last_observation": 137.3,
+        "seasonal_naive": 137.7,
+        "absolute_errors": {
+          "model": 0.5644080616192753,
+          "last_observation": 1.0,
+          "seasonal_naive": 0.6000000000000227
+        }
+      },
+      {
+        "month": "2024-11",
+        "trained_through": "2024-10",
+        "training_months": 286,
+        "observed_through": "2024-10",
+        "actual": 137.1,
+        "model": 139.3076367368,
+        "last_observation": 138.3,
+        "seasonal_naive": 137.5,
+        "absolute_errors": {
+          "model": 2.207636736799998,
+          "last_observation": 1.200000000000017,
+          "seasonal_naive": 0.4000000000000057
+        }
+      },
+      {
+        "month": "2024-12",
+        "trained_through": "2024-11",
+        "training_months": 287,
+        "observed_through": "2024-11",
+        "actual": 137.4,
+        "model": 138.54817161585024,
+        "last_observation": 137.1,
+        "seasonal_naive": 138.5,
+        "absolute_errors": {
+          "model": 1.1481716158502309,
+          "last_observation": 0.30000000000001137,
+          "seasonal_naive": 1.0999999999999943
+        }
+      },
+      {
+        "month": "2025-01",
+        "trained_through": "2024-12",
+        "training_months": 288,
+        "observed_through": "2024-12",
+        "actual": 137.8,
+        "model": 138.96330499663628,
+        "last_observation": 137.4,
+        "seasonal_naive": 135.2,
+        "absolute_errors": {
+          "model": 1.1633049966362705,
+          "last_observation": 0.4000000000000057,
+          "seasonal_naive": 2.6000000000000227
+        }
+      },
+      {
+        "month": "2025-02",
+        "trained_through": "2025-01",
+        "training_months": 289,
+        "observed_through": "2025-01",
+        "actual": 136.8,
+        "model": 138.52251014064555,
+        "last_observation": 137.8,
+        "seasonal_naive": 136.7,
+        "absolute_errors": {
+          "model": 1.7225101406455394,
+          "last_observation": 1.0,
+          "seasonal_naive": 0.10000000000002274
+        }
+      },
+      {
+        "month": "2025-03",
+        "trained_through": "2025-02",
+        "training_months": 290,
+        "observed_through": "2025-02",
+        "actual": 137.6,
+        "model": 138.31730072939143,
+        "last_observation": 136.8,
+        "seasonal_naive": 136.7,
+        "absolute_errors": {
+          "model": 0.7173007293914395,
+          "last_observation": 0.799999999999983,
+          "seasonal_naive": 0.9000000000000057
+        }
+      },
+      {
+        "month": "2025-04",
+        "trained_through": "2025-03",
+        "training_months": 291,
+        "observed_through": "2025-03",
+        "actual": 137.5,
+        "model": 137.92482816241093,
+        "last_observation": 137.6,
+        "seasonal_naive": 135.2,
+        "absolute_errors": {
+          "model": 0.42482816241093246,
+          "last_observation": 0.09999999999999432,
+          "seasonal_naive": 2.3000000000000114
+        }
+      },
+      {
+        "month": "2025-05",
+        "trained_through": "2025-04",
+        "training_months": 292,
+        "observed_through": "2025-04",
+        "actual": 136.9,
+        "model": 137.83861140512852,
+        "last_observation": 137.5,
+        "seasonal_naive": 138.6,
+        "absolute_errors": {
+          "model": 0.9386114051285119,
+          "last_observation": 0.5999999999999943,
+          "seasonal_naive": 1.6999999999999886
+        }
+      },
+      {
+        "month": "2025-06",
+        "trained_through": "2025-05",
+        "training_months": 293,
+        "observed_through": "2025-05",
+        "actual": 137.0,
+        "model": 138.03106173409043,
+        "last_observation": 136.9,
+        "seasonal_naive": 138.0,
+        "absolute_errors": {
+          "model": 1.0310617340904287,
+          "last_observation": 0.09999999999999432,
+          "seasonal_naive": 1.0
+        }
+      },
+      {
+        "month": "2025-07",
+        "trained_through": "2025-06",
+        "training_months": 294,
+        "observed_through": "2025-06",
+        "actual": 138.5,
+        "model": 138.48290785139682,
+        "last_observation": 137.0,
+        "seasonal_naive": 137.3,
+        "absolute_errors": {
+          "model": 0.017092148603182977,
+          "last_observation": 1.5,
+          "seasonal_naive": 1.1999999999999886
+        }
+      },
+      {
+        "month": "2025-08",
+        "trained_through": "2025-07",
+        "training_months": 295,
+        "observed_through": "2025-07",
+        "actual": 138.9,
+        "model": 138.263964020224,
+        "last_observation": 138.5,
+        "seasonal_naive": 138.8,
+        "absolute_errors": {
+          "model": 0.6360359797760111,
+          "last_observation": 0.4000000000000057,
+          "seasonal_naive": 0.09999999999999432
+        }
+      },
+      {
+        "month": "2025-09",
+        "trained_through": "2025-08",
+        "training_months": 296,
+        "observed_through": "2025-08",
+        "actual": 138.0,
+        "model": 139.14762608669326,
+        "last_observation": 138.9,
+        "seasonal_naive": 137.3,
+        "absolute_errors": {
+          "model": 1.1476260866932648,
+          "last_observation": 0.9000000000000057,
+          "seasonal_naive": 0.6999999999999886
+        }
+      },
+      {
+        "month": "2025-10",
+        "trained_through": "2025-09",
+        "training_months": 297,
+        "observed_through": "2025-09",
+        "actual": 136.7,
+        "model": 139.61642117067635,
+        "last_observation": 138.0,
+        "seasonal_naive": 138.3,
+        "absolute_errors": {
+          "model": 2.916421170676358,
+          "last_observation": 1.3000000000000114,
+          "seasonal_naive": 1.6000000000000227
+        }
+      },
+      {
+        "month": "2025-11",
+        "trained_through": "2025-10",
+        "training_months": 298,
+        "observed_through": "2025-10",
+        "actual": 137.2,
+        "model": 138.96890018967684,
+        "last_observation": 136.7,
+        "seasonal_naive": 137.1,
+        "absolute_errors": {
+          "model": 1.768900189676856,
+          "last_observation": 0.5,
+          "seasonal_naive": 0.09999999999999432
+        }
+      },
+      {
+        "month": "2025-12",
+        "trained_through": "2025-11",
+        "training_months": 299,
+        "observed_through": "2025-11",
+        "actual": 136.9,
+        "model": 138.3458486285589,
+        "last_observation": 137.2,
+        "seasonal_naive": 137.4,
+        "absolute_errors": {
+          "model": 1.445848628558906,
+          "last_observation": 0.29999999999998295,
+          "seasonal_naive": 0.5
+        }
+      }
+    ]
+  },
+  "limitations": [
+    "Historical revisions and seasonal adjustment may use later information.",
+    "Observation month is not publication time. Release lag is not simulated.",
+    "National index points are not shipment counts or household goods demand.",
+    "No serving model is replaced. Baseline losses remain valid results."
+  ],
+  "provenance": {
+    "data": {
+      "schema_version": 1,
+      "dataset_id": "bw6n-ddqk",
+      "field": "tsi_freight",
+      "name": "BTS Freight Transportation Services Index",
+      "publisher": "U.S. Department of Transportation, Bureau of Transportation Statistics",
+      "units": "index_points_2000_average_100",
+      "seasonally_adjusted": true,
+      "vintage_kind": "latest_vintage_snapshot",
+      "source_url": "https://data.transportation.gov/resource/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000",
+      "catalog_url": "https://catalog.data.gov/dataset/transportation-services-index-and-seasonally-adjusted-transportation-data",
+      "retrieved_utc": "2026-09-25T02:05:50.360595+00:00",
+      "source_rows_updated_utc": "2026-09-14T15:00:14+00:00",
+      "license_id": "USGOV_WORKS",
+      "license_url": "https://www.usa.gov/government-works",
+      "rights_note": "The official dataset identifies US government work. Attribute BTS. This is the aggregate index, not redistribution of proprietary modal inputs or agency logos.",
+      "sha256": "65e7de7defd5eb39c8dd9eaf91379f0ae27a9225f5d494a295caf662547c04f1",
+      "rows": 319,
+      "first_month": "2000-01",
+      "last_month": "2026-07",
+      "full_export_sha256": "b917ec00b05ff468b0d7a971af7fd18f11559d84f493fe86095aaa8d5d29f8e6",
+      "view_metadata_sha256": "04db305411a7557379dca43903ad65dda6a0b7699220ca233202b4e1327275c9",
+      "column_metadata_sha256": "d2b302e467b7b41a1ed8ad899bed26c9a7260f6c73e749e9282b2bb4902b7a79",
+      "transformations": "Official API projects obs_date and tsi_freight and sorts by obs_date. Saved response bytes are unchanged. All 319 date/value pairs equal the full official CSV export. Evaluation renames columns internally and excludes 2026.",
+      "revision_policy_url": "https://www.bts.gov/browse-statistical-products-and-data/transportation-economic-trends/revision-policy-tsi",
+      "release_schedule_url": "https://www.bts.gov/newsroom/transportation-services-index-release-schedule",
+      "methodology_url": "https://www.bts.gov/learn-about-bts-and-our-work/statistical-methods-and-policies/technical-note-tsi-documentation"
+    },
+    "protocol_sha256": "4b8dfaa44301e43ff3d64514d7593a1225f955e2343a43d07baa5ac97b186d74",
+    "implementation_sha256": {
+      "src/real_backtest.py": "c2bba40d06a259d97842a0f6046ef78501b012aa9641ba8c52df582637bf87a1",
+      "src/backtest.py": "616040b3f92b607735dcf9bd3ba1eca9203e221e499caf8f6939fb027e8195ba",
+      "src/features.py": "4abe7dc15b34d642b3b30f068369602b06a40d56b4917ee2bfc2354584bf7c7f",
+      "src/train.py": "145c7136a6d2db3b2d16947e6e4bf50513c1c591c6dd84a913de1a95abd93859"
+    },
+    "python": "3.11.8",
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "3.0.3",
+      "scikit-learn": "1.9.0"
+    }
+  }
+}

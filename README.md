@@ -107,6 +107,16 @@ but loses in 2023, and it does worse overall than the original fixed model.
 The report retains all monthly predictions, including the seven months where
 the seasonal baseline wins. Running it does not replace the serving model.
 
+A separate [real-data evaluation](docs/real-data-evaluation.md) applies the existing
+estimator to BTS's seasonally adjusted Freight Transportation Services Index.
+Policy selection uses 2010-2019 and the final comparison uses 2020-2025.
+The selected monthly-refit model scores **1.778 MAE**, against **1.260** for
+last observation and **2.783** for the seasonal baseline, in index points.
+It loses to last observation in every final-test year. These are revised
+historical index values, not shipment counts or an as-published forecast replay.
+The source snapshot, timing limits, protocol and all predictions are retained.
+This evaluation does not replace the serving model.
+
 A planner with no model looks up last year's number for the same month. That
 seasonal naive forecast is the honest baseline, and a model that can't clear
 it is not worth deploying no matter how good its architecture looks.

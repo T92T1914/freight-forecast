@@ -1,0 +1,3 @@
+# Preserve the downloaded snapshot and declared protocol bytes in provenance.
+data/public/*.csv -text
+docs/real-data-protocol.json -text
