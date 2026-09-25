@@ -16,6 +16,8 @@ from src.generate_data import generate
 def protocol():
     return {
         "schema_version": 1,
+        "warmup_months": 12,
+        "metrics": ["mae", "rmse", "mape"],
         "data_start": "2017-01",
         "training_end": "2018-12",
         "development_start": "2019-01",
@@ -250,11 +252,25 @@ def test_saved_evidence_matches_source_protocol_and_independent_errors():
     protocol = json.loads(rb.PROTOCOL.read_bytes())
     assert report["protocol"] == protocol
     assert report["provenance"]["data"] == manifest
+    # The numerical run read CRLF before Git normalized this protocol to LF.
+    # Reconstruct those declared bytes rather than changing historical evidence.
+    assert report["provenance"]["protocol_hash_line_endings"] == "CRLF"
+    evaluated_protocol = (
+        rb.PROTOCOL.read_text(encoding="utf-8").replace("\n", "\r\n").encode()
+    )
     assert (
         report["provenance"]["protocol_sha256"]
-        == hashlib.sha256(rb.PROTOCOL.read_bytes()).hexdigest()
+        == hashlib.sha256(evaluated_protocol).hexdigest()
     )
     for name, digest in report["provenance"]["implementation_sha256"].items():
+        if name == "src/real_backtest.py":
+            update = report["validation_update"]
+            assert update["evaluated_sha256"] == digest
+            assert (
+                update["evaluated_revision"]
+                == "45ae5781e91d3a61250aa881e62c2e4eca98a9f4"
+            )
+            digest = update["validation_source_sha256"]
         assert (
             hashlib.sha256(
                 (rb.ROOT / name).read_text(encoding="utf-8").encode()
@@ -296,6 +312,46 @@ def test_saved_evidence_matches_source_protocol_and_independent_errors():
                 )
 
 
+@pytest.mark.parametrize("value", [None, [], "not an object", 12])
+def test_non_object_protocol_is_rejected(value):
+    with pytest.raises(ValueError, match="JSON object"):
+        rb.evaluate(generate(), value)
+
+
+@pytest.mark.parametrize(
+    "key,value",
+    [
+        ("warmup_months", 0),
+        ("warmup_months", None),
+        ("metrics", ["accuracy"]),
+        ("metrics", None),
+        ("seasonal_subgroups", ["summer"]),
+    ],
+)
+def test_misleading_protocol_constants_are_rejected(protocol, key, value):
+    protocol[key] = value
+    with pytest.raises(ValueError):
+        rb.evaluate(generate(), protocol)
+
+
+def test_fit_description_is_derived_from_actual_behavior(protocol):
+    protocol["final_policy_fit"] = "Fit on all future test targets"
+    report = rb.evaluate(generate(), protocol, development_only=True)
+    assert report["protocol"]["final_policy_fit"] == rb.POLICY_DESCRIPTION
+
+
+@pytest.mark.parametrize("value", [None, [], "not an object", {"warmup_months": 0}])
+def test_cli_rejects_malformed_protocol_without_output(tmp_path, value, capsys):
+    protocol_path = tmp_path / "protocol.json"
+    protocol_path.write_text(json.dumps(value), encoding="utf-8")
+    output = tmp_path / "result.json"
+    with pytest.raises(SystemExit) as exc:
+        rb.main(["--protocol", str(protocol_path), "--output", str(output)])
+    assert exc.value.code == 2
+    assert "protocol" in capsys.readouterr().err
+    assert not output.exists()
+
+
 def test_cli_no_model_publication_and_input_protection(tmp_path, protocol, monkeypatch):
     from src import train
 
@@ -313,9 +369,12 @@ def test_cli_no_model_publication_and_input_protection(tmp_path, protocol, monke
     rb.main(["--protocol", str(protocol_path), "--output", str(output)])
     report = json.loads(output.read_bytes())
     assert report["test"]["months"] == 3
+    assert report["provenance"]["protocol_hash_line_endings"] == "LF"
     assert (
         report["provenance"]["protocol_sha256"]
-        == hashlib.sha256(protocol_path.read_bytes()).hexdigest()
+        == hashlib.sha256(
+            protocol_path.read_text(encoding="utf-8").encode()
+        ).hexdigest()
     )
     before = copy.deepcopy(protocol_path.read_bytes())
     with pytest.raises(SystemExit):

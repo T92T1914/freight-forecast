@@ -112,3 +112,13 @@ a tolerance across platforms.
 Regression checks perturb current, future and excluded observations. They verify
 selection independence, the fixed tie rule, correct fitting cutoffs, source
 identity, both independent baselines, reconciled metrics and no model publication.
+
+The saved numerical run used the evaluator preserved in
+[revision 45ae578](https://github.com/T92T1914/freight-forecast/blob/45ae5781e91d3a61250aa881e62c2e4eca98a9f4/src/real_backtest.py).
+A subsequent validation correction rejects non-object protocols and contradictory
+warmup or metric declarations. It also derives the fit description from the
+implemented behavior. That correction did not tune the model or rescore the final
+period. The report preserves the evaluated source hash and records the later
+validation-source hash separately. Its original protocol hash identifies the
+CRLF bytes read in that Windows run. New reports hash LF-normalized protocol text,
+so Git line-ending conversion cannot change its identity across platforms.

@@ -22,6 +22,11 @@ MANIFEST = ROOT / "data/public/bts-freight-tsi-2026-09-24.json"
 PROTOCOL = ROOT / "docs/real-data-protocol.json"
 POLICIES = ("fixed", "monthly_refit")
 METHODS = ("model", "last_observation", "seasonal_naive")
+POLICY_DESCRIPTION = (
+    "Refit through development end before final test. Fixed freezes estimator "
+    "coefficients but updates observed lag features. Monthly_refit refits after "
+    "each observed month."
+)
 
 
 def load_snapshot(data_path: Path, manifest_path: Path) -> tuple[pd.DataFrame, dict]:
@@ -64,6 +69,16 @@ def load_snapshot(data_path: Path, manifest_path: Path) -> tuple[pd.DataFrame, d
 
 def validate_protocol(protocol: dict) -> list[pd.Period]:
     """Require adjacent chronological blocks and the declared selection rule."""
+    if not isinstance(protocol, dict):
+        raise ValueError("protocol must be a JSON object")
+    if protocol.get("warmup_months") != 12 or protocol.get("metrics") != [
+        "mae",
+        "rmse",
+        "mape",
+    ]:
+        raise ValueError("protocol requires 12 warmup months and MAE/RMSE/MAPE")
+    if protocol.get("seasonal_subgroups") is not None:
+        raise ValueError("this index evaluation does not define seasonal subgroups")
     if protocol.get("schema_version") != 1 or protocol.get("model") != (
         "StandardScaler + Ridge(alpha=1.0), log target / exp inverse"
     ):
@@ -187,7 +202,7 @@ def evaluate(history: pd.DataFrame, protocol: dict, *, development_only=False) -
         "schema_version": 1,
         "evaluation_kind": "retrospective_latest_vintage_one_observation_step",
         "units": "index_points_2000_average_100",
-        "protocol": protocol,
+        "protocol": {**protocol, "final_policy_fit": POLICY_DESCRIPTION},
         "development": development,
         "selected_policy": selected,
         "test": None
@@ -216,13 +231,14 @@ def main(argv: list[str] | None = None) -> None:
         parser.error("output must not overwrite an input")
     try:
         history, manifest = load_snapshot(args.data, args.manifest)
-        protocol_raw = args.protocol.read_bytes()
+        protocol_raw = args.protocol.read_text(encoding="utf-8").encode("utf-8")
         report = evaluate(
             history, json.loads(protocol_raw), development_only=args.development_only
         )
         report["provenance"] = {
             "data": manifest,
             "protocol_sha256": hashlib.sha256(protocol_raw).hexdigest(),
+            "protocol_hash_line_endings": "LF",
             "implementation_sha256": {
                 name: hashlib.sha256(
                     (ROOT / name).read_text(encoding="utf-8").encode()
