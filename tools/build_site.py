@@ -6,6 +6,11 @@ import math
 import shutil
 from pathlib import Path
 
+try:
+    from .render_real_report import render_outputs
+except ImportError:  # Direct command-line invocation from the source checkout.
+    from render_real_report import render_outputs
+
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "_site"
 FILES = {
@@ -73,16 +78,23 @@ def main():
     backtest = json.loads((ROOT / "docs/backtest-example.json").read_text())
     if not backtest.get("provenance", {}).get("implementation_sha256"):
         raise ValueError("Backtest data must retain its implementation hashes.")
+    rendered = render_outputs()
+    expected = set(FILES.values()) | set(rendered)
     OUT.mkdir(exist_ok=True)
+    unexpected = {p.name for p in OUT.iterdir()} - expected
+    if unexpected:
+        raise ValueError("Unexpected site output files: " + str(sorted(unexpected)))
+    for path in OUT.iterdir():
+        if path.is_symlink() or not path.is_file():
+            raise ValueError("Expected a regular output file: " + path.name)
     for source, target in FILES.items():
         path = ROOT / source
         if not path.is_file() or path.is_symlink():
             raise ValueError("Expected a regular source file: " + source)
         shutil.copyfile(path, OUT / target)
-    unexpected = {p.name for p in OUT.iterdir()} - set(FILES.values())
-    if unexpected:
-        raise ValueError("Unexpected site output files: " + str(sorted(unexpected)))
-    print("Built", len(FILES), "public files in", OUT)
+    for name, content in rendered.items():
+        (OUT / name).write_bytes(content)
+    print("Built", len(expected), "public files in", OUT)
 
 
 if __name__ == "__main__":

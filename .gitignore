@@ -16,6 +16,7 @@ desktop.ini
 
 # Generated public site
 _site/
+node_modules/
 
 # Local evaluation reports; the documented example is kept under docs/
 reports/

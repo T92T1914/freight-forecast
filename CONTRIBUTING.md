@@ -21,8 +21,8 @@ python -m src.train
 
 ```sh
 python -m pytest -q
-ruff check src tests
-ruff format --check src tests
+ruff check src tests tools
+ruff format --check src tests tools
 ```
 
 Start with [feature construction](src/features.py), [training](src/train.py) and [serving](src/serve.py). The [verification record](VERIFICATION.md) explains the local container evidence.
@@ -49,6 +49,11 @@ and independently reconcile the reported errors.
 
 Open this repository in Codespaces or use VS Code Dev Containers. The container uses Python 3.11 and installs the project into `.venv` during setup. Its image is pinned by digest. The `Project access` workflow builds that same environment and runs `.devcontainer/smoke.sh`. Runtime dependencies still follow the project configuration. Codespaces uses the creating account's compute and storage allowance.
 
-Run `python tools/build_site.py` to assemble the public page in `_site`, then `python -m http.server 8080 --directory _site` to preview it. The builder copies only the listed example files. The page reads saved evidence; it does not silently rerun the experiment or claim current results. Pages deploys from `main` after the site and development environment checks pass.
+Run `python tools/build_site.py` to assemble the public page in `_site`, then `python -m http.server 8080 --directory _site` to preview it. The builder copies only the listed example files and generates the BTS reading report from retained predictions. The page reads saved evidence; it does not silently rerun the experiment or claim current results. Pages deploys from `main` after the site and development environment checks pass.
 
 The container prepares dependencies but does not train automatically. Run `python -m src.train` before starting `uvicorn src.serve:app --host 0.0.0.0 --port 8000`. Port 8000 is configured for forwarding; keep the Codespaces port private unless you deliberately need to share it.
+
+For presentation changes, follow [the report checks](docs/presentation.md). Preserve
+the original synthetic chart and experiment records. The report renderer generates
+new HTML/SVG renditions without retraining. Keep both appearances semantically
+equivalent and record local Inter lookup separately from system fallback.

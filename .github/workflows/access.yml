@@ -30,8 +30,13 @@ jobs:
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
         with:
           node-version: '24'
-      - run: node --test tests/selection-state.test.mjs
+      - run: node --test tests/selection-state.test.mjs tests/appearance.test.mjs
+      - run: python -m unittest tests.test_presentation -v
       - run: python tools/build_site.py
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - name: Exercise the checked site in isolated headless Chromium
+        run: npm run test:browser
       - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
         with:
           path: _site

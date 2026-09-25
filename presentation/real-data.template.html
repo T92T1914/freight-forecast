@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Freight Forecast | Retained BTS index evaluation</title>
+<script src="appearance.js">
+</script>
+<style>{appearance_styles}</style>
+<style>{stylesheet}</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the report</a>
+<div class="wrap">
+<nav aria-label="Report navigation">
+<a href="https://t92t1914.github.io/freight-forecast/">Freight Forecast</a>
+<a href="https://github.com/T92T1914/freight-forecast/blob/main/docs/real-data-evaluation.md">Method and limits</a>{control}</nav>
+<main id="main">
+<p class="eyebrow">Retained real-data evaluation</p>
+<h1>A real index, a harder baseline.</h1>
+<p class="lead">The monthly-refit Ridge model loses to last observation on the 72 final-test months. It beats the seasonal baseline overall, but that does not make it the strongest forecast in this comparison.</p>
+<p>This is the national, seasonally adjusted <strong>BTS Freight Transportation Services Index</strong>. Its units are index points, with 2000 averaging 100. These are <em>not shipment counts</em> or a carrier's operational records.</p>
+<section class="panel">
+<h2>Final test: January 2020 through December 2025</h2>
+<p>Fixed and monthly-refit policies were compared on 2010 to 2019 only. Monthly refit was selected there. This presentation reads the saved final-test result. It does not train a model or repeat the evaluation.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Final-test metrics">
+<table>
+<caption>Lower error is better. MAE and RMSE use index points. MAPE is a percentage.</caption>
+<thead>
+<tr>
+<th scope="col">Method</th>
+<th scope="col">MAE</th>
+<th scope="col">RMSE</th>
+<th scope="col">MAPE</th>
+</tr>
+</thead>
+<tbody>{summary}</tbody>
+</table>
+</div>
+<p>Last observation also has lower MAE in every test year. The seasonal baseline beats Ridge in 2024 and 2025. The full retained report preserves those losses.</p>
+</section>
+<figure>
+<div class="chart-wrap" tabindex="0" role="region" aria-label="Scrollable BTS index chart">{chart_svg}</div>
+<figcaption>The same saved observations and predictions in either appearance. On small screens, scroll the chart or use the table below. No prediction intervals were recorded.</figcaption>
+</figure>
+<div class="actions">
+<a class="button" href="real-data-clair.svg" download>Download Clair chart</a>
+<a class="button" href="real-data-obscur.svg" download>Download Obscur chart</a>
+<a class="button" href="real-data.json" download>Download retained data</a>
+</div>
+<section class="panel">
+<h2>Read the timing limits first</h2>
+<ul>{limits}</ul>
+<p>The source snapshot was retrieved at <time>{retrieved}</time>. Earlier levels can reflect later revisions. An observation step is not a publication-date forecast. This is not evidence of live operational accuracy.</p>
+<p>
+<a href="{catalog}">Official BTS dataset</a> | <a href="{revision_policy}">BTS revision policy</a>
+</p>
+</section>
+<details class="panel">
+<summary>All 72 months, including the misses</summary>
+<div class="table-wrap" tabindex="0" role="region" aria-label="All retained monthly predictions">
+<table>
+<caption>Index points, rounded to three decimals for reading. The JSON download retains full precision.</caption>
+<thead>
+<tr>
+<th scope="col">Month</th>
+<th scope="col">Trained and observed through</th>
+<th scope="col">Actual index</th>
+<th scope="col">Ridge monthly refit</th>
+<th scope="col">Last observation</th>
+<th scope="col">Same month last year</th>
+</tr>
+</thead>
+<tbody>{rows}</tbody>
+</table>
+</div>
+</details>
+<details>
+<summary>Data, presentation and font identity</summary>
+<p>Original evaluated revision: <a href="https://github.com/T92T1914/freight-forecast/tree/{evaluated}">
+<code>{evaluated}</code>
+</a>.</p>
+<p>Presentation revision: <code>{presentation}</code>{state}. <a href="presentation.json">Inspect the source and renderer hashes</a>. This is a new rendition of retained results, not a new experiment.</p>
+<p>Clair and Obscur use <a href="{token_url}">the pinned appearance roles</a>. Inter is requested only from fonts already installed on the reader's machine. Without it, the browser uses its system font. No font download is made. SVG exports retain text and use the same local-font policy, so their font is not guaranteed on another machine.</p>
+</details>
+</main>
+<footer>Freight Forecast. Report colors describe the interface. Line styles, markers, names and tables preserve the identity of each series. Print uses Clair without changing the saved screen preference.</footer>
+</div>
+</body>
+</html>

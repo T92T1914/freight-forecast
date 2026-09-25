@@ -29,12 +29,12 @@ test: ## run the test suite
 	$(PY) -m pytest -q
 
 lint: ## ruff check + format check, exactly what CI runs
-	$(PY) -m ruff check src tests
-	$(PY) -m ruff format --check src tests
+	$(PY) -m ruff check src tests tools
+	$(PY) -m ruff format --check src tests tools
 
 format: ## rewrite files so that lint passes
-	$(PY) -m ruff format src tests
-	$(PY) -m ruff check --fix src tests
+	$(PY) -m ruff format src tests tools
+	$(PY) -m ruff check --fix src tests tools
 
 check: lint test ## everything CI gates on, minus the image build
 
