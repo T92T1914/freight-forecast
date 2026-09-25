@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "id": "bts-freight-tsi-latest-vintage-v1",
+  "declared_utc": "2026-09-25T02:03:24.7044127Z",
+  "data_start": "2000-01",
+  "training_end": "2009-12",
+  "development_start": "2010-01",
+  "development_end": "2019-12",
+  "test_start": "2020-01",
+  "test_end": "2025-12",
+  "model": "StandardScaler + Ridge(alpha=1.0), log target / exp inverse",
+  "policies": [
+    "fixed",
+    "monthly_refit"
+  ],
+  "selection": {
+    "metric": "development_mae",
+    "tie_break": "fixed",
+    "final_candidates": "selected_policy_only"
+  },
+  "baselines": [
+    "last_observation",
+    "seasonal_naive"
+  ],
+  "selection_clarified_utc": "2026-09-25T02:08:30.628299+00:00",
+  "selection_clarification": "Both policies are compared only on development. Only the chosen policy and both baselines enter final test. Clarified before any model evaluation.",
+  "data_access_disclosure": "Periods were declared before CSV values or any model errors were inspected. Subsequent official release research incidentally displayed some 2023-2025 actual index levels. No final-test model results informed this protocol.",
+  "release_lag": "One observation step, not a publication-date simulation. TSI data for a month are normally released in the second following calendar month.",
+  "vintage_limit": "Latest-vintage historical levels may depend on later source revisions and seasonal adjustment. Causal code cannot remove that retrospective information.",
+  "warmup_months": 12,
+  "metrics": [
+    "mae",
+    "rmse",
+    "mape"
+  ],
+  "seasonal_subgroups": null,
+  "final_policy_fit": "Refit through development end before final test. Fixed freezes estimator coefficients but updates observed lag features. Monthly_refit refits after each observed month.",
+  "serving_artifact": "No publication or replacement."
+}
