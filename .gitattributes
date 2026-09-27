@@ -1,3 +1,6 @@
 # Preserve downloaded bytes. Protocol hashes normalize line endings to LF.
 data/public/*.csv -text
 docs/real-data-protocol.json text eol=lf
+# Figure receipts identify exact output bytes across Windows and Linux.
+docs/freight-forecast-clair.svg text eol=lf
+docs/freight-forecast-obscur.svg text eol=lf

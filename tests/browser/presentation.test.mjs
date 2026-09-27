@@ -10,7 +10,7 @@ import {chromium} from 'playwright';
 // visible fallback, desktop input or connection to an existing browser.
 const root = fileURLToPath(new URL('../../_site/', import.meta.url));
 const mime = {'.html':'text/html', '.css':'text/css', '.js':'text/javascript',
-  '.mjs':'text/javascript', '.json':'application/json', '.svg':'image/svg+xml'};
+  '.mjs':'text/javascript', '.json':'application/json', '.svg':'image/svg+xml', '.png':'image/png'};
 let browser, server, base;
 before(async () => {
   server = createServer(async (request, response) => {
@@ -221,4 +221,43 @@ test('installed Inter supplies all six intended faces in both appearances',
     assert.ok((await fonts(page, 'svg>g>text:nth-child(2)')).some(f => f.postScriptName === 'Inter-Regular'));
     console.log(`Standalone ${mode} SVG uses actual Inter SemiBold and Regular glyphs`);
   }
+});
+
+test('synthetic figure follows effective appearance, Auto without scripts, and print', async t => {
+  const page = await fixture(t, {colorScheme:'dark'});
+  await ready(page);
+  const assertEdition = async mode => {
+    assert.equal(await page.locator('.synthetic-'+mode).isVisible(), true);
+    assert.equal(await page.locator('.synthetic-'+(mode === 'clair' ? 'obscur' : 'clair')).isVisible(), false);
+    await page.locator('.synthetic-'+mode).scrollIntoViewIfNeeded();
+    await page.waitForFunction(mode => document.querySelector('.synthetic-'+mode).naturalWidth === 960, mode);
+  };
+  await assertEdition('obscur');
+  await page.locator('#appearance').selectOption('clair');
+  await assertEdition('clair');
+  await page.reload(); await assertEdition('clair');
+  await page.emulateMedia({colorScheme:'light'});
+  await page.locator('#appearance').selectOption('obscur');
+  await assertEdition('obscur');
+  for (const mode of ['clair','obscur']) {
+    await page.locator('#appearance').selectOption(mode);
+    await page.setViewportSize({width:390,height:844});
+    await assertEdition(mode);
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    await capture(page, `synthetic-${mode}-mobile`, '#synthetic-figure');
+    for (const ext of ['png','svg']) {
+      const response = await page.request.get(base+`/synthetic-${mode}.${ext}`);
+      assert.equal(response.status(), 200);
+      assert.deepEqual(await response.body(), await readFile(path.join(root, `synthetic-${mode}.${ext}`)));
+    }
+  }
+  await page.emulateMedia({media:'print'}); await assertEdition('clair');
+  await page.emulateMedia({media:'screen'}); await assertEdition('obscur');
+  await page.locator('#appearance').selectOption('auto'); await assertEdition('clair');
+  await page.emulateMedia({colorScheme:'dark'}); await assertEdition('obscur');
+  const noJS = await fixture(t, {javaScriptEnabled:false, colorScheme:'dark'});
+  await noJS.goto(base+'/');
+  assert.equal(await noJS.locator('.synthetic-obscur').isVisible(), true);
+  await noJS.emulateMedia({colorScheme:'light'});
+  assert.equal(await noJS.locator('.synthetic-clair').isVisible(), true);
 });

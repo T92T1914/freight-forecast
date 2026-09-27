@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "evidence": {
+    "source_revision": "3cd78f7316cd648aad5cc1407529a70131ca397c",
+    "evaluation_rerun": false,
+    "units": "moves",
+    "axis_domain": [
+      0,
+      16000
+    ],
+    "trained_through": "2022-12-01",
+    "evaluation": "fixed fit, chronological held-out months, observed lag inputs",
+    "metrics": {
+      "model_mae": 226.16017469322387,
+      "model_mape": 0.0335447280950889,
+      "naive_mae": 326.8333333333333,
+      "naive_mape": 0.04752928059583656
+    },
+    "rows": [
+      {
+        "month": "2023-01",
+        "actual": 3047.0,
+        "model": 3158.048996531065,
+        "baseline": 3081.0
+      },
+      {
+        "month": "2023-02",
+        "actual": 3116.0,
+        "model": 3178.6525685880365,
+        "baseline": 3260.0
+      },
+      {
+        "month": "2023-03",
+        "actual": 4240.0,
+        "model": 3974.495654973887,
+        "baseline": 3978.0
+      },
+      {
+        "month": "2023-04",
+        "actual": 5330.0,
+        "model": 5504.545735933419,
+        "baseline": 5316.0
+      },
+      {
+        "month": "2023-05",
+        "actual": 9391.0,
+        "model": 10008.929415190496,
+        "baseline": 9865.0
+      },
+      {
+        "month": "2023-06",
+        "actual": 11828.0,
+        "model": 11770.470820088043,
+        "baseline": 11660.0
+      },
+      {
+        "month": "2023-07",
+        "actual": 11248.0,
+        "model": 12570.172598934401,
+        "baseline": 12460.0
+      },
+      {
+        "month": "2023-08",
+        "actual": 10267.0,
+        "model": 10275.207433642276,
+        "baseline": 10081.0
+      },
+      {
+        "month": "2023-09",
+        "actual": 5894.0,
+        "model": 6027.42340370693,
+        "baseline": 5799.0
+      },
+      {
+        "month": "2023-10",
+        "actual": 4571.0,
+        "model": 4695.232769594895,
+        "baseline": 4518.0
+      },
+      {
+        "month": "2023-11",
+        "actual": 3624.0,
+        "model": 3776.861200255969,
+        "baseline": 3822.0
+      },
+      {
+        "month": "2023-12",
+        "actual": 3105.0,
+        "model": 3128.2382788610794,
+        "baseline": 3228.0
+      },
+      {
+        "month": "2024-01",
+        "actual": 3477.0,
+        "model": 3171.549755995512,
+        "baseline": 3047.0
+      },
+      {
+        "month": "2024-02",
+        "actual": 3150.0,
+        "model": 3180.86575274136,
+        "baseline": 3116.0
+      },
+      {
+        "month": "2024-03",
+        "actual": 4164.0,
+        "model": 4078.8594897383728,
+        "baseline": 4240.0
+      },
+      {
+        "month": "2024-04",
+        "actual": 5661.0,
+        "model": 5570.5106208015995,
+        "baseline": 5330.0
+      },
+      {
+        "month": "2024-05",
+        "actual": 10238.0,
+        "model": 9839.519188536775,
+        "baseline": 9391.0
+      },
+      {
+        "month": "2024-06",
+        "actual": 12458.0,
+        "model": 12082.03119482961,
+        "baseline": 11828.0
+      },
+      {
+        "month": "2024-07",
+        "actual": 12343.0,
+        "model": 11974.840547307687,
+        "baseline": 11248.0
+      },
+      {
+        "month": "2024-08",
+        "actual": 10477.0,
+        "model": 10673.988383703798,
+        "baseline": 10267.0
+      },
+      {
+        "month": "2024-09",
+        "actual": 6373.0,
+        "model": 6199.079317825865,
+        "baseline": 5894.0
+      },
+      {
+        "month": "2024-10",
+        "actual": 4998.0,
+        "model": 4811.828157264609,
+        "baseline": 4571.0
+      },
+      {
+        "month": "2024-11",
+        "actual": 3764.0,
+        "model": 3795.9553863339065,
+        "baseline": 3624.0
+      },
+      {
+        "month": "2024-12",
+        "actual": 3287.0,
+        "model": 3156.0929840182985,
+        "baseline": 3105.0
+      }
+    ]
+  },
+  "renderer": {
+    "matplotlib": "3.11.1",
+    "backend": "Agg"
+  },
+  "typography": {
+    "files": {
+      "Regular": {
+        "sha256": "40d692fce188e4471e2b3cba937be967878f631ad3ebbbdcd587687c7ebe0c82",
+        "postscript": "Inter-Regular",
+        "weight": 400,
+        "italic": false
+      },
+      "SemiBold": {
+        "sha256": "78a843fade9d4612a5567302fb595b56976eb5fcebf4fea5a5912d638bafcde3",
+        "postscript": "Inter-SemiBold",
+        "weight": 600,
+        "italic": false
+      },
+      "Bold": {
+        "sha256": "288316099b1e0a47a4716d159098005eef7c0066921f34e3200393dbdb01947f",
+        "postscript": "Inter-Bold",
+        "weight": 700,
+        "italic": false
+      },
+      "Italic": {
+        "sha256": "bbc051dd204b5019a1aa0bc0ae2aa8a05ab13e7a3f979fa357631dc7feb6833a",
+        "postscript": "Inter-Italic",
+        "weight": 400,
+        "italic": true
+      },
+      "SemiBoldItalic": {
+        "sha256": "eff2930c3d3b35d3fcf5f76252b6baef4c3e907d9d2fde1d16cf5d417f8deef4",
+        "postscript": "Inter-SemiBoldItalic",
+        "weight": 600,
+        "italic": true
+      },
+      "BoldItalic": {
+        "sha256": "948405a16cdc62701da5f4005ed068ca5f4d27061d98f7974ccfc37831d9581d",
+        "postscript": "Inter-BoldItalic",
+        "weight": 700,
+        "italic": true
+      }
+    },
+    "painted_faces": [
+      "Regular",
+      "SemiBold",
+      "Bold",
+      "Italic"
+    ],
+    "png": "Glyphs rasterized from explicit Inter files",
+    "svg": "Labels outlined from the same Inter files. Source values remain selectable in JSON and the public table"
+  },
+  "inputs_sha256_lf": {
+    "docs/visual-example-data.json": "82dee977592e8614b2f7be8fb69a8bddcbe41db84af8ebd49dbef9305d055a8d",
+    "presentation/tokens.json": "0990b3a128dbf2c038f140aef7329c3517a20772a3830a768819cc6170eba592",
+    "tools/render_synthetic_figure.py": "5484c71d74d702361c9646b830f196f20e375a6f65638c1a8703ac2b92f80ad0"
+  },
+  "outputs_sha256": {
+    "docs/freight-forecast-clair.png": "b00daac578df7639668bac1914fcd66f9d87687751311da9eff740f4c4a2491e",
+    "docs/freight-forecast-clair.svg": "25960f9e9619dbbd077d2bbf0a3fef77a21f6e7c9c935e112e0b677a40e1d141",
+    "docs/freight-forecast-obscur.png": "f6fb37cbb783a7324cad8a287342c3a5ca1f00cadcc24dbf3ed5b0224a144a3d",
+    "docs/freight-forecast-obscur.svg": "a9bf098b79c3d8ea191afe65b0c108cfe15ce79a5175a3e85f66688dc94cad7b"
+  }
+}

@@ -48,7 +48,7 @@ guards that pin. Additional categorical colors belong to Freight's named methods
 with distinct markers and line styles. There is no runtime fetch of a mutable
 theme definition. Original evidence images keep their recorded bytes and colors.
 
-The page and new charts request installed Inter Regular 400, SemiBold 600 and Bold
+The HTML page and live text BTS charts request installed Inter Regular 400, SemiBold 600 and Bold
 700, with genuine italic faces. They use local font lookup only. A reader without
 Inter receives the system fallback. This is not universal Inter delivery, and the
 SVGs do not embed fonts or guarantee identical text metrics on another machine.
@@ -90,3 +90,9 @@ The existing `Project access` workflow builds and tests this same output before
 Pages deploys from main. It uses the runner's installed Chrome through Playwright's
 supported channel, with the browser sandbox enabled. The model CI and tag
 publication path remain separate.
+
+The [synthetic README figure](visual-example.md) now has its own maintained PNG
+and outlined SVG editions. These use the same family roles and named method
+colors as the report, with unchanged retained synthetic values. Their actual
+Inter shapes travel inside the images. This differs from the HTML and live text
+BTS SVGs above, whose typography still depends on local font availability.

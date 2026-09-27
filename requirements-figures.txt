@@ -1,0 +1,4 @@
+# Optional authoring tools. Site builds validate and copy the committed outputs.
+matplotlib==3.11.1
+fonttools==4.63.0
+pillow==12.3.0
