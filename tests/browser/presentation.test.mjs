@@ -49,6 +49,7 @@ async function fixture(t, options = {}, blockedStorage = false) {
   });
   const page = await context.newPage();
   page.on('pageerror', error => failures.push(error.message));
+  page.on('console', message => { if (message.type() === 'error') failures.push(message.text()); });
   page.on('response', response => { if (response.status() >= 400) failures.push(`${response.status()} ${response.url()}`); });
   t.after(async () => {
     await context.close();
@@ -183,6 +184,11 @@ test('a deliberately missing font supplies a readable non-Inter fallback', async
     sample.style.fontFamily='"Freight deliberately missing face", Arial, sans-serif';
     sample.textContent='Readable fallback 123'; document.body.append(sample);
   });
+  await page.locator('#missing-face').scrollIntoViewIfNeeded();
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    await new Promise(resolve => requestAnimationFrame(resolve));
+  });
   const providers = await fonts(page, '#missing-face');
   assert.ok(providers.length > 0);
   assert.ok(providers.every(f => !f.postScriptName.startsWith('Inter')));
@@ -260,4 +266,96 @@ test('synthetic figure follows effective appearance, Auto without scripts, and p
   assert.equal(await noJS.locator('.synthetic-obscur').isVisible(), true);
   await noJS.emulateMedia({colorScheme:'light'});
   assert.equal(await noJS.locator('.synthetic-clair').isVisible(), true);
+});
+
+for (const mode of ['obscur','clair']) test(`${mode} interval report preserves every condition, calendar year and download`, async t => {
+  const page = await fixture(t);
+  await ready(page);
+  await page.getByRole('link', {name:'Read the interval study', exact:true}).click();
+  await page.locator('#appearance:not([disabled])').waitFor();
+  await page.locator('#appearance').selectOption(mode);
+  const raw = JSON.parse(await readFile(path.join(root, 'intervals.json'), 'utf8'));
+  assert.equal(await page.locator('#overall tbody tr').count(), 9);
+  assert.equal(await page.locator('#yearly tbody tr').count(), 54);
+  for (const [index, group] of raw.groups.entries()) {
+    const values = await page.locator('#overall tbody tr').nth(index).locator('td').allTextContents();
+    assert.deepEqual(values.slice(3), [`${group.summary.covered}/72`, `${(100*group.summary.coverage).toFixed(2)}%`, group.summary.mean_width.toFixed(3), group.summary.mean_interval_score.toFixed(3), '0','0']);
+    for (const [offset, [year, summary]] of Object.entries(group.by_year).entries()) {
+      const row = await page.locator('#yearly tbody tr').nth(index*6+offset).locator('td').allTextContents();
+      assert.deepEqual(row.slice(2), [year,`${summary.covered}/12`,`${(100*summary.coverage).toFixed(2)}%`,summary.mean_width.toFixed(3),summary.mean_interval_score.toFixed(3),'0','0']);
+    }
+  }
+  const tables = await page.locator('tbody').allTextContents();
+  const geometry = await page.locator('svg g[data-point]').evaluateAll(nodes => nodes.map(e => e.outerHTML.replace(/fill="[^"]*"/g,'')));
+  for (const name of ['intervals.json','intervals.csv','interval-protocol.json','intervals-clair.svg','intervals-obscur.svg']) {
+    assert.equal(await page.locator(`a[href="${name}"]`).count(), 1);
+    const response = await page.request.get(base+'/'+name);
+    assert.equal(response.status(), 200);
+    assert.deepEqual(await response.body(), await readFile(path.join(root, name)));
+  }
+  const [download] = await Promise.all([page.waitForEvent('download'), page.getByRole('link', {name:'Download all 648 monthly rows'}).click()]);
+  assert.equal(download.suggestedFilename(), 'intervals.csv');
+  assert.deepEqual(await readFile(await download.path()), await readFile(path.join(root, 'intervals.csv')));
+  assert.match(await page.locator('main').textContent(), /not an untouched confirmation test/);
+  assert.match(await page.locator('main').textContent(), /9.353 and 9.303 versus 9.117/);
+  if (process.env.FREIGHT_REQUIRE_INTER === '1') {
+    for (const [selector, expected] of [['h1','Inter-Bold'],['.lead','Inter-Regular'],['label[for="appearance"]','Inter-SemiBold']]) {
+      const providers = await fonts(page, selector);
+      assert.ok(providers.some(f => f.postScriptName === expected && f.glyphCount > 0));
+      console.log('Interval report glyphs:', JSON.stringify({mode,selector,providers}));
+    }
+  }
+  if (process.env.FREIGHT_SCREENSHOT_DIR) {
+    await page.screenshot({path:path.join(process.env.FREIGHT_SCREENSHOT_DIR, `interval-${mode}-wide.png`)});
+  }
+  await capture(page, `interval-${mode}-chart`, '.chart-wrap');
+  await page.setViewportSize({width:390,height:844});
+  await page.evaluate(() => scrollTo(0,0));
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  if (process.env.FREIGHT_SCREENSHOT_DIR) {
+    await page.screenshot({path:path.join(process.env.FREIGHT_SCREENSHOT_DIR, `interval-${mode}-narrow.png`)});
+  }
+  await page.locator('#appearance').focus();
+  await page.keyboard.press('Tab');
+  assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Download raw interval results');
+  await page.locator('.chart-wrap').focus();
+  assert.equal(await page.locator('.chart-wrap').evaluate(e => getComputedStyle(e).outlineStyle), 'solid');
+  await page.keyboard.press('ArrowRight');
+  await page.addStyleTag({content:'body{font-size:34px!important}'});
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await page.locator('#appearance').selectOption(mode === 'clair' ? 'obscur' : 'clair');
+  assert.deepEqual(await page.locator('tbody').allTextContents(), tables);
+  assert.deepEqual(await page.locator('svg g[data-point]').evaluateAll(nodes => nodes.map(e => e.outerHTML.replace(/fill="[^"]*"/g,''))), geometry);
+  await page.reload();
+  assert.equal(await page.locator('#appearance').inputValue(), mode === 'clair' ? 'obscur' : 'clair');
+  await page.getByRole('link', {name:'Original point forecast study'}).click();
+  await page.getByRole('link', {name:'A separate retrospective study adds residual ranges'}).click();
+  assert.equal(await page.locator('#overall tbody tr').count(), 9);
+  await page.goBack();
+  assert.match(await page.locator('h1').textContent(), /A real index/);
+  if (process.env.FREIGHT_REQUIRE_INTER === '1') {
+    await page.goto(base+`/intervals-${mode}.svg`);
+    await page.evaluate(() => document.fonts.ready);
+    const providers = await fonts(page, 'svg>g>text:first-child');
+    assert.ok(providers.some(f => f.postScriptName === 'Inter-SemiBold' && f.glyphCount > 0));
+    console.log('Interval SVG glyphs:', JSON.stringify({mode,providers}));
+  }
+});
+
+test('interval report supports no script, blocked storage and light print', async t => {
+  const noScript = await fixture(t, {javaScriptEnabled:false, colorScheme:'dark'});
+  await noScript.goto(base+'/intervals.html');
+  assert.equal(await background(noScript), 'rgb(9, 9, 9)');
+  assert.equal(await noScript.locator('tbody tr').count(), 63);
+  assert.equal(await noScript.locator('svg g[data-point]').count(), 9);
+  const page = await fixture(t, {colorScheme:'light'}, true);
+  await ready(page, '/intervals.html');
+  await page.locator('#appearance').selectOption('obscur');
+  assert.equal(await background(page), 'rgb(9, 9, 9)');
+  await page.emulateMedia({media:'print'});
+  assert.equal(await background(page), 'rgb(248, 247, 243)');
+  await page.emulateMedia({media:'screen'});
+  assert.equal(await background(page), 'rgb(9, 9, 9)');
+  await page.reload();
+  assert.equal(await background(page), 'rgb(248, 247, 243)');
 });

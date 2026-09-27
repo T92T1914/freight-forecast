@@ -7,9 +7,11 @@ import shutil
 from pathlib import Path
 
 try:
+    from .render_interval_report import render_outputs as interval_outputs
     from .render_real_report import render_outputs
     from .render_synthetic_figure import check_outputs
 except ImportError:  # Direct command-line invocation from the source checkout.
+    from render_interval_report import render_outputs as interval_outputs
     from render_real_report import render_outputs
     from render_synthetic_figure import check_outputs
 
@@ -87,6 +89,7 @@ def main():
     if not backtest.get("provenance", {}).get("implementation_sha256"):
         raise ValueError("Backtest data must retain its implementation hashes.")
     rendered = render_outputs()
+    rendered.update(interval_outputs())
     expected = set(FILES.values()) | set(rendered)
     OUT.mkdir(exist_ok=True)
     unexpected = {p.name for p in OUT.iterdir()} - expected

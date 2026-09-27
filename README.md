@@ -130,6 +130,15 @@ historical index values, not shipment counts or an as-published forecast replay.
 The source snapshot, timing limits, protocol and all predictions are retained.
 This evaluation does not replace the serving model.
 
+The separate [residual interval experiment](docs/interval-methods.md) now adds
+fixed, rolling and adaptive ranges around those saved predictions. Fixed Ridge
+intervals covered 59 of 72 months. Rolling and adaptive Ridge intervals each
+covered 66, with wider ranges. Last observation had lower mean interval score
+than Ridge under all three methods. [Read all nine conditions and every year](https://t92t1914.github.io/freight-forecast/intervals.html),
+or download all 648 issued intervals from that report. This is a retrospective
+comparison on already inspected outcomes, without a new model fit, untouched
+test claim or operational coverage guarantee. The API still serves point forecasts.
+
 A planner with no model looks up last year's number for the same month. That
 seasonal naive forecast is the honest baseline, and a model that can't clear
 it is not worth deploying no matter how good its architecture looks.
@@ -332,13 +341,15 @@ These are the limits I would address before using this with operational data.
   data was generated, so the model is recovering a pattern put there on purpose. That makes it a fair test of the pipeline and a weak test of the model.
   Real JPPSO data would bring regime changes (policy shifts, base realignments,
   a pandemic) that a 60 month linear fit has no way to anticipate.
-* **Point predictions only.** The API does not estimate a plausible range
-  for August demand. That uncertainty matters when committing capacity. Quantile regression or conformal prediction would be the next thing
-  I built, ahead of any more accurate point model.
+* **The API serves point predictions only.** The separate offline interval
+  experiment uses retained BTS forecasts and empirical residual ranges. It does
+  not provide an operational uncertainty service or guarantee future coverage.
 * **The monitoring watches, it does not act.** The prediction histogram will show
-  drift, but nothing alerts on it and nothing retrains. There is no data
-  versioning, so a rerun with different data would silently produce a different
-  model under the same tag.
+  drift, but nothing alerts on it and nothing retrains. Model and observation
+  identities, saved training history and implementation hashes are already
+  [recorded and checked at startup](docs/model-provenance.md). Those identities
+  distinguish loaded artifacts and histories. They do not create a monitoring
+  response policy, a full external data registry or an accuracy guarantee.
 
 ## License
 
