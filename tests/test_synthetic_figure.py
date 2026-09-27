@@ -123,6 +123,7 @@ class SyntheticFigureTests(unittest.TestCase):
             self.assertIn("<picture>", content)
             for mode in ("clair", "obscur"):
                 self.assertIn(f"freight-forecast-{mode}.png", content)
+                self.assertIn(f"freight-forecast-{mode}-wide.png", content)
         page = (ROOT / "site/index.html").read_text(encoding="utf-8")
         for mode in ("clair", "obscur"):
             self.assertIn(f'src="synthetic-{mode}.png"', page)
