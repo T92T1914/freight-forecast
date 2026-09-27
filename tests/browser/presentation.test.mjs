@@ -236,7 +236,7 @@ test('synthetic figure follows effective appearance, Auto without scripts, and p
     assert.equal(await page.locator('.synthetic-'+mode).isVisible(), true);
     assert.equal(await page.locator('.synthetic-'+(mode === 'clair' ? 'obscur' : 'clair')).isVisible(), false);
     await page.locator('.synthetic-'+mode).scrollIntoViewIfNeeded();
-    await page.waitForFunction(mode => document.querySelector('.synthetic-'+mode).naturalWidth === 960, mode);
+    await page.waitForFunction(mode => [...document.querySelectorAll('.synthetic-'+mode+' img')].filter(e=>e.getBoundingClientRect().width>0).every(e=>e.complete&&e.naturalWidth>0), mode);
   };
   await assertEdition('obscur');
   await page.locator('#appearance').selectOption('clair');
@@ -251,10 +251,21 @@ test('synthetic figure follows effective appearance, Auto without scripts, and p
     await assertEdition(mode);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
     await capture(page, `synthetic-${mode}-mobile`, '#synthetic-figure');
-    for (const ext of ['png','svg']) {
-      const response = await page.request.get(base+`/synthetic-${mode}.${ext}`);
+    await page.setViewportSize({width:1280,height:900});
+    await assertEdition(mode);
+    assert.equal(await page.locator('.synthetic-'+mode+' .figure-wide').isVisible(), true);
+    assert.equal(await page.locator('.synthetic-'+mode+' .figure-narrow').isVisible(), false);
+    await capture(page, `synthetic-${mode}-wide`, '#synthetic-figure');
+    // A wide viewport can still contain a narrow figure. The container decides.
+    await page.locator('#synthetic-figure').evaluate(e=>e.style.width='400px');
+    assert.equal(await page.locator('.synthetic-'+mode+' .figure-narrow').isVisible(), true);
+    assert.equal(await page.locator('.synthetic-'+mode+' .figure-wide').isVisible(), false);
+    await page.locator('#synthetic-figure').evaluate(e=>e.style.removeProperty('width'));
+
+    for (const suffix of ['', '-wide']) for (const ext of ['png','svg']) {
+      const response = await page.request.get(base+`/synthetic-${mode}${suffix}.${ext}`);
       assert.equal(response.status(), 200);
-      assert.deepEqual(await response.body(), await readFile(path.join(root, `synthetic-${mode}.${ext}`)));
+      assert.deepEqual(await response.body(), await readFile(path.join(root, `synthetic-${mode}${suffix}.${ext}`)));
     }
   }
   await page.emulateMedia({media:'print'}); await assertEdition('clair');

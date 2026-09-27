@@ -108,7 +108,7 @@ def semantic_record(data):
     }
 
 
-def draw(data, tokens, mode, files, output):
+def draw(data, tokens, mode, files, output, layout="narrow"):
     # Optional authoring dependencies stay outside the service and site builder.
     import matplotlib
 
@@ -125,8 +125,12 @@ def draw(data, tokens, mode, files, output):
     fonts = {name: FontProperties(fname=str(path)) for name, path in files.items()}
     record = semantic_record(data)
     with rc_context({"svg.fonttype": "path", "svg.hashsalt": "freight-synthetic-v1"}):
-        # A vertical composition keeps labels useful inside a narrow README.
-        fig = Figure(figsize=(4.8, 11.2), dpi=200, facecolor=roles["canvas"])
+        wide = layout == "wide"
+        if layout not in ("narrow", "wide"):
+            raise ValueError("Unknown figure layout")
+        fig = Figure(
+            figsize=(9, 5.6) if wide else (4.8, 9), dpi=200, facecolor=roles["canvas"]
+        )
 
         def label(x, y, text, size=15, face="Regular", color=None, **kwargs):
             return fig.text(
@@ -140,22 +144,13 @@ def draw(data, tokens, mode, files, output):
                 **kwargs,
             )
 
-        label(0.065, 0.955, "FREIGHT FORECAST", 13, "SemiBold", roles["accent"])
+        label(0.055, 0.96, "FREIGHT FORECAST", 13, "SemiBold", roles["accent"])
+        label(0.055, 0.90 if wide else 0.91, "24 test months", 26, "Bold")
         label(
-            0.065,
-            0.916,
-            "Does the model\nearn its place?",
-            28,
-            "Bold",
-            linespacing=1.05,
-        )
-        label(0.065, 0.816, "24 test months on\nsynthetic shipments", 15)
-        label(
-            0.065,
-            0.758,
-            "One fixed model, with prior\nobservations each month.",
-            12,
-            color=roles["muted"],
+            0.055,
+            0.81 if wide else 0.855,
+            "Seeded synthetic shipments, 2023 to 2024",
+            14 if wide else 12.8,
         )
         legend = [
             Line2D(
@@ -173,14 +168,16 @@ def draw(data, tokens, mode, files, output):
         fig.legend(
             handles=legend,
             loc="upper left",
-            bbox_to_anchor=(0.065, 0.700),
-            prop=FontProperties(fname=str(files["Regular"]), size=13),
+            bbox_to_anchor=(0.055, 0.76 if wide else 0.805),
+            prop=FontProperties(fname=str(files["Regular"]), size=13.5),
             frameon=False,
             labelcolor=roles["text"],
             borderaxespad=0,
-            labelspacing=0.55,
+            labelspacing=0.35,
         )
-        ax = fig.add_axes((0.115, 0.317, 0.82, 0.26), facecolor=roles["canvas"])
+        # Geometry differs, but axes, all 72 values and series identities do not.
+        bounds = (0.075, 0.22, 0.55, 0.32) if wide else (0.12, 0.355, 0.82, 0.305)
+        ax = fig.add_axes(bounds, facecolor=roles["canvas"])
         for key, (name, token, marker, style) in SERIES.items():
             ax.plot(
                 range(24),
@@ -200,66 +197,85 @@ def draw(data, tokens, mode, files, output):
         ax.set_xticks(
             [0, 6, 12, 18, 23], ["Jan\n2023", "Jul", "Jan\n2024", "Jul", "Dec"]
         )
-        ax.tick_params(axis="both", length=0, pad=8, colors=roles["muted"])
+        ax.tick_params(axis="both", length=0, pad=6, colors=roles["muted"])
         for tick in ax.get_xticklabels() + ax.get_yticklabels():
             tick.set_fontproperties(fonts["Regular"])
-            tick.set_fontsize(12)
+            tick.set_fontsize(14)
         ax.grid(axis="y", color=roles["divider"], linewidth=0.6, zorder=0)
         for spine in ax.spines.values():
             spine.set_visible(False)
-        label(0.065, 0.607, "Moves", 13, "SemiBold", roles["muted"])
-        box = FancyBboxPatch(
-            (0.065, 0.11),
-            0.87,
-            0.138,
-            transform=fig.transFigure,
-            boxstyle="round,pad=0.012,rounding_size=0.012",
-            facecolor=roles["panel"],
-            edgecolor=roles["divider"],
+        label(0.055, 0.595 if wide else 0.698, "Moves", 13, "SemiBold", roles["muted"])
+        x, y, w, h = (0.695, 0.245, 0.255, 0.44) if wide else (0.055, 0.16, 0.89, 0.122)
+        fig.add_artist(
+            FancyBboxPatch(
+                (x, y),
+                w,
+                h,
+                transform=fig.transFigure,
+                boxstyle="round,pad=0.012,rounding_size=0.012",
+                facecolor=roles["panel"],
+                edgecolor=roles["divider"],
+            )
         )
-        fig.add_artist(box)
-        label(0.095, 0.232, "Mean absolute error, moves / month", 12, "SemiBold")
-        label(
-            0.095,
-            0.201,
-            f"{data['metrics']['model_mae']:.0f}",
-            27,
-            "Bold",
-            tokens["series"]["model"][mode],
-        )
-        label(0.34, 0.19, "model", 14)
-        label(
-            0.095,
-            0.158,
-            f"{data['metrics']['naive_mae']:.0f}",
-            27,
-            "Bold",
-            tokens["series"]["seasonal_naive"][mode],
-        )
-        label(0.34, 0.147, "seasonal baseline", 14)
-        label(
-            0.065,
-            0.094,
-            "Trained through December 2022.",
-            11.8,
-            color=roles["muted"],
-        )
-        label(
-            0.065,
-            0.071,
-            "Test: 2023 to 2024. Seed 2017.\n"
-            "Point predictions, no uncertainty intervals.",
-            11.8,
-            color=roles["muted"],
-        )
-        label(
-            0.065,
-            0.030,
-            "Not operational forecasts.",
-            11.8,
-            "Italic",
-            roles["muted"],
-        )
+        if wide:
+            label(0.72, 0.655, "Mean absolute error", 14, "SemiBold")
+            label(0.72, 0.605, "moves / month", 13)
+            for yy, key, name, token in [
+                (0.51, "model_mae", "Ridge model", "model"),
+                (0.37, "naive_mae", "Seasonal baseline", "seasonal_naive"),
+            ]:
+                label(
+                    0.72,
+                    yy,
+                    f"{data['metrics'][key]:.0f}",
+                    27,
+                    "Bold",
+                    tokens["series"][token][mode],
+                )
+                label(0.72, yy - 0.08, name, 13)
+            label(
+                0.055,
+                0.105,
+                "Trained through Dec 2022. Each forecast uses prior observations. "
+                "Seed 2017.",
+                13,
+            )
+            label(
+                0.055,
+                0.052,
+                "Point predictions, no uncertainty intervals. "
+                "Not operational forecasts.",
+                13,
+                "Italic",
+                roles["muted"],
+            )
+        else:
+            label(0.085, 0.265, "Mean absolute error, moves / month", 12.6, "SemiBold")
+            for xx, key, name, token in [
+                (0.085, "model_mae", "model", "model"),
+                (0.50, "naive_mae", "seasonal baseline", "seasonal_naive"),
+            ]:
+                label(
+                    xx,
+                    0.233,
+                    f"{data['metrics'][key]:.0f}",
+                    24,
+                    "Bold",
+                    tokens["series"][token][mode],
+                )
+                label(xx, 0.19, name, 11.8)
+            label(
+                0.055,
+                0.145,
+                "Trained through Dec 2022. Seed 2017.\n"
+                "Each forecast uses prior observations.\n"
+                "Point predictions, no uncertainty intervals.",
+                12.4,
+                linespacing=1.45,
+            )
+            label(
+                0.055, 0.045, "Not operational forecasts.", 13, "Italic", roles["muted"]
+            )
         canvas = FigureCanvasAgg(fig)
         canvas.draw()
         for item in fig.findobj(Text):
@@ -278,7 +294,8 @@ def draw(data, tokens, mode, files, output):
             metadata = {"Description": json.dumps(record, sort_keys=True)}
             if ext == "svg":
                 metadata["Date"] = None
-            path = output / f"freight-forecast-{mode}.{ext}"
+            suffix = "-wide" if wide else ""
+            path = output / f"freight-forecast-{mode}{suffix}.{ext}"
             fig.savefig(path, metadata=metadata)
             if ext == "svg":
                 # Canonicalize this authored XML before hashing, including on Windows.
@@ -303,15 +320,16 @@ def check_outputs():
         if (
             name
             not in {
-                f"docs/freight-forecast-{mode}.{ext}"
+                f"docs/freight-forecast-{mode}{suffix}.{ext}"
                 for mode in ("clair", "obscur")
+                for suffix in ("", "-wide")
                 for ext in ("png", "svg")
             }
             or digest(ROOT / name) != expected
         ):
             raise ValueError(f"Figure output changed: {name}")
-    if len(record["outputs_sha256"]) != 4:
-        raise ValueError("Both PNG and SVG editions are required")
+    if len(record["outputs_sha256"]) != 8:
+        raise ValueError("Both layouts require PNG and SVG editions")
     return record
 
 
@@ -328,7 +346,7 @@ def main():
     args = parser.parse_args()
     if args.check:
         check_outputs()
-        print("Both figure editions match the retained values and renderer")
+        print("Both layouts and appearances match the retained values and renderer")
         return
     if args.font_dir is None:
         parser.error(
@@ -339,11 +357,16 @@ def main():
     with tempfile.TemporaryDirectory() as temp:
         output = Path(temp)
         for mode in ("clair", "obscur"):
-            draw(data, tokens, mode, files, output)
+            for layout in ("narrow", "wide"):
+                draw(data, tokens, mode, files, output, layout)
         import matplotlib
 
         record = {
-            "schema_version": 1,
+            "schema_version": 2,
+            "layouts": {
+                "narrow": {"inches": [4.8, 9], "axes": [0.12, 0.355, 0.82, 0.305]},
+                "wide": {"inches": [9, 5.6], "axes": [0.075, 0.22, 0.55, 0.32]},
+            },
             "evidence": semantic_record(data),
             "renderer": {"matplotlib": matplotlib.__version__, "backend": "Agg"},
             "typography": {
@@ -368,7 +391,10 @@ def main():
             json.dumps(record, indent=2) + "\n", encoding="utf-8"
         )
     check_outputs()
-    print("Rendered both figures from retained data with verified Inter files")
+    print(
+        "Rendered both layouts and appearances from retained data "
+        "with verified Inter files"
+    )
 
 
 if __name__ == "__main__":

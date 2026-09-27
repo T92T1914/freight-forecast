@@ -31,7 +31,10 @@ footer{border-top:1px solid var(--divider);margin-top:40px;padding:20px 0 30px;c
 @media(forced-colors:active){.panel,.button,select,.metric{border-color:CanvasText}a,.button.primary{color:LinkText}.button.primary{background:Canvas}.chart-wrap svg path,.chart-wrap svg circle,.chart-wrap svg polygon,.chart-wrap svg rect{stroke:CanvasText}.chart-wrap svg text{fill:CanvasText}.chart-wrap svg>rect{fill:Canvas}}
 
 /* Fixed image editions follow the effective page setting, including no-JS Auto. */
-#synthetic-figure{max-width:480px;margin-inline:auto}
+#synthetic-figure{max-width:960px;margin-inline:auto;container-type:inline-size}
+#synthetic-figure img{width:100%}
+.figure-wide{display:none}
+@container(min-width:560px){.figure-narrow{display:none}.figure-wide{display:block}}
 .synthetic-obscur{display:none}
 @media(prefers-color-scheme:dark){:root:not([data-appearance="clair"]) .synthetic-clair{display:none}:root:not([data-appearance="clair"]) .synthetic-obscur{display:block}}
 :root[data-appearance="obscur"] .synthetic-clair{display:none}

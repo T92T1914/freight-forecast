@@ -30,6 +30,10 @@ FILES = {
     "docs/freight-forecast-obscur.png": "synthetic-obscur.png",
     "docs/freight-forecast-clair.svg": "synthetic-clair.svg",
     "docs/freight-forecast-obscur.svg": "synthetic-obscur.svg",
+    "docs/freight-forecast-clair-wide.png": "synthetic-clair-wide.png",
+    "docs/freight-forecast-clair-wide.svg": "synthetic-clair-wide.svg",
+    "docs/freight-forecast-obscur-wide.png": "synthetic-obscur-wide.png",
+    "docs/freight-forecast-obscur-wide.svg": "synthetic-obscur-wide.svg",
     "docs/freight-forecast-figure.json": "synthetic-figure.json",
 }
 

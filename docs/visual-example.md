@@ -2,9 +2,11 @@
 
 <a href="visual-example-data.json">
   <picture>
+    <source media="(min-width: 768px) and (prefers-color-scheme: dark)" srcset="freight-forecast-obscur-wide.png">
+    <source media="(min-width: 768px) and (prefers-color-scheme: light)" srcset="freight-forecast-clair-wide.png">
     <source media="(prefers-color-scheme: dark)" srcset="freight-forecast-obscur.png">
     <source media="(prefers-color-scheme: light)" srcset="freight-forecast-clair.png">
-    <img src="freight-forecast-clair.png" alt="Recorded synthetic shipments over 24 test months. Model mean absolute error is 226 moves per month versus 327 for the seasonal baseline. Each prediction uses prior observations." width="480">
+    <img src="freight-forecast-clair.png" alt="Recorded synthetic shipments over 24 test months. Model mean absolute error is 226 moves per month versus 327 for the seasonal baseline. Each prediction uses prior observations." width="900">
   </picture>
 </a>
 
@@ -40,7 +42,7 @@ different question: how the local service behaved under recorded traffic.
 ## Inspect the source
 
 The [underlying values](visual-example-data.json) include the source and
-conditions. The new [Clair SVG](freight-forecast-clair.svg) and [Obscur SVG](freight-forecast-obscur.svg) use outlined Inter labels. The [original PNG](freight-forecast-example.png) and [original SVG](freight-forecast-example.svg) remain unchanged.
+conditions. Wide [Clair SVG](freight-forecast-clair-wide.svg) and [Obscur SVG](freight-forecast-obscur-wide.svg), and stacked [Clair SVG](freight-forecast-clair.svg) and [Obscur SVG](freight-forecast-obscur.svg), use outlined Inter labels. The [original PNG](freight-forecast-example.png) and [original SVG](freight-forecast-example.svg) remain unchanged.
 The figure is a visual explanation of the public implementation, not a
 screenshot of an external application.
 
@@ -66,14 +68,24 @@ so neither requires a viewer to install Inter. The source JSON and the
 [public table](https://t92t1914.github.io/freight-forecast/#interactive) retain
 selectable values. No font files are distributed with the figure.
 
-Both editions contain the same 72 plotted values, axis from zero to 16,000 moves,
-24 months and recorded errors. Line styles and markers identify series as well
-as color. The tall layout keeps the legend and error summary readable when the
-figure appears inside a narrow README. This is a new presentation of the old
-synthetic result, separate from the BTS index evaluation and its baseline win.
+Both layouts and appearances contain the same 72 plotted values, axis from zero
+to 16,000 moves, 24 months and recorded errors. Line styles and markers identify
+series as well as color. The compact stacked layout keeps labels readable in
+narrow columns. The wide layout puts the error summary beside the plot. This
+changes the presentation of the retained synthetic result, separate from the
+BTS index evaluation and its baseline win.
 
-The README and these notes use GitHub's light/dark picture sources with a Clair
-fallback. The public page uses its effective Auto, Clair or Obscur selection,
+The README and these notes use GitHub picture sources with a Clair fallback.
+GitHub preserved combined width and appearance queries in a signed-out browser
+check. A 390 pixel viewport gave a 324 pixel image column. At 1024 pixels, the
+README column was 582 pixels wide, while these notes had 669 pixels. The README
+therefore selects the wide layout from a 1024 pixel viewport. These notes use
+768 pixels, where their column was already 670 pixels wide. This is a measured
+host accommodation, not a claim that viewport and image widths are equal.
+Signed-in appearance overrides were not part of that check.
+
+The public page selects its layout from the figure container itself, switching
+at 560 pixels. Its effective Auto, Clair or Obscur setting controls appearance,
 including an explicit choice opposite to the operating system. Print uses Clair.
 The builder verifies the committed figures against their source hashes and
 copies them without a font dependency or a silent rebuild.

@@ -1,5 +1,31 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "layouts": {
+    "narrow": {
+      "inches": [
+        4.8,
+        9
+      ],
+      "axes": [
+        0.12,
+        0.355,
+        0.82,
+        0.305
+      ]
+    },
+    "wide": {
+      "inches": [
+        9,
+        5.6
+      ],
+      "axes": [
+        0.075,
+        0.22,
+        0.55,
+        0.32
+      ]
+    }
+  },
   "evidence": {
     "source_revision": "3cd78f7316cd648aad5cc1407529a70131ca397c",
     "evaluation_rerun": false,
@@ -218,12 +244,16 @@
   "inputs_sha256_lf": {
     "docs/visual-example-data.json": "82dee977592e8614b2f7be8fb69a8bddcbe41db84af8ebd49dbef9305d055a8d",
     "presentation/tokens.json": "0990b3a128dbf2c038f140aef7329c3517a20772a3830a768819cc6170eba592",
-    "tools/render_synthetic_figure.py": "5484c71d74d702361c9646b830f196f20e375a6f65638c1a8703ac2b92f80ad0"
+    "tools/render_synthetic_figure.py": "552566a14407802645ba9cf243ae8d386836da0f23dc1b4662d4c6ff93673e03"
   },
   "outputs_sha256": {
-    "docs/freight-forecast-clair.png": "b00daac578df7639668bac1914fcd66f9d87687751311da9eff740f4c4a2491e",
-    "docs/freight-forecast-clair.svg": "25960f9e9619dbbd077d2bbf0a3fef77a21f6e7c9c935e112e0b677a40e1d141",
-    "docs/freight-forecast-obscur.png": "f6fb37cbb783a7324cad8a287342c3a5ca1f00cadcc24dbf3ed5b0224a144a3d",
-    "docs/freight-forecast-obscur.svg": "a9bf098b79c3d8ea191afe65b0c108cfe15ce79a5175a3e85f66688dc94cad7b"
+    "docs/freight-forecast-clair-wide.png": "ec6d9f6e77ef761fe341cddf378203bc5f18f14355cd375a9c31e42c8430903b",
+    "docs/freight-forecast-clair-wide.svg": "67c5210fed8210ebf9d9b41f03d8d7afd546fe7770c8e1d642b0d2ff8a18457f",
+    "docs/freight-forecast-clair.png": "73c9abd502ed8139d03da755efe379c35816cd20a02fde3acfd07ffb318ee277",
+    "docs/freight-forecast-clair.svg": "7257baea3a666f74a5dfbefa00cddf66e5caa870b5ccfdda2653f5c62b9cd7da",
+    "docs/freight-forecast-obscur-wide.png": "9bb19c8ac5b3517dc7bb7d48ebc6959482d057bb6ccec2a5d0d8e43c473238be",
+    "docs/freight-forecast-obscur-wide.svg": "fcbfb285d54e452e7d41b8d4c10a39374dd97f9f9f1071fe8bf0a1af83f4c4f5",
+    "docs/freight-forecast-obscur.png": "549814372e328363ab6e539cb2972e266d1aea75a35f9e41482f9c7d91489a27",
+    "docs/freight-forecast-obscur.svg": "c9dffaa95a84e3b1acfec1ef078bd3217e0b41fe06f8b3acff525e35981b07f3"
   }
 }

@@ -33,41 +33,57 @@ class SyntheticFigureTests(unittest.TestCase):
 
     def test_both_svg_paths_reconcile_to_each_retained_value(self):
         rows = renderer.load_data()["rows"]
-        roots = [
-            ET.parse(ROOT / f"docs/freight-forecast-{mode}.svg").getroot()
-            for mode in ("clair", "obscur")
-        ]
-        for key in ("actual", "model", "baseline"):
-            paths = [
-                root.find(f".//s:g[@id='series-{key}']/s:path", NS).get("d")
-                for root in roots
+        for layout, width, height, bounds in [
+            ("", 345.6, 648, (0.12, 0.355, 0.82, 0.305)),
+            ("-wide", 648, 403.2, (0.075, 0.22, 0.55, 0.32)),
+        ]:
+            roots = [
+                ET.parse(ROOT / f"docs/freight-forecast-{mode}{layout}.svg").getroot()
+                for mode in ("clair", "obscur")
             ]
-            self.assertEqual(paths[0], paths[1])
-            points = re.findall(r"[ML]\s+([\d.-]+)\s+([\d.-]+)", paths[0])
-            self.assertEqual(len(points), 24)
-            # SVG points are in 72 points/inch. Independently invert the axes.
-            for index, ((x, y), row) in enumerate(zip(points, rows, strict=True)):
-                month = (float(x) / 345.6 - 0.115) / 0.82 * 23.6 - 0.3
-                value = ((1 - 0.317) * 806.4 - float(y)) / (0.26 * 806.4) * 16000
-                self.assertAlmostEqual(month, index, places=6)
-                self.assertAlmostEqual(value, row[key], places=3)
+            left, bottom, span, tall = bounds
+            for key in ("actual", "model", "baseline"):
+                paths = [
+                    root.find(f".//s:g[@id='series-{key}']/s:path", NS).get("d")
+                    for root in roots
+                ]
+                self.assertEqual(paths[0], paths[1])
+                points = re.findall(r"[ML]\s+([\d.-]+)\s+([\d.-]+)", paths[0])
+                self.assertEqual(len(points), 24)
+                # Invert actual exported geometry independently for each layout.
+                for index, ((x, y), row) in enumerate(zip(points, rows, strict=True)):
+                    month = (float(x) / width - left) / span * 23.6 - 0.3
+                    value = ((1 - bottom) * height - float(y)) / (tall * height) * 16000
+                    self.assertAlmostEqual(month, index, places=6)
+                    self.assertAlmostEqual(value, row[key], places=3)
+                    metadata = roots[0].find(
+                        ".//{http://purl.org/dc/elements/1.1/}description"
+                    )
+                    self.assertEqual(
+                        json.loads(metadata.text),
+                        renderer.semantic_record(renderer.load_data()),
+                    )
 
     def test_svg_contains_real_inter_outlines_and_no_external_fonts(self):
         for mode in ("clair", "obscur"):
-            svg = (ROOT / f"docs/freight-forecast-{mode}.svg").read_text()
-            for face in ("Regular", "SemiBold", "Bold", "Italic"):
-                self.assertIn(f'id="Inter-{face}-', svg)
-            self.assertNotIn("DejaVu", svg)
-            self.assertNotIn("<text", svg)
-            self.assertNotIn("@font-face", svg)
-            root = ET.fromstring(svg)
-            for node in root.iter():
-                for name, value in node.attrib.items():
-                    if name.endswith("href"):
-                        self.assertTrue(
-                            value.startswith("#"),
-                            "Only local glyph references are permitted",
-                        )
+            for suffix in ("", "-wide"):
+                self.assert_svg(mode, suffix)
+
+    def assert_svg(self, mode, suffix):
+        svg = (ROOT / f"docs/freight-forecast-{mode}{suffix}.svg").read_text()
+        for face in ("Regular", "SemiBold", "Bold", "Italic"):
+            self.assertIn(f'id="Inter-{face}-', svg)
+        self.assertNotIn("DejaVu", svg)
+        self.assertNotIn("<text", svg)
+        self.assertNotIn("@font-face", svg)
+        root = ET.fromstring(svg)
+        for node in root.iter():
+            for name, value in node.attrib.items():
+                if name.endswith("href"):
+                    self.assertTrue(
+                        value.startswith("#"),
+                        "Only local glyph references are permitted",
+                    )
 
     def test_missing_months_wrong_metrics_and_nonfinite_values_are_rejected(self):
         original = renderer.load_data()
@@ -107,6 +123,7 @@ class SyntheticFigureTests(unittest.TestCase):
             self.assertIn("<picture>", content)
             for mode in ("clair", "obscur"):
                 self.assertIn(f"freight-forecast-{mode}.png", content)
+                self.assertIn(f"freight-forecast-{mode}-wide.png", content)
         page = (ROOT / "site/index.html").read_text(encoding="utf-8")
         for mode in ("clair", "obscur"):
             self.assertIn(f'src="synthetic-{mode}.png"', page)
