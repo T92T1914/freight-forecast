@@ -8,8 +8,10 @@ from pathlib import Path
 
 try:
     from .render_real_report import render_outputs
+    from .render_synthetic_figure import check_outputs
 except ImportError:  # Direct command-line invocation from the source checkout.
     from render_real_report import render_outputs
+    from render_synthetic_figure import check_outputs
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "_site"
@@ -22,6 +24,11 @@ FILES = {
     "docs/backtest-example.json": "backtest.json",
     "docs/visual-example-data.json": "data.json",
     "docs/freight-forecast-example.svg": "example.svg",
+    "docs/freight-forecast-clair.png": "synthetic-clair.png",
+    "docs/freight-forecast-obscur.png": "synthetic-obscur.png",
+    "docs/freight-forecast-clair.svg": "synthetic-clair.svg",
+    "docs/freight-forecast-obscur.svg": "synthetic-obscur.svg",
+    "docs/freight-forecast-figure.json": "synthetic-figure.json",
 }
 
 
@@ -75,6 +82,7 @@ def main():
     if not data.get("source_commit"):
         raise ValueError("Example data must retain its source revision.")
     validate_evidence(data)
+    check_outputs()
     backtest = json.loads((ROOT / "docs/backtest-example.json").read_text())
     if not backtest.get("provenance", {}).get("implementation_sha256"):
         raise ValueError("Backtest data must retain its implementation hashes.")

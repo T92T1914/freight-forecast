@@ -55,5 +55,8 @@ The container prepares dependencies but does not train automatically. Run `pytho
 
 For presentation changes, follow [the report checks](docs/presentation.md). Preserve
 the original synthetic chart and experiment records. The report renderer generates
-new HTML/SVG renditions without retraining. Keep both appearances semantically
+new HTML/SVG renditions without retraining. The synthetic figure has a separate
+[renderer and retained source](docs/visual-example.md#rebuild-the-figure-without-another-experiment).
+Run `python tools/render_synthetic_figure.py --check` to verify its committed output
+without installing fonts or running another evaluation. Keep both appearances semantically
 equivalent and record local Inter lookup separately from system fallback.

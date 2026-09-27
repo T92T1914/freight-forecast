@@ -29,3 +29,13 @@ footer{border-top:1px solid var(--divider);margin-top:40px;padding:20px 0 30px;c
 @media(max-width:700px){.wrap{padding:20px}.eyebrow{margin-top:35px}.panel{padding:18px}.metrics{grid-template-columns:1fr}.metric strong{font-size:28px}.two{grid-template-columns:1fr;gap:10px}nav{gap:14px;font-size:14px}th,td{padding:9px}.lead{font-size:18px}.engineering-grid{grid-template-columns:1fr;gap:16px}}
 @media print{.appearance-control,.skip{display:none}.wrap{max-width:none;padding:0}.panel{break-inside:avoid}details:not([open])>*:not(summary){display:block}.chart-wrap{overflow:visible}.chart-wrap svg{min-width:0}a{color:var(--text)}body{font-size:11pt}.actions{display:none}}
 @media(forced-colors:active){.panel,.button,select,.metric{border-color:CanvasText}a,.button.primary{color:LinkText}.button.primary{background:Canvas}.chart-wrap svg path,.chart-wrap svg circle,.chart-wrap svg polygon,.chart-wrap svg rect{stroke:CanvasText}.chart-wrap svg text{fill:CanvasText}.chart-wrap svg>rect{fill:Canvas}}
+
+/* Fixed image editions follow the effective page setting, including no-JS Auto. */
+#synthetic-figure{max-width:480px;margin-inline:auto}
+.synthetic-obscur{display:none}
+@media(prefers-color-scheme:dark){:root:not([data-appearance="clair"]) .synthetic-clair{display:none}:root:not([data-appearance="clair"]) .synthetic-obscur{display:block}}
+:root[data-appearance="obscur"] .synthetic-clair{display:none}
+:root[data-appearance="obscur"] .synthetic-obscur{display:block}
+:root[data-appearance="clair"] .synthetic-clair{display:block}
+:root[data-appearance="clair"] .synthetic-obscur{display:none}
+@media print{:root .synthetic-clair,:root[data-appearance] .synthetic-clair{display:block}:root .synthetic-obscur,:root[data-appearance] .synthetic-obscur{display:none}}
