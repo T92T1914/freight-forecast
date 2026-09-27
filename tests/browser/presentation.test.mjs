@@ -279,6 +279,28 @@ test('synthetic figure follows effective appearance, Auto without scripts, and p
   assert.equal(await noJS.locator('.synthetic-clair').isVisible(), true);
 });
 
+test('synthetic figure keyboard navigation skips the inactive layout and appearance', async t => {
+  const page = await fixture(t);
+  await ready(page);
+  for (const mode of ['clair','obscur']) for (const width of [390,1280]) {
+    await page.locator('#appearance').selectOption(mode);
+    await page.setViewportSize({width,height:900});
+    const layout = width < 560 ? 'narrow' : 'wide';
+    const activeLink = page.locator(`.synthetic-${mode} .figure-link-${layout}`);
+    await activeLink.focus();
+    await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('href')), 'data.json');
+    await page.keyboard.press('Shift+Tab');
+    assert.equal(await activeLink.evaluate(e => e === document.activeElement), true);
+    await page.keyboard.press('Shift+Tab');
+    assert.equal(await page.evaluate(() => {
+      const active = document.activeElement;
+      const box = active.getBoundingClientRect();
+      return !active.closest('#synthetic-figure') && box.width > 0 && box.height > 0;
+    }), true);
+  }
+});
+
 for (const mode of ['obscur','clair']) test(`${mode} interval report preserves every condition, calendar year and download`, async t => {
   const page = await fixture(t);
   await ready(page);
