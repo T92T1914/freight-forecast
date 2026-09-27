@@ -37,7 +37,14 @@ For a speed claim, retain raw samples and machine conditions, and check the resp
 
 Keep the train and test periods separate. Compare predictions on the same months and retain the seasonal baseline. Label synthetic data clearly. For serving changes, include the request shape, machine conditions and raw timing samples. A faster response must return the same forecast.
 
-Useful next work includes evaluating prediction intervals on held out months and testing a second dataset with a documented license. Those are research directions, not completed features or a promised release schedule.
+The [residual interval experiment](docs/interval-methods.md) is a separate
+retrospective study on retained BTS forecasts. It is not a new untouched test.
+Keep the original point evaluation, declared interval protocol and source
+identities separate. `python tools/render_interval_report.py --check` audits
+the saved bounds, observation boundaries, coverage, widths and interval scores
+without fitting or calling the evaluator. `python tools/build_site.py` includes
+the report, both SVG editions and monthly CSV/JSON downloads. A future independent
+confirmation set remains separate work.
 
 Run `python -m src.backtest --output reports/backtest.json` to evaluate monthly
 refitting without changing the serving model. The [backtest notes](docs/backtesting.md)

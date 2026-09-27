@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: '24'
       - run: node --test tests/selection-state.test.mjs tests/appearance.test.mjs
-      - run: python -m unittest tests.test_presentation tests.test_synthetic_figure -v
+      - run: python -m unittest tests.test_presentation tests.test_synthetic_figure tests.test_interval_report -v
       - run: python tools/build_site.py
       - run: npm ci --ignore-scripts
       - name: Exercise the checked site in isolated headless Chrome

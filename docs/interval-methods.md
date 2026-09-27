@@ -77,3 +77,30 @@ The runner records the evaluated revision, input and implementation hashes. It
 refuses to overwrite a previous attempt. Tests use separate small fixtures to
 check quantile ranks, score arithmetic, calibration boundaries, observation
 ordering and the effect of future errors on already issued intervals.
+
+## Retained result
+
+The first recorded attempt evaluated commit
+`36f6b5212592468d6af36a899f71a422904e1908`. All 648 issued intervals were finite.
+Fixed Ridge covered 59 of 72 months. Rolling and adaptive Ridge each covered 66,
+with wider ranges. Last observation had lower mean interval score than Ridge
+under all three methods. Its rolling and adaptive intervals improved coverage
+over the fixed version but worsened the mean score, from 9.117 to 9.353 and 9.303.
+These dependent observations do not establish a general method ranking.
+
+The [public report](https://t92t1914.github.io/freight-forecast/intervals.html)
+shows all nine conditions, every calendar year and downloads for every monthly
+range. The [retained JSON](interval-results.json) includes the declared protocol
+and source identities. The original point evaluation remains unchanged.
+
+To audit and render this saved result without running the experiment again:
+
+```sh
+python tools/render_interval_report.py --check
+python tools/build_site.py
+```
+
+The separate report audit checks retained point identities, earlier observation
+boundaries, issued ranks, coverage, widths and nominal interval scores. The
+generated report records its renderer revision separately from both evaluations.
+Clair and Obscur SVG editions retain identical geometry and editable text.
