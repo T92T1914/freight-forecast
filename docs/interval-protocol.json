@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "id": "bts-retrospective-residual-intervals-v1",
+  "declared_date": "2026-09-27",
+  "question": "How do fixed, rolling and adaptive residual intervals cover the retained monthly BTS point forecasts?",
+  "input": "docs/real-data-example.json",
+  "input_identity": "Normalized UTF-8 LF SHA256 fixed before interval outcomes are computed",
+  "source_policy": "monthly_refit",
+  "calibration_start": "2015-01",
+  "calibration_end": "2019-12",
+  "evaluation_start": "2020-01",
+  "evaluation_end": "2025-12",
+  "point_methods": [
+    "model",
+    "last_observation",
+    "seasonal_naive"
+  ],
+  "interval_methods": [
+    "fixed",
+    "rolling",
+    "adaptive"
+  ],
+  "window": 60,
+  "target_miscoverage": "0.1",
+  "adaptive_step": "0.005",
+  "score": "Absolute point error. Each method and point policy has its own score history.",
+  "quantile": "Sorted absolute errors at rank ceil((n+1)*(1-alpha_t)), using exact rational alpha updates. Rank above n returns the whole real line, rank below 1 returns the point. No clipping to future extrema or alpha bounds.",
+  "fixed": "Keep the 60 initial residuals and alpha 0.1 throughout evaluation.",
+  "rolling": "Use the most recent 60 observed residuals and fixed alpha 0.1.",
+  "adaptive": "Use the most recent 60 observed residuals. After scoring the issued interval, update alpha_t by 0.005*(0.1-miss). No parameter selection.",
+  "information_boundary": "Issue the interval before observing its target. Add that residual only afterward. Next target must be the following month. Calibration is chronological. Historical values are latest vintage, not real publication snapshots.",
+  "window_reason": "Five years provides 60 monthly scores for a nominal 90 percent interval while keeping the retained post-2014 history local. This is an a priori bounded choice for this new interval study, not an optimized window.",
+  "step_reason": "Use the 0.005 illustrative step in Gibbs and Candes 2021 without tuning it on Freight outcomes. It does not establish optimal adaptation for monthly freight.",
+  "metrics": [
+    "coverage",
+    "width",
+    "Winkler interval score at nominal alpha 0.1",
+    "unbounded and missing counts",
+    "each calendar year"
+  ],
+  "unbounded_reporting": "Unbounded intervals count as covered. Overall mean width and score are infinite, represented by null plus an explicit infinite status. Finite-only summaries are separately labeled. Never replace infinity with the largest future residual.",
+  "limits": [
+    "Retrospective experiment on already inspected 2020 to 2025 outcomes. No untouched confirmation claim.",
+    "The monthly refit policy was chosen using the earlier development results, including the calibration period. This is not an independent split conformal guarantee.",
+    "Existing point forecasts are reused exactly. No fitting or serving model replacement.",
+    "One observation step is not one calendar month from the publication date. Actual release delays and later revisions remain unsimulated.",
+    "No exchangeability, distribution-free finite sample coverage, conditional coverage or operational calibration claim.",
+    "One national index series and 72 dependent evaluation months do not establish general performance. No significance tests, method winner selection, or retuning after outcomes."
+  ],
+  "input_sha256_lf": "d1f6b4c631f20809a0d807e66c313a8c97e367c05c5b36253f0378f94fed7582"
+}
