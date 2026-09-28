@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "content": {
+    "title": "Freight Forecast",
+    "subtitle": "Forecasts and baselines",
+    "panels": [
+      [
+        "Ridge model",
+        "226",
+        "moves / month"
+      ],
+      [
+        "Seasonal baseline",
+        "327",
+        "moves / month"
+      ]
+    ],
+    "context": "Mean absolute error | 24 synthetic test months",
+    "footer": "Prior observations used. Not operational forecasts.",
+    "source_sha256": "82dee977592e8614b2f7be8fb69a8bddcbe41db84af8ebd49dbef9305d055a8d"
+  },
+  "inputs_sha256_lf": {
+    "tools/render_share_preview.py": "659aed220e79634e83c6b465b77bb4aea894f4a20d3a53deb888bfca917254e2",
+    "docs/sharing-card.json": "90dc7c3bc4e5708a1d840aabb281c26b2b2ca7bbb08965fc3d88dca8cd5a884b",
+    "docs/visual-example-data.json": "82dee977592e8614b2f7be8fb69a8bddcbe41db84af8ebd49dbef9305d055a8d",
+    "presentation/tokens.json": "0990b3a128dbf2c038f140aef7329c3517a20772a3830a768819cc6170eba592",
+    "tools/render_synthetic_figure.py": "552566a14407802645ba9cf243ae8d386836da0f23dc1b4662d4c6ff93673e03"
+  },
+  "png_sha256": "6973c60544ebdb029be08eb47c05b02a1d374196874d5adaa8c1a4ce1cffa187",
+  "dimensions": [
+    1280,
+    640
+  ],
+  "appearance": "obscur",
+  "opaque": true,
+  "renderer": {
+    "Pillow": "12.3.0"
+  },
+  "font_files": {
+    "Regular": {
+      "sha256": "40d692fce188e4471e2b3cba937be967878f631ad3ebbbdcd587687c7ebe0c82",
+      "postscript": "Inter-Regular",
+      "weight": 400,
+      "italic": false
+    },
+    "SemiBold": {
+      "sha256": "78a843fade9d4612a5567302fb595b56976eb5fcebf4fea5a5912d638bafcde3",
+      "postscript": "Inter-SemiBold",
+      "weight": 600,
+      "italic": false
+    },
+    "Bold": {
+      "sha256": "288316099b1e0a47a4716d159098005eef7c0066921f34e3200393dbdb01947f",
+      "postscript": "Inter-Bold",
+      "weight": 700,
+      "italic": false
+    },
+    "Italic": {
+      "sha256": "bbc051dd204b5019a1aa0bc0ae2aa8a05ab13e7a3f979fa357631dc7feb6833a",
+      "postscript": "Inter-Italic",
+      "weight": 400,
+      "italic": true
+    },
+    "SemiBoldItalic": {
+      "sha256": "eff2930c3d3b35d3fcf5f76252b6baef4c3e907d9d2fde1d16cf5d417f8deef4",
+      "postscript": "Inter-SemiBoldItalic",
+      "weight": 600,
+      "italic": true
+    },
+    "BoldItalic": {
+      "sha256": "948405a16cdc62701da5f4005ed068ca5f4d27061d98f7974ccfc37831d9581d",
+      "postscript": "Inter-BoldItalic",
+      "weight": 700,
+      "italic": true
+    }
+  },
+  "painted_labels": [
+    {
+      "text": "Freight Forecast",
+      "face": "Inter-Bold",
+      "bounds": [
+        68,
+        52,
+        575,
+        115
+      ],
+      "size": 64
+    },
+    {
+      "text": "Forecasts and baselines",
+      "face": "Inter-SemiBold",
+      "bounds": [
+        68,
+        136,
+        559,
+        169
+      ],
+      "size": 42
+    },
+    {
+      "text": "Mean absolute error | 24 synthetic test months",
+      "face": "Inter-Regular",
+      "bounds": [
+        68,
+        208,
+        732,
+        245
+      ],
+      "size": 30
+    },
+    {
+      "text": "Ridge model",
+      "face": "Inter-SemiBold",
+      "bounds": [
+        94,
+        298,
+        286,
+        330
+      ],
+      "size": 32
+    },
+    {
+      "text": "226",
+      "face": "Inter-Bold",
+      "bounds": [
+        94,
+        350,
+        224,
+        402
+      ],
+      "size": 68
+    },
+    {
+      "text": "moves / month",
+      "face": "Inter-Regular",
+      "bounds": [
+        94,
+        451,
+        305,
+        478
+      ],
+      "size": 30
+    },
+    {
+      "text": "Seasonal baseline",
+      "face": "Inter-SemiBold",
+      "bounds": [
+        682,
+        298,
+        962,
+        323
+      ],
+      "size": 32
+    },
+    {
+      "text": "327",
+      "face": "Inter-Bold",
+      "bounds": [
+        682,
+        350,
+        808,
+        402
+      ],
+      "size": 68
+    },
+    {
+      "text": "moves / month",
+      "face": "Inter-Regular",
+      "bounds": [
+        682,
+        451,
+        893,
+        478
+      ],
+      "size": 30
+    },
+    {
+      "text": "Prior observations used. Not operational forecasts.",
+      "face": "Inter-Italic",
+      "bounds": [
+        68,
+        548,
+        794,
+        578
+      ],
+      "size": 30
+    }
+  ],
+  "experimental_work_rerun": false,
+  "kind": "authored summary, not an application screenshot"
+}

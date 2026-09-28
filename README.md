@@ -374,3 +374,5 @@ I use this project to connect the operational questions I knew from logistics wi
 - **Operating evidence.** Follow the recorded container and monitoring checks, including their limits. [Inspect the work](VERIFICATION.md).
 
 These are transferable skills for backend and MLOps work. The data is synthetic, so this is not evidence of savings or accuracy in a live logistics operation.
+
+See [sharing previews](docs/sharing-preview.md) for the maintained link image and its source.

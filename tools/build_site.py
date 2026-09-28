@@ -4,6 +4,7 @@ import hashlib
 import json
 import math
 import shutil
+import sys
 from pathlib import Path
 
 try:
@@ -16,8 +17,10 @@ except ImportError:  # Direct command-line invocation from the source checkout.
     from render_synthetic_figure import check_outputs
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 OUT = ROOT / "_site"
 FILES = {
+    "site/share-preview.png": "share-preview.png",
     "site/index.html": "index.html",
     "site/style.css": "style.css",
     "site/app.js": "app.js",
@@ -84,6 +87,9 @@ def validate_evidence(data):
 
 
 def main():
+    from tools.render_share_preview import check as check_share_preview
+
+    check_share_preview()
     data = json.loads((ROOT / "docs/visual-example-data.json").read_text())
     if not data.get("source_commit"):
         raise ValueError("Example data must retain its source revision.")

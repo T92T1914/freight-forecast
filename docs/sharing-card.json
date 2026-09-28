@@ -1,0 +1,19 @@
+{
+  "repo": "freight-forecast",
+  "title": "Freight Forecast",
+  "subtitle": "Forecasts and baselines",
+  "description": "Explore 24 synthetic test months, the seasonal baseline and a separate BTS index study where last observation won. Saved results, not a live forecasting API.",
+  "helper": "render_synthetic_figure",
+  "tokens": "presentation/tokens.json",
+  "source": "docs/visual-example-data.json",
+  "pages": [
+    "site/index.html"
+  ],
+  "kind": "freight",
+  "output": "site/share-preview.png",
+  "image_url": "https://t92t1914.github.io/freight-forecast/share-preview.png",
+  "page_urls": {
+    "site/index.html": "https://t92t1914.github.io/freight-forecast/"
+  },
+  "alt": "Freight Forecast. Forecasts and baselines. Authored summary of the linked evidence."
+}

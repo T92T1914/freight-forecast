@@ -4,3 +4,7 @@ docs/real-data-protocol.json text eol=lf
 # Figure receipts identify exact output bytes across Windows and Linux.
 docs/freight-forecast-clair.svg text eol=lf
 docs/freight-forecast-obscur.svg text eol=lf
+
+# Wide figure receipts require the same bytes on Windows checkouts.
+docs/freight-forecast-clair-wide.svg text eol=lf
+docs/freight-forecast-obscur-wide.svg text eol=lf
