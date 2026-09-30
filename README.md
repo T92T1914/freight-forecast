@@ -357,6 +357,16 @@ These are the limits I would address before using this with operational data.
 
 MIT licensed. The full text is in [LICENSE](LICENSE).
 
+## Prospective issuance ledger
+
+The [local ledger](docs/prospective-ledger.md) retains predictions, information
+cutoffs, source vintages, later observations and explicit corrections. It keeps
+an unfavorable result without changing the serving model's promotion rule.
+The [public view](https://t92t1914.github.io/freight-forecast/ledger.html) separates
+real issuances, retrospective replays and synthetic workflow fixtures. Its
+current example contains no real issued forecast. Missing future outcomes and
+unknown first releases remain visible.
+
 ## Serving performance
 
 [Feature reuse measurement](docs/serving-performance.md): a matched local in process check measured 4.534 ms → 1.278 ms for one request shape, with identical predictions. The report includes raw samples, reproduction instructions and limits.

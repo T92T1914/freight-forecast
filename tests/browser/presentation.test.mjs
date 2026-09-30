@@ -59,6 +59,39 @@ async function fixture(t, options = {}, blockedStorage = false) {
   return page;
 }
 const background = page => page.locator('body').evaluate(e => getComputedStyle(e).backgroundColor);
+test('ledger preserves evidence categories, downloads and narrow appearances', async t => {
+  const page = await fixture(t, {viewport:{width:390,height:844}, colorScheme:'dark'});
+  await ready(page, '/ledger.html');
+  assert.match(await page.locator('main').innerText(), /0 real issued predictions/);
+  assert.match(await page.locator('#retrospective_replay').innerText(), /2026-08/);
+  assert.equal(await page.locator('#synthetic_fixture tbody tr').count(), 3);
+  const initial = await page.locator('main').innerText();
+  assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+  assert.equal(await background(page), 'rgb(9, 9, 9)');
+  if (process.env.FREIGHT_EXPECT_INTER === '1') {
+    await page.evaluate(() => document.fonts.ready);
+    assert.ok((await fonts(page, 'h1')).some(f => f.postScriptName === 'Inter-Bold'));
+    assert.ok((await fonts(page, '.lead')).some(f => f.postScriptName === 'Inter-Regular'));
+  }
+  await capture(page, 'ledger-obscur-390');
+  await page.locator('#appearance').selectOption('clair');
+  assert.equal(await background(page), 'rgb(248, 247, 243)');
+  assert.equal(await page.locator('main').innerText(), initial);
+  await page.reload();
+  assert.equal(await page.locator('#appearance').inputValue(), 'clair');
+  await capture(page, 'ledger-clair-390');
+  const download = await page.request.get(base + '/ledger.json');
+  const saved = await download.json();
+  assert.equal(saved.summaries.real_issuance.issuances, 0);
+  assert.equal(saved.summaries.retrospective_replay.issuances, 1);
+  assert.equal(saved.summaries.synthetic_fixture.issuances, 3);
+  await page.setViewportSize({width:1280,height:900});
+  await capture(page, 'ledger-clair-1280');
+  await page.getByRole('link', {name:'Forecast project', exact:true}).click();
+  await page.getByRole('link', {name:'Inspect the issuance ledger', exact:true}).click();
+  await page.goBack();
+  assert.match(page.url(), /index.html$/);
+});
 async function ready(page, location = '/') {
   await page.goto(base + location);
   await page.locator('#appearance:not([disabled])').waitFor();
