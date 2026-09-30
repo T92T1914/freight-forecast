@@ -1,0 +1,642 @@
+{
+  "schema_version": 1,
+  "outcome_policy": "first_release",
+  "issuance_policy": "earliest non-excluded per series, units, target, product and policy",
+  "events": [
+    {
+      "seq": 1,
+      "event_id": "8125186ee6b995f26427fc7c780be5acb35731e9c03621a337fce317d7046929",
+      "idempotency_key": "fixture-issuance-2026-03",
+      "kind": "issuance",
+      "issuance_id": "8125186ee6b995f26427fc7c780be5acb35731e9c03621a337fce317d7046929",
+      "payload": {
+        "artifact": {
+          "family": "last_observation",
+          "feature_schema": "bts-last-observation-v1",
+          "horizon": 1,
+          "model_id": "e3e536e170ae2590d880742ecc4d3f27f6162a2557760131a842020155004197",
+          "policy": {
+            "family": "last_observation",
+            "feature_schema": "bts-last-observation-v1",
+            "horizon": 1,
+            "model_id": "e3e536e170ae2590d880742ecc4d3f27f6162a2557760131a842020155004197",
+            "series": "bts_freight_tsi",
+            "units": "index_points_2000_average_100"
+          },
+          "policy_id": "490e07693a9fc931633fdcabbd4296b0fe95efe0dd10b35f5cf477522a4f54e1",
+          "series": "bts_freight_tsi",
+          "training_cutoff": "2026-02",
+          "units": "index_points_2000_average_100"
+        },
+        "classification": "elapsed_period_nowcast",
+        "evidence_kind": "synthetic_fixture",
+        "horizon": 1,
+        "issue_timezone": "UTC",
+        "issued_at": "2026-06-01T12:00:00+00:00",
+        "last_observation": 100.0,
+        "prediction": 100.0,
+        "schema_version": 1,
+        "seasonal_naive": 90.0,
+        "series": "bts_freight_tsi",
+        "source": {
+          "publication_basis": "Invented test values and clocks, not a BTS publication",
+          "publication_verified": false,
+          "published_at": "2026-05-01T12:00:00+00:00",
+          "retrieved_at": "2026-06-01T10:00:00+00:00",
+          "url": "https://example.invalid/synthetic-fixture"
+        },
+        "target_month": "2026-03",
+        "uncertainty": null,
+        "units": "index_points_2000_average_100",
+        "vintage": {
+          "available_through": "2026-02",
+          "history_id": "298cf885e64f060a6892d17001cbdb954ae0c7e952a23801a682544d807aca92",
+          "kind": "synthetic_fixture",
+          "sha256": "bfff8301121a6780dcbf18f46bbc816d72ca8a5eb971aa050f656d0d1c80fb20"
+        }
+      },
+      "payload_id": "13a09cbb6ece08f6787dcf5ce59a1084e0c78840ece45d93229d92f72689e7a1",
+      "recorded_at": "2026-09-30T09:33:00.232155+00:00"
+    },
+    {
+      "seq": 2,
+      "event_id": "48a4495966b43c1493f4462114ff1a87afa25a0c08c4cff763cd450f50e98930",
+      "idempotency_key": "fixture-outcome-2026-03",
+      "kind": "observation",
+      "issuance_id": "8125186ee6b995f26427fc7c780be5acb35731e9c03621a337fce317d7046929",
+      "payload": {
+        "issuance_id": "8125186ee6b995f26427fc7c780be5acb35731e9c03621a337fce317d7046929",
+        "series": "bts_freight_tsi",
+        "sha256": "1cf52829c6f5605b2f993257b5dfb32e8be4fc025a32da955ac8db79aab9791e",
+        "source": {
+          "publication_basis": "Synthetic clock fixture, not a verified real release",
+          "publication_verified": true,
+          "published_at": "2026-06-05T12:00:00+00:00",
+          "retrieved_at": "2026-06-06T12:00:00+00:00",
+          "url": "https://example.invalid/synthetic-fixture"
+        },
+        "supersedes_event_id": null,
+        "target_month": "2026-03",
+        "units": "index_points_2000_average_100",
+        "value": 130.0,
+        "vintage_kind": "first_release"
+      },
+      "payload_id": "b3870c4fa050fa2523cb0fa1921a5f745d1f02c5352a97c8ef84aba2e07ea972",
+      "recorded_at": "2026-09-30T09:33:00.239666+00:00"
+    },
+    {
+      "seq": 3,
+      "event_id": "93aa1fc5fa246deb2923cd197299689cdca315be3cfbe4c9672f7e07d3a0898b",
+      "idempotency_key": "fixture-revision-march",
+      "kind": "observation",
+      "issuance_id": "8125186ee6b995f26427fc7c780be5acb35731e9c03621a337fce317d7046929",
+      "payload": {
+        "issuance_id": "8125186ee6b995f26427fc7c780be5acb35731e9c03621a337fce317d7046929",
+        "series": "bts_freight_tsi",
+        "sha256": "302ad9d300a862440c930363bf4e7f3cfe94a02c2002d15a60c097ba1fe93b4c",
+        "source": {
+          "publication_basis": "Synthetic clock fixture, not a verified real release",
+          "publication_verified": true,
+          "published_at": "2026-07-05T12:00:00+00:00",
+          "retrieved_at": "2026-07-06T12:00:00+00:00",
+          "url": "https://example.invalid/synthetic-fixture"
+        },
+        "supersedes_event_id": "48a4495966b43c1493f4462114ff1a87afa25a0c08c4cff763cd450f50e98930",
+        "target_month": "2026-03",
+        "units": "index_points_2000_average_100",
+        "value": 135.0,
+        "vintage_kind": "revision"
+      },
+      "payload_id": "be5768e73bdbee1dbf9143c2c0f12def4cbd7595891ef48d59078cd17d90f2b5",
+      "recorded_at": "2026-09-30T09:33:00.244694+00:00"
+    },
+    {
+      "seq": 4,
+      "event_id": "1e73379cbc24129cd4ed31a65d423f6d8013a6f4700e740456c66349cdee433e",
+      "idempotency_key": "fixture-issuance-2026-04",
+      "kind": "issuance",
+      "issuance_id": "1e73379cbc24129cd4ed31a65d423f6d8013a6f4700e740456c66349cdee433e",
+      "payload": {
+        "artifact": {
+          "family": "last_observation",
+          "feature_schema": "bts-last-observation-v1",
+          "horizon": 1,
+          "model_id": "e3e536e170ae2590d880742ecc4d3f27f6162a2557760131a842020155004197",
+          "policy": {
+            "family": "last_observation",
+            "feature_schema": "bts-last-observation-v1",
+            "horizon": 1,
+            "model_id": "e3e536e170ae2590d880742ecc4d3f27f6162a2557760131a842020155004197",
+            "series": "bts_freight_tsi",
+            "units": "index_points_2000_average_100"
+          },
+          "policy_id": "490e07693a9fc931633fdcabbd4296b0fe95efe0dd10b35f5cf477522a4f54e1",
+          "series": "bts_freight_tsi",
+          "training_cutoff": "2026-03",
+          "units": "index_points_2000_average_100"
+        },
+        "classification": "elapsed_period_nowcast",
+        "evidence_kind": "synthetic_fixture",
+        "horizon": 1,
+        "issue_timezone": "UTC",
+        "issued_at": "2026-06-01T12:00:00+00:00",
+        "last_observation": 100.0,
+        "prediction": 100.0,
+        "schema_version": 1,
+        "seasonal_naive": 90.0,
+        "series": "bts_freight_tsi",
+        "source": {
+          "publication_basis": "Invented test values and clocks, not a BTS publication",
+          "publication_verified": false,
+          "published_at": "2026-05-01T12:00:00+00:00",
+          "retrieved_at": "2026-06-01T10:00:00+00:00",
+          "url": "https://example.invalid/synthetic-fixture"
+        },
+        "target_month": "2026-04",
+        "uncertainty": null,
+        "units": "index_points_2000_average_100",
+        "vintage": {
+          "available_through": "2026-03",
+          "history_id": "3b2a9428fd7fde97c61586912e75ac5edb191b2adc7f7e7dc67695781aed07d7",
+          "kind": "synthetic_fixture",
+          "sha256": "a038902c092d52c706e4330bbe529c74ea3fb89279e2274ffeafe45e750d6e49"
+        }
+      },
+      "payload_id": "225f1e3a162b3e7ab2892719d532ff9cd7fa4d5cf7ef1aba96457c9f073221c5",
+      "recorded_at": "2026-09-30T09:33:00.250209+00:00"
+    },
+    {
+      "seq": 5,
+      "event_id": "e3b7fbe6b096e9f92858787d86f40b52ceffe6b3c78e9156a0d231344ab15b9c",
+      "idempotency_key": "fixture-outcome-2026-04",
+      "kind": "observation",
+      "issuance_id": "1e73379cbc24129cd4ed31a65d423f6d8013a6f4700e740456c66349cdee433e",
+      "payload": {
+        "issuance_id": "1e73379cbc24129cd4ed31a65d423f6d8013a6f4700e740456c66349cdee433e",
+        "reason": "Synthetic delayed release",
+        "series": "bts_freight_tsi",
+        "sha256": null,
+        "source": {
+          "publication_basis": "Synthetic clock fixture, not a verified real release",
+          "publication_verified": false,
+          "published_at": null,
+          "retrieved_at": "2026-06-06T12:00:00+00:00",
+          "url": "https://example.invalid/synthetic-fixture"
+        },
+        "supersedes_event_id": null,
+        "target_month": "2026-04",
+        "units": "index_points_2000_average_100",
+        "value": null,
+        "vintage_kind": "unavailable"
+      },
+      "payload_id": "48e433c449ff1175bc2073ee83d34ec19d0ee40ca3b03a307e4f95b6844e0512",
+      "recorded_at": "2026-09-30T09:33:00.256719+00:00"
+    },
+    {
+      "seq": 6,
+      "event_id": "fb295680e3bd2431d4e58d51f29734d14591b4cf8571d9b203ccbd7e7c879d88",
+      "idempotency_key": "fixture-issuance-2026-05",
+      "kind": "issuance",
+      "issuance_id": "fb295680e3bd2431d4e58d51f29734d14591b4cf8571d9b203ccbd7e7c879d88",
+      "payload": {
+        "artifact": {
+          "family": "last_observation",
+          "feature_schema": "bts-last-observation-v1",
+          "horizon": 1,
+          "model_id": "e3e536e170ae2590d880742ecc4d3f27f6162a2557760131a842020155004197",
+          "policy": {
+            "family": "last_observation",
+            "feature_schema": "bts-last-observation-v1",
+            "horizon": 1,
+            "model_id": "e3e536e170ae2590d880742ecc4d3f27f6162a2557760131a842020155004197",
+            "series": "bts_freight_tsi",
+            "units": "index_points_2000_average_100"
+          },
+          "policy_id": "490e07693a9fc931633fdcabbd4296b0fe95efe0dd10b35f5cf477522a4f54e1",
+          "series": "bts_freight_tsi",
+          "training_cutoff": "2026-04",
+          "units": "index_points_2000_average_100"
+        },
+        "classification": "elapsed_period_nowcast",
+        "evidence_kind": "synthetic_fixture",
+        "horizon": 1,
+        "issue_timezone": "UTC",
+        "issued_at": "2026-06-01T12:00:00+00:00",
+        "last_observation": 100.0,
+        "prediction": 100.0,
+        "schema_version": 1,
+        "seasonal_naive": 90.0,
+        "series": "bts_freight_tsi",
+        "source": {
+          "publication_basis": "Invented test values and clocks, not a BTS publication",
+          "publication_verified": false,
+          "published_at": "2026-05-01T12:00:00+00:00",
+          "retrieved_at": "2026-06-01T10:00:00+00:00",
+          "url": "https://example.invalid/synthetic-fixture"
+        },
+        "target_month": "2026-05",
+        "uncertainty": null,
+        "units": "index_points_2000_average_100",
+        "vintage": {
+          "available_through": "2026-04",
+          "history_id": "aa2feebc0d2796e6938a3fa191f0aa6a11e52e5b202d95015a895be2e4292fe0",
+          "kind": "synthetic_fixture",
+          "sha256": "a41a7b5221342578cd08ab59a93deac04fb97a1f883b58b13434875677d3f766"
+        }
+      },
+      "payload_id": "6923de583f5257a4554f5cab575c51ef166bbade69969570484896369d49b6e1",
+      "recorded_at": "2026-09-30T09:33:00.262809+00:00"
+    },
+    {
+      "seq": 7,
+      "event_id": "f42d2ff07bf47c3ca7671a327229ff48882f141130479e44add8a97a7cca9658",
+      "idempotency_key": "fixture-outcome-2026-05",
+      "kind": "observation",
+      "issuance_id": "fb295680e3bd2431d4e58d51f29734d14591b4cf8571d9b203ccbd7e7c879d88",
+      "payload": {
+        "issuance_id": "fb295680e3bd2431d4e58d51f29734d14591b4cf8571d9b203ccbd7e7c879d88",
+        "series": "bts_freight_tsi",
+        "sha256": "1cf52829c6f5605b2f993257b5dfb32e8be4fc025a32da955ac8db79aab9791e",
+        "source": {
+          "publication_basis": "Synthetic clock fixture, not a verified real release",
+          "publication_verified": true,
+          "published_at": "2026-06-05T12:00:00+00:00",
+          "retrieved_at": "2026-06-06T12:00:00+00:00",
+          "url": "https://example.invalid/synthetic-fixture"
+        },
+        "supersedes_event_id": null,
+        "target_month": "2026-05",
+        "units": "index_points_2000_average_100",
+        "value": 130.0,
+        "vintage_kind": "first_release"
+      },
+      "payload_id": "2d778b87bf2d2484185feafbf7e78c58bcd01946fbeba55e0131dc1fa3281db6",
+      "recorded_at": "2026-09-30T09:33:00.268817+00:00"
+    },
+    {
+      "seq": 8,
+      "event_id": "dabc6a6dd0352433a17ed1a9b06330455c7d3f4b06aca1710f74439b8b2474ec",
+      "idempotency_key": "fixture-correction-may",
+      "kind": "correction",
+      "issuance_id": "fb295680e3bd2431d4e58d51f29734d14591b4cf8571d9b203ccbd7e7c879d88",
+      "payload": {
+        "action": "exclude_from_evaluation",
+        "issuance_id": "fb295680e3bd2431d4e58d51f29734d14591b4cf8571d9b203ccbd7e7c879d88",
+        "reason": "Synthetic incorrectly labeled first release",
+        "target_event_id": "f42d2ff07bf47c3ca7671a327229ff48882f141130479e44add8a97a7cca9658"
+      },
+      "payload_id": "e4a0ee9a35fe780ab83e430f3d74e3b7725decdd709491b2ddebaa1a2bb8e811",
+      "recorded_at": "2026-09-30T09:33:00.274859+00:00"
+    },
+    {
+      "seq": 9,
+      "event_id": "fdb859f242b9a576b40bc1f9e901740cc1d776dbe47bc00fb6ad7cc997172628",
+      "idempotency_key": "retained-bts-july-replay",
+      "kind": "issuance",
+      "issuance_id": "fdb859f242b9a576b40bc1f9e901740cc1d776dbe47bc00fb6ad7cc997172628",
+      "payload": {
+        "artifact": {
+          "family": "last_observation",
+          "feature_schema": "bts-last-observation-v1",
+          "horizon": 1,
+          "model_id": "e7897065ca36f55f5598f22505767857285b5091780024865fad4d4f5168c11f",
+          "policy": {
+            "family": "last_observation",
+            "feature_schema": "bts-last-observation-v1",
+            "horizon": 1,
+            "model_id": "e7897065ca36f55f5598f22505767857285b5091780024865fad4d4f5168c11f",
+            "series": "bts_freight_tsi",
+            "units": "index_points_2000_average_100"
+          },
+          "policy_id": "84987426c240e28d138642780d48159291b6937bb4189e5ccf4b8a65402dad26",
+          "series": "bts_freight_tsi",
+          "training_cutoff": "2026-07",
+          "units": "index_points_2000_average_100"
+        },
+        "classification": "retrospective_replay",
+        "evidence_kind": "retrospective_replay",
+        "horizon": 1,
+        "issue_timezone": "UTC",
+        "issued_at": "2026-09-30T09:36:07.914480+00:00",
+        "last_observation": 135.7,
+        "prediction": 135.7,
+        "schema_version": 1,
+        "seasonal_naive": 138.9,
+        "series": "bts_freight_tsi",
+        "source": {
+          "publication_basis": "Retained latest-vintage snapshot has no exact publication receipt",
+          "publication_verified": false,
+          "published_at": null,
+          "retrieved_at": "2026-09-25T02:05:50.360595+00:00",
+          "url": "https://data.transportation.gov/resource/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000"
+        },
+        "target_month": "2026-08",
+        "uncertainty": null,
+        "units": "index_points_2000_average_100",
+        "vintage": {
+          "available_through": "2026-07",
+          "history_id": "3ecf8a3f55dcb65068fddbf6a096f0df57f8908be83e8ff4dd0b6466bdfaa624",
+          "kind": "latest_vintage_snapshot",
+          "sha256": "65e7de7defd5eb39c8dd9eaf91379f0ae27a9225f5d494a295caf662547c04f1"
+        }
+      },
+      "payload_id": "57b2299fa9914a86972b8cf2e80a7b74a5dda336d6c0c8f31c931a4a6f086fb8",
+      "recorded_at": "2026-09-30T09:36:07.917988+00:00"
+    }
+  ],
+  "rows": [
+    {
+      "issuance_id": "8125186ee6b995f26427fc7c780be5acb35731e9c03621a337fce317d7046929",
+      "issuance": {
+        "artifact": {
+          "family": "last_observation",
+          "feature_schema": "bts-last-observation-v1",
+          "horizon": 1,
+          "model_id": "e3e536e170ae2590d880742ecc4d3f27f6162a2557760131a842020155004197",
+          "policy": {
+            "family": "last_observation",
+            "feature_schema": "bts-last-observation-v1",
+            "horizon": 1,
+            "model_id": "e3e536e170ae2590d880742ecc4d3f27f6162a2557760131a842020155004197",
+            "series": "bts_freight_tsi",
+            "units": "index_points_2000_average_100"
+          },
+          "policy_id": "490e07693a9fc931633fdcabbd4296b0fe95efe0dd10b35f5cf477522a4f54e1",
+          "series": "bts_freight_tsi",
+          "training_cutoff": "2026-02",
+          "units": "index_points_2000_average_100"
+        },
+        "classification": "elapsed_period_nowcast",
+        "evidence_kind": "synthetic_fixture",
+        "horizon": 1,
+        "issue_timezone": "UTC",
+        "issued_at": "2026-06-01T12:00:00+00:00",
+        "last_observation": 100.0,
+        "prediction": 100.0,
+        "schema_version": 1,
+        "seasonal_naive": 90.0,
+        "series": "bts_freight_tsi",
+        "source": {
+          "publication_basis": "Invented test values and clocks, not a BTS publication",
+          "publication_verified": false,
+          "published_at": "2026-05-01T12:00:00+00:00",
+          "retrieved_at": "2026-06-01T10:00:00+00:00",
+          "url": "https://example.invalid/synthetic-fixture"
+        },
+        "target_month": "2026-03",
+        "uncertainty": null,
+        "units": "index_points_2000_average_100",
+        "vintage": {
+          "available_through": "2026-02",
+          "history_id": "298cf885e64f060a6892d17001cbdb954ae0c7e952a23801a682544d807aca92",
+          "kind": "synthetic_fixture",
+          "sha256": "bfff8301121a6780dcbf18f46bbc816d72ca8a5eb971aa050f656d0d1c80fb20"
+        }
+      },
+      "status": "observed",
+      "outcome": {
+        "seq": 2,
+        "event_id": "48a4495966b43c1493f4462114ff1a87afa25a0c08c4cff763cd450f50e98930",
+        "idempotency_key": "fixture-outcome-2026-03",
+        "kind": "observation",
+        "issuance_id": "8125186ee6b995f26427fc7c780be5acb35731e9c03621a337fce317d7046929",
+        "payload": {
+          "issuance_id": "8125186ee6b995f26427fc7c780be5acb35731e9c03621a337fce317d7046929",
+          "series": "bts_freight_tsi",
+          "sha256": "1cf52829c6f5605b2f993257b5dfb32e8be4fc025a32da955ac8db79aab9791e",
+          "source": {
+            "publication_basis": "Synthetic clock fixture, not a verified real release",
+            "publication_verified": true,
+            "published_at": "2026-06-05T12:00:00+00:00",
+            "retrieved_at": "2026-06-06T12:00:00+00:00",
+            "url": "https://example.invalid/synthetic-fixture"
+          },
+          "supersedes_event_id": null,
+          "target_month": "2026-03",
+          "units": "index_points_2000_average_100",
+          "value": 130.0,
+          "vintage_kind": "first_release"
+        },
+        "payload_id": "b3870c4fa050fa2523cb0fa1921a5f745d1f02c5352a97c8ef84aba2e07ea972",
+        "recorded_at": "2026-09-30T09:33:00.239666+00:00"
+      }
+    },
+    {
+      "issuance_id": "1e73379cbc24129cd4ed31a65d423f6d8013a6f4700e740456c66349cdee433e",
+      "issuance": {
+        "artifact": {
+          "family": "last_observation",
+          "feature_schema": "bts-last-observation-v1",
+          "horizon": 1,
+          "model_id": "e3e536e170ae2590d880742ecc4d3f27f6162a2557760131a842020155004197",
+          "policy": {
+            "family": "last_observation",
+            "feature_schema": "bts-last-observation-v1",
+            "horizon": 1,
+            "model_id": "e3e536e170ae2590d880742ecc4d3f27f6162a2557760131a842020155004197",
+            "series": "bts_freight_tsi",
+            "units": "index_points_2000_average_100"
+          },
+          "policy_id": "490e07693a9fc931633fdcabbd4296b0fe95efe0dd10b35f5cf477522a4f54e1",
+          "series": "bts_freight_tsi",
+          "training_cutoff": "2026-03",
+          "units": "index_points_2000_average_100"
+        },
+        "classification": "elapsed_period_nowcast",
+        "evidence_kind": "synthetic_fixture",
+        "horizon": 1,
+        "issue_timezone": "UTC",
+        "issued_at": "2026-06-01T12:00:00+00:00",
+        "last_observation": 100.0,
+        "prediction": 100.0,
+        "schema_version": 1,
+        "seasonal_naive": 90.0,
+        "series": "bts_freight_tsi",
+        "source": {
+          "publication_basis": "Invented test values and clocks, not a BTS publication",
+          "publication_verified": false,
+          "published_at": "2026-05-01T12:00:00+00:00",
+          "retrieved_at": "2026-06-01T10:00:00+00:00",
+          "url": "https://example.invalid/synthetic-fixture"
+        },
+        "target_month": "2026-04",
+        "uncertainty": null,
+        "units": "index_points_2000_average_100",
+        "vintage": {
+          "available_through": "2026-03",
+          "history_id": "3b2a9428fd7fde97c61586912e75ac5edb191b2adc7f7e7dc67695781aed07d7",
+          "kind": "synthetic_fixture",
+          "sha256": "a038902c092d52c706e4330bbe529c74ea3fb89279e2274ffeafe45e750d6e49"
+        }
+      },
+      "status": "unobserved",
+      "outcome": null
+    },
+    {
+      "issuance_id": "fb295680e3bd2431d4e58d51f29734d14591b4cf8571d9b203ccbd7e7c879d88",
+      "issuance": {
+        "artifact": {
+          "family": "last_observation",
+          "feature_schema": "bts-last-observation-v1",
+          "horizon": 1,
+          "model_id": "e3e536e170ae2590d880742ecc4d3f27f6162a2557760131a842020155004197",
+          "policy": {
+            "family": "last_observation",
+            "feature_schema": "bts-last-observation-v1",
+            "horizon": 1,
+            "model_id": "e3e536e170ae2590d880742ecc4d3f27f6162a2557760131a842020155004197",
+            "series": "bts_freight_tsi",
+            "units": "index_points_2000_average_100"
+          },
+          "policy_id": "490e07693a9fc931633fdcabbd4296b0fe95efe0dd10b35f5cf477522a4f54e1",
+          "series": "bts_freight_tsi",
+          "training_cutoff": "2026-04",
+          "units": "index_points_2000_average_100"
+        },
+        "classification": "elapsed_period_nowcast",
+        "evidence_kind": "synthetic_fixture",
+        "horizon": 1,
+        "issue_timezone": "UTC",
+        "issued_at": "2026-06-01T12:00:00+00:00",
+        "last_observation": 100.0,
+        "prediction": 100.0,
+        "schema_version": 1,
+        "seasonal_naive": 90.0,
+        "series": "bts_freight_tsi",
+        "source": {
+          "publication_basis": "Invented test values and clocks, not a BTS publication",
+          "publication_verified": false,
+          "published_at": "2026-05-01T12:00:00+00:00",
+          "retrieved_at": "2026-06-01T10:00:00+00:00",
+          "url": "https://example.invalid/synthetic-fixture"
+        },
+        "target_month": "2026-05",
+        "uncertainty": null,
+        "units": "index_points_2000_average_100",
+        "vintage": {
+          "available_through": "2026-04",
+          "history_id": "aa2feebc0d2796e6938a3fa191f0aa6a11e52e5b202d95015a895be2e4292fe0",
+          "kind": "synthetic_fixture",
+          "sha256": "a41a7b5221342578cd08ab59a93deac04fb97a1f883b58b13434875677d3f766"
+        }
+      },
+      "status": "unobserved",
+      "outcome": null
+    },
+    {
+      "issuance_id": "fdb859f242b9a576b40bc1f9e901740cc1d776dbe47bc00fb6ad7cc997172628",
+      "issuance": {
+        "artifact": {
+          "family": "last_observation",
+          "feature_schema": "bts-last-observation-v1",
+          "horizon": 1,
+          "model_id": "e7897065ca36f55f5598f22505767857285b5091780024865fad4d4f5168c11f",
+          "policy": {
+            "family": "last_observation",
+            "feature_schema": "bts-last-observation-v1",
+            "horizon": 1,
+            "model_id": "e7897065ca36f55f5598f22505767857285b5091780024865fad4d4f5168c11f",
+            "series": "bts_freight_tsi",
+            "units": "index_points_2000_average_100"
+          },
+          "policy_id": "84987426c240e28d138642780d48159291b6937bb4189e5ccf4b8a65402dad26",
+          "series": "bts_freight_tsi",
+          "training_cutoff": "2026-07",
+          "units": "index_points_2000_average_100"
+        },
+        "classification": "retrospective_replay",
+        "evidence_kind": "retrospective_replay",
+        "horizon": 1,
+        "issue_timezone": "UTC",
+        "issued_at": "2026-09-30T09:36:07.914480+00:00",
+        "last_observation": 135.7,
+        "prediction": 135.7,
+        "schema_version": 1,
+        "seasonal_naive": 138.9,
+        "series": "bts_freight_tsi",
+        "source": {
+          "publication_basis": "Retained latest-vintage snapshot has no exact publication receipt",
+          "publication_verified": false,
+          "published_at": null,
+          "retrieved_at": "2026-09-25T02:05:50.360595+00:00",
+          "url": "https://data.transportation.gov/resource/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000"
+        },
+        "target_month": "2026-08",
+        "uncertainty": null,
+        "units": "index_points_2000_average_100",
+        "vintage": {
+          "available_through": "2026-07",
+          "history_id": "3ecf8a3f55dcb65068fddbf6a096f0df57f8908be83e8ff4dd0b6466bdfaa624",
+          "kind": "latest_vintage_snapshot",
+          "sha256": "65e7de7defd5eb39c8dd9eaf91379f0ae27a9225f5d494a295caf662547c04f1"
+        }
+      },
+      "status": "unobserved",
+      "outcome": null
+    }
+  ],
+  "summaries": {
+    "real_issuance": {
+      "issuances": 0,
+      "scored_targets": 0,
+      "unobserved": 0,
+      "excluded": 0,
+      "repeat_issuances": 0,
+      "target_months": []
+    },
+    "synthetic_fixture": {
+      "issuances": 3,
+      "scored_targets": 1,
+      "unobserved": 2,
+      "excluded": 0,
+      "repeat_issuances": 0,
+      "target_months": [
+        "2026-03",
+        "2026-04",
+        "2026-05"
+      ]
+    },
+    "retrospective_replay": {
+      "issuances": 1,
+      "scored_targets": 0,
+      "unobserved": 1,
+      "excluded": 0,
+      "repeat_issuances": 0,
+      "target_months": [
+        "2026-08"
+      ]
+    }
+  },
+  "cohorts": [
+    {
+      "evidence_kind": "retrospective_replay",
+      "classification": "retrospective_replay",
+      "policy_id": "84987426c240e28d138642780d48159291b6937bb4189e5ccf4b8a65402dad26",
+      "scored_targets": 0,
+      "target_months": [
+        "2026-08"
+      ],
+      "mae": {
+        "prediction": null,
+        "last_observation": null,
+        "seasonal_naive": null
+      }
+    },
+    {
+      "evidence_kind": "synthetic_fixture",
+      "classification": "elapsed_period_nowcast",
+      "policy_id": "490e07693a9fc931633fdcabbd4296b0fe95efe0dd10b35f5cf477522a4f54e1",
+      "scored_targets": 1,
+      "target_months": [
+        "2026-03",
+        "2026-04",
+        "2026-05"
+      ],
+      "mae": {
+        "prediction": 30.0,
+        "last_observation": 30.0,
+        "seasonal_naive": 40.0
+      }
+    }
+  ]
+}
