@@ -31,7 +31,11 @@ independent issuance timestamp.
 
 The BTS adapter uses the existing snapshot validator. It rejects modified
 bytes, incompatible metadata and an incomplete calendar before constructing
-the record. BTS values are index points with the 2000 average equal to 100.
+the record. Its byte identity comes from the manifest verified against the
+same buffer used to parse the history. Replacing or removing the file after
+that read does not change the captured vintage. This does not preserve a copy
+of the source file or authenticate its publication.
+BTS values are index points with the 2000 average equal to 100.
 They are not synthetic shipment counts.
 
 The adapter's declared point policy carries forward the last observed month.

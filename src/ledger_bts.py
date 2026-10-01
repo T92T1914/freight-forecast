@@ -1,7 +1,6 @@
 """Build one-step BTS point records from the existing validated snapshot path."""
 
 import argparse
-import hashlib
 import json
 from datetime import UTC, datetime
 from pathlib import Path
@@ -65,7 +64,9 @@ def prepare_record(data_path, manifest_path, *, evidence_kind, publication=None)
             **publication,
         },
         "vintage": {
-            "sha256": hashlib.sha256(Path(data_path).read_bytes()).hexdigest(),
+            # The loader verified this hash against the exact bytes it parsed.
+            # A second path read could identify a newer file than the history.
+            "sha256": manifest["sha256"],
             "history_id": digest(history_rows(history)),
             "kind": manifest["vintage_kind"],
             "available_through": available,

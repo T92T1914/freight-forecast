@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 
+from src import ledger_bts
 from src.ledger import Ledger
 from src.ledger_bts import prepare_record
 from src.provenance import digest, history_rows
@@ -49,6 +50,37 @@ def test_modified_snapshot_and_incompatible_manifest_fail(tmp_path):
     manifest.write_text(json.dumps(raw))
     with pytest.raises(ValueError, match="supported BTS"):
         prepare_record(DATA, manifest, evidence_kind="retrospective_replay")
+
+
+@pytest.mark.parametrize("after_load", ["replace", "delete"])
+def test_record_keeps_identity_of_validated_bytes_after_path_changes(
+    tmp_path, monkeypatch, after_load
+):
+    data = tmp_path / "snapshot.csv"
+    data.write_bytes(DATA.read_bytes())
+    history, manifest = load_snapshot(data, MANIFEST)
+
+    def validated_then_changed(data_path, manifest_path):
+        result = load_snapshot(data_path, manifest_path)
+        if after_load == "replace":
+            data_path.write_bytes(b"different file after the validated read")
+        else:
+            data_path.unlink()
+        return result
+
+    monkeypatch.setattr(ledger_bts, "load_snapshot", validated_then_changed)
+    record = prepare_record(data, MANIFEST, evidence_kind="retrospective_replay")
+    assert record["vintage"]["sha256"] == manifest["sha256"]
+    assert record["vintage"]["history_id"] == digest(history_rows(history))
+    assert record["vintage"]["available_through"] == "2026-07"
+    assert record["target_month"] == "2026-08"
+    assert record["prediction"] == history["volume"].iloc[-1]
+    assert record["seasonal_naive"] == history["volume"].iloc[-12]
+    ledger = Ledger(tmp_path / "captured.sqlite")
+    issued = ledger.append("issuance", "captured-replay", record)
+    assert ledger.append("issuance", "captured-replay", record) == issued
+    assert ledger.events()[0]["payload"]["vintage"] == record["vintage"]
+    assert ledger.view()["summaries"]["real_issuance"]["issuances"] == 0
 
 
 def test_command_retry_keeps_original_clock(tmp_path):
