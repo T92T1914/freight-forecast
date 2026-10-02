@@ -7,6 +7,7 @@ the session have already incremented the counters.
 
 import re
 
+import numpy as np
 import pytest
 from fastapi.testclient import TestClient
 
@@ -109,12 +110,26 @@ def test_scrapes_do_not_record_themselves(client):
 
 
 @pytest.mark.parametrize(
-    "prediction", [float("nan"), float("inf"), -float("inf"), -1.0]
+    "prediction",
+    [
+        [float("nan")],
+        [float("inf")],
+        [-float("inf")],
+        [-1.0],
+        [True],
+        ["100"],
+        [100.0, 200.0],
+        [],
+        100.0,
+        [[100.0]],
+        [complex(100, 0)],
+        [[100.0], [200.0, 300.0]],
+    ],
 )
 def test_invalid_forecasts_do_not_poison_prediction_metrics(
     client, monkeypatch, prediction
 ):
-    monkeypatch.setattr(app.state.artifact["model"], "predict", lambda _: [prediction])
+    monkeypatch.setattr(app.state.artifact["model"], "predict", lambda _: prediction)
     before = client.get("/metrics").text
     label = '{method="POST",path="/predict",status="500"}'
 
@@ -130,11 +145,20 @@ def test_invalid_forecasts_do_not_poison_prediction_metrics(
     )
 
 
-def test_zero_forecast_is_valid(client, monkeypatch):
-    monkeypatch.setattr(app.state.artifact["model"], "predict", lambda _: [0.0])
+@pytest.mark.parametrize(
+    "prediction, expected",
+    [
+        ([0.0], 0),
+        ([123], 123),
+        (np.array([123], dtype=np.uint64), 123),
+        (np.array([123.5], dtype=np.float32), 124),
+    ],
+)
+def test_one_numeric_forecast_is_valid(client, monkeypatch, prediction, expected):
+    monkeypatch.setattr(app.state.artifact["model"], "predict", lambda _: prediction)
     response = client.post("/predict", json={"month": "2024-07"})
     assert response.status_code == 200
-    assert response.json()["predicted_volume"] == 0
+    assert response.json()["predicted_volume"] == expected
 
 
 def test_unhandled_errors_are_counted_as_500(client):

@@ -292,6 +292,10 @@ observed volume history before the service can return forecasts.
 Responses are declared as models too, so `/docs` states the contract rather
 than leaving a consumer to infer it from one example.
 
+Each model call must return exactly one finite, nonnegative numeric value.
+The service rejects strings, booleans and malformed result shapes with a 500
+response before recording a prediction. Startup applies the same check.
+
 ```
 GET  /health   -> {"status":"ok","model_loaded":true,"trained_through":"2022-12-01",
                    "test_mae":226.2,"test_mape":0.0335}
