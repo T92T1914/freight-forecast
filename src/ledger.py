@@ -306,6 +306,7 @@ class Ledger:
         _source(
             payload.get("source"), clock, required_publication=vintage != "unavailable"
         )
+        Ledger._validate_outcome_publication(payload, issuance)
         if vintage == "unavailable":
             if payload.get("value") is not None or payload.get("sha256") is not None:
                 raise ValueError("unavailable release cannot contain an invented value")
@@ -328,6 +329,19 @@ class Ledger:
         Ledger._validate_observation_history(
             payload, [(row[0], json.loads(row[1])) for row in earlier], excluded
         )
+
+    @staticmethod
+    def _validate_outcome_publication(payload, issuance):
+        """A real prediction cannot be scored against a declared earlier outcome."""
+        if (
+            issuance.get("evidence_kind") != "real_issuance"
+            or payload.get("vintage_kind") == "unavailable"
+        ):
+            return
+        source = payload.get("source")
+        published = source.get("published_at") if isinstance(source, dict) else None
+        if _time(published) <= _time(issuance.get("issued_at")):
+            raise ValueError("real outcome publication must follow issuance")
 
     @staticmethod
     def _validate_observation_history(payload, earlier, excluded):
@@ -424,6 +438,7 @@ class Ledger:
                         and item["issuance_id"] == expected_issuance
                     }
                     try:
+                        self._validate_outcome_publication(payload, original["payload"])
                         self._validate_observation_history(
                             payload, linked_observations, excluded
                         )

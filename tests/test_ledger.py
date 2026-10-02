@@ -593,3 +593,259 @@ def test_cli_rejects_bad_link_without_replacing_export_or_database(tmp_path):
     assert "saved event issuance link does not reconcile" in process.stderr
     assert output.read_bytes() == b"previous validated export\n"
     assert ledger.path.read_bytes() == retained_database
+
+
+@pytest.fixture
+def record_clock(monkeypatch):
+    """Only the recording clock is mocked; these are not actual issuances."""
+
+    class Clock(datetime):
+        current = datetime(2026, 1, 15, 12, tzinfo=UTC)
+
+        @classmethod
+        def now(cls, tz=None):
+            return cls.current if tz else cls.current.replace(tzinfo=None)
+
+    monkeypatch.setattr("src.ledger.datetime", Clock)
+    return Clock
+
+
+def _real_clock_fixture(ledger, clock, classification):
+    record = issuance()
+    target, available = (
+        ("2026-02", "2026-01")
+        if classification == "forecast"
+        else ("2026-01", "2025-12")
+    )
+    record.update(
+        evidence_kind="real_issuance",
+        classification=classification,
+        target_month=target,
+        issued_at=clock.current.isoformat(),
+    )
+    record["vintage"].update(
+        kind="latest_vintage_snapshot", available_through=available
+    )
+    record["artifact"]["training_cutoff"] = available
+    record["source"]["publication_verified"] = True
+    issued = ledger.append("issuance", "inert-real-clock-fixture", record)
+    clock.current += timedelta(days=5)
+    return issued, target
+
+
+def _clock_outcome(issued, target, published, *, vintage="first_release"):
+    payload = observation(issued, vintage=vintage)
+    payload["target_month"] = target
+    payload["source"].update(
+        published_at=published, retrieved_at="2026-01-20T12:00:00+00:00"
+    )
+    return payload
+
+
+@pytest.mark.parametrize("classification", ["forecast", "elapsed_period_nowcast"])
+@pytest.mark.parametrize("vintage", ["first_release", "latest_snapshot"])
+@pytest.mark.parametrize(
+    "published",
+    ["2026-01-14T12:00:00+00:00", "2026-01-15T06:00:00-06:00"],
+)
+def test_real_outcome_cannot_be_published_before_or_at_issuance(
+    tmp_path, record_clock, classification, vintage, published
+):
+    ledger = Ledger(tmp_path / "chronology.sqlite")
+    issued, target = _real_clock_fixture(ledger, record_clock, classification)
+    before = ledger.events()
+    with pytest.raises(ValueError, match="real outcome publication must follow"):
+        ledger.append(
+            "observation",
+            "not-later",
+            _clock_outcome(issued, target, published, vintage=vintage),
+        )
+    assert ledger.events() == before
+    assert ledger.view()["summaries"]["real_issuance"]["scored_targets"] == 0
+
+
+@pytest.mark.parametrize("classification", ["forecast", "elapsed_period_nowcast"])
+@pytest.mark.parametrize("vintage", ["first_release", "latest_snapshot"])
+def test_real_later_publication_is_scored_and_retries_preserve_identity(
+    tmp_path, record_clock, classification, vintage
+):
+    ledger = Ledger(tmp_path / "later.sqlite")
+    issued, target = _real_clock_fixture(ledger, record_clock, classification)
+    payload = _clock_outcome(
+        issued, target, "2026-01-15T06:00:00.000001-06:00", vintage=vintage
+    )
+    observed = ledger.append("observation", "later", payload)
+    assert ledger.append("observation", "later", payload) == observed
+    policy = "first_release" if vintage == "first_release" else "latest_available"
+    view = Ledger(ledger.path).view(outcome_policy=policy)
+    assert len(view["events"]) == 2
+    assert view["summaries"]["real_issuance"]["scored_targets"] == 1
+    assert view["cohorts"][0]["mae"]["prediction"] == 30
+
+
+@pytest.mark.parametrize("classification", ["forecast", "elapsed_period_nowcast"])
+@pytest.mark.parametrize("vintage", ["first_release", "latest_snapshot"])
+def test_restore_cannot_score_real_outcome_known_at_issuance(
+    tmp_path, record_clock, classification, vintage
+):
+    ledger = Ledger(tmp_path / "restored-clock.sqlite")
+    issued, target = _real_clock_fixture(ledger, record_clock, classification)
+    payload = _clock_outcome(
+        issued, target, "2026-01-15T06:00:00-06:00", vintage=vintage
+    )
+    with ledger._connection() as connection:
+        _restore_event(
+            connection,
+            seq=2,
+            key="restored-not-later",
+            kind="observation",
+            payload=payload,
+            issuance_id=issued,
+        )
+    for read in (ledger.events, ledger.view):
+        with pytest.raises(ValueError, match="saved real outcome publication"):
+            read()
+
+
+def test_real_revision_uses_issuance_and_predecessor_publication_boundaries(
+    tmp_path, record_clock
+):
+    ledger = Ledger(tmp_path / "revision-clock.sqlite")
+    issued, target = _real_clock_fixture(ledger, record_clock, "forecast")
+    first = ledger.append(
+        "observation",
+        "first",
+        _clock_outcome(issued, target, "2026-01-16T12:00:00+00:00"),
+    )
+    revision = _clock_outcome(
+        issued, target, "2026-01-14T12:00:00+00:00", vintage="revision"
+    )
+    revision["supersedes_event_id"] = first
+    with pytest.raises(ValueError, match="real outcome publication must follow"):
+        ledger.append("observation", "old-revision", revision)
+    revision["source"]["published_at"] = "2026-01-15T12:00:01+00:00"
+    with pytest.raises(ValueError, match="revision publication precedes"):
+        ledger.append("observation", "before-first", revision)
+    revision["source"]["published_at"] = "2026-01-17T12:00:00+00:00"
+    ledger.append("observation", "later-revision", revision)
+    assert (
+        ledger.view(outcome_policy="latest_available")["rows"][0]["status"]
+        == "observed"
+    )
+
+
+def test_restored_real_revision_keeps_issuance_chronology(tmp_path, record_clock):
+    ledger = Ledger(tmp_path / "restored-revision-clock.sqlite")
+    issued, target = _real_clock_fixture(ledger, record_clock, "forecast")
+    first = ledger.append(
+        "observation",
+        "first",
+        _clock_outcome(issued, target, "2026-01-16T12:00:00+00:00"),
+    )
+    revision = _clock_outcome(
+        issued, target, "2026-01-14T12:00:00+00:00", vintage="revision"
+    )
+    revision["supersedes_event_id"] = first
+    with ledger._connection() as connection:
+        _restore_event(
+            connection,
+            seq=3,
+            key="restored-old-revision",
+            kind="observation",
+            payload=revision,
+            issuance_id=issued,
+        )
+    with pytest.raises(ValueError, match="saved real outcome publication"):
+        ledger.view(outcome_policy="latest_available")
+
+
+@pytest.mark.parametrize("classification", ["forecast", "elapsed_period_nowcast"])
+def test_real_unavailable_and_corrections_remain_distinct(
+    tmp_path, record_clock, classification
+):
+    ledger = Ledger(tmp_path / "missing-clock.sqlite")
+    issued, target = _real_clock_fixture(ledger, record_clock, classification)
+    missing = _clock_outcome(issued, target, None, vintage="unavailable")
+    missing.update(value=None, sha256=None, reason="Inert missing release")
+    missing["source"]["publication_verified"] = False
+    ledger.append("observation", "missing", missing)
+    observed = ledger.append(
+        "observation",
+        "later",
+        _clock_outcome(issued, target, "2026-01-16T12:00:00+00:00"),
+    )
+    ledger.append(
+        "correction",
+        "exclude",
+        {
+            "issuance_id": issued,
+            "target_event_id": observed,
+            "action": "exclude_from_evaluation",
+            "reason": "Inert correction",
+        },
+    )
+    view = ledger.view()
+    assert len(view["events"]) == 4
+    assert view["summaries"]["real_issuance"]["scored_targets"] == 0
+    assert view["rows"][0]["status"] == "unobserved"
+
+
+@pytest.mark.parametrize("kind", ["synthetic_fixture", "retrospective_replay"])
+def test_nonreal_records_preserve_earlier_outcome_histories(
+    tmp_path, record_clock, kind
+):
+    ledger = Ledger(tmp_path / "nonreal.sqlite")
+    record = issuance()
+    if kind == "retrospective_replay":
+        record.update(evidence_kind=kind, classification=kind)
+        record["vintage"]["kind"] = "latest_vintage_snapshot"
+    issued = ledger.append("issuance", "nonreal", record)
+    payload = observation(issued)
+    payload["source"].update(
+        published_at="2026-01-01T12:00:00+00:00",
+        retrieved_at="2026-01-02T12:00:00+00:00",
+    )
+    ledger.append("observation", "earlier", payload)
+    view = Ledger(ledger.path).view()
+    assert view["summaries"][kind]["scored_targets"] == 1
+    assert view["summaries"]["real_issuance"]["issuances"] == 0
+
+
+def test_cli_export_rejects_restored_real_chronology_without_replacing_output(
+    tmp_path, record_clock
+):
+    ledger = Ledger(tmp_path / "cli-clock.sqlite")
+    issued, target = _real_clock_fixture(ledger, record_clock, "forecast")
+    payload = _clock_outcome(issued, target, "2026-01-14T12:00:00+00:00")
+    with ledger._connection() as connection:
+        _restore_event(
+            connection,
+            seq=2,
+            key="restored-old-outcome",
+            kind="observation",
+            payload=payload,
+            issuance_id=issued,
+        )
+    retained = ledger.path.read_bytes()
+    output = tmp_path / "completed.json"
+    output.write_bytes(b"previous validated export\n")
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.ledger",
+            "--db",
+            os.fspath(ledger.path),
+            "export",
+            "--output",
+            os.fspath(output),
+        ],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        check=False,
+    )
+    assert result.returncode != 0
+    assert "saved real outcome publication must follow issuance" in result.stderr
+    assert output.read_bytes() == b"previous validated export\n"
+    assert ledger.path.read_bytes() == retained
