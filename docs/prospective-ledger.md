@@ -129,8 +129,16 @@ SQLite's backup interface while active, or copy it only when closed. Do not
 copy a live database without its journal or put it on an unreliable shared
 filesystem and infer durability from passing local tests.
 
-Derived JSON and HTML are rebuilt from the event history. The default outcome
-policy is `first_release`. `latest_available` is an explicitly different
+Derived JSON and HTML are rebuilt from the event history.
+
+Readback checks each event's content identity and its link to an earlier
+original issuance before deriving a view. Observation targets, revision
+predecessors and correction targets must agree with that issuance. An
+inconsistent restored or modified link fails visibly rather than attaching
+an outcome to another prediction. These checks do not authenticate the
+database or repair its records.
+
+The default outcome policy is `first_release`. `latest_available` is an explicitly different
 evaluation. It selects the latest publication clock, with append sequence as
 the tie break. An unknown first release remains unobserved in the default
 view even when a latest snapshot exists.
