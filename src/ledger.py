@@ -311,25 +311,32 @@ class Ledger:
             return
         _number(payload.get("value"))
         _hash(payload.get("sha256"), "outcome SHA256")
-        predecessor = payload.get("supersedes_event_id")
         earlier = connection.execute(
             "SELECT event_id, payload FROM events "
             "WHERE issuance_id=? AND kind='observation'",
             (payload["issuance_id"],),
         ).fetchall()
+        excluded = {
+            json.loads(row[0])["target_event_id"]
+            for row in connection.execute(
+                "SELECT payload FROM events WHERE issuance_id=? AND kind='correction'",
+                (payload["issuance_id"],),
+            ).fetchall()
+        }
+        Ledger._validate_observation_history(
+            payload, [(row[0], json.loads(row[1])) for row in earlier], excluded
+        )
+
+    @staticmethod
+    def _validate_observation_history(payload, earlier, excluded):
+        """Keep first-release and revision links consistent on append and restore."""
+        vintage = payload.get("vintage_kind")
+        predecessor = payload.get("supersedes_event_id")
         if vintage == "first_release":
-            excluded = {
-                json.loads(row[0])["target_event_id"]
-                for row in connection.execute(
-                    "SELECT payload FROM events "
-                    "WHERE issuance_id=? AND kind='correction'",
-                    (payload["issuance_id"],),
-                ).fetchall()
-            }
             firsts = [
-                row[0]
-                for row in earlier
-                if json.loads(row[1])["vintage_kind"] == "first_release"
+                event_id
+                for event_id, old in earlier
+                if old["vintage_kind"] == "first_release"
             ]
             if any(event_id not in excluded for event_id in firsts):
                 raise ValueError("first release is already recorded")
@@ -341,7 +348,7 @@ class Ledger:
                 raise ValueError("first release does not replace a later vintage")
         if vintage == "revision":
             old = next(
-                (json.loads(row[1]) for row in earlier if row[0] == predecessor), None
+                (old for event_id, old in earlier if event_id == predecessor), None
             )
             if old is None or old["vintage_kind"] == "unavailable":
                 raise ValueError("revision requires an existing observed predecessor")
@@ -351,10 +358,10 @@ class Ledger:
                 raise ValueError("revision publication precedes its predecessor")
 
     def events(self):
-        """Read a consistent snapshot and verify saved payload identities."""
+        """Read a consistent snapshot and verify identities and earlier links."""
         with self._connection() as connection:
             rows = connection.execute("SELECT * FROM events ORDER BY seq").fetchall()
-        result = []
+        result, earlier = [], {}
         for (
             seq,
             event_id,
@@ -372,6 +379,67 @@ class Ledger:
                 != event_id
             ):
                 raise ValueError("saved event identity does not reconcile")
+            if not isinstance(payload, dict):
+                raise ValueError("saved event payload must be an object")
+            if kind == "issuance":
+                expected_issuance = event_id
+            else:
+                expected_issuance = payload.get("issuance_id")
+                _hash(expected_issuance, "saved original issuance")
+                original = earlier.get(expected_issuance)
+                if original is None or original["kind"] != "issuance":
+                    raise ValueError("saved event has no earlier original issuance")
+                if kind == "observation":
+                    for name in ("series", "units", "target_month"):
+                        if payload.get(name) != original["payload"][name]:
+                            raise ValueError("saved observation does not reconcile")
+                    vintage = payload.get("vintage_kind")
+                    predecessor_id = payload.get("supersedes_event_id")
+                    if vintage == "revision" or (
+                        vintage == "first_release" and predecessor_id is not None
+                    ):
+                        _hash(predecessor_id, "saved revision predecessor")
+                        predecessor = earlier.get(predecessor_id)
+                        if (
+                            predecessor is None
+                            or predecessor["kind"] != "observation"
+                            or predecessor["issuance_id"] != expected_issuance
+                            or predecessor["payload"]["vintage_kind"] == "unavailable"
+                        ):
+                            raise ValueError(
+                                "saved revision predecessor does not match"
+                            )
+                    linked_observations = [
+                        (item["event_id"], item["payload"])
+                        for item in earlier.values()
+                        if item["kind"] == "observation"
+                        and item["issuance_id"] == expected_issuance
+                    ]
+                    excluded = {
+                        item["payload"]["target_event_id"]
+                        for item in earlier.values()
+                        if item["kind"] == "correction"
+                        and item["issuance_id"] == expected_issuance
+                    }
+                    try:
+                        self._validate_observation_history(
+                            payload, linked_observations, excluded
+                        )
+                    except ValueError as error:
+                        raise ValueError(f"saved {error}") from error
+                elif kind == "correction":
+                    target_id = payload.get("target_event_id")
+                    _hash(target_id, "saved correction target")
+                    target = earlier.get(target_id)
+                    if (
+                        target is None
+                        or target["kind"] == "correction"
+                        or target["issuance_id"] != expected_issuance
+                        or payload.get("action") != "exclude_from_evaluation"
+                    ):
+                        raise ValueError("saved correction target does not match")
+            if issuance_id != expected_issuance:
+                raise ValueError("saved event issuance link does not reconcile")
             result.append(
                 {
                     "seq": seq,
@@ -384,6 +452,7 @@ class Ledger:
                     "recorded_at": recorded,
                 }
             )
+            earlier[event_id] = result[-1]
         return result
 
     def view(self, *, outcome_policy="first_release"):
