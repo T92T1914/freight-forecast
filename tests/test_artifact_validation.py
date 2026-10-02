@@ -55,7 +55,19 @@ def test_non_mapping_artifact_is_rejected(client, monkeypatch, value):
 
 
 @pytest.mark.parametrize(
-    "predictions", [[float("nan")], [float("inf")], [-1], [], [100, 200], 100]
+    "predictions",
+    [
+        [float("nan")],
+        [float("inf")],
+        [-1],
+        [],
+        [100, 200],
+        100,
+        [True],
+        ["100"],
+        [[100]],
+        [complex(100, 0)],
+    ],
 )
 def test_unusable_predictions_fail_before_readiness(monkeypatch, artifact, predictions):
     monkeypatch.setattr(artifact["model"], "predict", lambda _: predictions)

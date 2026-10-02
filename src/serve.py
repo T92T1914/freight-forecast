@@ -100,6 +100,17 @@ def _trend_origin(artifact: object) -> pd.Timestamp:
     return pd.Timestamp(origin)
 
 
+def _one_forecast(predictions: object) -> float:
+    """Apply the same output contract at startup and for each served month."""
+    values = np.asarray(predictions)
+    if values.shape != (1,) or values.dtype.kind not in "iuf":
+        raise ValueError("expected one numeric forecast")
+    predicted = float(values[0])
+    if not isfinite(predicted) or predicted < 0:
+        raise ValueError("expected one finite, nonnegative forecast")
+    return predicted
+
+
 def _validate_artifact(artifact: dict, features: pd.DataFrame, columns: list[str]):
     """Check the trusted local training artifact before advertising readiness."""
     if artifact.get("feature_columns") != columns:
@@ -131,14 +142,7 @@ def _validate_artifact(artifact: dict, features: pd.DataFrame, columns: list[str
     # Exercise the fitted estimator as well as the manifest. An obsolete
     # estimator can disagree with an otherwise valid feature-column list.
     try:
-        predictions = np.asarray(model.predict(features.loc[:, columns].tail(1)))
-        if (
-            predictions.shape != (1,)
-            or predictions.dtype.kind not in "iuf"
-            or not np.isfinite(predictions).all()
-            or (predictions < 0).any()
-        ):
-            raise ValueError("expected one finite, nonnegative forecast")
+        _one_forecast(model.predict(features.loc[:, columns].tail(1)))
     except Exception as exc:
         raise ValueError("model artifact failed startup prediction validation") from exc
 
@@ -326,11 +330,12 @@ def predict(req: PredictRequest):
 
     row = app.state.features.loc[[ts]]
     X = row[artifact["feature_columns"]]
-    predicted = float(artifact["model"].predict(X)[0])
-    if not isfinite(predicted) or predicted < 0:
+    try:
+        predicted = _one_forecast(artifact["model"].predict(X))
+    except (TypeError, ValueError, OverflowError) as exc:
         raise HTTPException(
             status_code=500, detail="model produced an invalid forecast"
-        )
+        ) from exc
     PREDICTED_VOLUME.observe(predicted)
 
     return {
