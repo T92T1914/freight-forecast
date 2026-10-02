@@ -131,6 +131,18 @@ filesystem and infer durability from passing local tests.
 
 Derived JSON and HTML are rebuilt from the event history.
 
+JSON export rejects the database path, its standard SQLite sidecar paths and
+existing file aliases to that storage. It validates and serializes the complete
+view before writing an adjacent temporary file, then replaces the destination
+only after that file is flushed and closed. A failure before replacement leaves
+the previous JSON output and retained database intact. If an interruption
+arrives after replacement has completed, the new complete snapshot may already
+be present. Inspect the destination before retrying. Cleanup preserves the
+original error and never rolls back a potentially completed replacement. The
+fixture command uses the same export path checks before adding its synthetic
+records. These checks protect ordinary local use. They do not defend against
+concurrent path changes or establish power-loss durability for the exported file.
+
 Readback checks each event's content identity and its link to an earlier
 original issuance before deriving a view. Observation targets, revision
 predecessors and correction targets must agree with that issuance. An

@@ -3,9 +3,11 @@
 import argparse
 import json
 import math
+import os
 import re
 import sqlite3
-from contextlib import contextmanager
+import tempfile
+from contextlib import contextmanager, suppress
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
@@ -597,6 +599,53 @@ class Ledger:
             "cohorts": cohorts,
         }
 
+    def validate_export_destination(self, destination):
+        """Keep derived output separate from the database and its sidecars."""
+        destination = Path(destination).resolve()
+        for database in (self.path.absolute(), self.path.resolve()):
+            for suffix in ("", "-journal", "-wal", "-shm"):
+                protected = Path(str(database) + suffix)
+                if destination == protected.resolve() or (
+                    destination.exists()
+                    and protected.exists()
+                    and destination.samefile(protected)
+                ):
+                    raise ValueError("export destination conflicts with ledger storage")
+        return destination
+
+    def export(self, destination, *, outcome_policy="first_release"):
+        """Publish one completed JSON snapshot without truncating existing output."""
+        destination = self.validate_export_destination(destination)
+        encoded = (
+            json.dumps(
+                self.view(outcome_policy=outcome_policy), indent=2, allow_nan=False
+            )
+            + "\n"
+        )
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        temporary = None
+        try:
+            with tempfile.NamedTemporaryFile(
+                mode="w", encoding="utf-8", dir=destination.parent, delete=False
+            ) as stream:
+                temporary = Path(stream.name)
+                stream.write(encoded)
+                stream.flush()
+                os.fsync(stream.fileno())
+            os.replace(temporary, destination)
+        except BaseException as error:
+            if temporary is not None:
+                try:
+                    temporary.unlink(missing_ok=True)
+                except BaseException as cleanup_error:
+                    # Reporting cleanup must not replace the export error.
+                    with suppress(BaseException):
+                        error.add_note(
+                            "temporary export cleanup failed: "
+                            f"{type(cleanup_error).__name__}: {cleanup_error}"
+                        )
+            raise
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -616,16 +665,7 @@ def main():
     args = parser.parse_args()
     ledger = Ledger(args.db)
     if args.command == "export":
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(
-            json.dumps(
-                ledger.view(outcome_policy=args.outcome_policy),
-                indent=2,
-                allow_nan=False,
-            )
-            + "\n",
-            encoding="utf-8",
-        )
+        ledger.export(args.output, outcome_policy=args.outcome_policy)
     else:
         if args.record.stat().st_size > MAX_RECORD_BYTES:
             parser.error("record exceeds 64 KiB")
