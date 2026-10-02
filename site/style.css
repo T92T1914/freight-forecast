@@ -13,6 +13,8 @@ h1{font-size:clamp(34px,5.3vw,62px);line-height:1.12;letter-spacing:-.035em;max-
 .actions{display:flex;gap:16px;flex-wrap:wrap;margin:25px 0 35px}
 .button{display:inline-block;border:1px solid var(--border);background:var(--control);border-radius:7px;padding:10px 18px;text-decoration:none;font-weight:600;max-width:100%;overflow-wrap:anywhere}.button:hover{background:var(--hover)}.button.primary{background:var(--accent);color:var(--on_accent)}
 .panel{background:var(--panel);border:1px solid var(--divider);border-radius:12px;padding:28px;margin:25px 0;min-width:0}
+/* Long revision identities and enlarged prose remain inside their reading area. */
+.panel>h2,.panel>p,footer{overflow-wrap:anywhere}
 label{display:block;font-weight:600;margin-bottom:9px}
 select{font:inherit;color:var(--text);background:var(--control);border:1px solid var(--border);border-radius:6px;padding:9px 14px;min-height:48px;max-width:100%;min-width:0;width:min(100%,28rem)}select:hover{background:var(--hover)}select:disabled{color:var(--disabled);cursor:not-allowed}
 ::selection{background:var(--selected);color:var(--text)}
