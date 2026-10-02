@@ -1,3 +1,5 @@
+import {bindSelection} from './selection-state.mjs';
+
 const byId = id => document.getElementById(id);
 const format = value => value.toLocaleString('en-US', {
   minimumFractionDigits: 1, maximumFractionDigits: 1
@@ -62,8 +64,7 @@ try {
       return tr;
     }));
   }
-  update();
-  select.addEventListener('change', update);
+  bindSelection(select, byId('backtest-link'), update, 'backtest');
   byId('backtest-content').hidden = false;
 } catch (error) {
   byId('backtest-error').hidden = false;

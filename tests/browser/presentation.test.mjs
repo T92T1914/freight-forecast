@@ -4,7 +4,7 @@ import {createServer} from 'node:http';
 import {readFile, mkdir} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {chromium} from 'playwright';
+import {chromium, webkit} from 'playwright';
 
 // Only an owned loopback server and fresh headless contexts. No saved profiles,
 // visible fallback, desktop input or connection to an existing browser.
@@ -35,8 +35,8 @@ after(async () => {
   if (browser) await browser.close();
   if (server) await new Promise(resolve => server.close(resolve));
 });
-async function fixture(t, options = {}, blockedStorage = false) {
-  const context = await browser.newContext({viewport:{width:1280,height:900}, ...options});
+async function fixture(t, options = {}, blockedStorage = false, owner = browser) {
+  const context = await owner.newContext({viewport:{width:1280,height:900}, ...options});
   const failures = [], external = [];
   await context.route('**/*', route => {
     if (new URL(route.request().url()).origin !== base) {
@@ -58,6 +58,124 @@ async function fixture(t, options = {}, blockedStorage = false) {
   });
   return page;
 }
+
+async function touchFixture(t, options) {
+  const engine = process.env.FREIGHT_TOUCH_ENGINE ?? 'chromium';
+  if (!['chromium','webkit'].includes(engine)) throw Error('Unsupported touch engine');
+  const owner = engine === 'webkit' ? await webkit.launch({headless:true}) : browser;
+  const page = await fixture(t, {hasTouch:true, isMobile:true, ...options}, false, owner);
+  if (owner !== browser) t.after(async () => { await owner.close(); });
+  return page;
+}
+
+test('touch comparison selection survives reload, report Back and independent links', async t => {
+  const page = await touchFixture(t, {viewport:{width:390,height:844}, colorScheme:'dark'});
+  await ready(page);
+  await page.locator('#backtest-content:not([hidden])').waitFor();
+  await page.locator('#choice').tap();
+  await page.locator('#choice').selectOption('9');
+  await page.locator('#backtest-slice').tap();
+  await page.locator('#backtest-slice').selectOption('2');
+  const expected = await page.locator('#backtest-rows').innerText();
+  const selectedURL = page.url();
+  assert.equal(new URL(selectedURL).searchParams.get('backtest'), '2024');
+  await page.locator('#appearance').selectOption('clair');
+  assert.equal(await page.locator('#backtest-rows').innerText(), expected);
+  await page.reload();
+  await page.locator('#backtest-content:not([hidden])').waitFor();
+  assert.equal(await page.locator('#choice').inputValue(), '9');
+  assert.equal(await page.locator('#backtest-slice').inputValue(), '2');
+  assert.equal(await page.locator('#appearance').inputValue(), 'clair');
+  assert.equal(await page.locator('#backtest-rows').innerText(), expected);
+  for (const [label, file] of [['Read every value','data.json'],
+    ['Download the complete report','backtest.json']]) {
+    const link = page.getByRole('link', {name:label, exact:true});
+    assert.equal(await link.getAttribute('href'), file);
+    await link.tap();
+    await page.waitForURL(base+'/'+file);
+    const response = await page.request.get(page.url());
+    assert.equal(response.status(), 200);
+    assert.deepEqual(await response.body(), await readFile(path.join(root, file)));
+    await page.goBack();
+    await page.locator('#backtest-content:not([hidden])').waitFor();
+    assert.equal(await page.locator('#backtest-slice').inputValue(), '2');
+    assert.equal(await page.locator('#choice').inputValue(), '9');
+  }
+  await capture(page, `touch-${process.env.FREIGHT_TOUCH_ENGINE ?? 'chromium'}-selected-comparison`, '#backtest');
+  await page.getByRole('link', {name:'BTS freight-index evaluation', exact:true}).tap();
+  await page.waitForURL(base+'/real-data.html');
+  assert.match(await page.locator('main').innerText(), /last observation/);
+  await page.goBack();
+  await page.locator('#backtest-content:not([hidden])').waitFor();
+  assert.equal(await page.locator('#backtest-slice').inputValue(), '2');
+  assert.equal(await page.locator('#choice').inputValue(), '9');
+  assert.equal(await page.locator('#backtest-rows').innerText(), expected);
+  await page.locator('#backtest-slice').selectOption('1');
+  await page.goBack();
+  assert.equal(await page.locator('#backtest-slice').inputValue(), '2');
+  await page.goForward();
+  assert.equal(await page.locator('#backtest-slice').inputValue(), '1');
+  await page.locator('#choice').selectOption('4');
+  const share = new URL(await page.locator('#backtest-link').getAttribute('href'));
+  assert.equal(share.searchParams.get('example'), '2023-05');
+  assert.equal(share.searchParams.get('backtest'), '2023');
+  await page.goto(share.href);
+  await page.locator('#backtest-content:not([hidden])').waitFor();
+  assert.equal(await page.locator('#choice').inputValue(), '4');
+  assert.equal(await page.locator('#backtest-slice').inputValue(), '1');
+  for (const bad of ['9999', 'Unknown year', '<script>']) {
+    share.searchParams.set('backtest', bad);
+    await page.goto(share.href);
+    await page.locator('#backtest-content:not([hidden])').waitFor();
+    assert.equal(await page.locator('#backtest-slice').inputValue(), '0');
+    assert.equal(await page.locator('#backtest-rows tr').count(), 24);
+    assert.equal(await page.locator('#choice').inputValue(), '4');
+    assert.equal(await page.locator('#backtest-error').isVisible(), false);
+    assert.equal(new URL(await page.locator('#backtest-link').getAttribute('href'))
+      .searchParams.get('backtest'), 'All 24 months');
+  }
+});
+
+for (const [width,height] of [[320,740],[390,844],[844,390],[1280,900]])
+test(`touch reflow preserves readable evidence at ${width} by ${height}`, async t => {
+  const page = await touchFixture(t, {viewport:{width,height}, isMobile:width < 1280,
+    colorScheme:'dark', reducedMotion:'reduce'});
+  await ready(page);
+  await page.locator('#backtest-content:not([hidden])').waitFor();
+  const evidence = await page.locator('#backtest-rows').innerText();
+  const checkWidth = async () => assert.ok(
+    await page.evaluate(width => document.documentElement.scrollWidth <= width, width),
+    JSON.stringify(await page.evaluate(() => ({document_width:document.documentElement.scrollWidth,
+      inner_width:innerWidth, visual_width:visualViewport.width})))
+  );
+  for (const mode of ['obscur','clair']) {
+    await page.locator('#appearance').selectOption(mode);
+    await checkWidth();
+    assert.equal(await page.locator('#backtest-rows').innerText(), evidence);
+  }
+  for (const selector of ['#appearance','#choice','#backtest-slice']) {
+    const rectangle = await page.locator(selector).boundingBox();
+    assert.ok(rectangle.height >= 44 && rectangle.width >= 44);
+  }
+  // Text-only enlargement in the owned page. This does not emulate browser zoom.
+  await page.evaluate(() => {
+    for (const element of document.querySelectorAll('body *')) {
+      if (element.closest('svg')) continue;
+      const style = getComputedStyle(element);
+      if (!element.children.length && style.display !== 'none') {
+        element.style.fontSize = (parseFloat(style.fontSize) * 2) + 'px';
+      }
+    }
+  });
+  await checkWidth();
+  assert.equal(await page.locator('#backtest-rows').innerText(), evidence);
+  await capture(page, `touch-${process.env.FREIGHT_TOUCH_ENGINE ?? 'chromium'}-${width}-enlarged-footer`, 'footer');
+  const table = page.locator('#backtest-content .table-wrap');
+  assert.equal(await table.evaluate(e => getComputedStyle(e).overflowX), 'auto');
+  assert.ok(await table.evaluate(e => e.scrollWidth >= e.clientWidth));
+  await table.focus();
+  assert.equal(await table.evaluate(e => getComputedStyle(e).outlineStyle), 'solid');
+});
 const background = page => page.locator('body').evaluate(e => getComputedStyle(e).backgroundColor);
 test('ledger preserves evidence categories, downloads and narrow appearances', async t => {
   const page = await fixture(t, {viewport:{width:390,height:844}, colorScheme:'dark'});
