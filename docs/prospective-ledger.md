@@ -107,6 +107,15 @@ unavailable first release has no value or invented hash. A correction names
 the event being excluded and its reason. It leaves that event intact. Append
 a separately identified replacement when needed.
 
+For a real issuance, an observed outcome's declared publication must be
+strictly later than the original issue timestamp. Retrieving an older release
+later does not make it a later outcome. Equal instants, including timestamps
+written with different offsets, do not establish that order. Append and
+readback enforce the same check for forecasts and elapsed-period nowcasts.
+Unavailable outcomes, explicit replays, synthetic fixtures and corrections
+retain their separate behavior. This checks consistency of supplied clocks.
+It does not authenticate publication or prove that no earlier value existed.
+
 For a transcribed first release, exclude the incorrect observation explicitly,
 then append a new `first_release` observation whose `supersedes_event_id`
 references that excluded record. A second uncorrected first release is
