@@ -323,6 +323,14 @@ if it no longer beats the naive. Pushing a `v*` tag runs the checks again and
 publishes the image to GitHub Container Registry as
 `ghcr.io/t92t1914/freight-forecast:<tag>`.
 
+The next version-tag release will attach signed build-origin and SPDX inventory
+attestations to the published manifest digest. The release workflow then pulls
+that exact image and verifies its repository, workflow, tag, source commit and
+inventory before recording success. These attestations describe origin and
+contents. They do not establish security or forecasting accuracy. See
+[container origin](docs/container-origin.md) for consumer commands and the
+separate first-release verification gate.
+
 ## What this does not do
 
 These are the limits I would address before using this with operational data.
