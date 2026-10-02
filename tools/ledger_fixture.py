@@ -1,7 +1,6 @@
 """Create a small synthetic ledger demonstration in a disposable local store."""
 
 import argparse
-import json
 import sys
 from pathlib import Path
 
@@ -126,9 +125,10 @@ def main():
     parser.add_argument("--db", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    view = make_fixture(Ledger(args.db))
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(view, indent=2) + "\n", encoding="utf-8")
+    ledger = Ledger(args.db)
+    ledger.validate_export_destination(args.output)
+    make_fixture(ledger)
+    ledger.export(args.output)
 
 
 if __name__ == "__main__":
