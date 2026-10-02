@@ -10,11 +10,17 @@ on:
 
 permissions:
   contents: read
-  packages: write
 
 jobs:
   publish-image:
+    if: github.repository == 'T92T1914/freight-forecast'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
@@ -29,17 +35,87 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Build and push
+        id: image
         env:
           VERSION: ${{ github.ref_name }}
           SOURCE: ${{ github.server_url }}/${{ github.repository }}
         run: |
           # image references must be lowercase; GitHub logins need not be
           image="ghcr.io/${GITHUB_REPOSITORY,,}"
+          mkdir release-evidence
           # the source label is what links the package to this repository
-          docker build \
+          # One platform keeps the inspected image and attested manifest aligned.
+          # Signed GitHub attestations below replace BuildKit's unsigned default.
+          docker buildx build --push --platform linux/amd64 --provenance=false \
+            --metadata-file release-evidence/buildx.json \
             --label "org.opencontainers.image.source=$SOURCE" \
             --label "org.opencontainers.image.revision=$GITHUB_SHA" \
             --label "org.opencontainers.image.version=$VERSION" \
             --label "org.opencontainers.image.licenses=MIT" \
             -t "$image:$VERSION" -t "$image:latest" .
-          docker push --all-tags "$image"
+          python tools/container_origin.py record \
+            --metadata release-evidence/buildx.json \
+            --commit "$GITHUB_SHA" --tag "$VERSION" \
+            --output release-evidence/image.json >> "$GITHUB_OUTPUT"
+
+      - name: Inventory the exact published image
+        env:
+          IMAGE_REFERENCE: ${{ steps.image.outputs.reference }}
+          SYFT_CHECK_FOR_APP_UPDATE: 'false'
+        run: |
+          # Pin the release archive too. No mutable installer script is run.
+          tool_dir="$RUNNER_TEMP/freight-syft"
+          mkdir "$tool_dir"
+          archive="$tool_dir/syft.tar.gz"
+          curl --fail --silent --show-error --location \
+            --connect-timeout 20 --max-time 120 \
+            --output "$archive" \
+            https://github.com/anchore/syft/releases/download/v1.54.0/syft_1.54.0_linux_amd64.tar.gz
+          printf '%s  %s\n' \
+            54a87372498168b2d033e876fd41fa4e8035b872699e525a57046e1f2f09c860 \
+            "$archive" | sha256sum --check --status
+          tar -xzf "$archive" -C "$tool_dir" syft
+          "$tool_dir/syft" scan "registry:$IMAGE_REFERENCE" \
+            --output spdx-json=release-evidence/sbom.spdx.json
+
+      - name: Attest build origin
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
+        with:
+          subject-name: ${{ steps.image.outputs.image }}
+          subject-digest: ${{ steps.image.outputs.digest }}
+          push-to-registry: true
+          # This repository belongs to a person, not an organization.
+          create-storage-record: false
+
+      - name: Attest image inventory
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
+        with:
+          subject-name: ${{ steps.image.outputs.image }}
+          subject-digest: ${{ steps.image.outputs.digest }}
+          sbom-path: release-evidence/sbom.spdx.json
+          push-to-registry: true
+          create-storage-record: false
+
+      - name: Verify from a downloaded consumer image
+        env:
+          GH_TOKEN: ${{ github.token }}
+          IMAGE_REFERENCE: ${{ steps.image.outputs.reference }}
+          IMAGE_DIGEST: ${{ steps.image.outputs.digest }}
+          VERSION: ${{ github.ref_name }}
+        run: |
+          docker pull --platform linux/amd64 "$IMAGE_REFERENCE"
+          python tools/container_origin.py verify \
+            --digest "$IMAGE_DIGEST" --commit "$GITHUB_SHA" --tag "$VERSION" \
+            --sbom release-evidence/sbom.spdx.json \
+            --output release-evidence/consumer.json
+
+      - name: Retain successful release evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: container-evidence-${{ github.ref_name }}
+          path: |
+            release-evidence/image.json
+            release-evidence/sbom.spdx.json
+            release-evidence/consumer.json
+          if-no-files-found: error
+          retention-days: 7

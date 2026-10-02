@@ -10,3 +10,4 @@ tests/
 requirements-dev.txt
 Dockerfile
 .dockerignore
+release-evidence/

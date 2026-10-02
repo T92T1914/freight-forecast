@@ -78,13 +78,65 @@ def test_release_publishes_only_on_version_tags():
     writable, and the tests run again before anything is pushed."""
     release = _workflow(".github/workflows/release.yml")
     assert release["on"] == {"push": {"tags": ["v*"]}}
-    assert release["permissions"] == {"contents": "read", "packages": "write"}
-    steps = release["jobs"]["publish-image"]["steps"]
+    assert release["permissions"] == {"contents": "read"}
+    job = release["jobs"]["publish-image"]
+    assert job["permissions"] == {
+        "contents": "read",
+        "packages": "write",
+        "id-token": "write",
+        "attestations": "write",
+    }
+    assert job["if"] == "github.repository == 'T92T1914/freight-forecast'"
+    steps = job["steps"]
     runs = [s.get("run", "") for s in steps]
     gate = next(i for i, r in enumerate(runs) if "make check" in r)
-    push = next(i for i, r in enumerate(runs) if "docker push" in r)
+    push = next(i for i, r in enumerate(runs) if "docker buildx build --push" in r)
     assert gate < push
     assert any("ghcr.io" in r for r in runs)
+
+
+def test_release_binds_inventory_attestations_and_consumer_to_one_digest():
+    release = _workflow(".github/workflows/release.yml")
+    steps = release["jobs"]["publish-image"]["steps"]
+    build = next(step for step in steps if step.get("id") == "image")
+    assert "--metadata-file release-evidence/buildx.json" in build["run"]
+    assert "--platform linux/amd64 --provenance=false" in build["run"]
+    assert "container_origin.py record" in build["run"]
+    assert "--all-tags" not in build["run"]
+    inventory = next(
+        step
+        for step in steps
+        if step.get("name") == "Inventory the exact published image"
+    )
+    assert inventory["env"]["IMAGE_REFERENCE"] == "${{ steps.image.outputs.reference }}"
+    assert "syft_1.54.0_linux_amd64.tar.gz" in inventory["run"]
+    assert (
+        "54a87372498168b2d033e876fd41fa4e8035b872699e525a57046e1f2f09c860"
+        in inventory["run"]
+    )
+    assert inventory["run"].index("sha256sum --check --status") < inventory[
+        "run"
+    ].index("tar -xzf")
+    assert 'scan "registry:$IMAGE_REFERENCE"' in inventory["run"]
+    assert "spdx-json=release-evidence/sbom.spdx.json" in inventory["run"]
+    attestations = [step for step in steps if "actions/attest@" in step.get("uses", "")]
+    assert len(attestations) == 2
+    for step in attestations:
+        assert step["with"]["subject-name"] == "${{ steps.image.outputs.image }}"
+        assert step["with"]["subject-digest"] == "${{ steps.image.outputs.digest }}"
+        assert step["with"]["push-to-registry"] is True
+        assert step["with"]["create-storage-record"] is False
+    assert "sbom-path" not in attestations[0]["with"]
+    assert attestations[1]["with"]["sbom-path"] == "release-evidence/sbom.spdx.json"
+    consumer = next(
+        step for step in steps if "container_origin.py verify" in step.get("run", "")
+    )
+    assert steps.index(attestations[-1]) < steps.index(consumer)
+    assert 'docker pull --platform linux/amd64 "$IMAGE_REFERENCE"' in consumer["run"]
+    assert "--commit" in consumer["run"] and "--tag" in consumer["run"]
+    for step in steps:
+        if "uses" in step:
+            assert re.fullmatch(r"[^@]+@[0-9a-f]{40}", step["uses"])
 
 
 def test_pods_are_annotated_for_prometheus_scraping():
