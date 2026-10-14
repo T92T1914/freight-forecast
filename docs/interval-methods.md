@@ -60,6 +60,14 @@ infinite, represented in JSON by null and an explicit status. Finite only means
 use a separately labeled denominator. There is no clipping to positive demand
 or future extrema. A radius of zero remains an honest point interval.
 
+Finite inputs must also produce representable finite endpoints, width, score and
+any residual admitted to rolling or adaptive calibration. An unrepresentable
+calculation raises `ValueError` before pending or observed state changes. A failed
+observation retains its pending interval, history, month and adaptive level so a
+corrected observation can be retried. This refusal is separate from an
+intentionally unbounded order statistic, whose null fields and explicit status
+remain unchanged. Covered finite intervals retain their width as the score.
+
 The evaluation is one observation step, not a release date simulation. No new
 model, baseline selection, significance test or operational forecast claim is
 introduced. The original result that last observation beat the model remains.

@@ -122,3 +122,11 @@ period. The report preserves the evaluated source hash and records the later
 validation-source hash separately. Its original protocol hash identifies the
 CRLF bytes read in that Windows run. New reports hash LF-normalized protocol text,
 so Git line-ending conversion cannot change its identity across platforms.
+
+A later correction changes only how the synthetic backtest command admits and
+delivers output. The saved BTS report still identifies the original implementation.
+An inert [source fixture](../tests/fixtures/backtest-evaluated.txt) preserves the
+exact backtest module recorded in that report. The regression checks its original
+digest and compares the current numerical functions, constants and imports with
+that source. The saved predictions, metrics, protocol and source hashes remain
+unchanged. The historical source fixture is inspected as text and is never run.

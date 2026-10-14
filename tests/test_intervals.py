@@ -1,6 +1,9 @@
 """Independent boundary and temporal checks for residual interval forecasts."""
 
+import json
+from dataclasses import asdict
 from fractions import Fraction
+from math import isfinite
 
 import pytest
 
@@ -85,6 +88,116 @@ def test_observation_protocol_and_failed_observation_preserve_pending():
     c.observe("2019-11", 100)
     with pytest.raises(ValueError):
         c.observe("2019-11", 100)
+
+
+@pytest.mark.parametrize("method", ["fixed", "rolling", "adaptive"])
+@pytest.mark.parametrize("point", [-1.75e308, 1.75e308])
+def test_endpoint_overflow_refuses_before_pending_and_allows_retry(method, point):
+    c = ResidualCalibrator([("2025-01", 1e307)], method=method, window=1, alpha="0.5")
+    before = vars(c).copy()
+    assert isfinite(point)
+    with pytest.raises(ValueError, match="endpoint must be finite"):
+        c.issue("2025-02", point)
+    assert vars(c) == before
+    issued = c.issue("2025-02", 0)
+    assert issued.lower == -1e307 and issued.upper == 1e307
+    row = c.observe("2025-02", 0)
+    assert isfinite(row["width"]) and isfinite(row["interval_score"])
+    json.dumps(row, allow_nan=False)
+
+
+@pytest.mark.parametrize("method", ["fixed", "rolling", "adaptive"])
+def test_finite_endpoints_with_unrepresentable_width_are_not_admitted(method):
+    c = ResidualCalibrator([("2025-01", 9e307)], method=method, window=1, alpha="0.5")
+    before = vars(c).copy()
+    assert isfinite(-9e307) and isfinite(9e307)
+    for _ in range(2):
+        with pytest.raises(ValueError, match="interval width must be finite"):
+            c.issue("2025-02", 0)
+        assert vars(c) == before
+
+
+@pytest.mark.parametrize("method", ["fixed", "rolling", "adaptive"])
+@pytest.mark.parametrize("actual", [-1e308, 1e308])
+def test_score_overflow_keeps_complete_state_for_corrected_observation(method, actual):
+    c = ResidualCalibrator([("2025-01", 1)], method=method, window=1, alpha="0.5")
+    issued = c.issue("2025-02", 0)
+    before = vars(c).copy()
+    assert isfinite(actual)
+    with pytest.raises(ValueError, match="interval score must be finite"):
+        c.observe("2025-02", actual)
+    assert vars(c) == before and c.pending is issued
+    row = c.observe("2025-02", 0)
+    assert row["width"] == row["interval_score"] == 2
+    assert c.pending is None and c.observed == month_number("2025-02")
+    json.dumps(row, allow_nan=False)
+    c.issue("2025-03", 0)
+
+
+@pytest.mark.parametrize("method", ["rolling", "adaptive"])
+def test_unbounded_residual_overflow_preserves_history_month_alpha_and_pending(method):
+    c = ResidualCalibrator([("2025-01", 0)], method=method, window=1, alpha="0.1")
+    issued = c.issue("2025-02", 1e308)
+    assert issued.status == "unbounded"
+    before = vars(c).copy()
+    with pytest.raises(ValueError, match="residual must be finite"):
+        c.observe("2025-02", -1e308)
+    assert vars(c) == before and c.pending is issued
+    row = c.observe("2025-02", 1e308)
+    assert c.history == (("2025-02", 0),)
+    assert row["width"] is row["interval_score"] is None
+    json.dumps(row, allow_nan=False)
+    c.issue("2025-03", 0)
+
+
+def test_fixed_unbounded_observation_does_not_require_an_unused_residual():
+    c = ResidualCalibrator([("2025-01", 0)], method="fixed", window=1, alpha="0.1")
+    original = c.history
+    c.issue("2025-02", 1e308)
+    row = c.observe("2025-02", -1e308)
+    assert row["covered"] and row["score_status"] == "infinite"
+    assert c.history is original and c.pending is None
+    json.dumps(row, allow_nan=False)
+    c.issue("2025-03", 0)
+
+
+@pytest.mark.parametrize("method", ["fixed", "rolling", "adaptive"])
+@pytest.mark.parametrize("alpha", ["0.5", "0.1"])
+def test_finite_and_intentionally_unbounded_statuses_match_strict_json(method, alpha):
+    c = ResidualCalibrator([("2025-01", 1)], method=method, window=1, alpha=alpha)
+    issued = c.issue("2025-02", 0)
+    row = c.observe("2025-02", 2)
+    summary = summarize([row])
+    json.dumps(
+        {"issued": asdict(issued), "row": row, "summary": summary}, allow_nan=False
+    )
+    if alpha == "0.5":
+        assert (
+            row["status"]
+            == row["score_status"]
+            == summary["aggregate_status"]
+            == "finite"
+        )
+        assert row["width"] == 2 and row["interval_score"] == 6
+        assert summary["mean_width"] == 2 and summary["mean_interval_score"] == 6
+    else:
+        assert row["status"] == "unbounded"
+        assert row["score_status"] == summary["aggregate_status"] == "infinite"
+        assert (
+            row["lower"]
+            is row["upper"]
+            is row["width"]
+            is row["interval_score"]
+            is None
+        )
+
+
+def test_unrepresentable_integer_refuses_without_state_change():
+    c = ResidualCalibrator(history(), window=10)
+    before = vars(c).copy()
+    with pytest.raises(ValueError, match="point must be finite"):
+        c.issue("2019-11", 10**400)
+    assert vars(c) == before
 
 
 @pytest.mark.parametrize(

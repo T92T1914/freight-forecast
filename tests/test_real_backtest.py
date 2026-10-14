@@ -1,5 +1,6 @@
 """Protect the declared development/test boundary and independent baselines."""
 
+import ast
 import copy
 import hashlib
 import json
@@ -263,6 +264,58 @@ def test_saved_evidence_matches_source_protocol_and_independent_errors():
         == hashlib.sha256(evaluated_protocol).hexdigest()
     )
     for name, digest in report["provenance"]["implementation_sha256"].items():
+        if name == "src/backtest.py":
+            # Keep the source actually evaluated. The current CLI changes output
+            # delivery, so compare its numerical code with that original source.
+            evaluated = (rb.ROOT / "tests/fixtures/backtest-evaluated.txt").read_bytes()
+            assert hashlib.sha256(evaluated).hexdigest() == digest
+            assert digest == (
+                "616040b3f92b607735dcf9bd3ba1eca9203e221e499caf8f6939fb027e8195ba"
+            )
+            old = ast.parse(evaluated)
+            current = ast.parse((rb.ROOT / name).read_text(encoding="utf-8"))
+            numerical_names = {
+                "WARMUP_MONTHS",
+                "DEFAULT_TRAIN_MONTHS",
+                "_observations",
+                "_summary",
+                "backtest",
+            }
+
+            def numerical_nodes(tree, expected_names):
+                nodes = {}
+                for node in tree.body:
+                    if isinstance(node, ast.FunctionDef):
+                        names = {node.name}
+                    elif isinstance(node, ast.Assign):
+                        names = {
+                            target.id
+                            for target in node.targets
+                            if isinstance(target, ast.Name)
+                        }
+                    else:
+                        continue
+                    for name in names & expected_names:
+                        assert name not in nodes
+                        nodes[name] = ast.dump(node, include_attributes=False)
+                assert nodes.keys() == expected_names
+                return nodes
+
+            assert numerical_nodes(current, numerical_names) == numerical_nodes(
+                old, numerical_names
+            )
+            original_imports = {
+                ast.dump(node, include_attributes=False)
+                for node in old.body
+                if isinstance(node, (ast.Import, ast.ImportFrom))
+            }
+            current_imports = {
+                ast.dump(node, include_attributes=False)
+                for node in current.body
+                if isinstance(node, (ast.Import, ast.ImportFrom))
+            }
+            assert original_imports <= current_imports
+            continue
         if name == "src/real_backtest.py":
             update = report["validation_update"]
             assert update["evaluated_sha256"] == digest
