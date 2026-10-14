@@ -215,13 +215,20 @@ The container, the cluster and the monitoring stack:
 
 ```bash
 make image       # docker build -t freight-forecast .     trains inside the build
-make run         # docker run --rm -p 8000:8000 freight-forecast
+make run         # limited nonroot API, read only, bound to 127.0.0.1:8000
 make k8s         # kubectl apply -f k8s/                  deployment + service, probes wired
 make monitor     # docker compose -f monitoring/docker-compose.yml up --build
                  #   API :8000, Prometheus :9090, Grafana :3000
 ```
 
 ### Verification
+
+The [local service consumer](docs/local-service-qualification.md) checks an
+exact trusted image with a nonroot identity, enforced resource limits and a
+loopback port. It retains every response and latency under a declared workload,
+startup refusals, normal shutdown and recovery. The monitoring stack also binds
+its host ports to loopback. This scope is separate from the recorded cluster
+experiment below.
 
 `VERIFICATION.md` records what was executed and observed rather than intended:
 identical predictions from the local run and the container, both replicas

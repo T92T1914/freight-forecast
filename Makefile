@@ -41,8 +41,8 @@ check: lint test ## everything CI gates on, minus the image build
 image: ## build the serving image (the build trains the model)
 	docker build -t freight-forecast .
 
-run: image ## serve predictions from the container on :8000
-	docker run --rm -p 8000:8000 freight-forecast
+run: image ## serve predictions from the container on loopback :8000
+	docker run --rm -p 127.0.0.1:8000:8000 --read-only --cap-drop=ALL --security-opt=no-new-privileges --cpus=0.5 --memory=512m --pids-limit=64 --stop-timeout=5 freight-forecast
 
 monitor: ## API + Prometheus + Grafana via docker compose
 	docker compose -f monitoring/docker-compose.yml up --build
