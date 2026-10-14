@@ -1,27 +1,82 @@
-"""Build one-step BTS point records from the existing validated snapshot path."""
+"""Build declared BTS point records from the existing validated snapshot path."""
 
 import argparse
 import json
 from datetime import UTC, datetime
 from pathlib import Path
 
-from src.ledger import SERIES, UNITS, Ledger, _month, _next_month
+from src.ledger import (
+    SERIES,
+    UNITS,
+    Ledger,
+    _month,
+    _shift_month,
+    _time,
+    validate_issuance,
+)
 from src.provenance import digest, history_rows
 from src.real_backtest import load_snapshot
 
 
-def prepare_record(data_path, manifest_path, *, evidence_kind, publication=None):
+def prepare_record(
+    data_path,
+    manifest_path,
+    *,
+    evidence_kind,
+    publication=None,
+    availability=None,
+    horizon=1,
+):
+    return _prepare_record(
+        data_path,
+        manifest_path,
+        evidence_kind=evidence_kind,
+        publication=publication,
+        availability=availability,
+        horizon=horizon,
+    )
+
+
+def _prepare_record(
+    data_path,
+    manifest_path,
+    *,
+    evidence_kind,
+    publication=None,
+    availability=None,
+    horizon=1,
+    retry_clock=None,
+):
+    if type(horizon) is not int or horizon not in (1, 3):
+        raise ValueError(
+            "BTS adapter supports only one-step or declared three-step points"
+        )
+    if publication is not None and availability is not None:
+        raise ValueError("choose publication or availability evidence, not both")
+    if horizon == 3 and evidence_kind != "real_issuance":
+        raise ValueError("three-step outlook supports only a real future issuance")
     history, manifest = load_snapshot(Path(data_path), Path(manifest_path))
-    clock = datetime.now(UTC)
+    clock = datetime.now(UTC) if retry_clock is None else retry_clock
     available = history["date"].iloc[-1].strftime("%Y-%m")
-    target = _next_month(available)
+    target = _shift_month(available, horizon)
+    if horizon == 3 and _month(target) <= clock:
+        raise ValueError("three-step outlook requires a future forecast target")
+    comparator_month = _shift_month(target, -12)
+    comparator = history.loc[
+        history["date"].dt.strftime("%Y-%m") == comparator_month, "volume"
+    ]
+    if len(comparator) != 1:
+        raise ValueError("snapshot lacks the target month's prior-year comparator")
+    family = "last_observation" if horizon == 1 else "last_observation_h3"
     policy = {
-        "family": "last_observation",
+        "family": family,
         "series": SERIES,
         "units": UNITS,
-        "horizon": 1,
-        "feature_schema": "bts-last-observation-v1",
-        "model_id": digest({"family": "last_observation", "version": 1}),
+        "horizon": horizon,
+        "feature_schema": (
+            "bts-last-observation-v1" if horizon == 1 else "bts-last-observation-h3-v1"
+        ),
+        "model_id": digest({"family": family, "version": 1}),
     }
     publication = publication or {
         "published_at": None,
@@ -30,7 +85,7 @@ def prepare_record(data_path, manifest_path, *, evidence_kind, publication=None)
             "Retained latest-vintage snapshot has no exact publication receipt"
         ),
     }
-    if set(publication) != {
+    if not isinstance(publication, dict) or set(publication) != {
         "published_at",
         "publication_verified",
         "publication_basis",
@@ -44,7 +99,7 @@ def prepare_record(data_path, manifest_path, *, evidence_kind, publication=None)
         classification = (
             "forecast" if _month(target) > clock else "elapsed_period_nowcast"
         )
-    return {
+    record = {
         "schema_version": 1,
         "evidence_kind": evidence_kind,
         "classification": classification,
@@ -53,10 +108,10 @@ def prepare_record(data_path, manifest_path, *, evidence_kind, publication=None)
         "target_month": target,
         "issued_at": clock.isoformat(),
         "issue_timezone": "UTC",
-        "horizon": 1,
+        "horizon": horizon,
         "prediction": float(history["volume"].iloc[-1]),
         "last_observation": float(history["volume"].iloc[-1]),
-        "seasonal_naive": float(history["volume"].iloc[-12]),
+        "seasonal_naive": float(comparator.iloc[0]),
         "uncertainty": None,
         "source": {
             "url": manifest["source_url"],
@@ -78,13 +133,26 @@ def prepare_record(data_path, manifest_path, *, evidence_kind, publication=None)
             "training_cutoff": available,
         },
     }
+    if availability is not None:
+        record["source"]["publication_basis"] = (
+            "Official response bytes were available by capture completion; "
+            "exact first publication time is unknown"
+        )
+        record["source"]["availability_receipt"] = availability
+    # The old unverified one-step record remains inspectable before admission.
+    if availability is not None or horizon == 3:
+        validate_issuance(record, clock)
+    return record
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
-    parser.add_argument("--publication-record", type=Path)
+    evidence = parser.add_mutually_exclusive_group()
+    evidence.add_argument("--publication-record", type=Path)
+    evidence.add_argument("--availability-record", type=Path)
+    parser.add_argument("--horizon", type=int, choices=(1, 3), default=1)
     parser.add_argument(
         "--kind", choices=("real_issuance", "retrospective_replay"), required=True
     )
@@ -96,15 +164,36 @@ def main():
         if args.publication_record
         else None
     )
-    record = prepare_record(
-        args.data, args.manifest, evidence_kind=args.kind, publication=publication
+    availability = (
+        json.loads(args.availability_record.read_bytes())
+        if args.availability_record
+        else None
     )
-    ledger = Ledger(args.db)
-    previous = next(
-        (event for event in ledger.events() if event["idempotency_key"] == args.key),
-        None,
+    ledger = Ledger(args.db) if args.db.exists() else None
+    previous = (
+        next(
+            (
+                event
+                for event in ledger.events()
+                if event["idempotency_key"] == args.key
+            ),
+            None,
+        )
+        if ledger is not None
+        else None
     )
-    if previous is not None and previous["kind"] == "issuance":
+    retry = previous is not None and previous["kind"] == "issuance"
+    record = _prepare_record(
+        args.data,
+        args.manifest,
+        evidence_kind=args.kind,
+        publication=publication,
+        availability=availability,
+        horizon=args.horizon,
+        retry_clock=_time(previous["payload"]["issued_at"]) if retry else None,
+    )
+    ledger = ledger or Ledger(args.db)
+    if retry:
         # A retry preserves the first issuance clock, not a newly generated time.
         record["issued_at"] = previous["payload"]["issued_at"]
         record["classification"] = previous["payload"]["classification"]

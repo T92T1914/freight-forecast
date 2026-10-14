@@ -388,6 +388,19 @@ real issuances, retrospective replays and synthetic workflow fixtures. Its
 current example contains no real issued forecast. Missing future outcomes and
 unknown first releases remain visible.
 
+The [official source capture](docs/source-capture.md) retains the actual CSV
+and metadata bytes before preparing a real record. A successful capture can
+establish that input values were available by retrieval completion while
+leaving their exact first publication time unknown. That bound cannot establish
+when a later outcome was first published.
+
+The [future month outlook](docs/future-outlook.md) adds a separately declared
+last observation policy for a target three observation steps after the latest
+available month. It requires the target to remain in the future when issued.
+With August observations available during October, its target is November.
+The original one step policy still classifies a September estimate as a nowcast.
+Neither path supplies prospective accuracy before qualified outcomes arrive.
+
 ## Serving performance
 
 [Feature reuse measurement](docs/serving-performance.md): a matched local in process check measured 4.534 ms → 1.278 ms for one request shape, with identical predictions. The report includes raw samples, reproduction instructions and limits.

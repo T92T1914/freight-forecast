@@ -10,6 +10,7 @@ import tempfile
 from contextlib import contextmanager, suppress
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from urllib.parse import parse_qsl, urlsplit
 
 from src.provenance import FEATURE_SCHEMA, digest
 
@@ -38,8 +39,17 @@ def _month(value):
 
 
 def _next_month(value):
+    return _shift_month(value, 1)
+
+
+def _shift_month(value, steps):
     month = _month(value)
-    year, number = month.year + (month.month == 12), month.month % 12 + 1
+    if type(steps) is not int:
+        raise ValueError("calendar shift must be an integer")
+    year, number = divmod(month.year * 12 + month.month - 1 + steps, 12)
+    if not 1 <= year <= 9999:
+        raise ValueError("calendar shift is outside supported years")
+    number += 1
     return f"{year:04}-{number:02}"
 
 
@@ -60,9 +70,32 @@ def _number(value):
         raise ValueError("index values must be finite positive numbers")
 
 
-def _source(source, clock, *, required_publication):
+def _official_capture_url(value):
+    """Constrain availability evidence to the supported official CSV request."""
+    url = urlsplit(_text(value, "capture source URL"))
+    expected = [
+        ("$select", "obs_date,tsi_freight"),
+        ("$order", "obs_date"),
+        ("$limit", "50000"),
+    ]
+    if (
+        url.scheme != "https"
+        or url.hostname not in ("data.transportation.gov", "data.bts.gov")
+        or url.port not in (None, 443)
+        or url.username is not None
+        or url.password is not None
+        or url.fragment
+        or url.path not in ("/resource/bw6n-ddqk.csv", "/api/id/bw6n-ddqk.csv")
+        or sorted(parse_qsl(url.query, keep_blank_values=True)) != sorted(expected)
+    ):
+        raise ValueError("availability requires the supported official CSV request")
+
+
+def _source(source, clock, *, required_publication, allow_availability=False):
     if not isinstance(source, dict):
         raise ValueError("source must be an object")
+    if "availability_receipt" in source and not allow_availability:
+        raise ValueError("availability receipt cannot establish outcome publication")
     url = _text(source.get("url"), "source URL")
     if not url.startswith("https://"):
         raise ValueError("source URL must use HTTPS")
@@ -75,10 +108,43 @@ def _source(source, clock, *, required_publication):
     if type(source.get("publication_verified")) is not bool:
         raise ValueError("publication verification must be explicit")
     _text(source.get("publication_basis"), "publication basis")
-    if required_publication and (
-        published is None or source["publication_verified"] is not True
+    receipt = source.get("availability_receipt")
+    if "availability_receipt" in source:
+        if not isinstance(receipt, dict):
+            raise ValueError("availability receipt must be an object")
+        if published is not None or source["publication_verified"] is not False:
+            raise ValueError(
+                "availability receipt does not establish exact publication"
+            )
+        if (
+            type(receipt.get("schema_version")) is not int
+            or receipt["schema_version"] != 1
+            or receipt.get("kind") != "available_by_capture"
+            or receipt.get("dataset_id") != "bw6n-ddqk"
+            or receipt.get("field") != "tsi_freight"
+            or type(receipt.get("http_status")) is not int
+            or receipt["http_status"] != 200
+            or receipt.get("source_url") != url
+        ):
+            raise ValueError("availability receipt does not match the supported source")
+        _official_capture_url(url)
+        if "resolved_source_url" in receipt:
+            _official_capture_url(receipt["resolved_source_url"])
+        captured = _time(receipt.get("retrieved_at"))
+        if _time(receipt.get("available_by")) != captured or captured != retrieved:
+            raise ValueError(
+                "availability receipt clocks do not match capture retrieval"
+            )
+        for name in ("sha256", "history_id"):
+            _hash(receipt.get(name), "availability " + name)
+        _month(receipt.get("last_month"))
+    if (
+        required_publication
+        and (published is None or source["publication_verified"] is not True)
+        and receipt is None
     ):
         raise ValueError("real issuance requires verified source publication timing")
+    return receipt
 
 
 def validate_issuance(record, clock):
@@ -113,7 +179,12 @@ def validate_issuance(record, clock):
         raise ValueError("elapsed or current periods are not future forecasts")
     if classification == "elapsed_period_nowcast" and target > issued.astimezone(UTC):
         raise ValueError("nowcast target has not begun")
-    _source(record.get("source"), issued, required_publication=kind == "real_issuance")
+    receipt = _source(
+        record.get("source"),
+        issued,
+        required_publication=kind == "real_issuance",
+        allow_availability=True,
+    )
     vintage, artifact = record.get("vintage"), record.get("artifact")
     if not isinstance(vintage, dict) or not isinstance(artifact, dict):
         raise ValueError("vintage and artifact descriptors are required")
@@ -129,17 +200,26 @@ def validate_issuance(record, clock):
         raise ValueError("fixture vintage must remain explicitly synthetic")
     available = vintage.get("available_through")
     _month(available)
+    if receipt is not None and (
+        any(receipt[name] != vintage[name] for name in ("sha256", "history_id"))
+        or receipt["last_month"] != available
+        or vintage["kind"] == "synthetic_fixture"
+    ):
+        raise ValueError("availability receipt does not match captured vintage")
     if kind == "real_issuance" and _month(available) > issued:
         raise ValueError("available observations cannot be future periods")
     cutoff = artifact.get("training_cutoff")
     _month(cutoff)
-    if cutoff > available or record["target_month"] != _next_month(available):
-        raise ValueError("one-step policy requires the immediately preceding month")
+    horizon = record.get("horizon")
+    if type(horizon) is not int or horizon not in (1, 3):
+        raise ValueError(
+            "only the one-step and declared three-step contracts are supported"
+        )
+    if cutoff > available or record["target_month"] != _shift_month(available, horizon):
+        raise ValueError("policy target must match its declared observation horizon")
     if artifact.get("series") != SERIES or artifact.get("units") != UNITS:
         raise ValueError("artifact series or units do not match")
-    if type(record.get("horizon")) is not int or record["horizon"] != 1:
-        raise ValueError("only the existing one-step contract is supported")
-    if type(artifact.get("horizon")) is not int or artifact["horizon"] != 1:
+    if type(artifact.get("horizon")) is not int or artifact["horizon"] != horizon:
         raise ValueError("artifact horizon does not match")
     for name in ("model_id", "policy_id"):
         _hash(artifact.get(name), name)
@@ -151,17 +231,20 @@ def validate_issuance(record, clock):
         if policy.get(name) != artifact.get(name):
             raise ValueError("artifact is incompatible with the declared policy")
     supported = {
-        "last_observation": "bts-last-observation-v1",
-        "monthly_refit_ridge": FEATURE_SCHEMA,
+        "last_observation": ("bts-last-observation-v1", 1),
+        "monthly_refit_ridge": (FEATURE_SCHEMA, 1),
+        "last_observation_h3": ("bts-last-observation-h3-v1", 3),
     }
-    if supported.get(policy.get("family")) != artifact["feature_schema"]:
+    if supported.get(policy.get("family")) != (artifact["feature_schema"], horizon):
         raise ValueError("unsupported artifact feature contract")
+    if horizon == 3 and (classification != "forecast" or target <= issued):
+        raise ValueError("three-step outlook requires a future forecast target")
     if record.get("uncertainty") is not None:
         raise ValueError("this point policy supplies no uncertainty method")
     for name in ("prediction", "last_observation", "seasonal_naive"):
         _number(record.get(name))
     if (
-        policy["family"] == "last_observation"
+        policy["family"] in ("last_observation", "last_observation_h3")
         and record["prediction"] != record["last_observation"]
     ):
         raise ValueError("last-observation policy must retain its actual prediction")
@@ -398,6 +481,10 @@ class Ledger:
             if not isinstance(payload, dict):
                 raise ValueError("saved event payload must be an object")
             if kind == "issuance":
+                try:
+                    validate_issuance(payload, _time(recorded))
+                except ValueError as error:
+                    raise ValueError(f"saved {error}") from error
                 expected_issuance = event_id
             else:
                 expected_issuance = payload.get("issuance_id")
@@ -438,6 +525,13 @@ class Ledger:
                         and item["issuance_id"] == expected_issuance
                     }
                     try:
+                        if isinstance(payload.get("source"), dict) and (
+                            "availability_receipt" in payload["source"]
+                        ):
+                            raise ValueError(
+                                "availability receipt cannot establish "
+                                "outcome publication"
+                            )
                         self._validate_outcome_publication(payload, original["payload"])
                         self._validate_observation_history(
                             payload, linked_observations, excluded

@@ -642,6 +642,279 @@ def _clock_outcome(issued, target, published, *, vintage="first_release"):
     return payload
 
 
+def _availability_fixture(clock, *, horizon=1):
+    """Declared capture fields are synthetic controls in an owned database."""
+    record = issuance()
+    record.update(
+        evidence_kind="real_issuance",
+        target_month="2026-02" if horizon == 1 else "2026-04",
+        issued_at=clock.current.isoformat(),
+        horizon=horizon,
+    )
+    record["vintage"].update(
+        kind="latest_vintage_snapshot", available_through="2026-01"
+    )
+    policy = record["artifact"]["policy"]
+    if horizon == 3:
+        policy.update(
+            family="last_observation_h3",
+            horizon=3,
+            feature_schema="bts-last-observation-h3-v1",
+            model_id=digest({"family": "last_observation_h3", "version": 1}),
+        )
+    record["artifact"].update(
+        **policy, policy_id=digest(policy), training_cutoff="2026-01"
+    )
+    captured = "2026-01-14T12:00:00+00:00"
+    url = (
+        "https://data.transportation.gov/resource/bw6n-ddqk.csv"
+        "?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000"
+    )
+    record["source"].update(
+        url=url,
+        published_at=None,
+        retrieved_at=captured,
+        publication_verified=False,
+        publication_basis="Synthetic availability fixture, not source evidence",
+        availability_receipt={
+            "schema_version": 1,
+            "kind": "available_by_capture",
+            "source_url": url,
+            "retrieved_at": captured,
+            "available_by": captured,
+            "sha256": record["vintage"]["sha256"],
+            "history_id": record["vintage"]["history_id"],
+            "dataset_id": "bw6n-ddqk",
+            "field": "tsi_freight",
+            "last_month": "2026-01",
+            "http_status": 200,
+        },
+    )
+    return record
+
+
+def test_input_availability_receipt_retains_unknown_publication_and_exact_retry(
+    tmp_path, record_clock
+):
+    ledger = Ledger(tmp_path / "availability-fixture.sqlite")
+    record = _availability_fixture(record_clock)
+    first = ledger.append("issuance", "owned-capture-fixture", record)
+    assert (
+        Ledger(ledger.path).append(
+            "issuance", "owned-capture-fixture", deepcopy(record)
+        )
+        == first
+    )
+    saved = ledger.events()[0]["payload"]
+    assert saved["source"]["published_at"] is None
+    assert saved["source"]["publication_verified"] is False
+    assert ledger.view()["summaries"]["real_issuance"]["scored_targets"] == 0
+    changed = deepcopy(record)
+    changed["prediction"] = changed["last_observation"] = 101
+    with pytest.raises(ValueError, match="incompatible contents"):
+        ledger.append("issuance", "owned-capture-fixture", changed)
+    assert len(ledger.events()) == 1
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("schema_version", True),
+        ("kind", "first_release"),
+        ("http_status", True),
+        ("http_status", 201),
+        ("dataset_id", "other"),
+        ("field", "other"),
+        ("source_url", "https://example.invalid/other"),
+        ("sha256", "0" * 64),
+        ("history_id", "0" * 64),
+        ("last_month", "2026-02"),
+        ("retrieved_at", "2026-01-14T13:00:00+00:00"),
+        ("available_by", "2026-01-14T13:00:00+00:00"),
+        ("available_by", "2026-01-14T11:00:00+00:00"),
+    ],
+)
+def test_invalid_availability_fields_refuse_before_event_commit(
+    tmp_path, record_clock, field, value
+):
+    ledger = Ledger(tmp_path / "invalid-capture.sqlite")
+    record = _availability_fixture(record_clock)
+    record["source"]["availability_receipt"][field] = value
+    with pytest.raises(ValueError):
+        ledger.append("issuance", "invalid", record)
+    assert ledger.events() == []
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        lambda source: source.update(published_at="2026-01-14T12:00:00+00:00"),
+        lambda source: source.update(publication_verified=True),
+        lambda source: source.update(retrieved_at="2026-01-16T12:00:00+00:00"),
+    ],
+)
+def test_availability_cannot_invent_publication_or_future_capture(
+    tmp_path, record_clock, change
+):
+    ledger = Ledger(tmp_path / "clock-refusal.sqlite")
+    record = _availability_fixture(record_clock)
+    change(record["source"])
+    with pytest.raises(ValueError):
+        ledger.append("issuance", "invalid", record)
+    assert ledger.events() == []
+
+
+@pytest.mark.parametrize(
+    "family,schema",
+    [
+        ("last_observation", "bts-last-observation-v1"),
+        ("monthly_refit_ridge", FEATURE_SCHEMA),
+    ],
+)
+def test_three_step_does_not_expand_old_feature_contracts(
+    tmp_path, record_clock, family, schema
+):
+    ledger = Ledger(tmp_path / "unsupported-h3.sqlite")
+    record = _availability_fixture(record_clock, horizon=3)
+    policy = record["artifact"]["policy"]
+    policy.update(family=family, feature_schema=schema)
+    record["artifact"].update(feature_schema=schema, policy_id=digest(policy))
+    with pytest.raises(ValueError, match="unsupported artifact feature contract"):
+        ledger.append("issuance", "wrong-family", record)
+    assert ledger.events() == []
+
+
+def test_supported_horizons_have_separate_policy_cohorts(tmp_path, record_clock):
+    ledger = Ledger(tmp_path / "separate-horizons.sqlite")
+    one = ledger.append("issuance", "one-step", _availability_fixture(record_clock))
+    three = ledger.append(
+        "issuance", "three-step", _availability_fixture(record_clock, horizon=3)
+    )
+    assert one != three
+    record_clock.current = datetime(2026, 3, 3, 12, tzinfo=UTC)
+    outcome = observation(one)
+    outcome["target_month"] = "2026-02"
+    ledger.append("observation", "one-step-outcome", outcome)
+    view = ledger.view()
+    assert len(view["cohorts"]) == 2
+    assert sorted(cohort["scored_targets"] for cohort in view["cohorts"]) == [0, 1]
+    assert len({cohort["policy_id"] for cohort in view["cohorts"]}) == 2
+
+
+def test_three_step_ledger_refuses_wrong_target_and_elapsed_classification(
+    tmp_path, record_clock
+):
+    ledger = Ledger(tmp_path / "wrong-target.sqlite")
+    record = _availability_fixture(record_clock, horizon=3)
+    record["target_month"] = "2026-05"
+    with pytest.raises(ValueError, match="declared observation horizon"):
+        ledger.append("issuance", "wrong-calendar", record)
+    record_clock.current = datetime(2026, 4, 15, 12, tzinfo=UTC)
+    record = _availability_fixture(record_clock, horizon=3)
+    record["classification"] = "elapsed_period_nowcast"
+    with pytest.raises(ValueError, match="three-step outlook requires a future"):
+        ledger.append("issuance", "nowcast", record)
+    assert ledger.events() == []
+
+
+def test_official_equivalent_capture_redirect_remains_supported(tmp_path, record_clock):
+    ledger = Ledger(tmp_path / "official-redirect.sqlite")
+    record = _availability_fixture(record_clock)
+    record["source"]["availability_receipt"]["resolved_source_url"] = (
+        "https://data.bts.gov:443/api/id/bw6n-ddqk.csv"
+        "?%24limit=50000&%24order=obs_date&%24select=obs_date%2Ctsi_freight"
+    )
+    ledger.append("issuance", "official-redirect-fixture", record)
+    assert len(ledger.events()) == 1
+
+
+def test_availability_receipt_is_not_an_outcome_publication_receipt(
+    tmp_path, record_clock
+):
+    ledger = Ledger(tmp_path / "outcome-refusal.sqlite")
+    record = _availability_fixture(record_clock)
+    issued = ledger.append("issuance", "input", record)
+    record_clock.current = datetime(2026, 3, 3, 12, tzinfo=UTC)
+    payload = observation(issued)
+    payload["target_month"] = record["target_month"]
+    payload["source"]["availability_receipt"] = record["source"]["availability_receipt"]
+    before = ledger.events()
+    with pytest.raises(ValueError, match="cannot establish outcome publication"):
+        ledger.append("observation", "unknown-publication", payload)
+    assert ledger.events() == before
+
+
+def test_readback_refuses_rehashed_bad_availability_join(tmp_path, record_clock):
+    ledger = Ledger(tmp_path / "bad-restored-input.sqlite")
+    record = _availability_fixture(record_clock, horizon=3)
+    record["issued_at"] = "2026-03-02T12:00:00+00:00"
+    record["source"]["availability_receipt"]["sha256"] = "0" * 64
+    key = "bad-restored-input"
+    expected = digest({"kind": "issuance", "key": key, "payload_id": digest(record)})
+    with ledger._connection() as connection:
+        _restore_event(
+            connection,
+            seq=1,
+            key=key,
+            kind="issuance",
+            payload=record,
+            issuance_id=expected,
+        )
+    with pytest.raises(
+        ValueError, match="saved availability receipt does not match captured vintage"
+    ):
+        ledger.view()
+
+
+def test_readback_refuses_availability_as_outcome_timing(tmp_path, record_clock):
+    ledger = Ledger(tmp_path / "bad-restored-outcome.sqlite")
+    record = _availability_fixture(record_clock)
+    issued = ledger.append("issuance", "input", record)
+    payload = observation(issued)
+    payload["target_month"] = record["target_month"]
+    payload["source"]["availability_receipt"] = record["source"]["availability_receipt"]
+    with ledger._connection() as connection:
+        _restore_event(
+            connection,
+            seq=2,
+            key="bad-outcome",
+            kind="observation",
+            payload=payload,
+            issuance_id=issued,
+        )
+    with pytest.raises(
+        ValueError,
+        match="saved availability receipt cannot establish outcome publication",
+    ):
+        ledger.view()
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "https://example.invalid/resource/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000",
+        "https://data.transportation.gov/resource/other.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000",
+        "https://data.transportation.gov/resource/bw6n-ddqk.csv",
+        "https://name@data.transportation.gov/resource/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000",
+        "https://data.transportation.gov:8443/resource/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000",
+    ],
+)
+@pytest.mark.parametrize("redirect", [False, True])
+def test_availability_source_and_redirect_are_confined_to_official_projection(
+    tmp_path, record_clock, url, redirect
+):
+    ledger = Ledger(tmp_path / "unofficial-capture.sqlite")
+    record = _availability_fixture(record_clock)
+    receipt = record["source"]["availability_receipt"]
+    if redirect:
+        receipt["resolved_source_url"] = url
+    else:
+        record["source"]["url"] = receipt["source_url"] = url
+    with pytest.raises(ValueError, match="supported official CSV request"):
+        ledger.append("issuance", "unofficial", record)
+    assert ledger.events() == []
+
+
 @pytest.mark.parametrize("classification", ["forecast", "elapsed_period_nowcast"])
 @pytest.mark.parametrize("vintage", ["first_release", "latest_snapshot"])
 @pytest.mark.parametrize(
