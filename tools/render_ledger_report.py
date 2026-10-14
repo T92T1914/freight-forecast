@@ -43,12 +43,21 @@ def render_outputs(path: Path | None = None):
             value = (
                 "Unavailable" if outcome is None else str(outcome["payload"]["value"])
             )
+            timing = (
+                "Observed availability only"
+                if "availability_receipt" in issued["source"]
+                else "Exact publication receipt"
+                if issued["source"]["publication_verified"]
+                else "Unverified or fixture timing"
+            )
             body.append(
                 "<tr>"
                 + "".join(
                     f"<td>{escape(item)}</td>"
                     for item in (
                         issued["target_month"],
+                        issued["vintage"]["available_through"],
+                        issued["horizon"],
                         issued["classification"].replace("_", " "),
                         row["status"].replace("_", " "),
                         issued["prediction"],
@@ -56,6 +65,7 @@ def render_outputs(path: Path | None = None):
                         issued["last_observation"],
                         issued["seasonal_naive"],
                         issued["issued_at"],
+                        timing,
                     )
                 )
                 + "</tr>"
@@ -69,10 +79,12 @@ def render_outputs(path: Path | None = None):
             "<div class='table-wrap' tabindex='0' role='region' "
             "aria-label='Ledger table'>"
             "<table><caption>Saved issuances</caption><thead><tr>"
-            "<th scope='col'>Target</th><th scope='col'>Product</th>"
+            "<th scope='col'>Target</th><th scope='col'>Available through</th>"
+            "<th scope='col'>Observation steps</th><th scope='col'>Product</th>"
             "<th scope='col'>Status</th><th scope='col'>Prediction</th>"
             "<th scope='col'>Selected outcome</th><th scope='col'>Last observation</th>"
             "<th scope='col'>Seasonal baseline</th><th scope='col'>Issued</th>"
+            "<th scope='col'>Input timing evidence</th>"
             "</tr></thead><tbody>" + "".join(body) + "</tbody></table></div>"
         )
         sections.append(
@@ -122,7 +134,9 @@ def render_outputs(path: Path | None = None):
         "Missing outcomes establish no prospective forecasting accuracy.</p>"
         "<p>Future forecasts, elapsed-period nowcasts and retrospective replays "
         "have separate classifications. Latest revised BTS values are not "
-        "historical first releases.</p>"
+        "historical first releases. An availability capture establishes that "
+        "input bytes were available by capture completion, not their exact first "
+        "publication time.</p>"
         + "".join(sections)
         + "<p class='fine muted'>Scroll each table to inspect both baselines "
         "and the full issuance clock. Complete identities and source clocks "

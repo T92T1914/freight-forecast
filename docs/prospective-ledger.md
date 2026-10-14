@@ -11,7 +11,9 @@ separates real issuances, retrospective replays and synthetic fixtures. Its
 saved example contains no real forecast. The small invented fixture exercises
 a first release, a revision, a missing release and an explicit correction.
 The separately labeled BTS replay uses the retained July 2026 input vintage.
-It is not a prediction issued before August began.
+It is not a prediction issued before August began. Separate local records may
+use the declared [three step future outlook](future-outlook.md). The saved public
+fixture and original study are unchanged.
 
 ## Record and identity boundaries
 
@@ -40,13 +42,26 @@ They are not synthetic shipment counts.
 
 The adapter's declared point policy carries forward the last observed month.
 Its seasonal comparator uses the same month a year earlier. This small policy
-requires no new fitted model and supplies no uncertainty interval. Only a
-single immediately subsequent target is supported. A model that happens to
-have a hash is not permission to invent a multi-step feature contract.
+requires no new fitted model and supplies no uncertainty interval. The original
+one step policy supports the immediately subsequent target. A separate
+`last_observation_h3` policy supports exactly three observation steps and requires
+a future target. Its seasonal comparator uses the actual target month one year
+earlier. It supplies no fitted model or uncertainty interval. Ridge remains a
+one step policy. All other horizons are rejected. A model that happens to have a
+hash is not permission to invent another feature contract.
 
-`real_issuance` requires a verified source publication receipt and a current
-issuance clock. Backdating more than five minutes is rejected. A target whose
+`real_issuance` requires a current issuance clock and either an inspected exact
+publication receipt or a matching official HTTP availability capture. The latter
+establishes that the retained bytes were available by capture completion. It
+retains `published_at: null` and `publication_verified: false`, with a separate
+`availability_receipt` joined to the source URL, retrieval clock, raw byte digest,
+canonical history and last month. It does not establish the first publication
+time. Backdating more than five minutes is rejected. A one step target whose
 month has begun is an `elapsed_period_nowcast`, not a future forecast. A
+three step target that has begun is refused. An exact retry reconstructs its
+original issuance clock and must match the retained contents, even after its
+target month begins. That exception cannot create a new backdated record under
+another key. A
 `retrospective_replay` has its own classification and cannot enter the real
 issuance cohort. The implementation checks supplied evidence, not the truth
 of a caller's verification label. Inspect the original publication before
@@ -66,7 +81,10 @@ period. The one-step adapter therefore cannot use this snapshot to produce a
 genuine future September or October forecast. No real issuance was created
 to fill the public table. A current, inspected source publication and a
 compatible immediately subsequent target are separate requirements for a
-future issuance. No polling service or schedule is installed.
+one step future issuance. The declared three step outlook addresses that
+publication lag using a separate policy identity. It still requires actual
+source availability and a target that has not begun. No polling service or
+schedule is installed.
 
 The [historical BTS evaluation](real-data-evaluation.md) remains unchanged.
 Last observation beat the fitted model on that latest-vintage retrospective
@@ -99,6 +117,17 @@ values and publication clocks are visibly synthetic. They are not source
 receipts to reuse for a real issuance. For a real BTS record, the adapter also
 accepts `--publication-record` containing `published_at`,
 `publication_verified` and `publication_basis`. Only pass inspected evidence.
+Alternatively, pass `--availability-record` from a retained official capture.
+Those options are mutually exclusive. The adapter validates the receipt against
+the same bytes and history that supply its prediction. The original horizon
+default is one. To issue the predeclared future product from an eligible capture:
+
+```sh
+python -m src.ledger_bts --data reports/bts-capture/source.csv --manifest reports/bts-capture/manifest.json --availability-record reports/bts-capture/availability.json --kind real_issuance --horizon 3 --db reports/outlook.sqlite --key future-outlook-001
+```
+
+Use actual retained capture paths and a deliberate unique key. This example does
+not establish that a release, eligible target or real issuance exists.
 
 An observation matches the original issuance's target, series and units.
 `first_release`, `revision`, `latest_snapshot` and `unavailable` remain
@@ -115,6 +144,9 @@ readback enforce the same check for forecasts and elapsed-period nowcasts.
 Unavailable outcomes, explicit replays, synthetic fixtures and corrections
 retain their separate behavior. This checks consistency of supplied clocks.
 It does not authenticate publication or prove that no earlier value existed.
+An input availability receipt is rejected on observation sources. Capturing an
+outcome after issuance cannot prove that its first publication followed issuance.
+That receipt cannot fill an unknown first release or authorize an outcome score.
 
 For a transcribed first release, exclude the incorrect observation explicitly,
 then append a new `first_release` observation whose `supersedes_event_id`
@@ -153,8 +185,9 @@ records. These checks protect ordinary local use. They do not defend against
 concurrent path changes or establish power-loss durability for the exported file.
 
 Readback checks each event's content identity and its link to an earlier
-original issuance before deriving a view. Observation targets, revision
-predecessors and correction targets must agree with that issuance. An
+original issuance before deriving a view. It also validates issuance contracts
+and availability joins at the retained recording clock. Observation targets,
+revision predecessors and correction targets must agree with that issuance. An
 inconsistent restored or modified link fails visibly rather than attaching
 an outcome to another prediction. These checks do not authenticate the
 database or repair its records.
