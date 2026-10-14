@@ -44,6 +44,13 @@ command reads the existing CSV and produces a report; it does not regenerate
 data, save a model, or reject an experiment because the baseline wins. Omit
 `--output` to print JSON to stdout.
 
+The output must be separate from the input, including another name for the same
+file through a symbolic link or hard link. The command checks file identity before
+fitting and again before delivery. It writes the completed report to a temporary
+file beside the destination before replacing it, so a failed write or replacement
+preserves the previous report. These checks do not guarantee safety against every
+concurrent filesystem change or make a completed replacement power loss proof.
+
 To explore another starting window or a compatible dataset:
 
 ```sh

@@ -76,7 +76,9 @@ curl -X POST http://127.0.0.1:8000/predict -H 'content-type: application/json' -
 {"month":"2025-01","predicted_volume":3297,"naive_same_month_last_year":3477,"trained_through":"2022-12-01"}
 ```
 
-Training on the included seeded dataset produces a model with this response.
+This example shows the forecast values. The full response also includes
+`model_id` and `history_id`, which identify the loaded model and observation history.
+Training on the included seeded dataset produces a model with these forecast values.
 The model file is generated locally and is not committed to the repository. The API accepts only historical
 months with a full lag history and the next unobserved month. Features are built
 once per startup and indexed by month; [the serving tests](tests/test_api.py)

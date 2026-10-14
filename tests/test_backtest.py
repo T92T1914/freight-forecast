@@ -2,11 +2,16 @@
 
 import hashlib
 import json
+import os
+import subprocess
+import sys
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import pytest
 
+from src import backtest as backtest_mod
 from src.backtest import backtest, main
 from src.generate_data import generate
 from src.train import train
@@ -212,3 +217,276 @@ def test_cli_stdout_is_json(tmp_path, capsys):
     main(["--data", str(path), "--initial-train-months", "12"])
     result = json.loads(capsys.readouterr().out)
     assert result["overall"]["months"] == 1
+
+
+def _link(source, destination, *, symbolic=False):
+    try:
+        if symbolic:
+            destination.symlink_to(source)
+        else:
+            os.link(source, destination)
+    except (NotImplementedError, OSError) as error:
+        kind = "symlink" if symbolic else "hard-link"
+        pytest.skip(f"{kind} creation unavailable on this platform: {error}")
+
+
+@pytest.mark.parametrize("kind", ["separate", "same", "symlink", "hardlink"])
+def test_actual_cli_preserves_input_and_rejects_aliases(tmp_path, kind):
+    source = tmp_path / "observations.csv"
+    generate().iloc[:25].to_csv(source, index=False)
+    original = source.read_bytes()
+    original_hash = hashlib.sha256(original).hexdigest()
+    destination = source if kind == "same" else tmp_path / "report.json"
+    if kind in {"symlink", "hardlink"}:
+        _link(source, destination, symbolic=kind == "symlink")
+        assert destination.samefile(source)
+    elif kind == "separate":
+        destination.write_bytes(b"previous completed output")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.backtest",
+            "--data",
+            os.fspath(source),
+            "--initial-train-months",
+            "12",
+            "--output",
+            os.fspath(destination),
+        ],
+        cwd=Path(__file__).resolve().parents[1],
+        env={
+            **os.environ,
+            "OPENBLAS_NUM_THREADS": "1",
+            "OMP_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+        },
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=False,
+    )
+
+    assert source.read_bytes() == original
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == original_hash
+    if kind == "separate":
+        assert result.returncode == 0, result.stderr
+        report = json.loads(destination.read_bytes())
+        assert report["overall"]["months"] == 1
+        assert report["provenance"]["data_sha256"] == original_hash
+        assert "Saved 1 monthly predictions" in result.stdout
+    else:
+        assert result.returncode == 2
+        assert "output must not overwrite the input dataset" in result.stderr
+        assert result.stdout == ""
+        assert destination.read_bytes() == original
+    assert set(tmp_path.iterdir()) == {source, destination}
+
+
+def test_cli_keeps_symlink_to_separate_output_target(tmp_path):
+    source = tmp_path / "observations.csv"
+    generate().iloc[:25].to_csv(source, index=False)
+    original = source.read_bytes()
+    target = tmp_path / "report.json"
+    target.write_bytes(b"previous complete output")
+    destination = tmp_path / "report-link.json"
+    _link(target, destination, symbolic=True)
+
+    main(
+        [
+            "--data",
+            str(source),
+            "--initial-train-months",
+            "12",
+            "--output",
+            str(destination),
+        ]
+    )
+
+    assert destination.is_symlink()
+    assert json.loads(target.read_bytes())["overall"]["months"] == 1
+    assert source.read_bytes() == original
+    assert set(tmp_path.iterdir()) == {source, target, destination}
+
+
+@pytest.mark.parametrize(
+    "failure",
+    ["serialization", "create", "write", "flush", "fsync", "close", "replace"],
+)
+def test_cli_delivery_failure_preserves_input_and_old_output(
+    tmp_path, monkeypatch, capsys, failure
+):
+    source = tmp_path / "observations.csv"
+    generate().iloc[:25].to_csv(source, index=False)
+    original = source.read_bytes()
+    destination = tmp_path / "report.json"
+    destination.write_bytes(b"previous complete output")
+    unrelated = tmp_path / "unrelated.tmp"
+    unrelated.write_bytes(b"not owned by backtest")
+
+    def fail(*args, **kwargs):
+        raise OSError(f"injected {failure} failure")
+
+    if failure == "serialization":
+        monkeypatch.setattr(
+            backtest_mod,
+            "backtest",
+            lambda *args, **kwargs: {"overall": {"months": 1}, "bad": float("nan")},
+        )
+    elif failure == "create":
+        monkeypatch.setattr(backtest_mod.tempfile, "NamedTemporaryFile", fail)
+    elif failure in {"write", "flush", "close"}:
+        create = backtest_mod.tempfile.NamedTemporaryFile
+
+        class FailingStream:
+            def __init__(self, *args, **kwargs):
+                self.stream = create(*args, **kwargs)
+                self.name = self.stream.name
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *args):
+                self.stream.__exit__(*args)
+                if failure == "close":
+                    fail()
+
+            def write(self, value):
+                self.stream.write(value[:10] if failure == "write" else value)
+                if failure == "write":
+                    fail()
+
+            def flush(self):
+                if failure == "flush":
+                    fail()
+                self.stream.flush()
+
+            def fileno(self):
+                return self.stream.fileno()
+
+        monkeypatch.setattr(backtest_mod.tempfile, "NamedTemporaryFile", FailingStream)
+    elif failure == "fsync":
+        monkeypatch.setattr(backtest_mod.os, "fsync", fail)
+    else:
+        monkeypatch.setattr(backtest_mod.os, "replace", fail)
+
+    with pytest.raises(SystemExit) as captured:
+        main(
+            [
+                "--data",
+                str(source),
+                "--initial-train-months",
+                "12",
+                "--output",
+                str(destination),
+            ]
+        )
+
+    assert captured.value.code == 2
+    output = capsys.readouterr()
+    assert "error:" in output.err
+    assert output.out == ""
+    assert source.read_bytes() == original
+    assert destination.read_bytes() == b"previous complete output"
+    assert unrelated.read_bytes() == b"not owned by backtest"
+    assert set(tmp_path.iterdir()) == {source, destination, unrelated}
+
+
+def test_delivery_rechecks_alias_after_staging(tmp_path, monkeypatch):
+    source = tmp_path / "observations.csv"
+    source.write_bytes(b"retained input")
+    destination = tmp_path / "report.json"
+    destination.write_bytes(b"previous output")
+    probe = tmp_path / "link-probe"
+    _link(source, probe)
+    probe.unlink()
+    fsync = backtest_mod.os.fsync
+
+    def change_destination(descriptor):
+        fsync(descriptor)
+        destination.unlink()
+        os.link(source, destination)
+
+    monkeypatch.setattr(backtest_mod.os, "fsync", change_destination)
+    with pytest.raises(ValueError, match="must not overwrite the input dataset"):
+        backtest_mod._write_report("completed report", destination, source)
+
+    assert destination.samefile(source)
+    assert source.read_bytes() == destination.read_bytes() == b"retained input"
+    assert set(tmp_path.iterdir()) == {source, destination}
+
+
+@pytest.mark.parametrize("primary", [OSError, KeyboardInterrupt, SystemExit])
+def test_delivery_cleanup_failure_preserves_original_error(
+    tmp_path, monkeypatch, primary
+):
+    source = tmp_path / "observations.csv"
+    source.write_bytes(b"retained input")
+    destination = tmp_path / "report.json"
+    destination.write_bytes(b"previous complete output")
+    failure = primary("original replacement failure")
+
+    def fail_replace(*args):
+        raise failure
+
+    def fail_cleanup(*args, **kwargs):
+        raise PermissionError("injected cleanup failure")
+
+    with monkeypatch.context() as patch:
+        patch.setattr(backtest_mod.os, "replace", fail_replace)
+        patch.setattr(Path, "unlink", fail_cleanup)
+        with pytest.raises(primary) as captured:
+            backtest_mod._write_report("completed report", destination, source)
+
+    assert captured.value is failure
+    assert any("temporary report cleanup failed" in note for note in failure.__notes__)
+    assert source.read_bytes() == b"retained input"
+    assert destination.read_bytes() == b"previous complete output"
+    retained = set(tmp_path.iterdir()) - {source, destination}
+    assert len(retained) == 1
+    temporary = retained.pop()
+    assert temporary.read_text(encoding="utf-8") == "completed report"
+    temporary.unlink()
+
+
+def test_cli_reports_cleanup_failure_without_masking_delivery_error(
+    tmp_path, monkeypatch, capsys
+):
+    source = tmp_path / "observations.csv"
+    generate().iloc[:25].to_csv(source, index=False)
+    original = source.read_bytes()
+    destination = tmp_path / "report.json"
+    destination.write_bytes(b"previous complete output")
+
+    def fail_replace(*args):
+        raise OSError("original replacement failure")
+
+    def fail_cleanup(*args, **kwargs):
+        raise PermissionError("injected cleanup failure")
+
+    with monkeypatch.context() as patch:
+        patch.setattr(backtest_mod.os, "replace", fail_replace)
+        patch.setattr(Path, "unlink", fail_cleanup)
+        with pytest.raises(SystemExit) as captured:
+            main(
+                [
+                    "--data",
+                    str(source),
+                    "--initial-train-months",
+                    "12",
+                    "--output",
+                    str(destination),
+                ]
+            )
+
+    assert captured.value.code == 2
+    output = capsys.readouterr()
+    assert "original replacement failure" in output.err
+    assert "temporary report cleanup failed: PermissionError" in output.err
+    assert output.out == ""
+    assert source.read_bytes() == original
+    assert destination.read_bytes() == b"previous complete output"
+    temporary = (set(tmp_path.iterdir()) - {source, destination}).pop()
+    assert json.loads(temporary.read_bytes())["overall"]["months"] == 1
+    temporary.unlink()

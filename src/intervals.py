@@ -15,13 +15,15 @@ def month_number(month: str) -> int:
 
 
 def number(value: float, name: str) -> float:
-    if (
-        isinstance(value, bool)
-        or not isinstance(value, (float, int))
-        or not isfinite(value)
-    ):
+    if isinstance(value, bool) or not isinstance(value, (float, int)):
         raise ValueError(name + " must be finite")
-    return float(value)
+    try:
+        converted = float(value)
+    except OverflowError:
+        raise ValueError(name + " must be finite") from None
+    if not isfinite(converted):
+        raise ValueError(name + " must be finite")
+    return converted
 
 
 def radius(errors: list[float], alpha: Fraction) -> tuple[float | None, int]:
@@ -88,13 +90,17 @@ class ResidualCalibrator:
             raise ValueError("forecast must follow the last observed month")
         point = number(point, "point")
         half, rank = radius([error for _, error in self.history], self.alpha)
+        lower = None if half is None else number(point - half, "lower endpoint")
+        upper = None if half is None else number(point + half, "upper endpoint")
+        if half is not None:
+            number(upper - lower, "interval width")
         interval = Interval(
             month,
             point,
-            None if half is None else point - half,
-            None if half is None else point + half,
+            lower,
+            upper,
             "unbounded" if half is None else "finite",
-            float(self.alpha),
+            number(float(self.alpha), "alpha"),
             rank,
             len(self.history),
             self.history[0][0],
@@ -110,24 +116,35 @@ class ResidualCalibrator:
         interval = self.pending
         unbounded = interval.status == "unbounded"
         covered = unbounded or interval.lower <= actual <= interval.upper
-        width = None if unbounded else interval.upper - interval.lower
-        score = (
+        width = (
             None
             if unbounded
-            else width
-            + 2
-            / float(self.target)
-            * (max(interval.lower - actual, 0) + max(actual - interval.upper, 0))
+            else number(interval.upper - interval.lower, "interval width")
         )
+        score = None if unbounded else width
+        if not covered:
+            try:
+                score = number(
+                    width
+                    + 2
+                    / float(self.target)
+                    * (
+                        max(interval.lower - actual, 0)
+                        + max(actual - interval.upper, 0)
+                    ),
+                    "interval score",
+                )
+            except (OverflowError, ZeroDivisionError):
+                raise ValueError("interval score must be finite") from None
+        history = self.history
         if self.method != "fixed":
-            self.history = (*self.history, (month, abs(actual - interval.point)))[
-                -self.window :
-            ]
+            error = number(abs(actual - interval.point), "residual")
+            history = (*history, (month, error))[-self.window :]
+        alpha = self.alpha
         if self.method == "adaptive":
-            self.alpha += self.gamma * (self.target - int(not covered))
-        self.observed = month_number(month)
-        self.pending = None
-        return {
+            alpha += self.gamma * (self.target - int(not covered))
+        observed = month_number(month)
+        row = {
             **asdict(interval),
             "actual": actual,
             "covered": covered,
@@ -135,6 +152,9 @@ class ResidualCalibrator:
             "interval_score": score,
             "score_status": "infinite" if unbounded else "finite",
         }
+        self.history, self.alpha, self.observed = history, alpha, observed
+        self.pending = None
+        return row
 
 
 def summarize(rows: list[dict]) -> dict:

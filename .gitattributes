@@ -8,3 +8,6 @@ docs/freight-forecast-obscur.svg text eol=lf
 # Wide figure receipts require the same bytes on Windows checkouts.
 docs/freight-forecast-clair-wide.svg text eol=lf
 docs/freight-forecast-obscur-wide.svg text eol=lf
+
+# The inert evaluated source fixture retains its original digest on every host.
+tests/fixtures/backtest-evaluated.txt -text

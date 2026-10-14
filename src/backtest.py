@@ -8,7 +8,10 @@ window evaluation, distinct from train.py's single fitted model.
 import argparse
 import hashlib
 import json
+import os
 import platform
+import tempfile
+from contextlib import suppress
 from importlib.metadata import version
 from io import BytesIO
 from pathlib import Path
@@ -150,6 +153,47 @@ def backtest(
     }
 
 
+def _output_destination(output: Path, data: Path) -> Path:
+    """Reject input aliases before fitting and before completed delivery."""
+    destination = output.resolve()
+    source = data.resolve()
+    if destination == source or (
+        destination.exists() and source.exists() and destination.samefile(source)
+    ):
+        raise ValueError("output must not overwrite the input dataset")
+    return destination
+
+
+def _write_report(content: str, output: Path, data: Path) -> None:
+    """Replace output with a completed report without truncating old data."""
+    destination = _output_destination(output, data)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=destination.parent, delete=False
+        ) as stream:
+            temporary = Path(stream.name)
+            stream.write(content)
+            stream.flush()
+            os.fsync(stream.fileno())
+        # Fitting or staging may have taken long enough for an alias to change.
+        if _output_destination(output, data) != destination:
+            raise ValueError("output destination changed during report delivery")
+        os.replace(temporary, destination)
+    except BaseException as error:
+        if temporary is not None:
+            try:
+                temporary.unlink(missing_ok=True)
+            except BaseException as cleanup_error:
+                with suppress(BaseException):
+                    error.add_note(
+                        "temporary report cleanup failed: "
+                        f"{type(cleanup_error).__name__}: {cleanup_error}"
+                    )
+        raise
+
+
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data", type=Path, default=DATA_PATH)
@@ -160,9 +204,9 @@ def main(argv: list[str] | None = None) -> None:
         "--output", type=Path, help="JSON destination; default is stdout"
     )
     args = parser.parse_args(argv)
-    if args.output and args.output.resolve() == args.data.resolve():
-        parser.error("output must not overwrite the input dataset")
     try:
+        if args.output:
+            _output_destination(args.output, args.data)
         raw = args.data.read_bytes()
         # Read the exact bytes we hash, even if another process replaces the CSV.
         report = backtest(
@@ -186,10 +230,13 @@ def main(argv: list[str] | None = None) -> None:
             name: version(name) for name in ("numpy", "pandas", "scikit-learn")
         },
     }
-    content = json.dumps(report, indent=2, allow_nan=False) + "\n"
+    try:
+        content = json.dumps(report, indent=2, allow_nan=False) + "\n"
+        if args.output:
+            _write_report(content, args.output, args.data)
+    except (OSError, ValueError) as exc:
+        parser.error("\n".join([str(exc), *getattr(exc, "__notes__", [])]))
     if args.output:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(content, encoding="utf-8")
         print(
             f"Saved {report['overall']['months']} monthly predictions to {args.output}"
         )
