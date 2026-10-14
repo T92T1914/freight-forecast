@@ -124,6 +124,119 @@ def test_timed_out_command_retains_partial_checkpoint_without_shell(tmp_path, so
     assert command["timeout_seconds"] == 3
 
 
+def test_utf8_command_output_is_captured_as_bytes_and_decoded_in_parent(
+    tmp_path, source
+):
+    stdout, stderr = "diagnostic \u0101\n".encode(), "complete \u03b1\n".encode()
+
+    def runner(argv, **kwargs):
+        assert kwargs["text"] is False
+        return SimpleNamespace(returncode=0, stdout=stdout, stderr=stderr)
+
+    consumer = qualification.Consumer(IMAGE, tmp_path, source, run=runner)
+    result = consumer.docker("inspect", "owned")
+    assert (
+        result.stdout == "diagnostic \u0101\n" and result.stderr == "complete \u03b1\n"
+    )
+    command = json.loads((tmp_path / "qualification.json").read_bytes())["commands"][0]
+    assert base64.b64decode(command["stdout_base64"]) == stdout
+    assert base64.b64decode(command["stderr_base64"]) == stderr
+    assert command["status"] == "completed"
+
+
+def test_invalid_utf8_refuses_without_losing_original_command_bytes(tmp_path, source):
+    stdout, stderr = b"captured output\n", b"\x81invalid UTF8\n"
+
+    def runner(argv, **kwargs):
+        return SimpleNamespace(returncode=0, stdout=stdout, stderr=stderr)
+
+    consumer = qualification.Consumer(IMAGE, tmp_path, source, run=runner)
+    with pytest.raises(UnicodeDecodeError):
+        consumer.docker("inspect", "owned")
+    command = json.loads((tmp_path / "qualification.json").read_bytes())["commands"][0]
+    assert base64.b64decode(command["stdout_base64"]) == stdout
+    assert base64.b64decode(command["stderr_base64"]) == stderr
+    assert command["status"] == "failed" and command["returncode"] == 0
+    assert "UnicodeDecodeError" in command["error"] and command["stderr_decode_error"]
+
+
+def test_missing_command_stream_refuses_and_retains_captured_other_stream(
+    tmp_path, source
+):
+    def runner(argv, **kwargs):
+        return SimpleNamespace(returncode=0, stdout=b"captured output\n", stderr=None)
+
+    consumer = qualification.Consumer(IMAGE, tmp_path, source, run=runner)
+    with pytest.raises(
+        qualification.QualificationError, match="stderr was not captured"
+    ):
+        consumer.docker("inspect", "owned")
+    command = json.loads((tmp_path / "qualification.json").read_bytes())["commands"][0]
+    assert command["status"] == "failed" and command["stderr_capture_error"]
+    assert base64.b64decode(command["stdout_base64"]) == b"captured output\n"
+
+
+def test_timeout_retains_utf8_and_invalid_partial_bytes_without_masking_timeout(
+    tmp_path, source
+):
+    stdout, stderr = "partial \u0101".encode(), b"\xffpartial error"
+
+    def runner(argv, **kwargs):
+        raise subprocess.TimeoutExpired(
+            argv, kwargs["timeout"], output=stdout, stderr=stderr
+        )
+
+    consumer = qualification.Consumer(IMAGE, tmp_path, source, run=runner)
+    with pytest.raises(subprocess.TimeoutExpired):
+        consumer.docker("inspect", "owned", timeout=3)
+    command = json.loads((tmp_path / "qualification.json").read_bytes())["commands"][0]
+    assert command["stdout"] == "partial \u0101"
+    assert base64.b64decode(command["stdout_base64"]) == stdout
+    assert base64.b64decode(command["stderr_base64"]) == stderr
+    assert "TimeoutExpired" in command["error"] and command["stderr_decode_error"]
+
+
+@pytest.mark.parametrize(
+    "stderr",
+    [
+        "error: no such object: owned-auto-removed\n",
+        "Error: No such container: owned-auto-removed\n",
+    ],
+)
+def test_cleanup_recognizes_owned_container_absence_with_docker_case_variants(
+    tmp_path, source, stderr
+):
+    calls = []
+
+    def runner(argv, **kwargs):
+        calls.append(argv)
+        return SimpleNamespace(returncode=1, stdout=b"", stderr=stderr.encode())
+
+    consumer = qualification.Consumer(IMAGE, tmp_path, source, run=runner)
+    consumer.names.append("owned-auto-removed")
+    consumer.cleanup()
+    assert len(calls) == 1 and calls[0][-2:] == ["inspect", "owned-auto-removed"]
+    assert consumer.report["cleanup"][0]["already_absent"] is True
+    assert "error" not in consumer.report["cleanup"][0]
+
+
+def test_cleanup_keeps_unknown_daemon_failure_visible(tmp_path, source):
+    calls = []
+
+    def runner(argv, **kwargs):
+        calls.append(argv)
+        return SimpleNamespace(
+            returncode=1, stdout=b"", stderr=b"Cannot connect to Docker daemon\n"
+        )
+
+    consumer = qualification.Consumer(IMAGE, tmp_path, source, run=runner)
+    consumer.names.append("owned")
+    consumer.cleanup()
+    assert len(calls) == 1
+    assert "already_absent" not in consumer.report["cleanup"][0]
+    assert "unavailable" in consumer.report["cleanup"][0]["error"]
+
+
 def test_cleanup_refuses_unowned_container(tmp_path, source):
     calls = []
 

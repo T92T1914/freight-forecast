@@ -139,6 +139,41 @@ def strict_json(raw):
     return json.loads(raw, parse_constant=invalid)
 
 
+def captured_output(record, stdout, stderr, *, strict=True):
+    """Retain original command bytes before decoding in the calling thread."""
+    raw = {}
+    missing = None
+    for name, value in (("stdout", stdout), ("stderr", stderr)):
+        if value is None and not strict:
+            value = b""
+        if isinstance(value, str):
+            value = value.encode("utf-8")
+        if not isinstance(value, bytes):
+            record[name + "_capture_error"] = "stream was not captured"
+            missing = QualificationError(f"Docker {name} was not captured")
+            continue
+        raw[name] = value
+    record.update(
+        {
+            name + "_base64": base64.b64encode(value).decode("ascii")
+            for name, value in raw.items()
+        }
+    )
+    if missing is not None:
+        raise missing
+    failure = None
+    for name, value in raw.items():
+        try:
+            record[name] = value.decode("utf-8")
+        except UnicodeDecodeError as error:
+            record[name + "_decode_error"] = str(error)
+            record[name] = value.decode("utf-8", errors="replace")
+            failure = failure or error
+    if strict and failure is not None:
+        raise failure
+    return record["stdout"], record["stderr"]
+
+
 def history_identity(raw):
     """Compute the served canonical identity independently from CSV bytes."""
     source = csv.DictReader(io.StringIO(raw.decode("utf-8-sig")))
@@ -473,29 +508,25 @@ class Consumer:
                 argv,
                 stdin=subprocess.DEVNULL,
                 capture_output=True,
-                text=True,
+                text=False,
                 timeout=timeout,
                 check=False,
                 creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
             )
             with self.lock:
-                record.update(
-                    status="completed",
-                    returncode=result.returncode,
-                    stdout=result.stdout,
-                    stderr=result.stderr,
-                )
+                record["returncode"] = result.returncode
+                stdout, stderr = captured_output(record, result.stdout, result.stderr)
+                record["status"] = "completed"
             if check and result.returncode:
                 raise QualificationError(
                     f"Docker {args[0]} failed ({result.returncode})"
                 )
-            return result
+            return subprocess.CompletedProcess(argv, result.returncode, stdout, stderr)
         except BaseException as error:
             with self.lock:
                 record.update(status="failed", error=f"{type(error).__name__}: {error}")
                 if isinstance(error, subprocess.TimeoutExpired):
-                    record["stdout"] = str(error.stdout or "")
-                    record["stderr"] = str(error.stderr or "")
+                    captured_output(record, error.stdout, error.stderr, strict=False)
             raise
         finally:
             with self.lock:
@@ -664,10 +695,8 @@ class Consumer:
             try:
                 result = self.docker("inspect", name, check=False, timeout=10)
                 if result.returncode:
-                    if (
-                        "No such object" in result.stderr
-                        or "No such container" in result.stderr
-                    ):
+                    absent = result.stderr.casefold()
+                    if "no such object" in absent or "no such container" in absent:
                         record["already_absent"] = True
                         continue
                     raise QualificationError(
