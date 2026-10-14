@@ -147,8 +147,14 @@ def render_outputs(path: Path | None = None):
         "Revisions are not extra forecasts. "
         "Metrics stay separate by product and policy.</p><ul>"
         + "".join(cohorts)
-        + "</ul><p>Synthetic errors above only exercise the workflow. "
-        "Excluded and missing outcomes remain visible. The original BTS study in which "
+        + "</ul><p>"
+        + (
+            "Synthetic errors above only exercise the workflow. "
+            if counts["synthetic_fixture"]
+            else ""
+        )
+        + "Excluded and missing outcomes remain visible. "
+        "The original BTS study in which "
         "last observation beat the fitted model is unchanged.</p></section>"
         + f"<details><summary>Corrections retained: {len(corrections)}</summary>"
         "<p>Exclusion changes evaluation while keeping the original record.</p><ul>"

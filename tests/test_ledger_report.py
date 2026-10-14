@@ -19,6 +19,18 @@ def test_report_preserves_categories_and_download_bytes():
     assert "independent timestamping" in page
     assert output["ledger.json"] == (ROOT / "docs/ledger-fixture.json").read_bytes()
     assert "Available through" in page and "Observation steps" in page
+    assert "Synthetic errors above only exercise the workflow" in page
+
+
+def test_report_omits_fixture_error_note_when_no_fixture_is_present(tmp_path):
+    from src.ledger import Ledger
+
+    path = tmp_path / "empty-ledger-view.json"
+    path.write_text(json.dumps(Ledger(tmp_path / "empty.sqlite").view()))
+    page = render_outputs(path)["ledger.html"].decode()
+    assert "0 synthetic workflow fixtures" in page
+    assert "Synthetic errors above" not in page
+    assert "Excluded and missing outcomes remain visible" in page
 
 
 def test_report_escapes_imported_text(tmp_path):
