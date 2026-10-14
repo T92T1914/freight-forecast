@@ -7,6 +7,9 @@ Run after generating data and training: python tools/benchmark_serving.py
 
 import ast
 import asyncio
+import csv
+import hashlib
+import io
 import json
 import statistics
 import subprocess
@@ -39,9 +42,34 @@ baseline = namespace["predict"]
 async def main():
     async with serve.lifespan(serve.app):
         request = serve.PredictRequest(month="2025-01")
+        response = serve.predict(request)
+        model_id = hashlib.sha256(serve.MODEL_PATH.read_bytes()).hexdigest()
+        history = sorted(
+            (
+                {"date": row["date"], "volume": float(row["volume"])}
+                for row in csv.DictReader(
+                    io.StringIO(serve.DATA_PATH.read_text(encoding="utf-8"))
+                )
+            ),
+            key=lambda row: row["date"],
+        )
+        history_id = hashlib.sha256(
+            json.dumps(
+                history, sort_keys=True, separators=(",", ":"), allow_nan=False
+            ).encode()
+        ).hexdigest()
+        assert response["model_id"] == model_id
+        assert response["history_id"] == history_id
+        shared_fields = (
+            "month",
+            "predicted_volume",
+            "naive_same_month_last_year",
+            "trained_through",
+        )
         samples = {"before_ms": [], "after_ms": []}
         for _ in range(10):
-            assert baseline(request) == serve.predict(request)
+            current = serve.predict(request)
+            assert baseline(request) == {key: current[key] for key in shared_fields}
         for batch in range(7):
             order = [("before_ms", baseline), ("after_ms", serve.predict)]
             if batch % 2:
@@ -58,6 +86,10 @@ async def main():
             "calls_per_batch": 100,
             "batches": 7,
             "scope": "in-process; excludes HTTP; same loaded model and data",
+            "baseline_revision": "56c23a8",
+            "shared_response_fields": list(shared_fields),
+            "model_id": model_id,
+            "history_id": history_id,
             "samples": samples,
             "medians_ms": {k: statistics.median(v) for k, v in samples.items()},
             "response": serve.predict(request),

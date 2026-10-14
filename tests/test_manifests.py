@@ -159,3 +159,58 @@ def test_dashboard_queries_only_metrics_the_app_exports():
         for metric in re.findall(r"[a-z_]+_(?:total|bucket)", expr):
             base = re.sub(r"_(total|bucket)$", "", metric)
             assert base in serve_src, f"dashboard queries unknown metric {metric}"
+
+
+def test_local_monitoring_binds_only_loopback_and_limits_api():
+    services = _load("monitoring/docker-compose.yml")["services"]
+    for service in services.values():
+        assert all(port.startswith("127.0.0.1:") for port in service["ports"])
+    api = services["api"]
+    assert api["read_only"] is True
+    assert api["cap_drop"] == ["ALL"]
+    assert api["security_opt"] == ["no-new-privileges:true"]
+    assert api["cpus"] == 0.5
+    assert api["mem_limit"] == "512m"
+    assert api["pids_limit"] == 64
+
+
+def test_image_retains_training_gate_before_narrow_nonroot_model_access():
+    dockerfile = (ROOT / "Dockerfile").read_text(encoding="utf-8")
+    training = dockerfile.index("RUN python -m src.train")
+    ownership = dockerfile.index(
+        "chown 10001:10001 /app/models /app/models/model.joblib"
+    )
+    user = dockerfile.index("USER 10001:10001")
+    assert training < ownership < user
+    assert "chmod 0400 /app/models/model.joblib" in dockerfile
+    assert "PYTHONDONTWRITEBYTECODE=1" in dockerfile
+    for variable in (
+        "OPENBLAS_NUM_THREADS",
+        "OMP_NUM_THREADS",
+        "MKL_NUM_THREADS",
+        "NUMEXPR_NUM_THREADS",
+    ):
+        assert variable + "=1" in dockerfile
+    command = json.loads("[" + dockerfile.rsplit("CMD [", 1)[1].strip())
+    for flag, value in (
+        ("--workers", "1"),
+        ("--limit-concurrency", "8"),
+        ("--timeout-graceful-shutdown", "5"),
+    ):
+        assert command[command.index(flag) + 1] == value
+
+
+def test_make_run_keeps_the_declared_local_container_policy():
+    makefile = (ROOT / "Makefile").read_text(encoding="utf-8")
+    run = makefile.split("run: image", 1)[1].split("\n\n", 1)[0]
+    for argument in (
+        "127.0.0.1:8000:8000",
+        "--read-only",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--cpus=0.5",
+        "--memory=512m",
+        "--pids-limit=64",
+        "--stop-timeout=5",
+    ):
+        assert argument in run
