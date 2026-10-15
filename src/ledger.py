@@ -256,6 +256,7 @@ class Ledger:
 
     def __init__(self, path):
         self.path = Path(path)
+        self._read_only = False
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self._connection() as connection:
             connection.executescript(
@@ -284,18 +285,83 @@ class Ledger:
             if connection.execute("SELECT version FROM metadata").fetchall() != [(1,)]:
                 raise ValueError("unsupported ledger schema")
 
+    @classmethod
+    def open_readonly(cls, path):
+        """Open existing rollback journal storage without initializing anything."""
+        ledger = cls.__new__(cls)
+        ledger.path = Path(path).resolve()
+        ledger._read_only = True
+        with ledger._connection() as connection:
+            ledger._validate_schema(connection)
+        return ledger
+
+    @staticmethod
+    def _validate_schema(connection):
+        expected = {
+            "metadata": [("version", "INTEGER", 1, 0)],
+            "events": [
+                ("seq", "INTEGER", 0, 1),
+                ("event_id", "TEXT", 1, 0),
+                ("idempotency_key", "TEXT", 1, 0),
+                ("kind", "TEXT", 1, 0),
+                ("issuance_id", "TEXT", 1, 0),
+                ("payload", "TEXT", 1, 0),
+                ("payload_id", "TEXT", 1, 0),
+                ("recorded_at", "TEXT", 1, 0),
+            ],
+        }
+        for table, columns in expected.items():
+            actual = connection.execute(f"PRAGMA table_info({table})").fetchall()
+            if [(row[1], row[2], row[3], row[5]) for row in actual] != columns:
+                raise ValueError("unsupported ledger schema")
+        if connection.execute("SELECT version FROM metadata").fetchall() != [(1,)]:
+            raise ValueError("unsupported ledger schema")
+        unique_columns = {
+            tuple(
+                row[0]
+                for row in connection.execute(
+                    "SELECT name FROM pragma_index_info(?) ORDER BY seqno", (index[0],)
+                )
+            )
+            for index in connection.execute(
+                "SELECT name FROM pragma_index_list('events') "
+                'WHERE "unique"=1 AND partial=0'
+            )
+        }
+        if not {("event_id",), ("idempotency_key",)} <= unique_columns:
+            raise ValueError("unsupported ledger schema")
+
     @contextmanager
     def _connection(self):
-        connection = sqlite3.connect(self.path, timeout=10, isolation_level=None)
+        if self._read_only:
+            # WAL readers can create shared memory files. Refuse that format before
+            # SQLite opens storage. The supported writer uses DELETE journals.
+            with self.path.open("rb") as stream:
+                header = stream.read(20)
+            if header[:16] != b"SQLite format 3\x00" or header[18:20] != b"\x01\x01":
+                raise ValueError("read only review requires rollback journal storage")
+            connection = sqlite3.connect(
+                self.path.as_uri() + "?mode=ro",
+                uri=True,
+                timeout=10,
+                isolation_level=None,
+            )
+        else:
+            connection = sqlite3.connect(self.path, timeout=10, isolation_level=None)
         try:
-            connection.execute("PRAGMA synchronous=FULL")
-            connection.execute("PRAGMA journal_mode=DELETE")
+            if self._read_only:
+                connection.execute("PRAGMA query_only=ON")
+            else:
+                connection.execute("PRAGMA synchronous=FULL")
+                connection.execute("PRAGMA journal_mode=DELETE")
             yield connection
         finally:
             connection.close()
 
     def append(self, kind, key, payload):
         """Return the original event on exact retry, reject conflicting retries."""
+        if self._read_only:
+            raise ValueError("read only ledger cannot append events")
         _text(key, "idempotency key")
         if kind not in ("issuance", "observation", "correction"):
             raise ValueError("unknown event kind")
@@ -356,6 +422,80 @@ class Ledger:
                 raise
         return event_id
 
+    def review_observation(self, key, payload):
+        """Check one snapshot without reserving a key or recording an event.
+
+        This assessment also rechecks restored observation sources and values at
+        their retained recording clocks. The historical reader is unchanged.
+        A later append must still perform its own admission in a write transaction.
+        """
+        if not self._read_only:
+            raise ValueError("observation review requires Ledger.open_readonly")
+        assessment = {"recorded": False, "reserves_key": False}
+        try:
+            _text(key, "idempotency key")
+            if not isinstance(payload, dict):
+                raise ValueError("record must be an object")
+            encoded = json.dumps(
+                payload, sort_keys=True, separators=(",", ":"), allow_nan=False
+            )
+            if len(encoded.encode()) > MAX_RECORD_BYTES:
+                raise ValueError("record exceeds 64 KiB")
+            payload = json.loads(encoded)
+            payload_id = digest(payload)
+            with self._connection() as connection:
+                connection.execute("BEGIN")
+                self._validate_schema(connection)
+                events = self._read_events(connection)
+                # Restored history must also satisfy original source admission.
+                # Keep the established events/view/export contract unchanged.
+                issuances = {
+                    event["event_id"]: event["payload"]
+                    for event in events
+                    if event["kind"] == "issuance"
+                }
+                for event in events:
+                    if event["kind"] == "observation":
+                        self._validate_observation(
+                            event["payload"],
+                            issuances[event["issuance_id"]],
+                            _time(event["recorded_at"]),
+                        )
+                    elif event["kind"] == "correction":
+                        _text(event["payload"].get("reason"), "correction reason")
+                    elif event["kind"] != "issuance":
+                        raise ValueError("unknown saved event kind")
+                assessment.update(snapshot_id=digest(events), event_count=len(events))
+                previous = connection.execute(
+                    "SELECT event_id, kind, payload_id FROM events "
+                    "WHERE idempotency_key=?",
+                    (key,),
+                ).fetchone()
+                if previous:
+                    if previous[1:] != ("observation", payload_id):
+                        raise ValueError("idempotency key has incompatible contents")
+                    return {
+                        **assessment,
+                        "status": "exact_retry",
+                        "existing_event_id": previous[0],
+                    }
+                issuance = issuances.get(payload.get("issuance_id"))
+                if issuance is None:
+                    raise ValueError("unknown original issuance")
+                self._validate_linked(
+                    connection, "observation", payload, issuance, datetime.now(UTC)
+                )
+            return {**assessment, "status": "admissible"}
+        except (
+            OSError,
+            sqlite3.Error,
+            ValueError,
+            TypeError,
+            OverflowError,
+            KeyError,
+        ) as error:
+            return {**assessment, "status": "rejected", "reason": str(error)}
+
     @staticmethod
     def _validate_linked(connection, kind, payload, issuance, clock):
         if not isinstance(payload, dict):
@@ -375,6 +515,28 @@ class Ledger:
             ):
                 raise ValueError("correction target does not match the issuance")
             return
+        Ledger._validate_observation(payload, issuance, clock)
+        if payload["vintage_kind"] == "unavailable":
+            return
+        earlier = connection.execute(
+            "SELECT event_id, payload FROM events "
+            "WHERE issuance_id=? AND kind='observation'",
+            (payload["issuance_id"],),
+        ).fetchall()
+        excluded = {
+            json.loads(row[0])["target_event_id"]
+            for row in connection.execute(
+                "SELECT payload FROM events WHERE issuance_id=? AND kind='correction'",
+                (payload["issuance_id"],),
+            ).fetchall()
+        }
+        Ledger._validate_observation_history(
+            payload, [(row[0], json.loads(row[1])) for row in earlier], excluded
+        )
+
+    @staticmethod
+    def _validate_observation(payload, issuance, clock):
+        """Share source, value and chronology admission with saved history review."""
         for name in ("series", "units", "target_month"):
             if payload.get(name) != issuance[name]:
                 raise ValueError("observation does not reconcile with issuance")
@@ -397,21 +559,6 @@ class Ledger:
             return
         _number(payload.get("value"))
         _hash(payload.get("sha256"), "outcome SHA256")
-        earlier = connection.execute(
-            "SELECT event_id, payload FROM events "
-            "WHERE issuance_id=? AND kind='observation'",
-            (payload["issuance_id"],),
-        ).fetchall()
-        excluded = {
-            json.loads(row[0])["target_event_id"]
-            for row in connection.execute(
-                "SELECT payload FROM events WHERE issuance_id=? AND kind='correction'",
-                (payload["issuance_id"],),
-            ).fetchall()
-        }
-        Ledger._validate_observation_history(
-            payload, [(row[0], json.loads(row[1])) for row in earlier], excluded
-        )
 
     @staticmethod
     def _validate_outcome_publication(payload, issuance):
@@ -459,7 +606,10 @@ class Ledger:
     def events(self):
         """Read a consistent snapshot and verify identities and earlier links."""
         with self._connection() as connection:
-            rows = connection.execute("SELECT * FROM events ORDER BY seq").fetchall()
+            return self._read_events(connection)
+
+    def _read_events(self, connection):
+        rows = connection.execute("SELECT * FROM events ORDER BY seq").fetchall()
         result, earlier = [], {}
         for (
             seq,
@@ -756,12 +906,38 @@ class Ledger:
             raise
 
 
+def _review_record(path):
+    """Bound candidate input and refuse ambiguous duplicate object keys."""
+
+    def unique_object(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError(f"duplicate record field: {key}")
+            result[key] = value
+        return result
+
+    with path.open("rb") as stream:
+        encoded = stream.read(MAX_RECORD_BYTES + 1)
+    if len(encoded) > MAX_RECORD_BYTES:
+        raise ValueError("record exceeds 64 KiB")
+    return json.loads(encoded, object_pairs_hook=unique_object)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--db", type=Path, required=True)
     sub = parser.add_subparsers(dest="command", required=True)
-    for command in ("issuance", "observation", "correction"):
+    for command in ("issuance", "observation", "correction", "review-observation"):
         action = sub.add_parser(command)
+        if command == "review-observation":
+            action.description = (
+                "Assess one saved ledger snapshot without recording an event or "
+                "reserving a key. Saved observation sources and values are also "
+                "rechecked at their original recording clocks. A later append "
+                "performs its own admission. Exact publication timing is required "
+                "for an observed value. Date only evidence remains outside the ledger."
+            )
         action.add_argument("--key", required=True)
         action.add_argument("--record", type=Path, required=True)
     export = sub.add_parser("export")
@@ -772,6 +948,21 @@ def main():
         default="first_release",
     )
     args = parser.parse_args()
+    if args.command == "review-observation":
+        try:
+            ledger = Ledger.open_readonly(args.db)
+            result = ledger.review_observation(args.key, _review_record(args.record))
+        except (OSError, sqlite3.Error, ValueError) as error:
+            result = {
+                "status": "rejected",
+                "reason": str(error),
+                "recorded": False,
+                "reserves_key": False,
+            }
+        print(json.dumps(result, sort_keys=True, allow_nan=False))
+        if result["status"] == "rejected":
+            raise SystemExit(2)
+        return
     ledger = Ledger(args.db)
     if args.command == "export":
         ledger.export(args.output, outcome_policy=args.outcome_policy)
