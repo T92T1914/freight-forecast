@@ -6,8 +6,11 @@ import sqlite3
 import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import closing
 from copy import deepcopy
 from datetime import UTC, datetime, timedelta
+from pathlib import Path
+from threading import Event
 
 import pytest
 
@@ -78,6 +81,486 @@ def observation(issuance_id, *, vintage="first_release", value=130, predecessor=
             "publication_basis": "Synthetic publication fixture",
         },
     }
+
+
+def _storage_bytes(directory):
+    return {
+        path.name: path.read_bytes() for path in directory.iterdir() if path.is_file()
+    }
+
+
+def test_readonly_review_preserves_database_and_creates_no_sidecars(
+    tmp_path, monkeypatch
+):
+    path = tmp_path / "ledger #1.sqlite"
+    writer = Ledger(path)
+    issued = writer.append("issuance", "original", issuance())
+    expected = writer.events()
+    before = _storage_bytes(tmp_path)
+    statements, connections = [], []
+    connect = sqlite3.connect
+
+    def traced_connect(*args, **kwargs):
+        assert kwargs.get("uri") is True
+        assert args[0].endswith("?mode=ro")
+        connection = connect(*args, **kwargs)
+        connection.set_trace_callback(statements.append)
+        connections.append(connection)
+        return connection
+
+    with monkeypatch.context() as patch:
+        patch.setattr("src.ledger.sqlite3.connect", traced_connect)
+        reader = Ledger.open_readonly(path)
+        assert reader.review_observation("candidate", observation(issued)) == {
+            "status": "admissible",
+            "snapshot_id": digest(expected),
+            "event_count": 1,
+            "recorded": False,
+            "reserves_key": False,
+        }
+        assert reader.events() == expected
+        with reader._connection() as connection:
+            # Even removing the local query guard cannot enable a database write.
+            connection.execute("PRAGMA query_only=OFF")
+            with pytest.raises(sqlite3.OperationalError, match="readonly"):
+                connection.execute("INSERT INTO metadata VALUES(1)")
+        with pytest.raises(ValueError, match="cannot append"):
+            reader.append("observation", "candidate", observation(issued))
+        with pytest.raises(ValueError, match="requires Ledger.open_readonly"):
+            writer.review_observation("candidate", observation(issued))
+
+    assert _storage_bytes(tmp_path) == before
+    assert len(writer.events()) == 1
+    assert "BEGIN" in statements
+    assert not any(
+        sql.startswith(("CREATE", "PRAGMA synchronous", "PRAGMA journal_mode"))
+        for sql in statements
+    )
+    for connection in connections:
+        with pytest.raises(sqlite3.ProgrammingError, match="closed"):
+            connection.execute("SELECT 1")
+
+
+@pytest.mark.parametrize("variant", ["missing", "empty", "schema", "version", "wal"])
+def test_readonly_opener_refuses_storage_without_creating_or_repairing_it(
+    tmp_path, variant
+):
+    path = tmp_path / "not-created" / "ledger.sqlite"
+    if variant != "missing":
+        path.parent.mkdir()
+        if variant == "empty":
+            path.write_bytes(b"")
+        elif variant == "schema":
+            with closing(sqlite3.connect(path)) as connection:
+                connection.execute("CREATE TABLE metadata(version INTEGER)")
+        else:
+            Ledger(path)
+            if variant == "version":
+                with closing(sqlite3.connect(path)) as connection:
+                    connection.execute("INSERT INTO metadata VALUES(1)")
+                    connection.commit()
+            else:
+                with closing(sqlite3.connect(path)) as connection:
+                    assert connection.execute("PRAGMA journal_mode=WAL").fetchone() == (
+                        "wal",
+                    )
+    before = {
+        str(file.relative_to(tmp_path)): file.read_bytes()
+        for file in tmp_path.rglob("*")
+        if file.is_file()
+    }
+    with pytest.raises((OSError, ValueError, sqlite3.Error)):
+        Ledger.open_readonly(path)
+    assert {
+        str(file.relative_to(tmp_path)): file.read_bytes()
+        for file in tmp_path.rglob("*")
+        if file.is_file()
+    } == before
+    if variant == "missing":
+        assert not path.parent.exists()
+
+
+@pytest.mark.parametrize("classification", ["forecast", "elapsed_period_nowcast"])
+@pytest.mark.parametrize(
+    ("published", "expected"),
+    [
+        (None, "rejected"),
+        ("2026-01-16", "rejected"),
+        ("2026-01-15T11:59:59+00:00", "rejected"),
+        ("2026-01-15T12:00:00+00:00", "rejected"),
+        ("2026-01-15T06:00:00-06:00", "rejected"),
+        ("2026-01-15T06:00:00.000001-06:00", "admissible"),
+    ],
+)
+def test_review_retains_exact_publication_clock_contract(
+    tmp_path, record_clock, classification, published, expected
+):
+    ledger = Ledger(tmp_path / "review.sqlite")
+    issued, target = _real_clock_fixture(ledger, record_clock, classification)
+    payload = _clock_outcome(issued, target, published)
+    before = _storage_bytes(tmp_path)
+    result = Ledger.open_readonly(ledger.path).review_observation("candidate", payload)
+    assert result["status"] == expected
+    assert "existing_event_id" not in result
+    if expected == "rejected":
+        with pytest.raises(ValueError):
+            ledger.append("observation", "candidate", payload)
+    assert _storage_bytes(tmp_path) == before
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "reason"),
+    [
+        ("series", "unrelated", "does not reconcile"),
+        ("units", "shipments", "does not reconcile"),
+        ("target_month", "2026-03", "does not reconcile"),
+        ("issuance_id", "f" * 64, "unknown original"),
+        ("value", float("inf"), "JSON"),
+        ("sha256", "not a digest", "SHA256"),
+    ],
+)
+def test_review_rejects_incompatible_or_nonfinite_candidate(
+    tmp_path, field, value, reason
+):
+    ledger = Ledger(tmp_path / "review.sqlite")
+    issued = ledger.append("issuance", "original", issuance())
+    payload = observation(issued)
+    payload[field] = value
+    before = _storage_bytes(tmp_path)
+    result = Ledger.open_readonly(ledger.path).review_observation("candidate", payload)
+    assert result["status"] == "rejected"
+    assert reason in result["reason"]
+    assert _storage_bytes(tmp_path) == before
+
+
+@pytest.mark.parametrize(
+    "source_change",
+    [
+        {"retrieved_at": "2026-01-21T12:00:00+00:00"},
+        {"published_at": "2026-01-20T12:00:01+00:00"},
+        {"publication_verified": False},
+        {"availability_receipt": {}},
+    ],
+)
+def test_review_uses_original_source_admission(tmp_path, record_clock, source_change):
+    ledger = Ledger(tmp_path / "review.sqlite")
+    issued, target = _real_clock_fixture(ledger, record_clock, "forecast")
+    payload = _clock_outcome(issued, target, "2026-01-16T12:00:00+00:00")
+    payload["source"].update(source_change)
+    before = _storage_bytes(tmp_path)
+    assert (
+        Ledger.open_readonly(ledger.path).review_observation("candidate", payload)[
+            "status"
+        ]
+        == "rejected"
+    )
+    with pytest.raises(ValueError):
+        ledger.append("observation", "candidate", payload)
+    assert _storage_bytes(tmp_path) == before
+
+
+def test_review_exact_retry_precedes_new_clock_admission_but_recapture_conflicts(
+    tmp_path, record_clock
+):
+    ledger = Ledger(tmp_path / "retry.sqlite")
+    issued, target = _real_clock_fixture(ledger, record_clock, "forecast")
+    payload = _clock_outcome(issued, target, "2026-01-16T12:00:00+00:00")
+    original = ledger.append("observation", "saved-key", payload)
+    reader = Ledger.open_readonly(ledger.path)
+    before = _storage_bytes(tmp_path)
+    record_clock.current -= timedelta(days=1)
+    assert reader.review_observation("saved-key", deepcopy(payload)) == {
+        "status": "exact_retry",
+        "existing_event_id": original,
+        "snapshot_id": digest(ledger.events()),
+        "event_count": 2,
+        "recorded": False,
+        "reserves_key": False,
+    }
+    # A recapture keeps the value but changes the complete saved payload.
+    recapture = deepcopy(payload)
+    recapture["source"]["retrieved_at"] = "2026-01-20T12:00:01+00:00"
+    result = reader.review_observation("saved-key", recapture)
+    assert result["status"] == "rejected"
+    assert "incompatible contents" in result["reason"]
+    same_instant = deepcopy(payload)
+    same_instant["source"]["published_at"] = "2026-01-16T06:00:00-06:00"
+    assert reader.review_observation("saved-key", same_instant)["status"] == "rejected"
+    assert reader.review_observation("new-key", payload)["status"] == "rejected"
+    assert reader.review_observation("original", payload)["status"] == "rejected"
+    assert _storage_bytes(tmp_path) == before
+
+
+@pytest.mark.parametrize("damage", ["link", "source", "retrieval", "identity"])
+def test_review_refuses_invalid_restored_history_even_for_exact_retry(tmp_path, damage):
+    ledger = Ledger(tmp_path / "restore.sqlite")
+    issued = ledger.append("issuance", "original", issuance())
+    saved_payload = observation(issued)
+    saved = ledger.append("observation", "saved-key", saved_payload)
+    restored = observation(issued, vintage="revision", predecessor=saved)
+    if damage == "link":
+        restored["supersedes_event_id"] = "f" * 64
+    elif damage == "source":
+        restored["source"]["published_at"] = "2026-02-01"
+    elif damage == "retrieval":
+        restored["source"]["retrieved_at"] = "2026-03-03T12:00:00+00:00"
+    with ledger._connection() as connection:
+        _restore_event(
+            connection,
+            seq=3,
+            key="invalid-history",
+            kind="observation",
+            payload=restored,
+            issuance_id=issued,
+        )
+        if damage == "identity":
+            connection.execute("DROP TRIGGER no_update")
+            connection.execute(
+                "UPDATE events SET payload_id=? WHERE seq=3", ("f" * 64,)
+            )
+    before = _storage_bytes(tmp_path)
+    result = Ledger.open_readonly(ledger.path).review_observation(
+        "saved-key", saved_payload
+    )
+    assert result["status"] == "rejected"
+    assert "existing_event_id" not in result
+    assert _storage_bytes(tmp_path) == before
+
+
+def test_review_revision_correction_and_first_release_rules_match_append(tmp_path):
+    ledger = Ledger(tmp_path / "history.sqlite")
+    issued = ledger.append("issuance", "original", issuance())
+    first_payload = observation(issued)
+    first = ledger.append("observation", "first", first_payload)
+    reader = Ledger.open_readonly(ledger.path)
+    assert reader.review_observation("duplicate", first_payload)["status"] == "rejected"
+    for publication, expected in [
+        ("2026-02-01T11:59:59+00:00", "rejected"),
+        ("2026-02-01T06:00:00-06:00", "admissible"),
+        ("2026-03-01T12:00:00+00:00", "admissible"),
+    ]:
+        revision = observation(issued, vintage="revision", value=140, predecessor=first)
+        revision["source"].update(
+            published_at=publication, retrieved_at="2026-03-02T12:00:00+00:00"
+        )
+        assert reader.review_observation("revision", revision)["status"] == expected
+    revised = ledger.append("observation", "revision", revision)
+    ledger.append(
+        "correction",
+        "exclude-first",
+        {
+            "issuance_id": issued,
+            "target_event_id": first,
+            "action": "exclude_from_evaluation",
+            "reason": "Synthetic correction control",
+        },
+    )
+    corrected = observation(issued, value=135, predecessor=first)
+    before = _storage_bytes(tmp_path)
+    assessment = reader.review_observation("corrected", corrected)
+    assert assessment["status"] == "admissible"
+    assert assessment["snapshot_id"] == digest(reader.events())
+    assert reader.events() == ledger.events()
+    assert reader.view()["summaries"]["synthetic_fixture"]["scored_targets"] == 0
+    assert (
+        reader.view(outcome_policy="latest_available")["rows"][0]["outcome"]["event_id"]
+        == revised
+    )
+    assert _storage_bytes(tmp_path) == before
+    ledger.append("observation", "corrected", corrected)
+    assert reader.view()["cohorts"][0]["mae"]["prediction"] == 35
+
+
+@pytest.mark.parametrize(
+    "outcome", ["admissible", "exact_retry", "rejected", "missing"]
+)
+def test_review_cli_reports_status_without_recording_events(tmp_path, outcome):
+    path = tmp_path / "ledger.sqlite"
+    ledger = Ledger(path)
+    issued = ledger.append("issuance", "original", issuance())
+    payload = observation(issued)
+    event = None
+    if outcome == "exact_retry":
+        event = ledger.append("observation", "candidate", payload)
+    if outcome == "rejected":
+        payload["source"]["published_at"] = "2026-02-01"
+    record = tmp_path / "candidate.json"
+    record.write_text(json.dumps(payload), encoding="utf-8")
+    before = _storage_bytes(tmp_path)
+    destination = (
+        path if outcome != "missing" else tmp_path / "missing" / "ledger.sqlite"
+    )
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-B",
+            "-m",
+            "src.ledger",
+            "--db",
+            str(destination),
+            "review-observation",
+            "--key",
+            "candidate",
+            "--record",
+            str(record),
+        ],
+        capture_output=True,
+        timeout=15,
+        check=False,
+    )
+    review = json.loads(result.stdout)
+    assert review["status"] == ("rejected" if outcome == "missing" else outcome)
+    assert result.returncode == (2 if outcome in ("missing", "rejected") else 0)
+    assert result.stderr == b""
+    if event:
+        assert review["existing_event_id"] == event
+    else:
+        assert "existing_event_id" not in review
+    assert _storage_bytes(tmp_path) == before
+    assert not (tmp_path / "missing").exists()
+
+
+def test_review_snapshot_does_not_reserve_a_key_against_later_append(
+    tmp_path, monkeypatch
+):
+    ledger = Ledger(tmp_path / "snapshot.sqlite")
+    issued = ledger.append("issuance", "original", issuance())
+    candidate = observation(issued)
+    reader = Ledger.open_readonly(ledger.path)
+    original_events = reader.events()
+    read_events = reader._read_events
+    commit_started = Event()
+    connect = sqlite3.connect
+
+    def traced_connect(*args, **kwargs):
+        connection = connect(*args, **kwargs)
+        if not kwargs.get("uri"):
+            connection.set_trace_callback(
+                lambda sql: commit_started.set() if sql == "COMMIT" else None
+            )
+        return connection
+
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        pending = []
+
+        def concurrent_append(connection):
+            events = read_events(connection)
+            pending.append(
+                pool.submit(ledger.append, "observation", "candidate", candidate)
+            )
+            assert commit_started.wait(3), "independent writer never reached commit"
+            try:
+                pending[0].result(timeout=0.5)
+            except TimeoutError:
+                pass
+            else:
+                raise AssertionError(
+                    "writer committed between history and candidate queries"
+                )
+            return events
+
+        monkeypatch.setattr("src.ledger.sqlite3.connect", traced_connect)
+        monkeypatch.setattr(reader, "_read_events", concurrent_append)
+        result = reader.review_observation("candidate", candidate)
+        assert result["status"] == "admissible"
+        assert result["snapshot_id"] == digest(original_events)
+        assert result["event_count"] == 1
+        assert result["reserves_key"] is False
+        written = pending[0].result(timeout=3)
+
+    monkeypatch.setattr(reader, "_read_events", read_events)
+    result = reader.review_observation("candidate", candidate)
+    assert result["status"] == "exact_retry"
+    assert result["existing_event_id"] == written
+    assert result["snapshot_id"] != digest(original_events)
+
+
+@pytest.mark.parametrize("variant", ["duplicate", "large", "malformed", "missing"])
+def test_review_cli_refuses_invalid_record_without_storage_changes(tmp_path, variant):
+    ledger = Ledger(tmp_path / "ledger.sqlite")
+    ledger.append("issuance", "original", issuance())
+    record = tmp_path / "record.json"
+    if variant == "duplicate":
+        record.write_bytes(
+            b'{"source":{"published_at":null,"published_at":"2026-01-01"}}'
+        )
+    elif variant == "large":
+        record.write_bytes(b" " * (65536 + 1))
+    elif variant == "malformed":
+        record.write_bytes(b"{not json}")
+    before = _storage_bytes(tmp_path)
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-B",
+            "-m",
+            "src.ledger",
+            "--db",
+            str(ledger.path),
+            "review-observation",
+            "--key",
+            "candidate",
+            "--record",
+            str(record),
+        ],
+        capture_output=True,
+        timeout=15,
+        check=False,
+    )
+    assert result.returncode == 2
+    assessment = json.loads(result.stdout)
+    assert assessment["status"] == "rejected"
+    assert assessment["recorded"] is False
+    assert assessment["reserves_key"] is False
+    assert _storage_bytes(tmp_path) == before
+
+
+def test_unchanged_public_fixture_is_accepted_as_saved_readonly_history(tmp_path):
+    fixture_path = Path(__file__).resolve().parents[1] / "docs" / "ledger-fixture.json"
+    fixture_bytes = fixture_path.read_bytes()
+    fixture = json.loads(fixture_bytes)
+    writer = Ledger(tmp_path / "public-fixture.sqlite")
+    with writer._connection() as connection:
+        for event in fixture["events"]:
+            connection.execute(
+                "INSERT INTO events VALUES(?,?,?,?,?,?,?,?)",
+                (
+                    event["seq"],
+                    event["event_id"],
+                    event["idempotency_key"],
+                    event["kind"],
+                    event["issuance_id"],
+                    json.dumps(event["payload"]),
+                    event["payload_id"],
+                    event["recorded_at"],
+                ),
+            )
+    reader = Ledger.open_readonly(writer.path)
+    before = _storage_bytes(tmp_path)
+    assert reader.view() == fixture
+    for event in fixture["events"]:
+        if event["kind"] == "observation":
+            review = reader.review_observation(
+                event["idempotency_key"], event["payload"]
+            )
+            assert review["status"] == "exact_retry"
+            assert review["existing_event_id"] == event["event_id"]
+            assert review["snapshot_id"] == digest(fixture["events"])
+    assert _storage_bytes(tmp_path) == before
+    assert fixture_path.read_bytes() == fixture_bytes
+
+
+def test_readonly_export_keeps_database_alias_and_sidecar_guards(tmp_path):
+    writer = Ledger(tmp_path / "ledger.sqlite")
+    writer.append("issuance", "original", issuance())
+    reader = Ledger.open_readonly(writer.path)
+    alias = tmp_path / "alias.json"
+    os.link(writer.path, alias)
+    before = _storage_bytes(tmp_path)
+    for destination in (alias, writer.path, str(writer.path) + "-journal"):
+        with pytest.raises(ValueError, match="conflicts with ledger storage"):
+            reader.export(destination)
+    assert _storage_bytes(tmp_path) == before
 
 
 def test_exact_retry_and_conflict_survive_restart(tmp_path):
