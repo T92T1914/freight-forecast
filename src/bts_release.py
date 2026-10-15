@@ -454,6 +454,7 @@ def capture_release(url, output, *, clock=lambda: datetime.now(UTC), open_url=No
             url,
             headers={
                 "User-Agent": "FreightForecastReleaseCapture/1.0",
+                "Accept": "text/html",
                 "Accept-Encoding": "identity",
             },
         )

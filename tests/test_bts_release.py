@@ -254,6 +254,26 @@ def test_capture_hashes_the_original_buffer_and_does_not_relabel_http_clocks(tmp
     assert "published_at" not in receipt and "published_at" not in facts
 
 
+def test_capture_requests_html_with_the_declared_agent_and_identity_encoding(tmp_path):
+    requests = []
+
+    def open_url(request, *, timeout):
+        requests.append(request.full_url)
+        assert request.get_method() == "GET"
+        assert timeout == release.TIMEOUT_SECONDS
+        assert {name.lower(): value for name, value in request.header_items()} == {
+            "user-agent": "FreightForecastReleaseCapture/1.0",
+            "accept": "text/html",
+            "accept-encoding": "identity",
+        }
+        return Response()
+
+    release.capture_release(
+        URL, tmp_path / "capture", clock=lambda: NOW, open_url=open_url
+    )
+    assert requests == [URL]
+
+
 @pytest.mark.parametrize(
     "field,value",
     [
