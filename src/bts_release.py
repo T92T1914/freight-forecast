@@ -6,6 +6,7 @@ import math
 import os
 import re
 import time
+from contextlib import suppress
 from datetime import UTC, datetime, timedelta, timezone
 from html.parser import HTMLParser
 from http.client import IncompleteRead
@@ -37,6 +38,8 @@ MAX_ELEMENTS = 30000
 MAX_DEPTH = 64
 TIMEOUT_SECONDS = 15
 MAX_REDIRECTS = 2
+MAX_METADATA_LEADS = 32
+MAX_METADATA_TEXT = 2048
 REPRESENTATION = "HTTP entity body bytes after transfer framing, no decompression"
 LIMITATION = (
     "This checks declared consistency, not the truth of a manual declaration or "
@@ -201,6 +204,120 @@ class _Document(HTMLParser):
     def handle_data(self, data):
         if data.strip():
             self.stack[-1].children.append(data.strip())
+
+
+class _MetadataDocument(_Document):
+    """Locate inert script data in the original decoded source, without trimming."""
+
+    def __init__(self, source):
+        super().__init__()
+        self.source = source
+        self.locations, self.starts, self.ends, self.closed = {}, {}, {}, {}
+        self.position_line, self.line_start = 1, 0
+
+    def _offset(self):
+        line, column = self.getpos()
+        while self.position_line < line:
+            self.line_start = self.source.index("\n", self.line_start) + 1
+            self.position_line += 1
+        return self.line_start + column
+
+    def handle_starttag(self, tag, attrs):
+        super().handle_starttag(tag, attrs)
+        node = self.elements[-1]
+        line, column = self.getpos()
+        self.locations[node] = (line, column + 1)
+        if tag in ("script", "style"):
+            self.starts[node] = self._offset() + len(self.get_starttag_text())
+
+    def handle_endtag(self, tag):
+        node = next((node for node in reversed(self.stack) if node.tag == tag), None)
+        if node is not None:
+            self.closed[node] = "end_tag"
+            if node in self.starts:
+                self.ends[node] = self._offset()
+        super().handle_endtag(tag)
+
+    def handle_startendtag(self, tag, attrs):
+        self.handle_starttag(tag, attrs)
+        node = self.elements[-1]
+        self.closed[node] = "self_closing_tag"
+        if node in self.starts:
+            self.ends[node] = self.starts[node]
+        _Document.handle_endtag(self, tag)
+
+    def metadata(self):
+        leads, counts = [], {"jsonld_script": 0, "meta": 0, "time": 0}
+        empty_scripts = whitespace_scripts = unclosed_leads = 0
+        for node in self.elements:
+            kind, text, representation = None, None, "decoded HTML attributes"
+            closure = self.closed.get(node)
+            if node.tag == "script" and node.attrs.get("type") == "application/ld+json":
+                kind = "jsonld_script"
+                text = self.source[
+                    self.starts[node] : self.ends.get(node, len(self.source))
+                ]
+                representation = (
+                    "untrimmed UTF-8 decoded script data, no entity expansion"
+                )
+                empty_scripts += text == ""
+                whitespace_scripts += bool(text) and not text.strip()
+            elif node.tag == "time":
+                kind, text = "time", node.text()
+                representation = "normalized visible text with HTML references decoded"
+            elif node.tag == "meta":
+                name = node.attrs.get("name", node.attrs.get("property", ""))
+                if re.search(r"date|time|publish|modified", name, re.I):
+                    kind, closure = "meta", "void_tag"
+            if kind is None:
+                continue
+            counts[kind] += 1
+            unclosed_leads += closure is None
+            if len(leads) < MAX_METADATA_LEADS:
+                line, column = self.locations[node]
+                leads.append(
+                    {
+                        "kind": kind,
+                        "order": sum(counts.values()),
+                        "line": line,
+                        "column": column,
+                        "attributes": node.attrs,
+                        "text": text[:MAX_METADATA_TEXT] if text is not None else None,
+                        "text_representation": representation,
+                        "text_characters": len(text) if text is not None else None,
+                        "text_truncated": text is not None
+                        and len(text) > MAX_METADATA_TEXT,
+                        "empty": text == "" if text is not None else None,
+                        "whitespace_only": bool(text) and not text.strip()
+                        if text is not None
+                        else None,
+                        "closed": closure is not None,
+                        "closure": closure or "end_of_input_or_implicit_parent_close",
+                    }
+                )
+        unclosed_raw = len(self.starts.keys() - self.ends.keys())
+        complete = unclosed_raw == 0 and unclosed_leads == 0
+        total = sum(counts.values())
+        return {
+            "leads": leads,
+            "lead_counts": counts,
+            "recognized_lead_count": total,
+            "retained_lead_count": len(leads),
+            "omitted_lead_count": total - len(leads),
+            "truncated_preview_count": sum(lead["text_truncated"] for lead in leads),
+            "empty_jsonld_script_count": empty_scripts,
+            "whitespace_only_jsonld_script_count": whitespace_scripts,
+            "unclosed_lead_count": unclosed_leads,
+            "unclosed_script_or_style_count": unclosed_raw,
+            "elements_scanned": len(self.elements),
+            "scan_complete": complete,
+            "jsonld_presence": "present"
+            if counts["jsonld_script"]
+            else ("absent" if complete else "undetermined_in_incomplete_scan"),
+            "previews_complete": complete
+            and total == len(leads)
+            and not any(lead["text_truncated"] for lead in leads),
+        }
 
 
 def inspect_release(raw, url):
@@ -550,8 +667,20 @@ def capture_release(url, output, *, clock=lambda: datetime.now(UTC), open_url=No
 
 def load_capture(path):
     """Recheck saved capture identities and reparse the same retained bytes."""
+    receipt, facts, _ = _capture_buffers(path)
+    return receipt, facts
+
+
+def _capture_buffers(path):
+    """Keep the exact buffers that passed the established capture validation."""
     path = Path(path)
-    receipt = _json(_read(path / "capture.json", MAX_JSON_BYTES))
+    buffers = {}
+
+    def retained(name, maximum):
+        buffers[name] = _read(path / name, maximum)
+        return buffers[name]
+
+    receipt = _json(retained("capture.json", MAX_JSON_BYTES))
     if not isinstance(receipt, dict):
         raise ValueError("capture receipt must be an object")
     expected = dict(receipt)
@@ -573,13 +702,106 @@ def load_capture(path):
         raise ValueError("capture URL identities conflict")
     if _time(receipt.get("retrieved_at")) < _time(receipt.get("started_at")):
         raise ValueError("capture clocks conflict")
-    raw = _read(path / "body.bin", MAX_BODY_BYTES)
+    raw = retained("body.bin", MAX_BODY_BYTES)
     if receipt.get("sha256") != _sha(raw) or receipt.get("bytes") != len(raw):
         raise ValueError("retained bulletin bytes do not match the capture")
     facts = inspect_release(raw, receipt["source_url"])
-    if _json(_read(path / "release.json", MAX_JSON_BYTES)) != facts:
+    if _json(retained("release.json", MAX_JSON_BYTES)) != facts:
         raise ValueError("saved bulletin facts differ from retained source bytes")
-    return receipt, facts
+    return receipt, facts, buffers
+
+
+def inspect_metadata(capture, output):
+    """Supplement supported legacy facts with bounded, unverified metadata leads."""
+    output = _new_output(output)
+    completion_attempted = False
+    details = {}
+    try:
+        receipt, facts, buffers = _capture_buffers(capture)
+        for value in (receipt, _json(buffers["release.json"])):
+            if (
+                type(value.get("schema_version")) is not int
+                or value["schema_version"] != 1
+            ):
+                raise ValueError(
+                    "metadata inspection supports legacy capture schema 1 only"
+                )
+        details["capture_id"] = receipt["capture_id"]
+        document = _MetadataDocument(
+            buffers["body.bin"].decode("utf-8", errors="strict")
+        )
+        document.feed(document.source)
+        document.close()
+        report = {
+            "schema_version": 1,
+            "kind": "supplemental_metadata_inspection",
+            "status": "unverified_metadata_inspection",
+            "canonical_contract": "legacy_release_facts_v1",
+            "capture_id": receipt["capture_id"],
+            "source_url": receipt["source_url"],
+            "source_files": {
+                name: {"sha256": _sha(raw), "bytes": len(raw)}
+                for name, raw in buffers.items()
+            },
+            "location_convention": (
+                "one based line and Unicode character column in UTF-8 decoded body"
+            ),
+            "order_convention": "one based recognized metadata order in the document",
+            "scan_scope": (
+                "HTMLParser meta/time elements and scripts with exact type "
+                "application/ld+json, not a browser DOM or every timestamp"
+            ),
+            "limits": {
+                "body_bytes": MAX_BODY_BYTES,
+                "elements": MAX_ELEMENTS,
+                "depth": MAX_DEPTH,
+                "start_tag_characters": 16384,
+                "retained_leads": MAX_METADATA_LEADS,
+                "text_characters_per_lead": MAX_METADATA_TEXT,
+                "output_bytes": MAX_JSON_BYTES,
+            },
+            "publication_verified": False,
+            "first_release_verified": False,
+            "json_validated": False,
+            "noncanonical": True,
+            "admission_performed": False,
+            "limitation": (
+                "This supplements the legacy canonical preview without changing it. "
+                "Metadata is inert unverified text, not publication or first release "
+                "proof. Previews may omit or truncate content and are not parsed "
+                "JSON objects. "
+                "No script, context or linked resource was executed or fetched."
+            ),
+            **document.metadata(),
+        }
+        encoded = (json.dumps(report, indent=2, allow_nan=False) + "\n").encode("utf-8")
+        if len(encoded) > MAX_JSON_BYTES:
+            raise ValueError("supplemental metadata exceeds the output byte bound")
+        _write(output / "metadata.partial.json", encoded)
+        if _capture_buffers(capture) != (receipt, facts, buffers):
+            raise ValueError("capture changed during metadata inspection")
+        completion_attempted = True
+        os.replace(output / "metadata.partial.json", output / "metadata.json")
+        return report
+    except BaseException as error:
+        if completion_attempted:
+            try:
+                (output / "metadata.json").unlink(missing_ok=True)
+            except BaseException as cleanup_error:
+                with suppress(BaseException):
+                    error.add_note(
+                        "owned metadata completion cleanup failed: "
+                        + str(cleanup_error)[:300]
+                    )
+        try:
+            _failed(output, error, details)
+        except BaseException as evidence_error:
+            with suppress(BaseException):
+                error.add_note(
+                    "metadata failure evidence could not be saved: "
+                    + str(evidence_error)[:300]
+                )
+        raise
 
 
 def _issuance(event):
