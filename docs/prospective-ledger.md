@@ -69,6 +69,9 @@ setting that label.
 
 ## Publication and the current BTS gap
 
+This example describes the retained September snapshot, not a live check of
+current BTS releases.
+
 The retained [snapshot manifest](../data/public/bts-freight-tsi-2026-09-24.json)
 covers January 2000 through July 2026. Its retrieval clock and dataset update
 clock do not establish the exact publication time of every value in that
@@ -91,6 +94,32 @@ Last observation beat the fitted model on that latest-vintage retrospective
 comparison. The [BTS revision policy](https://www.bts.gov/browse-statistical-products-and-data/transportation-economic-trends/revision-policy-tsi)
 also explains why today's revised historical values cannot be relabeled as
 past first releases.
+
+## Inspect a retained outcome bulletin
+
+`tools/capture_bts_release.py` can retain an official monthly bulletin and prepare
+a frozen candidate for separate ledger review. For a saved capture, inspect its
+metadata without another network request:
+
+```sh
+python tools/capture_bts_release.py inspect-metadata --capture reports/retained-bulletin --output reports/bulletin-metadata
+```
+
+Use an actual capture directory containing `body.bin`, `capture.json` and
+`release.json`, and a new output directory. The separate `metadata.json` report
+retains inert script text, source locations, original file hashes and preview
+limits. It leaves the canonical capture files and their identities unchanged.
+An empty, truncated or incomplete preview is labeled accordingly.
+
+These are unverified leads. A metadata timestamp does not establish publication,
+first-release value identity or admission. Candidate preparation still needs the
+existing explicit evidence gates. The supported `review-observation` ledger
+command checks the matching frozen `observation.json` payload from a complete
+candidate marked `ready_for_ledger_review`, without recording it or reserving its key.
+An exact retry reuses the saved payload and key. A new capture with a different
+retrieval clock is a different capture. See the command's `--help` for the
+capture and preparation arguments. None of these release-tool commands appends
+an observation.
 
 ## Local workflow
 
