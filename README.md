@@ -14,20 +14,27 @@ The training check fails if the model no longer beats that baseline on the
 included dataset, which also fails the container build. It does not establish
 how the model will perform on new operational data.
 
+A separate [BTS index study](docs/real-data-evaluation.md) favors last observation
+over the fitted model. Both comparisons are retained with their data and limits.
+
 [Results](#results-beat-same-month-last-year) |
 [Run it](#run-it) |
-[How the numbers were measured](#how-the-numbers-were-measured) |
-[Monthly backtest](docs/backtesting.md) |
-[What this does not do](#what-this-does-not-do) |
-[VERIFICATION.md](VERIFICATION.md)
+[Browser demo](https://t92t1914.github.io/freight-forecast/) |
+[Local service evidence](docs/local-service-qualification.md) |
+[Issuance ledger](docs/prospective-ledger.md) |
+[Limits](#what-this-does-not-do)
 
-![The provisioned Grafana dashboard under live traffic](docs/grafana-dashboard.png)
+<a href="docs/visual-example.md">
+  <picture>
+    <source media="(min-width: 1024px)" srcset="docs/freight-forecast-obscur-wide.png">
+    <img src="docs/freight-forecast-obscur.png" alt="Recorded synthetic shipments over 24 test months. Model mean absolute error is 226 moves per month versus 327 for the seasonal baseline. Each prediction uses prior observations." width="900">
+  </picture>
+</a>
 
-*The stack from `monitoring/docker-compose.yml`, twelve minutes of traffic
-against the container. Two request bursts on `/predict`, p95 latency steady
-around 8-9 ms, the `400` line showing out of range months being refused
-rather than answered, and the prediction histogram sitting in the 3,000-14,000
-moves/month band the model was trained on.*
+Obscur preview of the saved synthetic result. Open the Clair
+[wide](docs/freight-forecast-clair-wide.png) or
+[stacked](docs/freight-forecast-clair.png) image, or
+[inspect the values and SVG downloads](docs/visual-example.md).
 
 My time in Air Force logistics is why I chose this problem. Seasonal demand
 affects storage, staffing and carrier capacity, so I wanted to see whether a
@@ -103,16 +110,6 @@ curl http://127.0.0.1:8000/forecast-window
 [tests](tests/) → [deployment evidence](VERIFICATION.md).
 
 ## Results: beat "same month last year"
-
-<a href="docs/visual-example.md">
-  <picture>
-    <source media="(min-width: 1024px) and (prefers-color-scheme: dark)" srcset="docs/freight-forecast-obscur-wide.png">
-    <source media="(min-width: 1024px) and (prefers-color-scheme: light)" srcset="docs/freight-forecast-clair-wide.png">
-    <source media="(prefers-color-scheme: dark)" srcset="docs/freight-forecast-obscur.png">
-    <source media="(prefers-color-scheme: light)" srcset="docs/freight-forecast-clair.png">
-    <img src="docs/freight-forecast-clair.png" alt="Recorded synthetic shipments over 24 test months. Model mean absolute error is 226 moves per month versus 327 for the seasonal baseline. Each prediction uses prior observations." width="900">
-  </picture>
-</a>
 
 The model averages 226 moves of error per month, compared with 327 for the seasonal baseline. This is a chronological test on synthetic data, with prior observations available for each prediction.
 [Reproduce and inspect the values](docs/visual-example.md).
@@ -257,8 +254,8 @@ prediction histogram after a traffic burst.
                                         /health   /predict   /metrics <
 ```
 
-`/metrics` is scraped by Prometheus and drawn by the Grafana dashboard at the
-top of this page. `k8s/` runs the same image behind liveness and readiness
+`/metrics` is scraped by Prometheus and drawn by the Grafana dashboard in
+[Monitoring](#monitoring). `k8s/` runs the same image behind liveness and readiness
 probes.
 
 The gate is the part worth noticing: the model has to beat "same month last
@@ -328,6 +325,14 @@ adds a view of what the model is returning. A change in that distribution can
 be worth investigating, but it does not establish accuracy or detect every
 kind of drift without new observations.
 
+![The provisioned Grafana dashboard under live traffic](docs/grafana-dashboard.png)
+
+*The stack from `monitoring/docker-compose.yml`, twelve minutes of traffic
+against the container. Two request bursts on `/predict`, p95 latency steady
+around 8-9 ms, the `400` line showing out of range months being refused
+rather than answered, and the prediction histogram sitting in the 3,000-14,000
+moves/month band the model was trained on.*
+
 ## CI and release
 
 On every push, CI lints (ruff check and format), runs the tests on Python
@@ -367,8 +372,10 @@ These are the limits I would address before using this with operational data.
 * **The API serves point predictions only.** The separate offline interval
   experiment uses retained BTS forecasts and empirical residual ranges. It does
   not provide an operational uncertainty service or guarantee future coverage.
-* **The monitoring watches, it does not act.** The prediction histogram will show
-  drift, but nothing alerts on it and nothing retrains. Model and observation
+* **The monitoring watches, it does not act.** The prediction histogram shows
+  the distribution of returned forecasts. It can prompt investigation, but it
+  does not establish accuracy or diagnose drift. Nothing alerts on it or retrains
+  the model. Model and observation
   identities, saved training history and implementation hashes are already
   [recorded and checked at startup](docs/model-provenance.md). Those identities
   distinguish loaded artifacts and histories. They do not create a monitoring
@@ -393,6 +400,10 @@ and metadata bytes before preparing a real record. A successful capture can
 establish that input values were available by retrieval completion while
 leaving their exact first publication time unknown. That bound cannot establish
 when a later outcome was first published.
+
+The [retained outcome bulletin workflow](docs/prospective-ledger.md#inspect-a-retained-outcome-bulletin)
+also offers a separate, bounded metadata inspection. It keeps the original
+capture intact and exposes unverified leads without admitting an outcome.
 
 The [future month outlook](docs/future-outlook.md) adds a separately declared
 last observation policy for a target three observation steps after the latest

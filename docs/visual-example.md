@@ -75,9 +75,10 @@ narrow columns. The wide layout puts the error summary beside the plot. This
 changes the presentation of the retained synthetic result, separate from the
 BTS index evaluation and its baseline win.
 
-The README and these notes use GitHub picture sources with a Clair fallback.
-GitHub preserved combined width and appearance queries in a signed-out browser
-check. A 390 pixel viewport gave a 324 pixel image column. At 1024 pixels, the
+The README leads with the Obscur preview and links to the Clair images. These
+notes retain automatic appearance sources with a Clair fallback. GitHub preserved
+combined width and appearance queries in the original signed-out browser check.
+A 390 pixel viewport gave a 324 pixel image column. At 1024 pixels, the
 README column was 582 pixels wide, while these notes had 669 pixels. The README
 therefore selects the wide layout from a 1024 pixel viewport. These notes use
 768 pixels, where their column was already 670 pixels wide. This is a measured
