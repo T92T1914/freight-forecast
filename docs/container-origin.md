@@ -111,8 +111,8 @@ separate reproducibility considerations. Source review and the existing
 checks still matter.
 
 The synthetic training gate does not replace the retained real-data study.
-That study favored carrying forward the last observation. The prospective
-ledger still has zero eligible issuances. None of the origin checks changes
+That study favored carrying forward the last observation. The public ledger
+example contains no real issued forecast. None of the origin checks changes
 those results or turns historical predictions into future forecasts.
 
 ## Tool contracts

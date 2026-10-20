@@ -8,7 +8,7 @@ unchanged.
 
 The [public reading view](https://t92t1914.github.io/freight-forecast/ledger.html)
 separates real issuances, retrospective replays and synthetic fixtures. Its
-saved example contains no real forecast. The small invented fixture exercises
+saved example contains no real issued forecast. The small invented fixture exercises
 a first release, a revision, a missing release and an explicit correction.
 The separately labeled BTS replay uses the retained July 2026 input vintage.
 It is not a prediction issued before August began. Separate local records may
