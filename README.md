@@ -4,6 +4,12 @@
 ![Python 3.11 | 3.12 | 3.13](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
+My time in Air Force logistics is why I chose this problem. Seasonal demand
+affects storage, staffing and carrier capacity, so I wanted to see whether a
+model could improve on using the same month last year. Then I built the API,
+container setup and monitoring around it so the whole process could be run
+and inspected. The dataset is synthetic; it does not contain service records.
+
 Monthly shipment volume forecasting on a **seeded synthetic dataset**, served
 as a containerized API: scikit-learn, FastAPI, Docker, Kubernetes, Prometheus
 and Grafana. The data models a seasonal logistics problem; these results are
@@ -36,14 +42,8 @@ Obscur preview of the saved synthetic result. Open the Clair
 [stacked](docs/freight-forecast-clair.png) image, or
 [inspect the values and SVG downloads](docs/visual-example.md).
 
-My time in Air Force logistics is why I chose this problem. Seasonal demand
-affects storage, staffing and carrier capacity, so I wanted to see whether a
-model could improve on using the same month last year. Then I built the API,
-container setup and monitoring around it so the whole process could be run
-and inspected. The dataset is synthetic; it does not contain service records.
-
 * [Quickstart](#quickstart)
-* [Results: beat "same month last year"](#results-beat-same-month-last-year)
+* [Results on synthetic shipments and the BTS index](#results-beat-same-month-last-year)
 * [Run it](#run-it)
 * [Architecture: how it fits together](#architecture-how-it-fits-together)
 * [CI and release](#ci-and-release)
@@ -60,7 +60,7 @@ The browser page offers Auto, Clair and Obscur. The [BTS reading report](https:/
 adds a chart, all 72 saved test months, and separate Clair and Obscur SVG downloads.
 It keeps the real index separate from the synthetic shipment examples and retains
 the model's loss to last observation. [Generate the same report locally](docs/presentation.md)
-without training again. Inter is used when installed, with a system-font fallback
+without training again. Inter is used when installed, with a system font fallback
 and no font downloads.
 
 ## Quickstart
@@ -109,7 +109,9 @@ curl http://127.0.0.1:8000/forecast-window
 [chronological evaluation](src/train.py) → [API and metrics](src/serve.py) →
 [tests](tests/) → [deployment evidence](VERIFICATION.md).
 
-## Results: beat "same month last year"
+<a id="results-beat-same-month-last-year"></a>
+
+## Results on synthetic shipments and the BTS index
 
 The model averages 226 moves of error per month, compared with 327 for the seasonal baseline. This is a chronological test on synthetic data, with prior observations available for each prediction.
 [Reproduce and inspect the values](docs/visual-example.md).
@@ -121,13 +123,13 @@ but loses in 2023, and it does worse overall than the original fixed model.
 The report retains all monthly predictions, including the seven months where
 the seasonal baseline wins. Running it does not replace the serving model.
 
-A separate [real-data evaluation](docs/real-data-evaluation.md) applies the existing
+A separate [evaluation on real data](docs/real-data-evaluation.md) applies the existing
 estimator to BTS's seasonally adjusted Freight Transportation Services Index.
 Policy selection uses 2010-2019 and the final comparison uses 2020-2025.
-The selected monthly-refit model scores **1.778 MAE**, against **1.260** for
+The selected model refitted monthly scores **1.778 MAE**, against **1.260** for
 last observation and **2.783** for the seasonal baseline, in index points.
-It loses to last observation in every final-test year. These are revised
-historical index values, not shipment counts or an as-published forecast replay.
+It loses to last observation in every year in the final test. These are revised
+historical index values, not shipment counts or a forecast replay using values published at the time.
 The source snapshot, timing limits, protocol and all predictions are retained.
 This evaluation does not replace the serving model.
 
@@ -140,9 +142,10 @@ or download all 648 issued intervals from that report. This is a retrospective
 comparison on already inspected outcomes, without a new model fit, untouched
 test claim or operational coverage guarantee. The API still serves point forecasts.
 
-A planner with no model looks up last year's number for the same month. That
-seasonal naive forecast is the honest baseline, and a model that can't clear
-it is not worth deploying no matter how good its architecture looks.
+Using the same month last year gives this synthetic experiment a simple baseline.
+The comparison asks whether the learned model adds value on the declared series.
+The separate BTS study also includes last observation, which beat the learned
+model there.
 
 The first twelve months are spent filling the `lag_12` warm up, so the model
 trains on **2018-01 → 2022-12 (60 months)** and is evaluated on **2023-01 →
@@ -325,9 +328,9 @@ adds a view of what the model is returning. A change in that distribution can
 be worth investigating, but it does not establish accuracy or detect every
 kind of drift without new observations.
 
-![The provisioned Grafana dashboard under live traffic](docs/grafana-dashboard.png)
+![Retained Grafana dashboard from the container traffic example](docs/grafana-dashboard.png)
 
-*The stack from `monitoring/docker-compose.yml`, twelve minutes of traffic
+*Retained container traffic example from `monitoring/docker-compose.yml`, twelve minutes of traffic
 against the container. Two request bursts on `/predict`, p95 latency steady
 around 8-9 ms, the `400` line showing out of range months being refused
 rather than answered, and the prediction histogram sitting in the 3,000-14,000
@@ -341,13 +344,13 @@ if it no longer beats the naive. Pushing a `v*` tag runs the checks again and
 publishes the image to GitHub Container Registry as
 `ghcr.io/t92t1914/freight-forecast:<tag>`.
 
-The next version-tag release will attach signed build-origin and SPDX inventory
+The next release from a version tag will attach signed build origin and SPDX inventory
 attestations to the published manifest digest. The release workflow then pulls
 that exact image and verifies its repository, workflow, tag, source commit and
 inventory before recording success. These attestations describe origin and
 contents. They do not establish security or forecasting accuracy. See
 [container origin](docs/container-origin.md) for consumer commands and the
-separate first-release verification gate.
+separate verification gate for the first release.
 
 ## What this does not do
 
