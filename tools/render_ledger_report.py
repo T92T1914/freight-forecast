@@ -96,7 +96,7 @@ def render_outputs(path: Path | None = None):
     corrections = [event for event in result["events"] if event["kind"] == "correction"]
     correction_list = "".join(
         f"<li>{escape(event['payload']['reason'])}. Excluded event "
-        f"<code>{escape(event['payload']['target_event_id'])}</code>.</li>"
+        f"<code translate='no'>{escape(event['payload']['target_event_id'])}</code>.</li>"
         for event in corrections
     )
     for cohort in result["cohorts"]:
@@ -111,7 +111,7 @@ def render_outputs(path: Path | None = None):
             f"{escape(mae['prediction'])}, last observation "
             f"{escape(mae['last_observation'])}, "
             f"seasonal baseline {escape(mae['seasonal_naive'])}. "
-            f"Policy <code>{escape(cohort['policy_id'])}</code>.</li>"
+            f"Policy <code translate='no'>{escape(cohort['policy_id'])}</code>.</li>"
         )
     page = (
         "<!doctype html><html lang='en'><head><meta charset='utf-8'>"
@@ -142,7 +142,7 @@ def render_outputs(path: Path | None = None):
         "and the full issuance clock. Complete identities and source clocks "
         "are retained in the download.</p>"
         + "<section class='panel'><h2>Evaluation boundary</h2>"
-        f"<p>Outcome policy: <code>{escape(result['outcome_policy'])}</code>. "
+        f"<p>Outcome policy: <code translate='no'>{escape(result['outcome_policy'])}</code>. "
         f"Issuance policy: {escape(result['issuance_policy'])}. "
         "Revisions are not extra forecasts. "
         "Metrics stay separate by product and policy.</p><ul>"
