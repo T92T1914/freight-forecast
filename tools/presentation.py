@@ -61,7 +61,8 @@ def appearance_css(tokens):
 def appearance_control():
     return (
         '<div class="appearance-control"><label for="appearance">Appearance</label>'
-        '<select id="appearance" disabled><option value="obscur" selected>Obscur</option>'
+        '<select id="appearance" disabled>'
+        '<option value="obscur" selected>Obscur</option>'
         '<option value="clair">Clair</option><option value="auto">Auto</option>'
         "</select><noscript><small>Obscur remains usable without JavaScript.</small>"
         "</noscript></div>"

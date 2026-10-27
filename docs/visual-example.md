@@ -9,6 +9,10 @@
 
 The model averages 226 moves of error per month, compared with 327 for the seasonal baseline. This is a chronological test on synthetic data, with prior observations available for each prediction.
 
+The entry graphic remains Obscur. The same retained comparison is available in
+the Clair [stacked PNG](freight-forecast-clair.png) and
+[wide PNG](freight-forecast-clair-wide.png) alternates.
+
 ## Reproduce the values
 
 Run from this repository using its documented Python environment.
