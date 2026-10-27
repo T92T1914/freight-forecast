@@ -21,7 +21,7 @@ function fixture(saved, blocked = false) {
   ready();
   return {root, control, values, select(value) { control.value = value; change(); }};
 }
-test('explicit appearance persists; Auto clears only the project preference', () => {
+test('explicit appearance and Auto persist without touching unrelated preferences', () => {
   const f = fixture('obscur');
   assert.equal(f.root.dataset.appearance, 'obscur');
   assert.equal(f.control.disabled, false);
@@ -31,11 +31,14 @@ test('explicit appearance persists; Auto clears only the project preference', ()
   f.select('auto');
   assert.equal(f.root.dataset.appearance, 'auto');
   assert.equal(f.values.get('unrelated'), 'keep');
-  assert.equal(f.values.has('freight-forecast.appearance.v1'), false);
+  assert.equal(f.values.get('freight-forecast.appearance.v1'), 'auto');
+  assert.equal(fixture(f.values.get('freight-forecast.appearance.v1')).root.dataset.appearance, 'auto');
 });
-test('unknown stored values use Auto and failed storage still allows switching', () => {
-  assert.equal(fixture('arbitrary').root.dataset.appearance, 'auto');
+test('first visit and invalid or blocked storage use Obscur while switching stays usable', () => {
+  assert.equal(fixture(null).root.dataset.appearance, 'obscur');
+  assert.equal(fixture('arbitrary').root.dataset.appearance, 'obscur');
   const f = fixture(null, true);
+  assert.equal(f.root.dataset.appearance, 'obscur');
   f.select('obscur');
   assert.equal(f.root.dataset.appearance, 'obscur');
   f.select('clair');

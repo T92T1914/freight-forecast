@@ -37,8 +37,10 @@ footer{border-top:1px solid var(--divider);margin-top:40px;padding:20px 0 30px;c
 #synthetic-figure img{width:100%}
 .figure-wide,.figure-link-wide{display:none}
 @container(min-width:560px){.figure-narrow,.figure-link-narrow{display:none}.figure-wide,.figure-link-wide{display:block}}
-.synthetic-obscur{display:none}
-@media(prefers-color-scheme:dark){:root:not([data-appearance="clair"]) .synthetic-clair{display:none}:root:not([data-appearance="clair"]) .synthetic-obscur{display:block}}
+.synthetic-clair{display:none}
+:root[data-appearance="auto"] .synthetic-clair{display:block}
+:root[data-appearance="auto"] .synthetic-obscur{display:none}
+@media(prefers-color-scheme:dark){:root[data-appearance="auto"] .synthetic-clair{display:none}:root[data-appearance="auto"] .synthetic-obscur{display:block}}
 :root[data-appearance="obscur"] .synthetic-clair{display:none}
 :root[data-appearance="obscur"] .synthetic-obscur{display:block}
 :root[data-appearance="clair"] .synthetic-clair{display:block}

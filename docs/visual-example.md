@@ -2,11 +2,8 @@
 
 <a href="visual-example-data.json">
   <picture>
-    <source media="(min-width: 768px) and (prefers-color-scheme: dark)" srcset="freight-forecast-obscur-wide.png">
-    <source media="(min-width: 768px) and (prefers-color-scheme: light)" srcset="freight-forecast-clair-wide.png">
-    <source media="(prefers-color-scheme: dark)" srcset="freight-forecast-obscur.png">
-    <source media="(prefers-color-scheme: light)" srcset="freight-forecast-clair.png">
-    <img src="freight-forecast-clair.png" alt="Recorded synthetic shipments over 24 test months. Model mean absolute error is 226 moves per month versus 327 for the seasonal baseline. Each prediction uses prior observations." width="900">
+    <source media="(min-width: 768px)" srcset="freight-forecast-obscur-wide.png">
+    <img src="freight-forecast-obscur.png" alt="Recorded synthetic shipments over 24 test months. Model mean absolute error is 226 moves per month versus 327 for the seasonal baseline. Each prediction uses prior observations." width="900">
   </picture>
 </a>
 
@@ -75,9 +72,9 @@ narrow columns. The wide layout puts the error summary beside the plot. This
 changes the presentation of the retained synthetic result, separate from the
 BTS index evaluation and its baseline win.
 
-The README leads with the Obscur preview and links to the Clair images. These
-notes retain automatic appearance sources with a Clair fallback. GitHub preserved
-combined width and appearance queries in the original signed-out browser check.
+The README and these notes lead with Obscur in either GitHub appearance and
+retain direct Clair alternatives. GitHub preserved combined width and appearance
+queries in the original signed-out browser check, before this fixed-Obscur change.
 A 390 pixel viewport gave a 324 pixel image column. At 1024 pixels, the
 README column was 582 pixels wide, while these notes had 669 pixels. The README
 therefore selects the wide layout from a 1024 pixel viewport. These notes use
@@ -86,7 +83,8 @@ host accommodation, not a claim that viewport and image widths are equal.
 Signed-in appearance overrides were not part of that check.
 
 The public page selects its layout from the figure container itself, switching
-at 560 pixels. Its effective Auto, Clair or Obscur setting controls appearance,
-including an explicit choice opposite to the operating system. Print uses Clair.
+at 560 pixels. It opens in Obscur, including without JavaScript. Explicit Auto,
+Clair or Obscur choices remain available without changing the retained data.
+Print uses Clair.
 The builder verifies the committed figures against their source hashes and
 copies them without a font dependency or a silent rebuild.

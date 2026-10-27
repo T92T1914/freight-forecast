@@ -109,6 +109,8 @@ class PresentationTests(unittest.TestCase):
 
     def test_only_local_font_faces_and_explicit_print_override(self):
         css = appearance_css(load_tokens())
+        self.assertIn(':root{color-scheme:dark;', css)
+        self.assertIn(':root[data-appearance="auto"]', css)
         self.assertEqual(css.count("@font-face"), 6)
         self.assertEqual(css.count("src:local("), 6)
         self.assertNotIn("url(", css)
