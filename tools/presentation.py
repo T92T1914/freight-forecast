@@ -44,12 +44,13 @@ def declarations(tokens, appearance):
 
 
 def appearance_css(tokens):
-    """CSS media queries remain the source of Auto, including without JavaScript."""
+    """Obscur works without script; explicit Auto follows the system through CSS."""
     light, dark = (declarations(tokens, mode) for mode in ("clair", "obscur"))
     return (
         font_css()
-        + f"\n:root{{{light}}}\n"
-        + '@media(prefers-color-scheme:dark){:root:not([data-appearance="clair"])'
+        + f"\n:root{{{dark}}}\n"
+        + f':root[data-appearance="auto"]{{{light}}}\n'
+        + '@media(prefers-color-scheme:dark){:root[data-appearance="auto"]'
         + f"{{{dark}}}}}\n"
         + f':root[data-appearance="obscur"]{{{dark}}}\n'
         + f':root[data-appearance="clair"]{{{light}}}\n'
@@ -60,8 +61,9 @@ def appearance_css(tokens):
 def appearance_control():
     return (
         '<div class="appearance-control"><label for="appearance">Appearance</label>'
-        '<select id="appearance" disabled><option value="auto">Auto</option>'
-        '<option value="clair">Clair</option><option value="obscur">Obscur</option>'
-        "</select><noscript><small>Auto follows your system appearance.</small>"
+        '<select id="appearance" disabled>'
+        '<option value="obscur" selected>Obscur</option>'
+        '<option value="clair">Clair</option><option value="auto">Auto</option>'
+        "</select><noscript><small>Obscur remains usable without JavaScript.</small>"
         "</noscript></div>"
     )

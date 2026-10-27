@@ -246,6 +246,11 @@ test('Auto follows system, override survives reload, and theme keeps evidence se
   assert.equal(await background(page), 'rgb(9, 9, 9)');
   await page.emulateMedia({colorScheme:'light'});
   assert.equal(await background(page), 'rgb(248, 247, 243)');
+  await page.reload();await page.locator('#interactive:visible').waitFor();
+  assert.equal(await page.locator('#appearance').inputValue(), 'auto');
+  assert.equal(await page.evaluate(() => localStorage.getItem('freight-forecast.appearance.v1')), 'auto');
+  assert.equal(await page.locator('#metrics').textContent(), before);
+  assert.equal(await page.locator('#backtest-rows').textContent(), beforeBacktest);
   await page.locator('#choice').selectOption('4');
   await page.goBack();
   assert.equal(await page.locator('#choice').inputValue(), '9');
@@ -257,10 +262,10 @@ test('blocked storage leaves usable appearance controls', async t => {
   await page.locator('#appearance').selectOption('obscur');
   assert.equal(await background(page), 'rgb(9, 9, 9)');
   await page.reload();
-  assert.equal(await background(page), 'rgb(248, 247, 243)');
+  assert.equal(await background(page), 'rgb(9, 9, 9)');
 });
 
-test('without JavaScript the report data, chart and Auto still work', async t => {
+test('without JavaScript the report data, chart and Obscur remain available', async t => {
   const page = await fixture(t, {javaScriptEnabled:false, colorScheme:'dark'});
   await page.goto(base+'/real-data.html');
   assert.equal(await background(page), 'rgb(9, 9, 9)');
@@ -268,7 +273,7 @@ test('without JavaScript the report data, chart and Auto still work', async t =>
   assert.equal(await page.locator('td[data-series="actual"]').count(), 72);
   assert.equal(await page.locator('svg g[data-series]').count(), 4);
   await page.emulateMedia({colorScheme:'light'});
-  assert.equal(await background(page), 'rgb(248, 247, 243)');
+  assert.equal(await background(page), 'rgb(9, 9, 9)');
 });
 
 for (const mode of ['clair','obscur']) test(`${mode} keeps chart meaning at wide and narrow sizes`, async t => {
@@ -380,7 +385,7 @@ test('installed Inter supplies all six intended faces in both appearances',
   }
 });
 
-test('synthetic figure follows effective appearance, Auto without scripts, and print', async t => {
+test('synthetic figure follows explicit appearance, no-script Obscur, and print', async t => {
   const page = await fixture(t, {colorScheme:'dark'});
   await ready(page);
   const assertEdition = async mode => {
@@ -427,7 +432,7 @@ test('synthetic figure follows effective appearance, Auto without scripts, and p
   await noJS.goto(base+'/');
   assert.equal(await noJS.locator('.synthetic-obscur').isVisible(), true);
   await noJS.emulateMedia({colorScheme:'light'});
-  assert.equal(await noJS.locator('.synthetic-clair').isVisible(), true);
+  assert.equal(await noJS.locator('.synthetic-obscur').isVisible(), true);
 });
 
 test('synthetic figure keyboard navigation skips the inactive layout and appearance', async t => {
@@ -541,5 +546,5 @@ test('interval report supports no script, blocked storage and light print', asyn
   await page.emulateMedia({media:'screen'});
   assert.equal(await background(page), 'rgb(9, 9, 9)');
   await page.reload();
-  assert.equal(await background(page), 'rgb(248, 247, 243)');
+  assert.equal(await background(page), 'rgb(9, 9, 9)');
 });

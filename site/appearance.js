@@ -1,12 +1,12 @@
-/* This runs before styles paint. No storage or script is required for Auto. */
+/* Resolve explicit choices before paint; no script or storage is needed for Obscur. */
 (function () {
   'use strict';
   const key = 'freight-forecast.appearance.v1';
   const root = document.documentElement;
-  let preference = 'auto';
+  let preference = 'obscur';
   try {
     const saved = localStorage.getItem(key);
-    if (saved === 'clair' || saved === 'obscur') preference = saved;
+    if (['auto', 'clair', 'obscur'].includes(saved)) preference = saved;
   } catch (_) { /* A blocked store leaves a working in-memory preference. */ }
   root.dataset.appearance = preference;
   document.addEventListener('DOMContentLoaded', () => {
@@ -18,8 +18,7 @@
       preference = ['clair', 'obscur'].includes(control.value) ? control.value : 'auto';
       root.dataset.appearance = preference;
       try {
-        if (preference === 'auto') localStorage.removeItem(key);
-        else localStorage.setItem(key, preference);
+        localStorage.setItem(key, preference);
       } catch (_) { /* Switching remains usable when persistence is unavailable. */ }
     });
   });

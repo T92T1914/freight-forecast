@@ -1,10 +1,15 @@
 # Reading the saved results
 
-The public page and the BTS report use Clair, Obscur and Auto. Auto follows the
-system preference. An explicit choice stays in this browser until Auto is selected
-again. The versioned storage key is `freight-forecast.appearance.v1`. Blocked
-storage still allows switching for the current page. With JavaScript disabled,
-Auto and the report's chart, tables and downloads remain available.
+The public page and saved reports open in Obscur, including without JavaScript.
+Clair and Auto remain available. Auto follows the system preference and is now
+saved explicitly, like Clair and Obscur, under `freight-forecast.appearance.v1`.
+Blocked storage leaves a working Obscur default and in-page switching. The chart,
+tables and downloads do not depend on a saved preference.
+
+Earlier versions removed the key for Auto, so an old Auto choice and a first
+visit cannot be distinguished. Both receive the new default until another choice
+is made. Existing saved Clair/Obscur choices remain effective. This presentation
+change does not alter a forecast, selected month, report or historical record.
 
 The shipment examples still use synthetic data and units of moves. The separate
 [BTS evaluation](real-data-evaluation.md) uses seasonally adjusted national index
