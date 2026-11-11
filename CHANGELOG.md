@@ -70,8 +70,10 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
   that joined input basis explicitly, and an availability receipt cannot
   establish when an outcome was published.
 * `docs/future-outlook.md` declares a three month, last observation outlook
-  from a published BTS vintage before any record exists under it. No real
-  record has been issued under it.
+  from a published BTS vintage before any record exists under it. The
+  committed command created two local records that day, a September nowcast
+  and a November outlook. Both are unobserved and unscored, and the public
+  fixture still holds no real issued forecast.
 * The local image runs as UID and GID 10001 with one worker and one numerical
   thread. The local container command and the monitoring Compose file bind to
   loopback and limit the API to half a CPU, 512 MiB and 64 processes, with a
