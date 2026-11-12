@@ -3,7 +3,7 @@
 The public page and saved reports open in Obscur, including without JavaScript.
 Clair and Auto remain available. Auto follows the system preference and is now
 saved explicitly, like Clair and Obscur, under `freight-forecast.appearance.v1`.
-Blocked storage leaves a working Obscur default and in-page switching. The chart,
+Blocked storage leaves a working Obscur default and in page switching. The chart,
 tables and downloads do not depend on a saved preference.
 
 Earlier versions removed the key for Auto, so an old Auto choice and a first
@@ -13,7 +13,7 @@ change does not alter a forecast, selected month, report or historical record.
 
 The shipment examples still use synthetic data and units of moves. The separate
 [BTS evaluation](real-data-evaluation.md) uses seasonally adjusted national index
-points. Its monthly-refit Ridge model loses to last observation. Changing the
+points. Its monthly refit Ridge model loses to last observation. Changing the
 appearance does not change the observations, methods, results or that conclusion.
 
 ## Generate the report
@@ -48,7 +48,7 @@ intervals were recorded in this experiment, so none are drawn.
 
 `presentation/tokens.json` copies the required roles from
 [Clair and Obscur at 7a57fe7](https://github.com/T92T1914/clair-obscur-themes/blob/7a57fe750ff50205a17e1d342106a0d3f2777159/tokens.json).
-It records the source revision, file hash and MIT license. The role-content check
+It records the source revision, file hash and MIT license. The role content check
 guards that pin. Additional categorical colors belong to Freight's named methods,
 with distinct markers and line styles. There is no runtime fetch of a mutable
 theme definition. Original evidence images keep their recorded bytes and colors.
@@ -82,12 +82,12 @@ before the browser test. `FREIGHT_BROWSER_CHANNEL=chrome` uses ordinary Chrome's
 executable in an isolated headless process. The strict check requires each intended
 PostScript face to supply actual glyphs in a labeled diagnostic sample. It also
 checks the report's real heading, paragraph and appearance label. Without the
-strict flag, that installed-font test is explicitly skipped. A deliberately
-missing-font control is a separate check, not evidence that Inter rendered.
+strict flag, that installed font test is explicitly skipped. A deliberately
+missing font control is a separate check, not evidence that Inter rendered.
 
 These checks concern the website and generated report. They do not certify native
 Chrome themes, Equibop, monitor calibration, Windows restart persistence or human
-reading comfort. The first phone-width check caught an overflowing retrieval
+reading comfort. The first phone width check caught an overflowing retrieval
 timestamp at doubled body text size. Allowing that timestamp to wrap fixed the
 case while retaining its exact value.
 

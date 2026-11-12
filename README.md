@@ -10,12 +10,12 @@ model could improve on using the same month last year. Then I built the API,
 container setup and monitoring around it so the whole process could be run
 and inspected. The dataset is synthetic; it does not contain service records.
 
-Monthly shipment volume forecasting on a **seeded synthetic dataset**, served
+Monthly shipment volume forecasting on a seeded synthetic dataset, served
 as a containerized API: scikit-learn, FastAPI, Docker, Kubernetes, Prometheus
-and Grafana. The data models a seasonal logistics problem; these results are
+and Grafana. The data models a seasonal logistics problem. These results are
 not an evaluation on operational shipment records.
 
-**226 vs 327 MAE on 24 held out months, 31% under the seasonal baseline.**
+226 vs 327 MAE on 24 held out months, 31% under the seasonal baseline.
 The training check fails if the model no longer beats that baseline on the
 included dataset, which also fails the container build. It does not establish
 how the model will perform on new operational data.
@@ -52,9 +52,9 @@ Obscur preview of the saved synthetic result. Open the Clair
 
 [Explore the browser demo](https://t92t1914.github.io/freight-forecast/) · [Open in Codespaces](https://codespaces.new/T92T1914/freight-forecast) · [Read in another language](https://github.com/T92T1914/T92T1914/blob/main/TRANSLATION.md)
 
-Use **Link to this example** in the browser demo to share the selected result.
+Use Link to this example in the browser demo to share the selected result.
 The URL keeps the example's visible label, and Back and Forward restore earlier
-selections. These links inspect saved evidence; they do not run a new calculation.
+selections. These links inspect saved evidence. They do not run a new calculation.
 
 The browser page offers Auto, Clair and Obscur. The [BTS reading report](https://t92t1914.github.io/freight-forecast/real-data.html)
 adds a chart, all 72 saved test months, and separate Clair and Obscur SVG downloads.
@@ -88,14 +88,14 @@ This example shows the forecast values. The full response also includes
 Training on the included seeded dataset produces a model with these forecast values.
 The model file is generated locally and is not committed to the repository. The API accepts only historical
 months with a full lag history and the next unobserved month. Features are built
-once per startup and indexed by month; [the serving tests](tests/test_api.py)
+once per startup and indexed by month. [The serving tests](tests/test_api.py)
 compare every supported response with uncached construction and verify refresh
 after a data change.
 
 Use `GET /forecast-window` before choosing a month. It returns the first and
 last supported months, the last observation, the next unobserved month and the
-model's training cutoff. The supported range includes historical queries;
-only one month beyond the loaded observations is forecastable. The response
+model's training cutoff. The supported range includes historical queries.
+Only one month beyond the loaded observations is forecastable. The response
 comes from the same startup state as `/predict`, so clients do not need to
 hardcode the dates in this example or discover the limits through failed requests.
 Updating observations does not retrain the model. Restart the service after
@@ -105,7 +105,7 @@ replacing either file to load the new state.
 curl http://127.0.0.1:8000/forecast-window
 ```
 
-**Code tour:** [features and leakage guards](src/features.py) →
+Code tour: [features and leakage guards](src/features.py) →
 [chronological evaluation](src/train.py) → [API and metrics](src/serve.py) →
 [tests](tests/) → [deployment evidence](VERIFICATION.md).
 
@@ -118,16 +118,16 @@ The model averages 226 moves of error per month, compared with 327 for the seaso
 
 I also tested a different operating policy: refit the model each month as new
 observations arrive. That [monthly backtest](docs/backtesting.md) averages
-**245 vs 327 MAE** over the same 24 target months. It beats the baseline overall
+245 vs 327 MAE over the same 24 target months. It beats the baseline overall
 but loses in 2023, and it does worse overall than the original fixed model.
 The report retains all monthly predictions, including the seven months where
 the seasonal baseline wins. Running it does not replace the serving model.
 
 A separate [evaluation on real data](docs/real-data-evaluation.md) applies the existing
 estimator to BTS's seasonally adjusted Freight Transportation Services Index.
-Policy selection uses 2010-2019 and the final comparison uses 2020-2025.
-The selected model refitted monthly scores **1.778 MAE**, against **1.260** for
-last observation and **2.783** for the seasonal baseline, in index points.
+Policy selection uses 2010 to 2019 and the final comparison uses 2020 to 2025.
+The selected model refitted monthly scores 1.778 MAE, against 1.260 for
+last observation and 2.783 for the seasonal baseline, in index points.
 It loses to last observation in every year in the final test. These are revised
 historical index values, not shipment counts or a forecast replay using values published at the time.
 The source snapshot, timing limits, protocol and all predictions are retained.
@@ -148,21 +148,21 @@ The separate BTS study also includes last observation, which beat the learned
 model there.
 
 The first twelve months are spent filling the `lag_12` warm up, so the model
-trains on **2018-01 → 2022-12 (60 months)** and is evaluated on **2023-01 →
-2024-12 (24 months), never seen during training**:
+trains on 2018-01 → 2022-12 (60 months) and is evaluated on 2023-01 →
+2024-12 (24 months), never seen during training:
 
 | | MAE (moves) | MAPE |
 |---|---|---|
 | Seasonal naive, same month last year | 327 | 4.8% |
-| Ridge on log(volume) | **226** | **3.4%** |
+| Ridge on log(volume) | 226 | 3.4% |
 
-**31% lower error than the baseline.** `src/train.py` exits non zero if the
+31% lower error than the baseline. `src/train.py` exits non zero if the
 model ever loses to the naive predictor, so a regression fails CI rather than
 shipping quietly.
 
 ### How the numbers were measured
 
-* **MAE** is the mean absolute error in moves per month; **MAPE** is the same
+* MAE is the mean absolute error in moves per month. MAPE is the same
   error as a fraction of the actual volume. Both come from scikit-learn's
   `mean_absolute_error` and `mean_absolute_percentage_error`, applied to the 24
   held out months in `src/train.py`, for the model and for the naive predictor
@@ -170,7 +170,7 @@ shipping quietly.
 * The naive predictor is literally the `lag_12` feature: the value observed
   twelve rows earlier in the same series the model is scored on.
 * `python -m src.train` (or `make train`) prints the table above and refuses
-  to save the artifact if the model loses;
+  to save the artifact if the model loses.
   `tests/test_train.py::test_model_beats_seasonal_naive` asserts the same
   thing on every CI run, on a dataset rebuilt from the seed.
 * What the numbers do and do not prove is spelled out under
@@ -179,22 +179,22 @@ shipping quietly.
 
 Two modelling decisions worth naming:
 
-* **The target is `log(volume)`, not volume.** Seasonality here is
+* The target is `log(volume)`, not volume. Seasonality here is
   multiplicative, the summer peak scales with the overall level rather than
   adding a fixed number of moves, so the model fits in log space and
   `TransformedTargetRegressor` maps predictions back to move counts. Fitting
   raw volume asks a linear model to treat a 200 move miss in January as the
   same error as in July, which is not what a planner means by "wrong."
-* **Features can only see the past.** `lag_12` (same month last year) and
+* Features can only see the past. `lag_12` (same month last year) and
   `roll_3` (previous quarter's mean) are both shifted before use, and any row
-  without a full 12 month history is dropped. `build_features` also *raises*
+  without a full 12 month history is dropped. `build_features` also raises
   if the series has gaps or duplicate months, because those lags are computed
   by row position. With a missing month, "12 rows back" can stop meaning
   "last year" and silently give the model the wrong historical features.
 
 ## Run it
 
-Every target in the Makefile is one plain command, listed by `make help`; the
+Every target in the Makefile is one plain command, listed by `make help`. The
 equivalents are shown for machines without `make`.
 
 ```bash
@@ -270,16 +270,16 @@ rather than shipping.
 
 ```
 src/
-  generate_data.py   synthetic monthly volumes, fixed seed, PCS-shaped
+  generate_data.py   synthetic monthly volumes, fixed seed, shaped like PCS data
   features.py        lags, rolling mean, month dummies + the contiguity guard
   train.py           trains, evaluates against the naive, saves the artifact
   backtest.py        refits each month and records matched errors and provenance
   serve.py           FastAPI app: /health, /predict, /metrics
 tests/               checks for features, data, training, API, metrics,
-                     manifests and workflows; conftest.py serves the artifact
-Makefile             the common commands; CI calls the same targets
+                     manifests and workflows, with conftest.py serving the artifact
+Makefile             the common commands, and CI calls the same targets
 Dockerfile           trains during the build, so a broken model fails the image
-.github/workflows/   ci.yml: lint, tests on 3.11-3.13, image build, every push
+.github/workflows/   ci.yml: lint, tests on 3.11 to 3.13, image build, every push
                      release.yml: a v* tag publishes the image to GHCR
 k8s/                 deployment with liveness + readiness probes, service
 monitoring/          Prometheus config, provisioned Grafana, dashboard JSON
@@ -330,11 +330,11 @@ kind of drift without new observations.
 
 ![Retained Grafana dashboard from the container traffic example](docs/grafana-dashboard.png)
 
-*Retained container traffic example from `monitoring/docker-compose.yml`, twelve minutes of traffic
+Retained container traffic example from `monitoring/docker-compose.yml`, twelve minutes of traffic
 against the container. Two request bursts on `/predict`, p95 latency steady
-around 8-9 ms, the `400` line showing out of range months being refused
-rather than answered, and the prediction histogram sitting in the 3,000-14,000
-moves/month band the model was trained on.*
+around 8 to 9 ms, the `400` line showing out of range months being refused
+rather than answered, and the prediction histogram sitting in the 3,000 to 14,000
+moves per month band the model was trained on.
 
 ## CI and release
 
@@ -356,26 +356,26 @@ separate verification gate for the first release.
 
 These are the limits I would address before using this with operational data.
 
-* **The 226 MAE is a point estimate on 24 observations.** It is lower than
+* The 226 MAE is a point estimate on 24 observations. It is lower than
   the baseline on this test set. Repeating the same seeded experiment checks
   reproducibility, not statistical certainty. A claim about general improvement
   would need more data and a comparison of paired prediction errors. The
   [monthly backtest](docs/backtesting.md) records paired errors under a refitting
   policy, but it uses the same synthetic series and is not independent evidence
   of accuracy on real shipments.
-* **The error is concentrated exactly where it matters.** Split the held out months
-  by season: peak (May Aug) MAE is **418**, off peak is **130**. In relative terms
+* The error is concentrated exactly where it matters. Split the held out months
+  by season: peak (May to Aug) MAE is 418, off peak is 130. In relative terms
   they are close (3.83% vs 3.11% MAPE) because peak volumes are roughly three times
   larger, but capacity is committed in absolute moves, so the forecast is least
   precise in the four months anyone actually plans around.
-* **The data is synthetic.** Its seasonal pattern was specified when the
+* The data is synthetic. Its seasonal pattern was specified when the
   data was generated, so the model is recovering a pattern put there on purpose. That makes it a fair test of the pipeline and a weak test of the model.
   Real JPPSO data would bring regime changes (policy shifts, base realignments,
   a pandemic) that a 60 month linear fit has no way to anticipate.
-* **The API serves point predictions only.** The separate offline interval
+* The API serves point predictions only. The separate offline interval
   experiment uses retained BTS forecasts and empirical residual ranges. It does
   not provide an operational uncertainty service or guarantee future coverage.
-* **The monitoring watches, it does not act.** The prediction histogram shows
+* The monitoring watches, it does not act. The prediction histogram shows
   the distribution of returned forecasts. It can prompt investigation, but it
   does not establish accuracy or diagnose drift. Nothing alerts on it or retrains
   the model. Model and observation
@@ -427,9 +427,9 @@ Found a problem or have a useful comparison? [Open an issue](https://github.com/
 
 I use this project to connect the operational questions I knew from logistics with the work of building and checking software. The forecast is one part. Keeping its data boundary, failure cases and serving behavior visible is the rest.
 
-- **Model evaluation.** Compare the forecast with a seasonal baseline on the same chronological test months. [Inspect the work](docs/backtesting.md).
-- **API design.** Inspect the forecast window, input validation and monitoring in the serving layer. [Inspect the work](src/serve.py).
-- **Operating evidence.** Follow the recorded container and monitoring checks, including their limits. [Inspect the work](VERIFICATION.md).
+- Model evaluation. Compare the forecast with a seasonal baseline on the same chronological test months. [Inspect the work](docs/backtesting.md).
+- API design. Inspect the forecast window, input validation and monitoring in the serving layer. [Inspect the work](src/serve.py).
+- Operating evidence. Follow the recorded container and monitoring checks, including their limits. [Inspect the work](VERIFICATION.md).
 
 These are transferable skills for backend and MLOps work. The data is synthetic, so this is not evidence of savings or accuracy in a live logistics operation.
 

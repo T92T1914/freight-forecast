@@ -13,8 +13,8 @@ usable training rows.
 
 ## Recorded result
 
-This is the included synthetic shipment series. Errors are in moves per month;
-lower is better. Values are rounded here, with full precision in
+This is the included synthetic shipment series. Errors are in moves per month.
+Lower is better. Values are rounded here, with full precision in
 [the JSON report](backtest-example.json).
 
 | Target months | Months | Monthly refit MAE | Seasonal baseline MAE | Model better / worse |
@@ -40,7 +40,7 @@ python -m src.backtest --output reports/backtest.json
 ```
 
 `make backtest` runs the same command. No trained artifact is required. The
-command reads the existing CSV and produces a report; it does not regenerate
+command reads the existing CSV and produces a report. It does not regenerate
 data, save a model, or reject an experiment because the baseline wins. Omit
 `--output` to print JSON to stdout.
 
@@ -74,7 +74,7 @@ are fractions, so 0.035 means about 3.5%.
 
 The command also records the exact input CSV's SHA256, hashes of the three
 implementation files, Python version, and numerical package versions. Source
-hashes normalize line endings to LF; the CSV hash deliberately identifies the
+hashes normalize line endings to LF. The CSV hash deliberately identifies the
 exact bytes read. A checkout that changes the CSV's line endings changes its
 byte hash even when the observations are identical. Compare predictions with
 a numerical tolerance across supported environments, not a promise of identical
@@ -97,5 +97,5 @@ This is one series with overlapping training histories. Its 24 predictions are
 not 24 independent experiments. The report does not estimate a confidence
 interval, model selection significance, or future demand range. It does not
 test multi month forecasts, tune parameters, or establish performance on
-operational data. Both policies have now been examined on this test period;
-choosing between them and claiming a fresh result would require new data.
+operational data. Both policies have now been examined on this test period.
+Choosing between them and claiming a fresh result would require new data.

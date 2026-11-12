@@ -35,7 +35,7 @@ for row, prediction in zip(test.itertuples(), predictions):
 
 The figure includes all 24 test months. The volume axis begins at zero. The
 model is trained through December 2022. Each later prediction uses available
-prior observations for its lag features; this is not a forecast of all 24
+prior observations for its lag features. This is not a forecast of all 24
 months made at once. No model or data file was overwritten to make the figure.
 The existing [monitoring screenshot](grafana-dashboard.png) documents a
 different question: how the local service behaved under recorded traffic.
@@ -78,13 +78,13 @@ BTS index evaluation and its baseline win.
 
 The README and these notes lead with Obscur in either GitHub appearance and
 retain direct Clair alternatives. GitHub preserved combined width and appearance
-queries in the original signed-out browser check, before this fixed-Obscur change.
+queries in the original signed out browser check, before this fixed Obscur change.
 A 390 pixel viewport gave a 324 pixel image column. At 1024 pixels, the
 README column was 582 pixels wide, while these notes had 669 pixels. The README
 therefore selects the wide layout from a 1024 pixel viewport. These notes use
 768 pixels, where their column was already 670 pixels wide. This is a measured
 host accommodation, not a claim that viewport and image widths are equal.
-Signed-in appearance overrides were not part of that check.
+Signed in appearance overrides were not part of that check.
 
 The public page selects its layout from the figure container itself, switching
 at 560 pixels. It opens in Obscur, including without JavaScript. Explicit Auto,

@@ -38,8 +38,8 @@ def test_seasonality_is_visible_through_the_api(client):
 
 
 def test_prediction_matches_offline_model(client):
-    """The API must serve the same number the artifact produces offline —
-    a serving-skew guard."""
+    """The API must serve the same number the artifact produces offline.
+    This is a serving skew guard."""
     artifact = joblib.load(train_mod.MODEL_PATH)
     df = pd.read_csv(DATA_PATH, parse_dates=["date"])
     feats, _ = build_features(df)
@@ -99,8 +99,8 @@ def test_out_of_range_months_are_rejected(client):
 def test_range_gate_boundaries_are_exact(client):
     """Pin the exact edges of the one-step-ahead gate, derived from the data.
 
-    An off-by-one in the gate would not 400 — it would admit a month with no
-    feature row and 500 on an empty frame — so the edges themselves must be
+    An off-by-one in the gate would not return a 400. It would admit a month with no
+    feature row and return a 500 on an empty frame, so the edges themselves must be
     tested, not just far-out months."""
     df = pd.read_csv(DATA_PATH, parse_dates=["date"])
     first_ok = df["date"].iloc[0] + pd.DateOffset(months=12)
@@ -117,8 +117,8 @@ def test_range_gate_boundaries_are_exact(client):
 
 def test_placeholder_branch_matches_offline(client):
     """The next-unobserved-month path builds features through a placeholder
-    row — the only serving-side construction that differs from training, and
-    the endpoint's actual production use. Pin it to the offline model."""
+    row. That is the only serving side construction that differs from training,
+    and the endpoint's actual production use. Pin it to the offline model."""
     artifact = joblib.load(train_mod.MODEL_PATH)
     df = pd.read_csv(DATA_PATH, parse_dates=["date"])
     next_month = df["date"].iloc[-1] + pd.DateOffset(months=1)

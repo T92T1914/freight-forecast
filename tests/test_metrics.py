@@ -1,7 +1,7 @@
 """Metrics endpoint tests: counters, latency, and prediction distribution.
 
 prometheus-client keeps one process-global registry, so these tests assert
-DELTAS around known requests rather than absolute values — other tests in
+DELTAS around known requests rather than absolute values, because other tests in
 the session have already incremented the counters.
 """
 
@@ -162,7 +162,7 @@ def test_one_numeric_forecast_is_valid(client, monkeypatch, prediction, expected
 
 
 def test_unhandled_errors_are_counted_as_500(client):
-    """An exception that never becomes a response must still be counted —
+    """An exception that never becomes a response must still be counted,
     otherwise outages are invisible on the error-rate panel."""
     with TestClient(app, raise_server_exceptions=False) as c:
         good = app.state.artifact
