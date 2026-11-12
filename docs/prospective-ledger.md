@@ -25,7 +25,7 @@ returns the original event. Reusing a key for different contents fails.
 
 An issuance records the series, units, target month, product classification,
 issue timestamp with offset and timezone convention, source publication and
-retrieval clocks, available-through month, exact snapshot byte hash and
+retrieval clocks, available through month, exact snapshot byte hash and
 canonical history identity. It also retains model, feature and policy
 identities, training cutoff, horizon, prediction and both baselines. Hashes
 identify content. They do not authenticate the author or establish an
@@ -80,7 +80,7 @@ lists the August release for October 14, 2026. A schedule is not proof that
 a release occurred or that particular bytes were available.
 
 On September 30, July's immediately subsequent target is August, an elapsed
-period. The one-step adapter therefore cannot use this snapshot to produce a
+period. The one step adapter therefore cannot use this snapshot to produce a
 genuine future September or October forecast. No real issuance was created
 to fill the public table. A current, inspected source publication and a
 compatible immediately subsequent target are separate requirements for a
@@ -90,7 +90,7 @@ source availability and a target that has not begun. No polling service or
 schedule is installed.
 
 The [historical BTS evaluation](real-data-evaluation.md) remains unchanged.
-Last observation beat the fitted model on that latest-vintage retrospective
+Last observation beat the fitted model on that latest vintage retrospective
 comparison. The [BTS revision policy](https://www.bts.gov/browse-statistical-products-and-data/transportation-economic-trends/revision-policy-tsi)
 also explains why today's revised historical values cannot be relabeled as
 past first releases.
@@ -112,13 +112,13 @@ limits. It leaves the canonical capture files and their identities unchanged.
 An empty, truncated or incomplete preview is labeled accordingly.
 
 These are unverified leads. A metadata timestamp does not establish publication,
-first-release value identity or admission. Candidate preparation still needs the
+first release value identity or admission. Candidate preparation still needs the
 existing explicit evidence gates. The supported `review-observation` ledger
 command checks the matching frozen `observation.json` payload from a complete
 candidate marked `ready_for_ledger_review`, without recording it or reserving its key.
 An exact retry reuses the saved payload and key. A new capture with a different
 retrieval clock is a different capture. See the command's `--help` for the
-capture and preparation arguments. None of these release-tool commands appends
+capture and preparation arguments. None of these release tool commands appends
 an observation.
 
 ## Local workflow
@@ -169,7 +169,7 @@ For a real issuance, an observed outcome's declared publication must be
 strictly later than the original issue timestamp. Retrieving an older release
 later does not make it a later outcome. Equal instants, including timestamps
 written with different offsets, do not establish that order. Append and
-readback enforce the same check for forecasts and elapsed-period nowcasts.
+readback enforce the same check for forecasts and elapsed period nowcasts.
 Unavailable outcomes, explicit replays, synthetic fixtures and corrections
 retain their separate behavior. This checks consistency of supplied clocks.
 It does not authenticate publication or prove that no earlier value existed.
@@ -211,7 +211,7 @@ be present. Inspect the destination before retrying. Cleanup preserves the
 original error and never rolls back a potentially completed replacement. The
 fixture command uses the same export path checks before adding its synthetic
 records. These checks protect ordinary local use. They do not defend against
-concurrent path changes or establish power-loss durability for the exported file.
+concurrent path changes or establish power loss durability for the exported file.
 
 Readback checks each event's content identity and its link to an earlier
 original issuance before deriving a view. It also validates issuance contracts
@@ -227,7 +227,7 @@ the tie break. An unknown first release remains unobserved in the default
 view even when a latest snapshot exists.
 
 Within each series, units, target, product and policy cohort, the earliest
-non-excluded issuance is selected. Later issuances remain visible as repeats.
+non excluded issuance is selected. Later issuances remain visible as repeats.
 Outcome revisions never add an independent forecast. Metrics remain separate
 by real, replay and fixture evidence, product classification and policy.
 Every view includes target coverage, scored counts, missing outcomes,

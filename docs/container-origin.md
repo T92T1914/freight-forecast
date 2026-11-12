@@ -1,6 +1,6 @@
 # Container origin and inventory
 
-The release workflow binds its build-origin and dependency-inventory
+The release workflow binds its build origin and dependency inventory
 attestations to the exact published container manifest. A consumer check
 requires this repository's release workflow, the selected version tag and
 the full source commit, then checks an already downloaded image. It does
@@ -19,22 +19,22 @@ disagreement or an unexpected manifest type. The image configuration digest
 is a different object and is not accepted as a substitute.
 
 Syft inventories the registry image at that digest. Its SPDX 2.3 document
-includes the detected operating-system and Python packages in the image,
+includes the detected operating system and Python packages in the image,
 rather than only the direct entries in `requirements.txt`. The Syft version
-and release-archive SHA256 are explicit in the workflow. The archive is
+and release archive SHA256 are explicit in the workflow. The archive is
 verified before extracting the tool, without running a mutable installer.
 Inventory generation does not perform vulnerability analysis and may miss
 components that the catalogers do not recognize.
 
 The pinned `actions/attest` action signs both build origin and the SPDX
 inventory for the same subject name and digest. Both are published to GHCR.
-Attestation permissions belong only to the tag-publication job. The workflow
+Attestation permissions belong only to the tag publication job. The workflow
 does not submit dependency snapshots or attach release assets. Organization
 storage records are disabled. No release is created by these additions.
 
 After signing, the workflow pulls the digest and runs the same consumer
 verifier described below. It retains `image.json`, `sbom.spdx.json` and
-`consumer.json` as a seven-day workflow artifact after verification succeeds.
+`consumer.json` as a seven day workflow artifact after verification succeeds.
 The verified inventory is also embedded in `consumer.json`. Attestations in
 the registry remain the evidence source after the workflow artifact expires.
 
@@ -87,8 +87,8 @@ verified signed inventory. The release workflow requires this comparison
 before uploading its evidence, so an unrelated SPDX file cannot accompany
 a successful consumer receipt.
 
-Each external command has a two-minute timeout. JSON parsing rejects duplicate
-keys and non-finite values, and accepts at most 64 MiB. Command output is
+Each external command has a two minute timeout. JSON parsing rejects duplicate
+keys and non finite values, and accepts at most 64 MiB. Command output is
 temporarily spooled to disk before that parsing limit is checked. The limit
 does not cap an external command's disk output. Registry and CLI
 failures remain failures. The helper does not retry, pull images, start
@@ -97,20 +97,20 @@ containers, log credentials or change account settings.
 ## What is verified and what remains open
 
 The bounded local fixtures exercise the consumer call path, exact identity
-arguments, downloaded-image checks and rejection behavior with inert tool
+arguments, downloaded image checks and rejection behavior with inert tool
 outputs. They are not signatures, real registry attestations or a published
 release. The producer and real consumer path require the next separately
-authorized version-tag release. Existing releases are not republished and
+authorized version tag release. Existing releases are not republished and
 are not retrospectively described as attested.
 
 A valid attestation establishes that the identified workflow made the signed
 claim about that digest. It does not establish that the workflow was free of
-compromise, every dependency is safe, the build is byte-reproducible, or the
-model is accurate. The mutable base-image tag and training environment remain
+compromise, every dependency is safe, the build is byte reproducible, or the
+model is accurate. The mutable base image tag and training environment remain
 separate reproducibility considerations. Source review and the existing
 checks still matter.
 
-The synthetic training gate does not replace the retained real-data study.
+The synthetic training gate does not replace the retained real data study.
 That study favored carrying forward the last observation. The public ledger
 example contains no real issued forecast. None of the origin checks changes
 those results or turns historical predictions into future forecasts.
@@ -120,7 +120,7 @@ those results or turns historical predictions into future forecasts.
 * [GitHub CLI verification](https://cli.github.com/manual/gh_attestation_verify)
   documents the certificate, source and predicate constraints.
 * [GitHub's attestation action](https://github.com/actions/attest) documents
-  build-origin and SPDX modes, registry publication and storage-record scope.
+  build origin and SPDX modes, registry publication and storage record scope.
 * [Buildx metadata](https://docs.docker.com/reference/cli/docker/buildx/build/#metadata-file)
   distinguishes the published manifest from its configuration digest.
 * [Syft's release](https://github.com/anchore/syft/releases/tag/v1.54.0) supplies

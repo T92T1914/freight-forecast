@@ -10,7 +10,7 @@ the most recent 12 observed months supports only the next unobserved month.
 Keeping more history also supports historical requests after their lag warmup.
 The service rejects history that begins before the saved training origin.
 Dates must be midnight on the first day of each month. A time of day is rejected
-rather than silently removed, so cached feature rows match month-only requests.
+rather than silently removed, so cached feature rows match month only requests.
 
 Older artifacts do not record this origin. They fail startup with an explicit
 retraining instruction because guessing from a replacement CSV could return a
@@ -21,4 +21,4 @@ artifact only if training passes. Updating observations alone does not retrain.
 
 The regression tests compare forecasts and their complete feature rows after
 removing 1, 12, 48 and 84 old months. API tests train a temporary artifact and load it
-through the real startup path; they do not replace the local serving artifact.
+through the real startup path. They do not replace the local serving artifact.

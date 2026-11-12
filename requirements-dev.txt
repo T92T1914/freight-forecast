@@ -1,4 +1,4 @@
-# Test/dev tools — needed to develop and test, never inside the serving image.
+# Test and dev tools, needed to develop and test, never inside the serving image.
 -r requirements.txt
 pytest==9.1.1
 httpx==0.28.1

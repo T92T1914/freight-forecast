@@ -247,7 +247,7 @@ async def track_requests(request: Request, call_next):
     except Exception:
         # unhandled errors never produce a response object here, so without
         # this branch 500s would vanish from the very metrics meant to
-        # surface them — an error-rate panel reading zero during an outage
+        # surface them, such as an error rate panel reading zero during an outage
         REQUEST_COUNT.labels(method, path, "500").inc()
         REQUEST_LATENCY.labels(path).observe(time.perf_counter() - start)
         raise

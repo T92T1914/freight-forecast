@@ -1,7 +1,7 @@
 # Changelog
 
 What changed and when, newest first. [Project notes](docs/project-notes.md)
-explain how the pieces fit together. Dates below are commit dates. No version has been tagged yet; the
+explain how the pieces fit together. Dates below are commit dates. No version has been tagged yet. The
 first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
@@ -231,27 +231,27 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ### 2026-09-05, repository polish
 
-* ruff format adopted; the lint rule set (E, W, F, I, UP, B, SIM) is pinned
+* ruff format adopted. The lint rule set (E, W, F, I, UP, B, SIM) is pinned
   in `pyproject.toml` and the format check is part of `make lint`.
 * `Makefile` with the common commands (`install`, `data`, `train`, `serve`,
-  `test`, `lint`, `format`, `check`, `image`, `run`, `monitor`, `k8s`); CI
+  `test`, `lint`, `format`, `check`, `image`, `run`, `monitor`, `k8s`). CI
   calls the same targets.
-* CI: `actions/checkout@v7` and `actions/setup-python@v7`; tests on Python
-  3.11, 3.12 and 3.13; read only token; superseded runs cancelled; pip cache.
+* CI: `actions/checkout@v7` and `actions/setup-python@v7`, tests on Python
+  3.11, 3.12 and 3.13, read only token, superseded runs cancelled and a pip cache.
 * Release workflow: a `v*` tag re runs lint and tests, then builds and
   publishes the image to GHCR with OCI source/revision/version labels.
-* The train/serve artifact contract is a typed `Artifact`; `/health` and
+* The train/serve artifact contract is a typed `Artifact`. `/health` and
   `/predict` declare response models, so `/docs` states what they return.
   The JSON on the wire is unchanged.
-* Shared `client` fixture moved to `tests/conftest.py`; structural tests for
+* Shared `client` fixture moved to `tests/conftest.py`. Structural tests were added for
   the workflows (read only CI token, tag only publishing with the test gate
   ahead of the push). 36 tests.
 * `pyproject.toml` carries readme, license, authors, URLs and classifiers.
 * README restructured: how the numbers were measured, run it section with
   the Makefile targets and their plain equivalents, contents list.
 * README first screen: the held out result and the train.py gate in one
-  line under the tagline, the dashboard beneath it, a four line quickstart
-  first; sections reordered to results, run it, architecture, CI and
+  line under the tagline, the dashboard beneath it and a four line quickstart
+  first. Sections reordered to results, run it, architecture, CI and
   release, limits, license.
 
 ### 2026-09-04, README
@@ -270,8 +270,8 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ### 2026-07-21, milestones 2 to 6
 
-* Serving: FastAPI app with `/health` and a validated one step `/predict`;
-  artifact and history loaded once at startup. API tests including the
+* Serving: FastAPI app with `/health` and a validated one step `/predict`.
+  Artifact and history loaded once at startup. API tests including the
   serving skew guard and the exact edges of the range gate.
 * Containerize: slim self training image, exact runtime pins, dev
   dependencies split out.
@@ -279,9 +279,9 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 * Kubernetes: deployment with liveness and readiness probes, ClusterIP
   service, structural tests that pin probe paths, the port chain and the
   selector/label match.
-* Monitoring: request count, latency and prediction distribution histograms;
-  unhandled 500s counted; Prometheus config, provisioned Grafana dashboard,
-  scrape annotations; a test that the dashboard only queries metrics the app
+* Monitoring: request count, latency and prediction distribution histograms,
+  unhandled 500s counted, Prometheus config, provisioned Grafana dashboard,
+  scrape annotations and a test that the dashboard only queries metrics the app
   exports.
 
 ### 2026-07-20, milestone 1

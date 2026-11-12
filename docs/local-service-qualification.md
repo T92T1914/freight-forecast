@@ -8,7 +8,7 @@ The local monitoring Compose file publishes the API, Prometheus and Grafana on `
 
 ## Identify source and image
 
-The image argument must be its full local `sha256:` configuration ID. A tag alone is refused. This identifies local image contents. It is distinct from the published manifest digest used by `tools/container_origin.py`, which remains the existing release-origin verification path.
+The image argument must be its full local `sha256:` configuration ID. A tag alone is refused. This identifies local image contents. It is distinct from the published manifest digest used by `tools/container_origin.py`, which remains the existing release origin verification path.
 
 The consumer also requires a private source metadata JSON file:
 
@@ -40,7 +40,7 @@ The destination must be new. An existing directory or file is refused before con
 
 The main container receives the declared limits, a read only filesystem, all capabilities dropped, and `no-new-privileges`. Its sole published port binds to loopback. The consumer checks Docker's configuration and reads the actual UID, GID, effective capabilities and `NoNewPrivs` from process 1. It also reads `memory.max`, `cpu.max` and `pids.max` from the container's cgroup v2 interface. Missing or incompatible enforcement evidence refuses qualification. Required model and history reads must work, while an attempted write under `/tmp` must fail with a read only filesystem error.
 
-Health and forecast-window responses must agree with independently calculated model and history identities. Both supported prediction boundaries must return the declared response types. Malformed months, year zero, a missing month and a month beyond the supported horizon must receive the supported refusal statuses. The metrics endpoint must expose request and prediction metrics.
+Health and forecast window responses must agree with independently calculated model and history identities. Both supported prediction boundaries must return the declared response types. Malformed months, year zero, a missing month and a month beyond the supported horizon must receive the supported refusal statuses. The metrics endpoint must expose request and prediction metrics.
 
 The declared workload is finite:
 
@@ -58,7 +58,7 @@ The consumer holds the final byte of one valid prediction request and verifies a
 
 Four startup refusal cases follow. A temporary helper using the trusted exact image creates a malformed model file, a version of that trusted model with an invalid schema, and a gapped copy of the image's history. An empty owned directory supplies the missing model case. These fixtures are mounted read only into separate owned containers. They never alter the image, committed dataset, original model, ledger or historical study. Unknown external pickle files are not admitted or deserialized by this tool.
 
-Container cleanup requires the unique ownership label created by this attempt. It cannot remove an unrelated container merely because a name was supplied. Uncertain startup still records the owned name before Docker is invoked, allowing later identity-checked cleanup. Cleanup failure remains a failed attempt. Generated refusal fixtures and evidence remain in the new output directory for inspection.
+Container cleanup requires the unique ownership label created by this attempt. It cannot remove an unrelated container merely because a name was supplied. Uncertain startup still records the owned name before Docker is invoked, allowing later identity checked cleanup. Cleanup failure remains a failed attempt. Generated refusal fixtures and evidence remain in the new output directory for inspection.
 
 ## Evidence limits
 

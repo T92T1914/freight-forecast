@@ -1,6 +1,6 @@
 # Local-cluster deployment (k3d/minikube): 2 replicas behind a ClusterIP.
 # The image trains its model at build time, so pods are stateless and
-# interchangeable — no volumes, no init containers.
+# interchangeable. There are no volumes and no init containers.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
