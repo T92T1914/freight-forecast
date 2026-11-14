@@ -96,6 +96,16 @@ under all three methods. Its rolling and adaptive intervals improved coverage
 over the fixed version but worsened the mean score, from 9.117 to 9.353 and 9.303.
 These dependent observations do not establish a general method ranking.
 
+The report also gives a 95 percent Wilson range beside each observed coverage,
+computed from the covered count and the number of months, in the overall
+and yearly tables. For fixed Ridge,
+59 of 72 months gives 71.5 to 89.1 percent, so the 90 percent target sits just
+above that range. Rolling and adaptive Ridge, 66 of 72, give 83.0 to 96.1
+percent, which includes the target. The range treats the months as independent
+draws, and they are not, so it is a rough guide to how little 72 months can
+settle and not a guarantee. The retained JSON is unchanged. The range is
+computed when the report is rendered.
+
 The [public report](https://t92t1914.github.io/freight-forecast/intervals.html)
 shows all nine conditions, every calendar year and downloads for every monthly
 range. The [retained JSON](interval-results.json) includes the declared protocol

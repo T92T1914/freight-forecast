@@ -6,6 +6,15 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-14, a range on the observed interval coverage
+
+* The interval report adds a 95 percent Wilson range beside each observed
+  coverage in the overall and yearly tables, and the interval notes explain how to read it.
+  The retained results, the protocol and the forecasts are unchanged, and the
+  range is computed when the report is rendered.
+* The months are dependent, so the range is a rough guide to how little 72
+  months can settle. It is not a coverage guarantee.
+
 ### 2026-10-27, Obscur readers by default
 
 * The README, project notes and public page lead with the retained Obscur

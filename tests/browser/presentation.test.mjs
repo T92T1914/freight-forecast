@@ -464,14 +464,19 @@ for (const mode of ['obscur','clair']) test(`${mode} interval report preserves e
   await page.locator('#appearance:not([disabled])').waitFor();
   await page.locator('#appearance').selectOption(mode);
   const raw = JSON.parse(await readFile(path.join(root, 'intervals.json'), 'utf8'));
+  const wilson = (k, n) => {
+    const z = 1.959964, p = k/n, d = 1 + z*z/n, c = (p + z*z/(2*n))/d;
+    const h = z*Math.sqrt(p*(1-p)/n + z*z/(4*n*n))/d;
+    return `${(100*Math.max(0, c-h)).toFixed(1)}% to ${(100*Math.min(1, c+h)).toFixed(1)}%`;
+  };
   assert.equal(await page.locator('#overall tbody tr').count(), 9);
   assert.equal(await page.locator('#yearly tbody tr').count(), 54);
   for (const [index, group] of raw.groups.entries()) {
     const values = await page.locator('#overall tbody tr').nth(index).locator('td').allTextContents();
-    assert.deepEqual(values.slice(3), [`${group.summary.covered}/72`, `${(100*group.summary.coverage).toFixed(2)}%`, group.summary.mean_width.toFixed(3), group.summary.mean_interval_score.toFixed(3), '0','0']);
+    assert.deepEqual(values.slice(3), [`${group.summary.covered}/72`, `${(100*group.summary.coverage).toFixed(2)}%`, wilson(group.summary.covered, 72), group.summary.mean_width.toFixed(3), group.summary.mean_interval_score.toFixed(3), '0','0']);
     for (const [offset, [year, summary]] of Object.entries(group.by_year).entries()) {
       const row = await page.locator('#yearly tbody tr').nth(index*6+offset).locator('td').allTextContents();
-      assert.deepEqual(row.slice(2), [year,`${summary.covered}/12`,`${(100*summary.coverage).toFixed(2)}%`,summary.mean_width.toFixed(3),summary.mean_interval_score.toFixed(3),'0','0']);
+      assert.deepEqual(row.slice(2), [year,`${summary.covered}/12`,`${(100*summary.coverage).toFixed(2)}%`,wilson(summary.covered, 12),summary.mean_width.toFixed(3),summary.mean_interval_score.toFixed(3),'0','0']);
     }
   }
   const tables = await page.locator('tbody').allTextContents();
