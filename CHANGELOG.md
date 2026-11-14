@@ -6,6 +6,14 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-14, newer test and lint tools
+
+* The development requirements move pytest from 9.1.1 to 9.2.0 and ruff from
+  0.15.5 to 0.17.5. Both stay out of the serving image, so the model, the
+  forecasts and the pinned runtime packages are unchanged.
+* The lint and format checks pass with no source change, and the full test set
+  gives the same result as before.
+
 ### 2026-11-14, a range on the observed interval coverage
 
 * The interval report adds a 95 percent Wilson range beside each observed
