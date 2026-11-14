@@ -69,6 +69,19 @@ class IntervalReportTests(unittest.TestCase):
                 self.assertEqual(row["covered"], str(source["covered"]))
                 i += 1
 
+    def test_wilson_range_on_observed_coverage(self):
+        low, high = report.wilson(59, 72)
+        self.assertAlmostEqual(low, 71.52, places=2)
+        self.assertAlmostEqual(high, 89.13, places=2)
+        self.assertEqual(report.wilson(0, 72)[0], 0.0)
+        self.assertEqual(round(report.wilson(72, 72)[1], 9), 100.0)
+        for row in report.table_rows(self.data):
+            low, high = report.wilson(*map(int, row[3].split("/")))
+            self.assertEqual(row[5], f"{low:.1f}% to {high:.1f}%")
+        for bad in ((1, 0), (-1, 5), (6, 5)):
+            with self.assertRaises(ValueError):
+                report.wilson(*bad)
+
     def test_tampered_bounds_future_boundary_score_and_alpha_are_rejected(self):
         for field, value in (
             ("lower", 0),

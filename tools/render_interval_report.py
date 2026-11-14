@@ -247,6 +247,17 @@ def value(number):
     return "infinite" if number is None else f"{number:.3f}"
 
 
+def wilson(covered, months, z=1.959964):
+    """Wilson score interval for an observed coverage proportion, in percent."""
+    if months <= 0 or not 0 <= covered <= months:
+        raise ValueError("coverage count outside its months")
+    p = covered / months
+    denom = 1 + z * z / months
+    centre = (p + z * z / (2 * months)) / denom
+    half = z * ((p * (1 - p) / months + z * z / (4 * months * months)) ** 0.5) / denom
+    return 100 * max(0.0, centre - half), 100 * min(1.0, centre + half)
+
+
 def table_rows(result, yearly=False):
     rows = []
     for group in result["groups"]:
@@ -261,6 +272,7 @@ def table_rows(result, yearly=False):
                     period,
                     f"{s['covered']}/{s['months']}",
                     f"{100 * s['coverage']:.2f}%",
+                    "{:.1f}% to {:.1f}%".format(*wilson(s["covered"], s["months"])),
                     value(s["mean_width"]),
                     value(s["mean_interval_score"]),
                     s["unbounded"],
@@ -276,6 +288,7 @@ HEADERS = [
     "Period",
     "Covered",
     "Coverage",
+    "95% Wilson range",
     "Mean width",
     "Mean interval score",
     "Unbounded",
