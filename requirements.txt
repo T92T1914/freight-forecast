@@ -1,7 +1,7 @@
 # Runtime dependencies, pinned exactly so the Docker image is reproducible.
 # Direct deps only; full transitive locking (pip-tools/uv) is the production
 # upgrade if drift ever bites.
-pandas==3.0.3
+pandas==3.1.1
 numpy==2.4.6
 scikit-learn==1.9.1
 joblib==1.6.0
