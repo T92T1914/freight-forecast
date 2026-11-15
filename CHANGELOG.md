@@ -6,6 +6,17 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-15, newer web framework and validation library
+
+* The serving requirements move fastapi from 0.139.2 to 0.162.7 and pydantic
+  from 2.13.4 to 2.14.3. I read the documented breaking changes through context7.
+  They remove the `openapi_prefix` and `**extra` arguments, deprecate
+  `root_path` and drop Python 3.9. This service uses none of those, and it
+  builds the app with a title and a lifespan only. Starlette resolves to 1.10.0, the same as before.
+* The model, the forecasts and the response shapes are unchanged. Lint, format
+  and the tests give the same result as before, and the image build in the pull
+  request checks is the gate for the container.
+
 ### 2026-11-15, newer metrics library
 
 * The serving requirements move prometheus-client from 0.24.1 to 0.26.0. I read
