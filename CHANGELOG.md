@@ -6,6 +6,15 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-15, newer scikit-learn patch release
+
+* The requirements move scikit-learn from 1.9.0 to 1.9.1, a patch release. I
+  could not read the 1.9.1 release notes, so this change rests on the checks and
+  not on the notes. Lint, format and the tests give the same result as before.
+* The model is a fitted scikit-learn estimator, so the image build in the pull
+  request checks is the check that matters. It retrains the model and gates it.
+  I did not change the forecasting code or the gate.
+
 ### 2026-11-15, newer model file library
 
 * The training and serving requirements move joblib from 1.5.3 to 1.6.0. The
