@@ -6,6 +6,14 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-14, newer server
+
+* The serving requirements move uvicorn from 0.51.0 to 0.54.0. The releases in
+  between add experimental HTTP/2 and an experimental HTTP parser that stay off
+  unless asked for, so the container command, the model and the forecasts are unchanged.
+* The lint, format and test checks give the same result as before. The image
+  build in the pull request checks is the gate for the container.
+
 ### 2026-11-14, newer test and lint tools
 
 * The development requirements move pytest from 9.1.1 to 9.2.0 and ruff from
