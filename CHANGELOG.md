@@ -6,6 +6,17 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-15, newer metrics library
+
+* The serving requirements move prometheus-client from 0.24.1 to 0.26.0. I read
+  the documented changes that touch this service. Metric label names must now be
+  unique, and the metrics here already use distinct label names. The metrics page
+  is still mounted at `/metrics`, which 0.26.0 supports. I did not read a full
+  release changelog, because none was available to me.
+* The metric names, the model and the forecasts are unchanged. Lint, format and
+  the tests give the same result as before, and the image build in the pull
+  request checks is the gate for the container.
+
 ### 2026-11-14, newer server
 
 * The serving requirements move uvicorn from 0.51.0 to 0.54.0. The releases in
