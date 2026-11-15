@@ -6,6 +6,13 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-15, newer fastapi patch
+
+* The requirements move fastapi from 0.163.0 to 0.163.1. I could not read the
+  0.163.1 release notes, so this change rests on the checks and not on the notes.
+  Lint, format and the tests give the same result as before, and the image build
+  in the pull request checks is the gate for the container.
+
 ### 2026-11-15, newer fastapi release
 
 * The requirements move fastapi from 0.162.7 to 0.163.0. I could not read the
