@@ -6,6 +6,17 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-15, newer pandas
+
+* The requirements move pandas from 3.0.3 to 3.1.1. I read the documented 3.1.0
+  changes through context7. Index values become read only, `float_precision` in
+  `read_csv` is deprecated, and `.values` on timezone aware series is deprecated.
+  The code here uses none of them, which I checked with a search of `src`,
+  `tools` and `tests`. I did not read the full notes.
+* The test count and the one warning are the same as before. The image build in
+  the pull request checks retrains the model and gates it. I did not change the
+  forecasting code or the gate.
+
 ### 2026-11-15, newer scikit-learn patch release
 
 * The requirements move scikit-learn from 1.9.0 to 1.9.1, a patch release. I
