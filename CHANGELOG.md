@@ -6,6 +6,16 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-15, newer model file library
+
+* The training and serving requirements move joblib from 1.5.3 to 1.6.0. The
+  1.6.0 change I could read lets `dump()` take any path object, and it says
+  nothing about the file format. I did not read the full notes. This project saves and loads the model through byte
+  streams, so it does not use that path.
+* The tests pass with the new version. The image build in the pull request
+  checks retrains the model and gates it, so it is the check that matters for
+  the saved model.
+
 ### 2026-11-15, newer web framework and validation library
 
 * The serving requirements move fastapi from 0.139.2 to 0.162.7 and pydantic
