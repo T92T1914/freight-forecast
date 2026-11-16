@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "outcome_policy": "first_release",
+  "issuance_policy": "earliest non-excluded per series, units, target, product and policy",
+  "events": [
+    {
+      "seq": 1,
+      "event_id": "65e63ad22b78a3e3a73b8a71effb3a8ba4cef4849ac5334ea3f26bfeb7976c83",
+      "idempotency_key": "monthly-outlook-2026-12",
+      "kind": "issuance",
+      "issuance_id": "65e63ad22b78a3e3a73b8a71effb3a8ba4cef4849ac5334ea3f26bfeb7976c83",
+      "payload": {
+        "artifact": {
+          "family": "last_observation_h3",
+          "feature_schema": "bts-last-observation-h3-v1",
+          "horizon": 3,
+          "model_id": "afce856733409ffc2891dc92c428fa47785acb0a0c98a61cbb3a23dbc6941273",
+          "policy": {
+            "family": "last_observation_h3",
+            "feature_schema": "bts-last-observation-h3-v1",
+            "horizon": 3,
+            "model_id": "afce856733409ffc2891dc92c428fa47785acb0a0c98a61cbb3a23dbc6941273",
+            "series": "bts_freight_tsi",
+            "units": "index_points_2000_average_100"
+          },
+          "policy_id": "e44e0fbfac40e4e76cbd3c97599928cd29a2fcbf1389c22fd67ccc5078eac157",
+          "series": "bts_freight_tsi",
+          "training_cutoff": "2026-09",
+          "units": "index_points_2000_average_100"
+        },
+        "classification": "forecast",
+        "evidence_kind": "real_issuance",
+        "horizon": 3,
+        "issue_timezone": "UTC",
+        "issued_at": "2026-11-16T17:39:01.160133+00:00",
+        "last_observation": 135.8,
+        "prediction": 135.8,
+        "schema_version": 1,
+        "seasonal_naive": 137.0,
+        "series": "bts_freight_tsi",
+        "source": {
+          "availability_receipt": {
+            "available_by": "2026-11-16T17:38:36.429391+00:00",
+            "dataset_id": "bw6n-ddqk",
+            "field": "tsi_freight",
+            "history_id": "5d40d9b86204e5c9b11808d7650e963f5a39114b49f0dc4555cf7b1579e865e6",
+            "http_status": 200,
+            "kind": "available_by_capture",
+            "last_month": "2026-09",
+            "resolved_source_url": "https://data.bts.gov/api/id/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000",
+            "retrieved_at": "2026-11-16T17:38:36.429391+00:00",
+            "schema_version": 1,
+            "sha256": "ed40ce1f4cd03968913d72917aa5002200c59b60bf476c1cb8cea167a830788d",
+            "source_url": "https://data.transportation.gov/resource/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000"
+          },
+          "publication_basis": "Official response bytes were available by capture completion; exact first publication time is unknown",
+          "publication_verified": false,
+          "published_at": null,
+          "retrieved_at": "2026-11-16T17:38:36.429391+00:00",
+          "url": "https://data.transportation.gov/resource/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000"
+        },
+        "target_month": "2026-12",
+        "uncertainty": null,
+        "units": "index_points_2000_average_100",
+        "vintage": {
+          "available_through": "2026-09",
+          "history_id": "5d40d9b86204e5c9b11808d7650e963f5a39114b49f0dc4555cf7b1579e865e6",
+          "kind": "latest_vintage_snapshot",
+          "sha256": "ed40ce1f4cd03968913d72917aa5002200c59b60bf476c1cb8cea167a830788d"
+        }
+      },
+      "payload_id": "8d9a347c116bd42ece4fffe037adb6d56a4fd6f497619062f53181d830cca73d",
+      "recorded_at": "2026-11-16T17:39:01.201266+00:00"
+    }
+  ],
+  "rows": [
+    {
+      "issuance_id": "65e63ad22b78a3e3a73b8a71effb3a8ba4cef4849ac5334ea3f26bfeb7976c83",
+      "issuance": {
+        "artifact": {
+          "family": "last_observation_h3",
+          "feature_schema": "bts-last-observation-h3-v1",
+          "horizon": 3,
+          "model_id": "afce856733409ffc2891dc92c428fa47785acb0a0c98a61cbb3a23dbc6941273",
+          "policy": {
+            "family": "last_observation_h3",
+            "feature_schema": "bts-last-observation-h3-v1",
+            "horizon": 3,
+            "model_id": "afce856733409ffc2891dc92c428fa47785acb0a0c98a61cbb3a23dbc6941273",
+            "series": "bts_freight_tsi",
+            "units": "index_points_2000_average_100"
+          },
+          "policy_id": "e44e0fbfac40e4e76cbd3c97599928cd29a2fcbf1389c22fd67ccc5078eac157",
+          "series": "bts_freight_tsi",
+          "training_cutoff": "2026-09",
+          "units": "index_points_2000_average_100"
+        },
+        "classification": "forecast",
+        "evidence_kind": "real_issuance",
+        "horizon": 3,
+        "issue_timezone": "UTC",
+        "issued_at": "2026-11-16T17:39:01.160133+00:00",
+        "last_observation": 135.8,
+        "prediction": 135.8,
+        "schema_version": 1,
+        "seasonal_naive": 137.0,
+        "series": "bts_freight_tsi",
+        "source": {
+          "availability_receipt": {
+            "available_by": "2026-11-16T17:38:36.429391+00:00",
+            "dataset_id": "bw6n-ddqk",
+            "field": "tsi_freight",
+            "history_id": "5d40d9b86204e5c9b11808d7650e963f5a39114b49f0dc4555cf7b1579e865e6",
+            "http_status": 200,
+            "kind": "available_by_capture",
+            "last_month": "2026-09",
+            "resolved_source_url": "https://data.bts.gov/api/id/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000",
+            "retrieved_at": "2026-11-16T17:38:36.429391+00:00",
+            "schema_version": 1,
+            "sha256": "ed40ce1f4cd03968913d72917aa5002200c59b60bf476c1cb8cea167a830788d",
+            "source_url": "https://data.transportation.gov/resource/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000"
+          },
+          "publication_basis": "Official response bytes were available by capture completion; exact first publication time is unknown",
+          "publication_verified": false,
+          "published_at": null,
+          "retrieved_at": "2026-11-16T17:38:36.429391+00:00",
+          "url": "https://data.transportation.gov/resource/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000"
+        },
+        "target_month": "2026-12",
+        "uncertainty": null,
+        "units": "index_points_2000_average_100",
+        "vintage": {
+          "available_through": "2026-09",
+          "history_id": "5d40d9b86204e5c9b11808d7650e963f5a39114b49f0dc4555cf7b1579e865e6",
+          "kind": "latest_vintage_snapshot",
+          "sha256": "ed40ce1f4cd03968913d72917aa5002200c59b60bf476c1cb8cea167a830788d"
+        }
+      },
+      "status": "unobserved",
+      "outcome": null
+    }
+  ],
+  "summaries": {
+    "real_issuance": {
+      "issuances": 1,
+      "scored_targets": 0,
+      "unobserved": 1,
+      "excluded": 0,
+      "repeat_issuances": 0,
+      "target_months": [
+        "2026-12"
+      ]
+    },
+    "synthetic_fixture": {
+      "issuances": 0,
+      "scored_targets": 0,
+      "unobserved": 0,
+      "excluded": 0,
+      "repeat_issuances": 0,
+      "target_months": []
+    },
+    "retrospective_replay": {
+      "issuances": 0,
+      "scored_targets": 0,
+      "unobserved": 0,
+      "excluded": 0,
+      "repeat_issuances": 0,
+      "target_months": []
+    }
+  },
+  "cohorts": [
+    {
+      "evidence_kind": "real_issuance",
+      "classification": "forecast",
+      "policy_id": "e44e0fbfac40e4e76cbd3c97599928cd29a2fcbf1389c22fd67ccc5078eac157",
+      "scored_targets": 0,
+      "target_months": [
+        "2026-12"
+      ],
+      "mae": {
+        "prediction": null,
+        "last_observation": null,
+        "seasonal_naive": null
+      }
+    }
+  ]
+}

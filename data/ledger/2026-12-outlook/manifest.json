@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "dataset_id": "bw6n-ddqk",
+  "field": "tsi_freight",
+  "units": "index_points_2000_average_100",
+  "seasonally_adjusted": true,
+  "vintage_kind": "latest_vintage_snapshot",
+  "source_url": "https://data.transportation.gov/resource/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000",
+  "retrieved_utc": "2026-11-16T17:38:36.429391+00:00",
+  "sha256": "ed40ce1f4cd03968913d72917aa5002200c59b60bf476c1cb8cea167a830788d",
+  "rows": 321,
+  "first_month": "2000-01",
+  "last_month": "2026-09",
+  "view_metadata_sha256": "e2dd35e29f45fdefa0e21447da6cfb4111b2a264cb9c4bd7624b7e16a3eef9b5"
+}

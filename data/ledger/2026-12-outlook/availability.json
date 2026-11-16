@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "available_by_capture",
+  "source_url": "https://data.transportation.gov/resource/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000",
+  "resolved_source_url": "https://data.bts.gov/api/id/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000",
+  "retrieved_at": "2026-11-16T17:38:36.429391+00:00",
+  "available_by": "2026-11-16T17:38:36.429391+00:00",
+  "sha256": "ed40ce1f4cd03968913d72917aa5002200c59b60bf476c1cb8cea167a830788d",
+  "history_id": "5d40d9b86204e5c9b11808d7650e963f5a39114b49f0dc4555cf7b1579e865e6",
+  "dataset_id": "bw6n-ddqk",
+  "field": "tsi_freight",
+  "last_month": "2026-09",
+  "http_status": 200
+}

@@ -6,6 +6,21 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-16, the first monthly ledger record
+
+* `data/ledger/2026-12-outlook/` holds one real issuance under the declared
+  three step outlook. The snapshot runs through September 2026, the target is
+  December 2026, and the prediction is the last observation, 135.8 index points,
+  against 137.0 for the same month last year. It was issued at 17:39 UTC today,
+  before the target month began and before any outcome exists.
+* The folder keeps the captured bytes, their manifest and availability receipt,
+  the ledger database file and its JSON export. The availability receipt shows
+  that these bytes were available by capture, not when BTS first published
+  them. Nothing is scored. The December value is not due until the February 2027
+  release.
+* This is the first record since I lost the two local ones of October 14, and
+  it is the first of the one a month I decided to issue.
+
 ### 2026-11-16, the real time test on seven component series
 
 * `docs/real-time-components.md` runs the same protocol on the seven component

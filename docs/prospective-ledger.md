@@ -21,6 +21,23 @@ time after the outcome, and a forecast scored without proof that it was issued
 first proves nothing. No replacement is issued for either month. The saved
 public fixture and original study are unchanged.
 
+## Issued records
+
+I issue one record each month and commit it before its target month begins, so
+its issue time is public in the history of this repository. Each record sits in
+its own folder under `data/ledger/` with the captured source, its receipts, the
+database file and the JSON export. A record in the repository is the original
+file, not a retyped copy.
+
+The first is [December 2026](../data/ledger/2026-12-outlook/ledger.json). It
+used the retained September 2026 snapshot, issued on November 16, 2026 at 17:39
+UTC, and predicts 135.8 index points under the three step policy. The same month
+last year was 137.0. The receipt establishes that the bytes were available by
+capture, not their first publication time. The outcome would come with the
+February 2027 release, so the record is unscored today. A commit date and a
+database file are still my own record, so this is evidence of issue order, not an
+independent timestamp.
+
 ## Record and identity boundaries
 
 `src.ledger.Ledger` uses a local SQLite database. Each append contains a caller

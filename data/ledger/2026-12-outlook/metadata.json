@@ -1,0 +1,5596 @@
+{
+  "id" : "bw6n-ddqk",
+  "name" : "Transportation Services Index and Seasonally-Adjusted Transportation Data",
+  "assetType" : "dataset",
+  "attribution" : "Bureau of Transportation Statistics",
+  "attributionLink" : "https://www.bts.gov/",
+  "averageRating" : 0,
+  "category" : "Research and Statistics",
+  "createdAt" : 1490105508,
+  "description" : "About Transportation Services Index\r\n\r\nThe Transportation Services Index (TSI), created by the U.S. Department of Transportation (DOT), Bureau of Transportation Statistics (BTS), measures the movement of freight and passengers. The index, which is seasonally adjusted, combines available data on freight traffic, as well as passenger travel, that have been weighted to yield a monthly measure of transportation services output.\r\n\r\nFor charts and discussion on the relationship of the TSI to the economy, see our Transportation as an Economic Indicator: Transportation Services Index page  (https://data.bts.gov/stories/s/TET-indicator-1/9czv-tjte)\r\n\r\nFor release schedule see: https://www.bts.gov/newsroom/transportation-services-index-release-schedule\r\n\r\nAbout seasonally-adjusted data\r\n\r\nStatisticians use the process of seasonal-adjustment to uncover trends in data. Monthly data, for instance, are influenced by the number of days and the number of weekends in a month as well as by the timing of holidays and seasonal activity. These influences make it difficult to see underlying changes in the data. Statisticians use seasonal adjustment to control for these influences.\r\n\r\nControlling of seasonal influences allows measurement of real monthly changes; short and long term patterns of growth or decline; and turning points. Data for one month can be compared to data for any other month in the series and the data series can be ranked to find high and low points. Any observed differences are “real” differences; that is, they are differences brought about by changes in the data and not brought about by a change in the number of days or weekends in the month, the occurrence or non-occurrence of a holiday, or seasonal activity.",
+  "diciBackend" : false,
+  "displayType" : "table",
+  "downloadCount" : 180287,
+  "hideFromCatalog" : false,
+  "hideFromDataJson" : false,
+  "licenseId" : "USGOV_WORKS",
+  "locked" : false,
+  "newBackend" : true,
+  "numberOfComments" : 0,
+  "oid" : 41977938,
+  "provenance" : "official",
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1772230432,
+  "publicationGroup" : 14102059,
+  "publicationStage" : "published",
+  "resourceName" : "ID",
+  "rowIdentifierColumnId" : 627639377,
+  "rowsUpdatedAt" : 1794498886,
+  "rowsUpdatedBy" : "ue3d-2yqr",
+  "tableId" : 20293092,
+  "totalTimesRated" : 0,
+  "viewCount" : 842062,
+  "viewLastModified" : 1794498883,
+  "viewType" : "tabular",
+  "approvals" : [ {
+    "reviewedAt" : 1581521971,
+    "reviewedAutomatically" : false,
+    "state" : "approved",
+    "submissionId" : 7372639,
+    "submissionObject" : "public_audience_request",
+    "submissionOutcome" : "change_audience",
+    "submittedAt" : 1581519098,
+    "targetAudience" : "public",
+    "workflowId" : 2520,
+    "reviewer" : {
+      "id" : "49zd-krpu",
+      "displayName" : "Mindy Liu"
+    },
+    "submissionDetails" : {
+      "permissionType" : "read"
+    },
+    "submissionOutcomeApplication" : {
+      "endedAt" : 1581521971,
+      "failureCount" : 0,
+      "startedAt" : 1581521971,
+      "status" : "success"
+    },
+    "submitter" : {
+      "id" : "7cqb-ye3q",
+      "displayName" : "Bernetta Crutcher"
+    }
+  } ],
+  "clientContext" : {
+    "clientContextVariables" : [ ],
+    "inheritedVariables" : { }
+  },
+  "columns" : [ {
+    "id" : 627639377,
+    "name" : "ID",
+    "dataTypeName" : "text",
+    "description" : "Unique row identifier",
+    "fieldName" : "id",
+    "position" : 1,
+    "renderTypeName" : "text",
+    "tableColumnId" : 45072760,
+    "width" : 88,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "SATD202609",
+      "null" : "0",
+      "top" : [ {
+        "item" : "SATD200407",
+        "count" : "1"
+      }, {
+        "item" : "SATD200003",
+        "count" : "1"
+      }, {
+        "item" : "SATD200203",
+        "count" : "1"
+      }, {
+        "item" : "SATD201504",
+        "count" : "1"
+      }, {
+        "item" : "SATD201803",
+        "count" : "1"
+      }, {
+        "item" : "SATD201001",
+        "count" : "1"
+      }, {
+        "item" : "SATD201409",
+        "count" : "1"
+      }, {
+        "item" : "SATD201703",
+        "count" : "1"
+      }, {
+        "item" : "SATD201811",
+        "count" : "1"
+      }, {
+        "item" : "SATD200304",
+        "count" : "1"
+      }, {
+        "item" : "SATD201905",
+        "count" : "1"
+      }, {
+        "item" : "SATD200408",
+        "count" : "1"
+      }, {
+        "item" : "SATD201005",
+        "count" : "1"
+      }, {
+        "item" : "SATD202108",
+        "count" : "1"
+      }, {
+        "item" : "SATD200412",
+        "count" : "1"
+      }, {
+        "item" : "SATD201301",
+        "count" : "1"
+      }, {
+        "item" : "SATD201309",
+        "count" : "1"
+      }, {
+        "item" : "SATD202303",
+        "count" : "1"
+      }, {
+        "item" : "SATD201805",
+        "count" : "1"
+      }, {
+        "item" : "SATD200612",
+        "count" : "1"
+      } ],
+      "smallest" : "SATD200001",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "displayStyle" : "plain",
+      "align" : "left"
+    }
+  }, {
+    "id" : 627639378,
+    "name" : "OBS_DATE",
+    "dataTypeName" : "calendar_date",
+    "description" : "Observation Date ( Month and Year)",
+    "fieldName" : "obs_date",
+    "position" : 2,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 45072761,
+    "width" : 757,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "2026-09-01T00:00:00.000",
+      "null" : "0",
+      "top" : [ {
+        "item" : "2006-03-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2007-10-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2014-04-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2024-06-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2014-11-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2023-05-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2009-02-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2007-08-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2014-07-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2005-03-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2016-06-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2005-07-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2016-03-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2006-10-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2002-12-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2025-04-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2017-02-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2015-06-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2023-08-01T00:00:00.000",
+        "count" : "1"
+      }, {
+        "item" : "2020-05-01T00:00:00.000",
+        "count" : "1"
+      } ],
+      "smallest" : "2000-01-01T00:00:00.000",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "view" : "date",
+      "align" : "left"
+    }
+  }, {
+    "id" : 627639379,
+    "name" : "ASM",
+    "dataTypeName" : "number",
+    "description" : "Available Seat Miles (ASMs) for U.S. Air Carrier Domestic and International, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "asm",
+    "position" : 3,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072762,
+    "width" : 310,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "127702170",
+      "null" : "1",
+      "top" : [ {
+        "item" : "79912506",
+        "count" : "1"
+      }, {
+        "item" : "114681423",
+        "count" : "1"
+      }, {
+        "item" : "96987157",
+        "count" : "1"
+      }, {
+        "item" : "87561518",
+        "count" : "1"
+      }, {
+        "item" : "115620154",
+        "count" : "1"
+      }, {
+        "item" : "84375737",
+        "count" : "1"
+      }, {
+        "item" : "105738820",
+        "count" : "1"
+      }, {
+        "item" : "68934612",
+        "count" : "1"
+      }, {
+        "item" : "77124746",
+        "count" : "1"
+      }, {
+        "item" : "81546815",
+        "count" : "1"
+      }, {
+        "item" : "90033029",
+        "count" : "1"
+      }, {
+        "item" : "93813172",
+        "count" : "1"
+      }, {
+        "item" : "80678778",
+        "count" : "1"
+      }, {
+        "item" : "73849591",
+        "count" : "1"
+      }, {
+        "item" : "82318032",
+        "count" : "1"
+      }, {
+        "item" : "120564059",
+        "count" : "1"
+      }, {
+        "item" : "94893142",
+        "count" : "1"
+      }, {
+        "item" : "81651877",
+        "count" : "1"
+      }, {
+        "item" : "84747977",
+        "count" : "1"
+      }, {
+        "item" : "98096193",
+        "count" : "1"
+      } ],
+      "smallest" : "21032453",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639380,
+    "name" : "ASM_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Available Seat Miles (ASMs) for U.S. Air Carrier Domestic and International, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "asm_d11",
+    "position" : 4,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072763,
+    "width" : 250,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "117268816",
+      "null" : "1",
+      "top" : [ {
+        "item" : "91599429",
+        "count" : "1"
+      }, {
+        "item" : "83855869",
+        "count" : "1"
+      }, {
+        "item" : "83696902",
+        "count" : "1"
+      }, {
+        "item" : "102623619",
+        "count" : "1"
+      }, {
+        "item" : "81194823",
+        "count" : "1"
+      }, {
+        "item" : "82115237",
+        "count" : "1"
+      }, {
+        "item" : "82942212",
+        "count" : "1"
+      }, {
+        "item" : "82693886",
+        "count" : "1"
+      }, {
+        "item" : "87450552",
+        "count" : "1"
+      }, {
+        "item" : "105675232",
+        "count" : "1"
+      }, {
+        "item" : "84809367",
+        "count" : "1"
+      }, {
+        "item" : "70847203",
+        "count" : "1"
+      }, {
+        "item" : "80374213",
+        "count" : "1"
+      }, {
+        "item" : "103806133",
+        "count" : "1"
+      }, {
+        "item" : "115949728",
+        "count" : "1"
+      }, {
+        "item" : "80778359",
+        "count" : "1"
+      }, {
+        "item" : "91063811",
+        "count" : "1"
+      }, {
+        "item" : "90578266",
+        "count" : "1"
+      }, {
+        "item" : "93258315",
+        "count" : "1"
+      }, {
+        "item" : "93414002",
+        "count" : "1"
+      } ],
+      "smallest" : "21326509",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639381,
+    "name" : "ASM_D",
+    "dataTypeName" : "number",
+    "description" : "Available Seat Miles (ASMs) for U.S. Air Carrier Domestic, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "asm_d",
+    "position" : 5,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072764,
+    "width" : 343,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "88337537",
+      "null" : "1",
+      "top" : [ {
+        "item" : "58383462",
+        "count" : "1"
+      }, {
+        "item" : "53450486",
+        "count" : "1"
+      }, {
+        "item" : "42874072",
+        "count" : "1"
+      }, {
+        "item" : "59955636",
+        "count" : "1"
+      }, {
+        "item" : "56555517",
+        "count" : "1"
+      }, {
+        "item" : "56180696",
+        "count" : "1"
+      }, {
+        "item" : "65813398",
+        "count" : "1"
+      }, {
+        "item" : "83494220",
+        "count" : "1"
+      }, {
+        "item" : "54386944",
+        "count" : "1"
+      }, {
+        "item" : "70974287",
+        "count" : "1"
+      }, {
+        "item" : "54480417",
+        "count" : "1"
+      }, {
+        "item" : "68799372",
+        "count" : "1"
+      }, {
+        "item" : "55785892",
+        "count" : "1"
+      }, {
+        "item" : "50088434",
+        "count" : "1"
+      }, {
+        "item" : "54524168",
+        "count" : "1"
+      }, {
+        "item" : "62097351",
+        "count" : "1"
+      }, {
+        "item" : "83919284",
+        "count" : "1"
+      }, {
+        "item" : "73789035",
+        "count" : "1"
+      }, {
+        "item" : "71301646",
+        "count" : "1"
+      }, {
+        "item" : "76617273",
+        "count" : "1"
+      } ],
+      "smallest" : "19489079",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639382,
+    "name" : "ASM_D_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Available Seat Miles (ASMs) for U.S. Air Carrier Domestic, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "asm_d_d11",
+    "position" : 6,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072765,
+    "width" : 470,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "83398185",
+      "null" : "1",
+      "top" : [ {
+        "item" : "56834177",
+        "count" : "1"
+      }, {
+        "item" : "54493664",
+        "count" : "1"
+      }, {
+        "item" : "71218709",
+        "count" : "1"
+      }, {
+        "item" : "56241250",
+        "count" : "1"
+      }, {
+        "item" : "57160864",
+        "count" : "1"
+      }, {
+        "item" : "56451044",
+        "count" : "1"
+      }, {
+        "item" : "60591612",
+        "count" : "1"
+      }, {
+        "item" : "71975901",
+        "count" : "1"
+      }, {
+        "item" : "61394872",
+        "count" : "1"
+      }, {
+        "item" : "69773403",
+        "count" : "1"
+      }, {
+        "item" : "79602126",
+        "count" : "1"
+      }, {
+        "item" : "81776011",
+        "count" : "1"
+      }, {
+        "item" : "68267460",
+        "count" : "1"
+      }, {
+        "item" : "79822404",
+        "count" : "1"
+      }, {
+        "item" : "59406312",
+        "count" : "1"
+      }, {
+        "item" : "56640707",
+        "count" : "1"
+      }, {
+        "item" : "71744112",
+        "count" : "1"
+      }, {
+        "item" : "59924292",
+        "count" : "1"
+      }, {
+        "item" : "60286014",
+        "count" : "1"
+      }, {
+        "item" : "80858527",
+        "count" : "1"
+      } ],
+      "smallest" : "19742208",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639383,
+    "name" : "ASM_I",
+    "dataTypeName" : "number",
+    "description" : "Available Seat Miles (ASMs) for U.S. Air Carrier International, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "asm_i",
+    "position" : 7,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072766,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "39364633",
+      "null" : "1",
+      "top" : [ {
+        "item" : "27091059",
+        "count" : "1"
+      }, {
+        "item" : "17405077",
+        "count" : "1"
+      }, {
+        "item" : "18127333",
+        "count" : "1"
+      }, {
+        "item" : "24010854",
+        "count" : "1"
+      }, {
+        "item" : "29162731",
+        "count" : "1"
+      }, {
+        "item" : "21504278",
+        "count" : "1"
+      }, {
+        "item" : "17699563",
+        "count" : "1"
+      }, {
+        "item" : "28701683",
+        "count" : "1"
+      }, {
+        "item" : "27595337",
+        "count" : "1"
+      }, {
+        "item" : "31239896",
+        "count" : "1"
+      }, {
+        "item" : "27455253",
+        "count" : "1"
+      }, {
+        "item" : "25188438",
+        "count" : "1"
+      }, {
+        "item" : "17699224",
+        "count" : "1"
+      }, {
+        "item" : "31434209",
+        "count" : "1"
+      }, {
+        "item" : "29164529",
+        "count" : "1"
+      }, {
+        "item" : "34270223",
+        "count" : "1"
+      }, {
+        "item" : "27463780",
+        "count" : "1"
+      }, {
+        "item" : "25984532",
+        "count" : "1"
+      }, {
+        "item" : "28232476",
+        "count" : "1"
+      }, {
+        "item" : "26873307",
+        "count" : "1"
+      } ],
+      "smallest" : "1543374",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639384,
+    "name" : "ASM_I_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Available Seat Miles (ASMs) for U.S. Air Carrier International, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "asm_i_d11",
+    "position" : 8,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072767,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "35365474",
+      "null" : "1",
+      "top" : [ {
+        "item" : "34270621",
+        "count" : "1"
+      }, {
+        "item" : "35365474",
+        "count" : "1"
+      }, {
+        "item" : "28990552",
+        "count" : "1"
+      }, {
+        "item" : "30382254",
+        "count" : "1"
+      }, {
+        "item" : "29158681",
+        "count" : "1"
+      }, {
+        "item" : "27000540",
+        "count" : "1"
+      }, {
+        "item" : "26079681",
+        "count" : "1"
+      }, {
+        "item" : "32964250",
+        "count" : "1"
+      }, {
+        "item" : "34248124",
+        "count" : "1"
+      }, {
+        "item" : "34148424",
+        "count" : "1"
+      }, {
+        "item" : "28533311",
+        "count" : "1"
+      }, {
+        "item" : "19503482",
+        "count" : "1"
+      }, {
+        "item" : "28921032",
+        "count" : "1"
+      }, {
+        "item" : "30819718",
+        "count" : "1"
+      }, {
+        "item" : "16721819",
+        "count" : "1"
+      }, {
+        "item" : "21920741",
+        "count" : "1"
+      }, {
+        "item" : "24222743",
+        "count" : "1"
+      }, {
+        "item" : "33465629",
+        "count" : "1"
+      }, {
+        "item" : "14014455",
+        "count" : "1"
+      }, {
+        "item" : "28308599",
+        "count" : "1"
+      } ],
+      "smallest" : "1584300",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639385,
+    "name" : "RPM",
+    "dataTypeName" : "number",
+    "description" : "Revenue Passenger Miles (RPMs) for U.S. Air Carrier Domestic and International, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "rpm",
+    "position" : 9,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072768,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "109835239",
+      "null" : "1",
+      "top" : [ {
+        "item" : "55549640",
+        "count" : "1"
+      }, {
+        "item" : "76193082",
+        "count" : "1"
+      }, {
+        "item" : "48731119",
+        "count" : "1"
+      }, {
+        "item" : "93562863",
+        "count" : "1"
+      }, {
+        "item" : "70715384",
+        "count" : "1"
+      }, {
+        "item" : "67956166",
+        "count" : "1"
+      }, {
+        "item" : "78192819",
+        "count" : "1"
+      }, {
+        "item" : "54233804",
+        "count" : "1"
+      }, {
+        "item" : "68542276",
+        "count" : "1"
+      }, {
+        "item" : "70799480",
+        "count" : "1"
+      }, {
+        "item" : "55302968",
+        "count" : "1"
+      }, {
+        "item" : "59784666",
+        "count" : "1"
+      }, {
+        "item" : "96770546",
+        "count" : "1"
+      }, {
+        "item" : "71745477",
+        "count" : "1"
+      }, {
+        "item" : "67300832",
+        "count" : "1"
+      }, {
+        "item" : "73076758",
+        "count" : "1"
+      }, {
+        "item" : "73591283",
+        "count" : "1"
+      }, {
+        "item" : "62624694",
+        "count" : "1"
+      }, {
+        "item" : "67951401",
+        "count" : "1"
+      }, {
+        "item" : "67827983",
+        "count" : "1"
+      } ],
+      "smallest" : "2908236",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639386,
+    "name" : "RPM_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Revenue Passenger Miles (RPMs) for U.S. Air Carrier Domestic and International, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "rpm_d11",
+    "position" : 10,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072769,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "96609072",
+      "null" : "1",
+      "top" : [ {
+        "item" : "70862336",
+        "count" : "1"
+      }, {
+        "item" : "64162462",
+        "count" : "1"
+      }, {
+        "item" : "55742880",
+        "count" : "1"
+      }, {
+        "item" : "71162054",
+        "count" : "1"
+      }, {
+        "item" : "64915422",
+        "count" : "1"
+      }, {
+        "item" : "85723474",
+        "count" : "1"
+      }, {
+        "item" : "81033069",
+        "count" : "1"
+      }, {
+        "item" : "13622250",
+        "count" : "1"
+      }, {
+        "item" : "65424851",
+        "count" : "1"
+      }, {
+        "item" : "69342600",
+        "count" : "1"
+      }, {
+        "item" : "64463124",
+        "count" : "1"
+      }, {
+        "item" : "72227997",
+        "count" : "1"
+      }, {
+        "item" : "65860352",
+        "count" : "1"
+      }, {
+        "item" : "64306090",
+        "count" : "1"
+      }, {
+        "item" : "65139888",
+        "count" : "1"
+      }, {
+        "item" : "73370681",
+        "count" : "1"
+      }, {
+        "item" : "64736098",
+        "count" : "1"
+      }, {
+        "item" : "77854213",
+        "count" : "1"
+      }, {
+        "item" : "68444318",
+        "count" : "1"
+      }, {
+        "item" : "70706334",
+        "count" : "1"
+      } ],
+      "smallest" : "2915704",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639387,
+    "name" : "RPM_D",
+    "dataTypeName" : "number",
+    "description" : "Revenue Passenger Miles (RPMs) for U.S. Air Carrier Domestic, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "rpm_d",
+    "position" : 11,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072770,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "75596077",
+      "null" : "1",
+      "top" : [ {
+        "item" : "2551127",
+        "count" : "1"
+      }, {
+        "item" : "41001934",
+        "count" : "1"
+      }, {
+        "item" : "45270461",
+        "count" : "1"
+      }, {
+        "item" : "65633792",
+        "count" : "1"
+      }, {
+        "item" : "52016986",
+        "count" : "1"
+      }, {
+        "item" : "73080795",
+        "count" : "1"
+      }, {
+        "item" : "50303173",
+        "count" : "1"
+      }, {
+        "item" : "68605738",
+        "count" : "1"
+      }, {
+        "item" : "50123963",
+        "count" : "1"
+      }, {
+        "item" : "55991790",
+        "count" : "1"
+      }, {
+        "item" : "36819820",
+        "count" : "1"
+      }, {
+        "item" : "70613270",
+        "count" : "1"
+      }, {
+        "item" : "45415533",
+        "count" : "1"
+      }, {
+        "item" : "43108587",
+        "count" : "1"
+      }, {
+        "item" : "66095834",
+        "count" : "1"
+      }, {
+        "item" : "23711619",
+        "count" : "1"
+      }, {
+        "item" : "46460173",
+        "count" : "1"
+      }, {
+        "item" : "47070645",
+        "count" : "1"
+      }, {
+        "item" : "45304289",
+        "count" : "1"
+      }, {
+        "item" : "46835639",
+        "count" : "1"
+      } ],
+      "smallest" : "2551127",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639388,
+    "name" : "RPM_D_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Revenue Passenger Miles (RPMs) for U.S. Air Carrier Domestic, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "rpm_d_d11",
+    "position" : 12,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072771,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "67725944",
+      "null" : "1",
+      "top" : [ {
+        "item" : "41657282",
+        "count" : "1"
+      }, {
+        "item" : "66754621",
+        "count" : "1"
+      }, {
+        "item" : "46500366",
+        "count" : "1"
+      }, {
+        "item" : "54514405",
+        "count" : "1"
+      }, {
+        "item" : "53756675",
+        "count" : "1"
+      }, {
+        "item" : "66724659",
+        "count" : "1"
+      }, {
+        "item" : "63262831",
+        "count" : "1"
+      }, {
+        "item" : "44300531",
+        "count" : "1"
+      }, {
+        "item" : "49334548",
+        "count" : "1"
+      }, {
+        "item" : "46415281",
+        "count" : "1"
+      }, {
+        "item" : "49181213",
+        "count" : "1"
+      }, {
+        "item" : "47318710",
+        "count" : "1"
+      }, {
+        "item" : "40571796",
+        "count" : "1"
+      }, {
+        "item" : "19919715",
+        "count" : "1"
+      }, {
+        "item" : "53649774",
+        "count" : "1"
+      }, {
+        "item" : "47818537",
+        "count" : "1"
+      }, {
+        "item" : "62019738",
+        "count" : "1"
+      }, {
+        "item" : "49899690",
+        "count" : "1"
+      }, {
+        "item" : "41689393",
+        "count" : "1"
+      }, {
+        "item" : "66917303",
+        "count" : "1"
+      } ],
+      "smallest" : "2547332",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639389,
+    "name" : "RPM_I",
+    "dataTypeName" : "number",
+    "description" : "Revenue Passenger Miles (RPMs) for U.S. Air Carrier International, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "rpm_i",
+    "position" : 13,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072772,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "34239162",
+      "null" : "1",
+      "top" : [ {
+        "item" : "31373340",
+        "count" : "1"
+      }, {
+        "item" : "22625232",
+        "count" : "1"
+      }, {
+        "item" : "24289510",
+        "count" : "1"
+      }, {
+        "item" : "13517448",
+        "count" : "1"
+      }, {
+        "item" : "25463755",
+        "count" : "1"
+      }, {
+        "item" : "25401136",
+        "count" : "1"
+      }, {
+        "item" : "18124360",
+        "count" : "1"
+      }, {
+        "item" : "12209055",
+        "count" : "1"
+      }, {
+        "item" : "23195875",
+        "count" : "1"
+      }, {
+        "item" : "24322593",
+        "count" : "1"
+      }, {
+        "item" : "25132183",
+        "count" : "1"
+      }, {
+        "item" : "12506976",
+        "count" : "1"
+      }, {
+        "item" : "5756612",
+        "count" : "1"
+      }, {
+        "item" : "19716776",
+        "count" : "1"
+      }, {
+        "item" : "32859040",
+        "count" : "1"
+      }, {
+        "item" : "18425685",
+        "count" : "1"
+      }, {
+        "item" : "21410199",
+        "count" : "1"
+      }, {
+        "item" : "20112090",
+        "count" : "1"
+      }, {
+        "item" : "22204773",
+        "count" : "1"
+      }, {
+        "item" : "24274596",
+        "count" : "1"
+      } ],
+      "smallest" : "357109",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639390,
+    "name" : "RPM_I_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Revenue Passenger Miles (RPMs) for U.S. Air Carrier International, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "rpm_i_d11",
+    "position" : 14,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072773,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "29691768",
+      "null" : "1",
+      "top" : [ {
+        "item" : "20793452",
+        "count" : "1"
+      }, {
+        "item" : "15567361",
+        "count" : "1"
+      }, {
+        "item" : "22503345",
+        "count" : "1"
+      }, {
+        "item" : "22753001",
+        "count" : "1"
+      }, {
+        "item" : "9164968",
+        "count" : "1"
+      }, {
+        "item" : "20738009",
+        "count" : "1"
+      }, {
+        "item" : "16863956",
+        "count" : "1"
+      }, {
+        "item" : "22862381",
+        "count" : "1"
+      }, {
+        "item" : "22702304",
+        "count" : "1"
+      }, {
+        "item" : "19922323",
+        "count" : "1"
+      }, {
+        "item" : "11746866",
+        "count" : "1"
+      }, {
+        "item" : "22293239",
+        "count" : "1"
+      }, {
+        "item" : "5047055",
+        "count" : "1"
+      }, {
+        "item" : "28207456",
+        "count" : "1"
+      }, {
+        "item" : "14431988",
+        "count" : "1"
+      }, {
+        "item" : "18231694",
+        "count" : "1"
+      }, {
+        "item" : "20403485",
+        "count" : "1"
+      }, {
+        "item" : "29103402",
+        "count" : "1"
+      }, {
+        "item" : "19889342",
+        "count" : "1"
+      }, {
+        "item" : "17114162",
+        "count" : "1"
+      } ],
+      "smallest" : "368372",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639391,
+    "name" : "LOAD_FACTOR",
+    "dataTypeName" : "number",
+    "description" : "Load Factor for U.S. Air Carrier Domestic and International, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "load_factor",
+    "position" : 15,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072774,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "89.1",
+      "null" : "1",
+      "top" : [ {
+        "item" : "83.9",
+        "count" : "5"
+      }, {
+        "item" : "81.7",
+        "count" : "5"
+      }, {
+        "item" : "83.4",
+        "count" : "5"
+      }, {
+        "item" : "78.9",
+        "count" : "5"
+      }, {
+        "item" : "82.9",
+        "count" : "4"
+      }, {
+        "item" : "82.5",
+        "count" : "4"
+      }, {
+        "item" : "84.6",
+        "count" : "4"
+      }, {
+        "item" : "79.3",
+        "count" : "4"
+      }, {
+        "item" : "81.9",
+        "count" : "4"
+      }, {
+        "item" : "82.7",
+        "count" : "4"
+      }, {
+        "item" : "86.5",
+        "count" : "4"
+      }, {
+        "item" : "84.2",
+        "count" : "4"
+      }, {
+        "item" : "79.2",
+        "count" : "4"
+      }, {
+        "item" : "86.6",
+        "count" : "4"
+      }, {
+        "item" : "76.8",
+        "count" : "4"
+      }, {
+        "item" : "83.5",
+        "count" : "4"
+      }, {
+        "item" : "79.8",
+        "count" : "4"
+      }, {
+        "item" : "86.4",
+        "count" : "4"
+      }, {
+        "item" : "83.8",
+        "count" : "4"
+      }, {
+        "item" : "80.7",
+        "count" : "4"
+      } ],
+      "smallest" : "13.8",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639392,
+    "name" : "LOAD_FACTOR_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Load Factor for U.S. Air Carrier Domestic and International, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "load_factor_d11",
+    "position" : 16,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072775,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "86.6",
+      "null" : "1",
+      "top" : [ {
+        "item" : "83",
+        "count" : "10"
+      }, {
+        "item" : "83.3",
+        "count" : "10"
+      }, {
+        "item" : "82.8",
+        "count" : "9"
+      }, {
+        "item" : "83.9",
+        "count" : "8"
+      }, {
+        "item" : "82.6",
+        "count" : "8"
+      }, {
+        "item" : "83.5",
+        "count" : "8"
+      }, {
+        "item" : "82.9",
+        "count" : "7"
+      }, {
+        "item" : "82.7",
+        "count" : "7"
+      }, {
+        "item" : "83.6",
+        "count" : "7"
+      }, {
+        "item" : "83.2",
+        "count" : "6"
+      }, {
+        "item" : "83.8",
+        "count" : "6"
+      }, {
+        "item" : "82.5",
+        "count" : "6"
+      }, {
+        "item" : "84.7",
+        "count" : "5"
+      }, {
+        "item" : "83.4",
+        "count" : "5"
+      }, {
+        "item" : "79.7",
+        "count" : "5"
+      }, {
+        "item" : "83.7",
+        "count" : "5"
+      }, {
+        "item" : "84",
+        "count" : "5"
+      }, {
+        "item" : "81.9",
+        "count" : "5"
+      }, {
+        "item" : "80.2",
+        "count" : "5"
+      }, {
+        "item" : "79.3",
+        "count" : "5"
+      } ],
+      "smallest" : "13.7",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639393,
+    "name" : "LOAD_FACTOR_D",
+    "dataTypeName" : "number",
+    "description" : "Load Factor for U.S. Air Carrier Domestic, Scheduled Passenger Flights (Percent)",
+    "fieldName" : "load_factor_d",
+    "position" : 17,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072776,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "90",
+      "null" : "1",
+      "top" : [ {
+        "item" : "81.4",
+        "count" : "7"
+      }, {
+        "item" : "80.9",
+        "count" : "6"
+      }, {
+        "item" : "80.8",
+        "count" : "6"
+      }, {
+        "item" : "86.3",
+        "count" : "5"
+      }, {
+        "item" : "82.2",
+        "count" : "5"
+      }, {
+        "item" : "84.9",
+        "count" : "5"
+      }, {
+        "item" : "85.5",
+        "count" : "5"
+      }, {
+        "item" : "85.6",
+        "count" : "5"
+      }, {
+        "item" : "82.8",
+        "count" : "4"
+      }, {
+        "item" : "85.7",
+        "count" : "4"
+      }, {
+        "item" : "85.8",
+        "count" : "4"
+      }, {
+        "item" : "88.1",
+        "count" : "4"
+      }, {
+        "item" : "85.4",
+        "count" : "4"
+      }, {
+        "item" : "84.7",
+        "count" : "4"
+      }, {
+        "item" : "82.4",
+        "count" : "4"
+      }, {
+        "item" : "84.3",
+        "count" : "4"
+      }, {
+        "item" : "75.7",
+        "count" : "4"
+      }, {
+        "item" : "84.2",
+        "count" : "4"
+      }, {
+        "item" : "85",
+        "count" : "4"
+      }, {
+        "item" : "78",
+        "count" : "4"
+      } ],
+      "smallest" : "13.1",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639394,
+    "name" : "LOAD_FACTOR_D_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Load Factor for U.S. Air Carrier Domestic, Scheduled Passenger Flights (Percent)",
+    "fieldName" : "load_factor_d_d11",
+    "position" : 18,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072777,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "87.8",
+      "null" : "1",
+      "top" : [ {
+        "item" : "84.3",
+        "count" : "9"
+      }, {
+        "item" : "85.2",
+        "count" : "8"
+      }, {
+        "item" : "84.7",
+        "count" : "7"
+      }, {
+        "item" : "84.6",
+        "count" : "7"
+      }, {
+        "item" : "84.5",
+        "count" : "7"
+      }, {
+        "item" : "84",
+        "count" : "7"
+      }, {
+        "item" : "83.6",
+        "count" : "6"
+      }, {
+        "item" : "85",
+        "count" : "6"
+      }, {
+        "item" : "83.4",
+        "count" : "6"
+      }, {
+        "item" : "83.3",
+        "count" : "5"
+      }, {
+        "item" : "83.2",
+        "count" : "5"
+      }, {
+        "item" : "82.7",
+        "count" : "5"
+      }, {
+        "item" : "84.1",
+        "count" : "5"
+      }, {
+        "item" : "82.9",
+        "count" : "5"
+      }, {
+        "item" : "83",
+        "count" : "5"
+      }, {
+        "item" : "84.2",
+        "count" : "4"
+      }, {
+        "item" : "80",
+        "count" : "4"
+      }, {
+        "item" : "81",
+        "count" : "4"
+      }, {
+        "item" : "80.2",
+        "count" : "4"
+      }, {
+        "item" : "84.4",
+        "count" : "4"
+      } ],
+      "smallest" : "12.9",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639395,
+    "name" : "LOAD_FACTOR_I",
+    "dataTypeName" : "number",
+    "description" : "Load Factor for U.S. Air Carrier International, Scheduled Passenger Flights (Percent)",
+    "fieldName" : "load_factor_i",
+    "position" : 19,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072778,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "89.4",
+      "null" : "1",
+      "top" : [ {
+        "item" : "80.8",
+        "count" : "6"
+      }, {
+        "item" : "83",
+        "count" : "5"
+      }, {
+        "item" : "82.3",
+        "count" : "5"
+      }, {
+        "item" : "85.8",
+        "count" : "5"
+      }, {
+        "item" : "81.5",
+        "count" : "5"
+      }, {
+        "item" : "80.1",
+        "count" : "5"
+      }, {
+        "item" : "81.4",
+        "count" : "5"
+      }, {
+        "item" : "79.5",
+        "count" : "4"
+      }, {
+        "item" : "81.7",
+        "count" : "4"
+      }, {
+        "item" : "82.4",
+        "count" : "4"
+      }, {
+        "item" : "77.3",
+        "count" : "4"
+      }, {
+        "item" : "78.8",
+        "count" : "4"
+      }, {
+        "item" : "80",
+        "count" : "4"
+      }, {
+        "item" : "77.1",
+        "count" : "4"
+      }, {
+        "item" : "76.2",
+        "count" : "4"
+      }, {
+        "item" : "80.3",
+        "count" : "4"
+      }, {
+        "item" : "85.5",
+        "count" : "3"
+      }, {
+        "item" : "79.8",
+        "count" : "3"
+      }, {
+        "item" : "84.4",
+        "count" : "3"
+      }, {
+        "item" : "82.7",
+        "count" : "3"
+      } ],
+      "smallest" : "23.1",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639396,
+    "name" : "LOAD_FACTOR_I_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Load Factor for U.S. Air Carrier International, Scheduled Passenger Flights (Percent)",
+    "fieldName" : "load_factor_i_d11",
+    "position" : 20,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072779,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "86.2",
+      "null" : "1",
+      "top" : [ {
+        "item" : "81.3",
+        "count" : "10"
+      }, {
+        "item" : "82.5",
+        "count" : "10"
+      }, {
+        "item" : "81.5",
+        "count" : "8"
+      }, {
+        "item" : "82",
+        "count" : "8"
+      }, {
+        "item" : "80.9",
+        "count" : "8"
+      }, {
+        "item" : "80.5",
+        "count" : "7"
+      }, {
+        "item" : "81.7",
+        "count" : "7"
+      }, {
+        "item" : "81.2",
+        "count" : "7"
+      }, {
+        "item" : "82.2",
+        "count" : "7"
+      }, {
+        "item" : "80.8",
+        "count" : "6"
+      }, {
+        "item" : "79",
+        "count" : "6"
+      }, {
+        "item" : "80.7",
+        "count" : "5"
+      }, {
+        "item" : "79.7",
+        "count" : "5"
+      }, {
+        "item" : "78.4",
+        "count" : "5"
+      }, {
+        "item" : "81.6",
+        "count" : "5"
+      }, {
+        "item" : "80",
+        "count" : "5"
+      }, {
+        "item" : "83.3",
+        "count" : "5"
+      }, {
+        "item" : "81.4",
+        "count" : "5"
+      }, {
+        "item" : "78.3",
+        "count" : "5"
+      }, {
+        "item" : "80.4",
+        "count" : "5"
+      } ],
+      "smallest" : "23.3",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639397,
+    "name" : "ENPLANE_I",
+    "dataTypeName" : "number",
+    "description" : "Enplanements for U.S. Air Carrier International, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "enplane_i",
+    "position" : 21,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072780,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "13300",
+      "null" : "1",
+      "top" : [ {
+        "item" : "5635",
+        "count" : "2"
+      }, {
+        "item" : "5100",
+        "count" : "2"
+      }, {
+        "item" : "7295",
+        "count" : "2"
+      }, {
+        "item" : "7386",
+        "count" : "2"
+      }, {
+        "item" : "6862",
+        "count" : "2"
+      }, {
+        "item" : "8512",
+        "count" : "2"
+      }, {
+        "item" : "8291",
+        "count" : "2"
+      }, {
+        "item" : "8221",
+        "count" : "2"
+      }, {
+        "item" : "8079",
+        "count" : "2"
+      }, {
+        "item" : "9072",
+        "count" : "2"
+      }, {
+        "item" : "6050",
+        "count" : "2"
+      }, {
+        "item" : "12442",
+        "count" : "1"
+      }, {
+        "item" : "8262",
+        "count" : "1"
+      }, {
+        "item" : "4952",
+        "count" : "1"
+      }, {
+        "item" : "8397",
+        "count" : "1"
+      }, {
+        "item" : "7637",
+        "count" : "1"
+      }, {
+        "item" : "10092",
+        "count" : "1"
+      }, {
+        "item" : "8643",
+        "count" : "1"
+      }, {
+        "item" : "6901",
+        "count" : "1"
+      }, {
+        "item" : "7773",
+        "count" : "1"
+      } ],
+      "smallest" : "137",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639398,
+    "name" : "ENPLANE_I_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Enplanements for U.S. Air Carrier International, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "enplane_i_d11",
+    "position" : 22,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072781,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "11074",
+      "null" : "1",
+      "top" : [ {
+        "item" : "5276",
+        "count" : "2"
+      }, {
+        "item" : "6904",
+        "count" : "2"
+      }, {
+        "item" : "7469",
+        "count" : "2"
+      }, {
+        "item" : "9047",
+        "count" : "2"
+      }, {
+        "item" : "9770",
+        "count" : "2"
+      }, {
+        "item" : "8657",
+        "count" : "2"
+      }, {
+        "item" : "7754",
+        "count" : "2"
+      }, {
+        "item" : "7138",
+        "count" : "2"
+      }, {
+        "item" : "7914",
+        "count" : "2"
+      }, {
+        "item" : "7843",
+        "count" : "2"
+      }, {
+        "item" : "8705",
+        "count" : "2"
+      }, {
+        "item" : "8694",
+        "count" : "2"
+      }, {
+        "item" : "8358",
+        "count" : "2"
+      }, {
+        "item" : "8039",
+        "count" : "2"
+      }, {
+        "item" : "10934",
+        "count" : "2"
+      }, {
+        "item" : "9514",
+        "count" : "1"
+      }, {
+        "item" : "5906",
+        "count" : "1"
+      }, {
+        "item" : "8598",
+        "count" : "1"
+      }, {
+        "item" : "5868",
+        "count" : "1"
+      }, {
+        "item" : "9062",
+        "count" : "1"
+      } ],
+      "smallest" : "137",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639399,
+    "name" : "ENPLANE_D",
+    "dataTypeName" : "number",
+    "description" : "Enplanements for U.S. Air Carrier Domestic, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "enplane_d",
+    "position" : 23,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072782,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "78880",
+      "null" : "1",
+      "top" : [ {
+        "item" : "57145",
+        "count" : "2"
+      }, {
+        "item" : "57991",
+        "count" : "1"
+      }, {
+        "item" : "57762",
+        "count" : "1"
+      }, {
+        "item" : "75830",
+        "count" : "1"
+      }, {
+        "item" : "48055",
+        "count" : "1"
+      }, {
+        "item" : "67082",
+        "count" : "1"
+      }, {
+        "item" : "60631",
+        "count" : "1"
+      }, {
+        "item" : "59178",
+        "count" : "1"
+      }, {
+        "item" : "58646",
+        "count" : "1"
+      }, {
+        "item" : "49793",
+        "count" : "1"
+      }, {
+        "item" : "63457",
+        "count" : "1"
+      }, {
+        "item" : "57206",
+        "count" : "1"
+      }, {
+        "item" : "65130",
+        "count" : "1"
+      }, {
+        "item" : "59311",
+        "count" : "1"
+      }, {
+        "item" : "44213",
+        "count" : "1"
+      }, {
+        "item" : "51065",
+        "count" : "1"
+      }, {
+        "item" : "50344",
+        "count" : "1"
+      }, {
+        "item" : "61402",
+        "count" : "1"
+      }, {
+        "item" : "64817",
+        "count" : "1"
+      }, {
+        "item" : "66746",
+        "count" : "1"
+      } ],
+      "smallest" : "2877",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639400,
+    "name" : "ENPLANE_D_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Enplanements for U.S. Air Carrier Domestic, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "enplane_d_d11",
+    "position" : 24,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072783,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "72252",
+      "null" : "1",
+      "top" : [ {
+        "item" : "70888",
+        "count" : "1"
+      }, {
+        "item" : "69641",
+        "count" : "1"
+      }, {
+        "item" : "23162",
+        "count" : "1"
+      }, {
+        "item" : "50617",
+        "count" : "1"
+      }, {
+        "item" : "67149",
+        "count" : "1"
+      }, {
+        "item" : "66762",
+        "count" : "1"
+      }, {
+        "item" : "53590",
+        "count" : "1"
+      }, {
+        "item" : "70792",
+        "count" : "1"
+      }, {
+        "item" : "49637",
+        "count" : "1"
+      }, {
+        "item" : "53544",
+        "count" : "1"
+      }, {
+        "item" : "62164",
+        "count" : "1"
+      }, {
+        "item" : "54405",
+        "count" : "1"
+      }, {
+        "item" : "54842",
+        "count" : "1"
+      }, {
+        "item" : "53665",
+        "count" : "1"
+      }, {
+        "item" : "50770",
+        "count" : "1"
+      }, {
+        "item" : "51852",
+        "count" : "1"
+      }, {
+        "item" : "51967",
+        "count" : "1"
+      }, {
+        "item" : "50031",
+        "count" : "1"
+      }, {
+        "item" : "55250",
+        "count" : "1"
+      }, {
+        "item" : "67611",
+        "count" : "1"
+      } ],
+      "smallest" : "2871",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639401,
+    "name" : "ENPLANE",
+    "dataTypeName" : "number",
+    "description" : "Enplanements for U.S. Air Carrier Domestic and International, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "enplane",
+    "position" : 25,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072784,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "92180",
+      "null" : "1",
+      "top" : [ {
+        "item" : "68599",
+        "count" : "1"
+      }, {
+        "item" : "69492",
+        "count" : "1"
+      }, {
+        "item" : "84032",
+        "count" : "1"
+      }, {
+        "item" : "60734",
+        "count" : "1"
+      }, {
+        "item" : "80988",
+        "count" : "1"
+      }, {
+        "item" : "86821",
+        "count" : "1"
+      }, {
+        "item" : "80379",
+        "count" : "1"
+      }, {
+        "item" : "87086",
+        "count" : "1"
+      }, {
+        "item" : "81241",
+        "count" : "1"
+      }, {
+        "item" : "71267",
+        "count" : "1"
+      }, {
+        "item" : "44678",
+        "count" : "1"
+      }, {
+        "item" : "54093",
+        "count" : "1"
+      }, {
+        "item" : "56963",
+        "count" : "1"
+      }, {
+        "item" : "78699",
+        "count" : "1"
+      }, {
+        "item" : "71901",
+        "count" : "1"
+      }, {
+        "item" : "67830",
+        "count" : "1"
+      }, {
+        "item" : "67236",
+        "count" : "1"
+      }, {
+        "item" : "66477",
+        "count" : "1"
+      }, {
+        "item" : "68200",
+        "count" : "1"
+      }, {
+        "item" : "55407",
+        "count" : "1"
+      } ],
+      "smallest" : "3014",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639402,
+    "name" : "ENPLANE_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Enplanements for U.S. Air Carrier Domestic and International, Scheduled Passenger Flights (Thousands)",
+    "fieldName" : "enplane_d11",
+    "position" : 26,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072785,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "83172",
+      "null" : "1",
+      "top" : [ {
+        "item" : "81498",
+        "count" : "2"
+      }, {
+        "item" : "61798",
+        "count" : "2"
+      }, {
+        "item" : "61386",
+        "count" : "2"
+      }, {
+        "item" : "81603",
+        "count" : "1"
+      }, {
+        "item" : "65755",
+        "count" : "1"
+      }, {
+        "item" : "71272",
+        "count" : "1"
+      }, {
+        "item" : "64753",
+        "count" : "1"
+      }, {
+        "item" : "46897",
+        "count" : "1"
+      }, {
+        "item" : "61628",
+        "count" : "1"
+      }, {
+        "item" : "60065",
+        "count" : "1"
+      }, {
+        "item" : "71317",
+        "count" : "1"
+      }, {
+        "item" : "60033",
+        "count" : "1"
+      }, {
+        "item" : "58624",
+        "count" : "1"
+      }, {
+        "item" : "60991",
+        "count" : "1"
+      }, {
+        "item" : "61343",
+        "count" : "1"
+      }, {
+        "item" : "75976",
+        "count" : "1"
+      }, {
+        "item" : "60099",
+        "count" : "1"
+      }, {
+        "item" : "59092",
+        "count" : "1"
+      }, {
+        "item" : "81277",
+        "count" : "1"
+      }, {
+        "item" : "61309",
+        "count" : "1"
+      } ],
+      "smallest" : "3009",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639403,
+    "name" : "AIR_RPM_TSI",
+    "dataTypeName" : "number",
+    "description" : "Air Revenue Passenger Miles (RPMs) (Thousands)",
+    "fieldName" : "air_rpm_tsi",
+    "position" : 27,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072786,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "110272196",
+      "null" : "1",
+      "top" : [ {
+        "item" : "62046798",
+        "count" : "1"
+      }, {
+        "item" : "98411628",
+        "count" : "1"
+      }, {
+        "item" : "75712694",
+        "count" : "1"
+      }, {
+        "item" : "76057910",
+        "count" : "1"
+      }, {
+        "item" : "83253406",
+        "count" : "1"
+      }, {
+        "item" : "96895920",
+        "count" : "1"
+      }, {
+        "item" : "81974582",
+        "count" : "1"
+      }, {
+        "item" : "69028870",
+        "count" : "1"
+      }, {
+        "item" : "53240066",
+        "count" : "1"
+      }, {
+        "item" : "92515166",
+        "count" : "1"
+      }, {
+        "item" : "58373786",
+        "count" : "1"
+      }, {
+        "item" : "57881041",
+        "count" : "1"
+      }, {
+        "item" : "79210800",
+        "count" : "1"
+      }, {
+        "item" : "28292818",
+        "count" : "1"
+      }, {
+        "item" : "66345318",
+        "count" : "1"
+      }, {
+        "item" : "71696205",
+        "count" : "1"
+      }, {
+        "item" : "81168258",
+        "count" : "1"
+      }, {
+        "item" : "58474896",
+        "count" : "1"
+      }, {
+        "item" : "85855967",
+        "count" : "1"
+      }, {
+        "item" : "95268900",
+        "count" : "1"
+      } ],
+      "smallest" : "3086801",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639404,
+    "name" : "AIR_RPM_TSI_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Air Revenue Passenger Miles (RPMs) (Thousands)",
+    "fieldName" : "air_rpm_tsi_d11",
+    "position" : 28,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072787,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "96479182",
+      "null" : "1",
+      "top" : [ {
+        "item" : "69939182",
+        "count" : "1"
+      }, {
+        "item" : "68330204",
+        "count" : "1"
+      }, {
+        "item" : "59842400",
+        "count" : "1"
+      }, {
+        "item" : "64249795",
+        "count" : "1"
+      }, {
+        "item" : "33642694",
+        "count" : "1"
+      }, {
+        "item" : "69578121",
+        "count" : "1"
+      }, {
+        "item" : "76002271",
+        "count" : "1"
+      }, {
+        "item" : "68679887",
+        "count" : "1"
+      }, {
+        "item" : "57681912",
+        "count" : "1"
+      }, {
+        "item" : "95195641",
+        "count" : "1"
+      }, {
+        "item" : "89354994",
+        "count" : "1"
+      }, {
+        "item" : "68911722",
+        "count" : "1"
+      }, {
+        "item" : "65409714",
+        "count" : "1"
+      }, {
+        "item" : "62886490",
+        "count" : "1"
+      }, {
+        "item" : "63219323",
+        "count" : "1"
+      }, {
+        "item" : "77743245",
+        "count" : "1"
+      }, {
+        "item" : "94501150",
+        "count" : "1"
+      }, {
+        "item" : "85821786",
+        "count" : "1"
+      }, {
+        "item" : "68848752",
+        "count" : "1"
+      }, {
+        "item" : "59323710",
+        "count" : "1"
+      } ],
+      "smallest" : "2886621",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639405,
+    "name" : "AIR_RTMFM",
+    "dataTypeName" : "number",
+    "description" : "Air Revenue Ton Miles Of Freight And Mail (RTMFM) (Ton Miles)",
+    "fieldName" : "air_rtmfm",
+    "position" : 29,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072788,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "4788386",
+      "null" : "0",
+      "top" : [ {
+        "item" : "3081705",
+        "count" : "1"
+      }, {
+        "item" : "2825337",
+        "count" : "1"
+      }, {
+        "item" : "3283361",
+        "count" : "1"
+      }, {
+        "item" : "3068925",
+        "count" : "1"
+      }, {
+        "item" : "3188225",
+        "count" : "1"
+      }, {
+        "item" : "3729077",
+        "count" : "1"
+      }, {
+        "item" : "4449632",
+        "count" : "1"
+      }, {
+        "item" : "3142112",
+        "count" : "1"
+      }, {
+        "item" : "3414759",
+        "count" : "1"
+      }, {
+        "item" : "3059306",
+        "count" : "1"
+      }, {
+        "item" : "3261313",
+        "count" : "1"
+      }, {
+        "item" : "3043654",
+        "count" : "1"
+      }, {
+        "item" : "3174452",
+        "count" : "1"
+      }, {
+        "item" : "3357180",
+        "count" : "1"
+      }, {
+        "item" : "3312249",
+        "count" : "1"
+      }, {
+        "item" : "2356106",
+        "count" : "1"
+      }, {
+        "item" : "4426507",
+        "count" : "1"
+      }, {
+        "item" : "3782260",
+        "count" : "1"
+      }, {
+        "item" : "3365775",
+        "count" : "1"
+      }, {
+        "item" : "3103666",
+        "count" : "1"
+      } ],
+      "smallest" : "1998724",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639406,
+    "name" : "AIR_RTMFM_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Air Revenue Ton Miles Of Freight And Mail (RTMFM) (Ton Miles)",
+    "fieldName" : "air_rtmfm_d11",
+    "position" : 30,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072789,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "4721442",
+      "null" : "1",
+      "top" : [ {
+        "item" : "4462712",
+        "count" : "1"
+      }, {
+        "item" : "3149870",
+        "count" : "1"
+      }, {
+        "item" : "3715442",
+        "count" : "1"
+      }, {
+        "item" : "3302226",
+        "count" : "1"
+      }, {
+        "item" : "3030366",
+        "count" : "1"
+      }, {
+        "item" : "4446679",
+        "count" : "1"
+      }, {
+        "item" : "2232836",
+        "count" : "1"
+      }, {
+        "item" : "2406026",
+        "count" : "1"
+      }, {
+        "item" : "3010648",
+        "count" : "1"
+      }, {
+        "item" : "3087328",
+        "count" : "1"
+      }, {
+        "item" : "3138369",
+        "count" : "1"
+      }, {
+        "item" : "2991022",
+        "count" : "1"
+      }, {
+        "item" : "3655523",
+        "count" : "1"
+      }, {
+        "item" : "2639961",
+        "count" : "1"
+      }, {
+        "item" : "4084836",
+        "count" : "1"
+      }, {
+        "item" : "3903611",
+        "count" : "1"
+      }, {
+        "item" : "3989347",
+        "count" : "1"
+      }, {
+        "item" : "3623058",
+        "count" : "1"
+      }, {
+        "item" : "3188288",
+        "count" : "1"
+      }, {
+        "item" : "2610897",
+        "count" : "1"
+      } ],
+      "smallest" : "2044075",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639407,
+    "name" : "RAIL_FRT_CARLOADS",
+    "dataTypeName" : "number",
+    "description" : "Rail Freight Carloads",
+    "fieldName" : "rail_frt_carloads",
+    "position" : 31,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072790,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "1473473",
+      "null" : "0",
+      "top" : [ {
+        "item" : "1192493",
+        "count" : "1"
+      }, {
+        "item" : "1320275",
+        "count" : "1"
+      }, {
+        "item" : "980425",
+        "count" : "1"
+      }, {
+        "item" : "1366578",
+        "count" : "1"
+      }, {
+        "item" : "1280718",
+        "count" : "1"
+      }, {
+        "item" : "1404578",
+        "count" : "1"
+      }, {
+        "item" : "1084559",
+        "count" : "1"
+      }, {
+        "item" : "1182389",
+        "count" : "1"
+      }, {
+        "item" : "1168766",
+        "count" : "1"
+      }, {
+        "item" : "1338575",
+        "count" : "1"
+      }, {
+        "item" : "1330919",
+        "count" : "1"
+      }, {
+        "item" : "1348256",
+        "count" : "1"
+      }, {
+        "item" : "1065052",
+        "count" : "1"
+      }, {
+        "item" : "1177312",
+        "count" : "1"
+      }, {
+        "item" : "1354273",
+        "count" : "1"
+      }, {
+        "item" : "1443340",
+        "count" : "1"
+      }, {
+        "item" : "1456353",
+        "count" : "1"
+      }, {
+        "item" : "961279",
+        "count" : "1"
+      }, {
+        "item" : "1060960",
+        "count" : "1"
+      }, {
+        "item" : "951240",
+        "count" : "1"
+      } ],
+      "smallest" : "790239",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639408,
+    "name" : "RAIL_FRT_CARLOADS_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Rail Freight Carloads",
+    "fieldName" : "rail_frt_carloads_d11",
+    "position" : 32,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072791,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "1444999",
+      "null" : "0",
+      "top" : [ {
+        "item" : "1374019",
+        "count" : "1"
+      }, {
+        "item" : "937991",
+        "count" : "1"
+      }, {
+        "item" : "1283399",
+        "count" : "1"
+      }, {
+        "item" : "1063296",
+        "count" : "1"
+      }, {
+        "item" : "953362",
+        "count" : "1"
+      }, {
+        "item" : "1103922",
+        "count" : "1"
+      }, {
+        "item" : "1253978",
+        "count" : "1"
+      }, {
+        "item" : "956162",
+        "count" : "1"
+      }, {
+        "item" : "1093494",
+        "count" : "1"
+      }, {
+        "item" : "968227",
+        "count" : "1"
+      }, {
+        "item" : "1356713",
+        "count" : "1"
+      }, {
+        "item" : "944788",
+        "count" : "1"
+      }, {
+        "item" : "1147576",
+        "count" : "1"
+      }, {
+        "item" : "1189754",
+        "count" : "1"
+      }, {
+        "item" : "1207250",
+        "count" : "1"
+      }, {
+        "item" : "1196471",
+        "count" : "1"
+      }, {
+        "item" : "1378988",
+        "count" : "1"
+      }, {
+        "item" : "1182730",
+        "count" : "1"
+      }, {
+        "item" : "990577",
+        "count" : "1"
+      }, {
+        "item" : "1213076",
+        "count" : "1"
+      } ],
+      "smallest" : "763584",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639409,
+    "name" : "RAIL_FRT_INTERMODAL",
+    "dataTypeName" : "number",
+    "description" : "Rail Freight Intermodal Traffic",
+    "fieldName" : "rail_frt_intermodal",
+    "position" : 33,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072792,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "1314324",
+      "null" : "0",
+      "top" : [ {
+        "item" : "1166243",
+        "count" : "1"
+      }, {
+        "item" : "1041722",
+        "count" : "1"
+      }, {
+        "item" : "1154783",
+        "count" : "1"
+      }, {
+        "item" : "1174197",
+        "count" : "1"
+      }, {
+        "item" : "1009960",
+        "count" : "1"
+      }, {
+        "item" : "1281426",
+        "count" : "1"
+      }, {
+        "item" : "1062744",
+        "count" : "1"
+      }, {
+        "item" : "955886",
+        "count" : "1"
+      }, {
+        "item" : "1036485",
+        "count" : "1"
+      }, {
+        "item" : "781508",
+        "count" : "1"
+      }, {
+        "item" : "1211475",
+        "count" : "1"
+      }, {
+        "item" : "918664",
+        "count" : "1"
+      }, {
+        "item" : "1132621",
+        "count" : "1"
+      }, {
+        "item" : "1245099",
+        "count" : "1"
+      }, {
+        "item" : "936366",
+        "count" : "1"
+      }, {
+        "item" : "897150",
+        "count" : "1"
+      }, {
+        "item" : "870168",
+        "count" : "1"
+      }, {
+        "item" : "1253518",
+        "count" : "1"
+      }, {
+        "item" : "791984",
+        "count" : "1"
+      }, {
+        "item" : "1009892",
+        "count" : "1"
+      } ],
+      "smallest" : "647069",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639410,
+    "name" : "RAIL_FRT_INTERMODAL_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Rail Freight Intermodal Traffic",
+    "fieldName" : "rail_frt_intermodal_d11",
+    "position" : 34,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072793,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "1277773",
+      "null" : "0",
+      "top" : [ {
+        "item" : "1123873",
+        "count" : "1"
+      }, {
+        "item" : "1163939",
+        "count" : "1"
+      }, {
+        "item" : "1064751",
+        "count" : "1"
+      }, {
+        "item" : "1050255",
+        "count" : "1"
+      }, {
+        "item" : "1103285",
+        "count" : "1"
+      }, {
+        "item" : "702480",
+        "count" : "1"
+      }, {
+        "item" : "964190",
+        "count" : "1"
+      }, {
+        "item" : "991616",
+        "count" : "1"
+      }, {
+        "item" : "937395",
+        "count" : "1"
+      }, {
+        "item" : "980144",
+        "count" : "1"
+      }, {
+        "item" : "1098227",
+        "count" : "1"
+      }, {
+        "item" : "1031926",
+        "count" : "1"
+      }, {
+        "item" : "1028541",
+        "count" : "1"
+      }, {
+        "item" : "1079573",
+        "count" : "1"
+      }, {
+        "item" : "986892",
+        "count" : "1"
+      }, {
+        "item" : "969506",
+        "count" : "1"
+      }, {
+        "item" : "1199866",
+        "count" : "1"
+      }, {
+        "item" : "712532",
+        "count" : "1"
+      }, {
+        "item" : "734441",
+        "count" : "1"
+      }, {
+        "item" : "1173648",
+        "count" : "1"
+      } ],
+      "smallest" : "702480",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639411,
+    "name" : "RAIL_PM",
+    "dataTypeName" : "number",
+    "description" : "Rail Passenger Miles",
+    "fieldName" : "rail_pm",
+    "position" : 35,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072794,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "720751157",
+      "null" : "1",
+      "top" : [ {
+        "item" : "647976589",
+        "count" : "1"
+      }, {
+        "item" : "364161398",
+        "count" : "1"
+      }, {
+        "item" : "543403112",
+        "count" : "1"
+      }, {
+        "item" : "497091526",
+        "count" : "1"
+      }, {
+        "item" : "544408276",
+        "count" : "1"
+      }, {
+        "item" : "634064486",
+        "count" : "1"
+      }, {
+        "item" : "572508869",
+        "count" : "1"
+      }, {
+        "item" : "484046021",
+        "count" : "1"
+      }, {
+        "item" : "400433113",
+        "count" : "1"
+      }, {
+        "item" : "620954019",
+        "count" : "1"
+      }, {
+        "item" : "451772968",
+        "count" : "1"
+      }, {
+        "item" : "347575222",
+        "count" : "1"
+      }, {
+        "item" : "530942270",
+        "count" : "1"
+      }, {
+        "item" : "448181812",
+        "count" : "1"
+      }, {
+        "item" : "461622928",
+        "count" : "1"
+      }, {
+        "item" : "622713540",
+        "count" : "1"
+      }, {
+        "item" : "436908280",
+        "count" : "1"
+      }, {
+        "item" : "470429231",
+        "count" : "1"
+      }, {
+        "item" : "600475156",
+        "count" : "1"
+      }, {
+        "item" : "531138943",
+        "count" : "1"
+      } ],
+      "smallest" : "36018048",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639412,
+    "name" : "RAIL_PM_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Rail Passenger Miles",
+    "fieldName" : "rail_pm_d11",
+    "position" : 36,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072795,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "640939834",
+      "null" : "1",
+      "top" : [ {
+        "item" : "551664488",
+        "count" : "1"
+      }, {
+        "item" : "461497900",
+        "count" : "1"
+      }, {
+        "item" : "52069644",
+        "count" : "1"
+      }, {
+        "item" : "519707851",
+        "count" : "1"
+      }, {
+        "item" : "572698386",
+        "count" : "1"
+      }, {
+        "item" : "488527186",
+        "count" : "1"
+      }, {
+        "item" : "487574052",
+        "count" : "1"
+      }, {
+        "item" : "572029807",
+        "count" : "1"
+      }, {
+        "item" : "571176329",
+        "count" : "1"
+      }, {
+        "item" : "437274810",
+        "count" : "1"
+      }, {
+        "item" : "478028785",
+        "count" : "1"
+      }, {
+        "item" : "575741449",
+        "count" : "1"
+      }, {
+        "item" : "561450645",
+        "count" : "1"
+      }, {
+        "item" : "554445144",
+        "count" : "1"
+      }, {
+        "item" : "485613316",
+        "count" : "1"
+      }, {
+        "item" : "635295928",
+        "count" : "1"
+      }, {
+        "item" : "537599200",
+        "count" : "1"
+      }, {
+        "item" : "512624041",
+        "count" : "1"
+      }, {
+        "item" : "478557000",
+        "count" : "1"
+      }, {
+        "item" : "566863762",
+        "count" : "1"
+      } ],
+      "smallest" : "43404711",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639413,
+    "name" : "TRANSIT",
+    "dataTypeName" : "number",
+    "description" : "Public Transit Ridership (Thousands Of Unlinked Trips)",
+    "fieldName" : "transit",
+    "position" : 37,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072796,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "989965",
+      "null" : "1",
+      "top" : [ {
+        "item" : "903863",
+        "count" : "1"
+      }, {
+        "item" : "911061",
+        "count" : "1"
+      }, {
+        "item" : "834429",
+        "count" : "1"
+      }, {
+        "item" : "587067",
+        "count" : "1"
+      }, {
+        "item" : "805500",
+        "count" : "1"
+      }, {
+        "item" : "648083",
+        "count" : "1"
+      }, {
+        "item" : "866365",
+        "count" : "1"
+      }, {
+        "item" : "800801",
+        "count" : "1"
+      }, {
+        "item" : "843730",
+        "count" : "1"
+      }, {
+        "item" : "590484",
+        "count" : "1"
+      }, {
+        "item" : "275227",
+        "count" : "1"
+      }, {
+        "item" : "844162",
+        "count" : "1"
+      }, {
+        "item" : "696283",
+        "count" : "1"
+      }, {
+        "item" : "627264",
+        "count" : "1"
+      }, {
+        "item" : "863434",
+        "count" : "1"
+      }, {
+        "item" : "870018",
+        "count" : "1"
+      }, {
+        "item" : "880560",
+        "count" : "1"
+      }, {
+        "item" : "814395",
+        "count" : "1"
+      }, {
+        "item" : "877459",
+        "count" : "1"
+      }, {
+        "item" : "904060",
+        "count" : "1"
+      } ],
+      "smallest" : "172152",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639414,
+    "name" : "TRANSIT_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Public Transit Ridership (Thousands Of Unlinked Trips)",
+    "fieldName" : "transit_d11",
+    "position" : 38,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072797,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "906971",
+      "null" : "1",
+      "top" : [ {
+        "item" : "880990",
+        "count" : "2"
+      }, {
+        "item" : "752056",
+        "count" : "1"
+      }, {
+        "item" : "330968",
+        "count" : "1"
+      }, {
+        "item" : "840987",
+        "count" : "1"
+      }, {
+        "item" : "872391",
+        "count" : "1"
+      }, {
+        "item" : "835938",
+        "count" : "1"
+      }, {
+        "item" : "875010",
+        "count" : "1"
+      }, {
+        "item" : "839013",
+        "count" : "1"
+      }, {
+        "item" : "901968",
+        "count" : "1"
+      }, {
+        "item" : "846444",
+        "count" : "1"
+      }, {
+        "item" : "745865",
+        "count" : "1"
+      }, {
+        "item" : "790065",
+        "count" : "1"
+      }, {
+        "item" : "777093",
+        "count" : "1"
+      }, {
+        "item" : "434499",
+        "count" : "1"
+      }, {
+        "item" : "833750",
+        "count" : "1"
+      }, {
+        "item" : "694737",
+        "count" : "1"
+      }, {
+        "item" : "828927",
+        "count" : "1"
+      }, {
+        "item" : "842727",
+        "count" : "1"
+      }, {
+        "item" : "553462",
+        "count" : "1"
+      }, {
+        "item" : "147051",
+        "count" : "1"
+      } ],
+      "smallest" : "147051",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639415,
+    "name" : "PETROLEUM",
+    "dataTypeName" : "number",
+    "description" : "Pipeline Movement (Thousands Of Barrels)",
+    "fieldName" : "petroleum",
+    "position" : 39,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072798,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "379220",
+      "null" : "1",
+      "top" : [ {
+        "item" : "270123",
+        "count" : "2"
+      }, {
+        "item" : "201630",
+        "count" : "1"
+      }, {
+        "item" : "209033",
+        "count" : "1"
+      }, {
+        "item" : "220313",
+        "count" : "1"
+      }, {
+        "item" : "331865",
+        "count" : "1"
+      }, {
+        "item" : "216054",
+        "count" : "1"
+      }, {
+        "item" : "199587",
+        "count" : "1"
+      }, {
+        "item" : "257922",
+        "count" : "1"
+      }, {
+        "item" : "222634",
+        "count" : "1"
+      }, {
+        "item" : "209210",
+        "count" : "1"
+      }, {
+        "item" : "188100",
+        "count" : "1"
+      }, {
+        "item" : "341004",
+        "count" : "1"
+      }, {
+        "item" : "251164",
+        "count" : "1"
+      }, {
+        "item" : "220610",
+        "count" : "1"
+      }, {
+        "item" : "296027",
+        "count" : "1"
+      }, {
+        "item" : "214007",
+        "count" : "1"
+      }, {
+        "item" : "224843",
+        "count" : "1"
+      }, {
+        "item" : "231542",
+        "count" : "1"
+      }, {
+        "item" : "256884",
+        "count" : "1"
+      }, {
+        "item" : "284041",
+        "count" : "1"
+      } ],
+      "smallest" : "171319",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639416,
+    "name" : "PETROLEUM_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Pipeline Movement (Thousands Of Barrels)",
+    "fieldName" : "petroleum_d11",
+    "position" : 40,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072799,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "377581",
+      "null" : "1",
+      "top" : [ {
+        "item" : "264669",
+        "count" : "1"
+      }, {
+        "item" : "226720",
+        "count" : "1"
+      }, {
+        "item" : "278085",
+        "count" : "1"
+      }, {
+        "item" : "338046",
+        "count" : "1"
+      }, {
+        "item" : "276226",
+        "count" : "1"
+      }, {
+        "item" : "212382",
+        "count" : "1"
+      }, {
+        "item" : "222305",
+        "count" : "1"
+      }, {
+        "item" : "311763",
+        "count" : "1"
+      }, {
+        "item" : "207382",
+        "count" : "1"
+      }, {
+        "item" : "228401",
+        "count" : "1"
+      }, {
+        "item" : "322683",
+        "count" : "1"
+      }, {
+        "item" : "258206",
+        "count" : "1"
+      }, {
+        "item" : "273371",
+        "count" : "1"
+      }, {
+        "item" : "317468",
+        "count" : "1"
+      }, {
+        "item" : "231623",
+        "count" : "1"
+      }, {
+        "item" : "235030",
+        "count" : "1"
+      }, {
+        "item" : "267832",
+        "count" : "1"
+      }, {
+        "item" : "252689",
+        "count" : "1"
+      }, {
+        "item" : "359164",
+        "count" : "1"
+      }, {
+        "item" : "216444",
+        "count" : "1"
+      } ],
+      "smallest" : "172858",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639417,
+    "name" : "NATURAL_GAS",
+    "dataTypeName" : "number",
+    "description" : "Natural Gas Consumption (Billion Cubic Feet)",
+    "fieldName" : "natural_gas",
+    "position" : 41,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072800,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "3921.6",
+      "null" : "0",
+      "top" : [ {
+        "item" : "1807.2",
+        "count" : "2"
+      }, {
+        "item" : "1881",
+        "count" : "2"
+      }, {
+        "item" : "1724.9",
+        "count" : "1"
+      }, {
+        "item" : "2083.8",
+        "count" : "1"
+      }, {
+        "item" : "1896.1",
+        "count" : "1"
+      }, {
+        "item" : "1513.1",
+        "count" : "1"
+      }, {
+        "item" : "2913.8",
+        "count" : "1"
+      }, {
+        "item" : "2756.2",
+        "count" : "1"
+      }, {
+        "item" : "1776.2",
+        "count" : "1"
+      }, {
+        "item" : "2652.3",
+        "count" : "1"
+      }, {
+        "item" : "1658",
+        "count" : "1"
+      }, {
+        "item" : "2967",
+        "count" : "1"
+      }, {
+        "item" : "2672.1",
+        "count" : "1"
+      }, {
+        "item" : "2126.4",
+        "count" : "1"
+      }, {
+        "item" : "1644.2",
+        "count" : "1"
+      }, {
+        "item" : "3729.8",
+        "count" : "1"
+      }, {
+        "item" : "2685",
+        "count" : "1"
+      }, {
+        "item" : "1522.6",
+        "count" : "1"
+      }, {
+        "item" : "1567.8",
+        "count" : "1"
+      }, {
+        "item" : "2398.2",
+        "count" : "1"
+      } ],
+      "smallest" : "1368.4",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639418,
+    "name" : "NATURAL_GAS_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Natural Gas Consumption (Billion Cubic Feet)",
+    "fieldName" : "natural_gas_d11",
+    "position" : 42,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072801,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "2957.2",
+      "null" : "0",
+      "top" : [ {
+        "item" : "2008.6",
+        "count" : "2"
+      }, {
+        "item" : "1862.6",
+        "count" : "2"
+      }, {
+        "item" : "2080.5",
+        "count" : "2"
+      }, {
+        "item" : "2012.1",
+        "count" : "2"
+      }, {
+        "item" : "2578.4",
+        "count" : "2"
+      }, {
+        "item" : "2694.9",
+        "count" : "2"
+      }, {
+        "item" : "1824",
+        "count" : "2"
+      }, {
+        "item" : "1823.6",
+        "count" : "2"
+      }, {
+        "item" : "1838.2",
+        "count" : "2"
+      }, {
+        "item" : "1568.6",
+        "count" : "1"
+      }, {
+        "item" : "2147.6",
+        "count" : "1"
+      }, {
+        "item" : "1934.6",
+        "count" : "1"
+      }, {
+        "item" : "2244.9",
+        "count" : "1"
+      }, {
+        "item" : "2003.5",
+        "count" : "1"
+      }, {
+        "item" : "2038",
+        "count" : "1"
+      }, {
+        "item" : "1884.2",
+        "count" : "1"
+      }, {
+        "item" : "2286",
+        "count" : "1"
+      }, {
+        "item" : "2771",
+        "count" : "1"
+      }, {
+        "item" : "1963.5",
+        "count" : "1"
+      }, {
+        "item" : "1952.6",
+        "count" : "1"
+      } ],
+      "smallest" : "1568.6",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639419,
+    "name" : "WATERBORNE",
+    "dataTypeName" : "number",
+    "description" : "Tonnage for Internal U.S. Waterways (Millions Of Short Tons)",
+    "fieldName" : "waterborne",
+    "position" : 43,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072802,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "56.2",
+      "null" : "0",
+      "top" : [ {
+        "item" : "47.1",
+        "count" : "8"
+      }, {
+        "item" : "44.9",
+        "count" : "8"
+      }, {
+        "item" : "50.3",
+        "count" : "6"
+      }, {
+        "item" : "47.9",
+        "count" : "6"
+      }, {
+        "item" : "46.6",
+        "count" : "5"
+      }, {
+        "item" : "47.5",
+        "count" : "5"
+      }, {
+        "item" : "47.4",
+        "count" : "5"
+      }, {
+        "item" : "51.2",
+        "count" : "5"
+      }, {
+        "item" : "51",
+        "count" : "5"
+      }, {
+        "item" : "37.1",
+        "count" : "4"
+      }, {
+        "item" : "50.9",
+        "count" : "4"
+      }, {
+        "item" : "42.9",
+        "count" : "4"
+      }, {
+        "item" : "48.4",
+        "count" : "4"
+      }, {
+        "item" : "49.9",
+        "count" : "4"
+      }, {
+        "item" : "39.8",
+        "count" : "4"
+      }, {
+        "item" : "45.7",
+        "count" : "4"
+      }, {
+        "item" : "47.7",
+        "count" : "4"
+      }, {
+        "item" : "43.6",
+        "count" : "3"
+      }, {
+        "item" : "48.3",
+        "count" : "3"
+      }, {
+        "item" : "47",
+        "count" : "3"
+      } ],
+      "smallest" : "31.1",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639420,
+    "name" : "WATERBORNE_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Tonnage for Internal U.S. Waterways (Millions Of Short Tons)",
+    "fieldName" : "waterborne_d11",
+    "position" : 44,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072803,
+    "width" : 223,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "55.4",
+      "null" : "0",
+      "top" : [ {
+        "item" : "47",
+        "count" : "10"
+      }, {
+        "item" : "45.2",
+        "count" : "7"
+      }, {
+        "item" : "47.6",
+        "count" : "7"
+      }, {
+        "item" : "47.2",
+        "count" : "7"
+      }, {
+        "item" : "46.7",
+        "count" : "7"
+      }, {
+        "item" : "49",
+        "count" : "6"
+      }, {
+        "item" : "46.9",
+        "count" : "6"
+      }, {
+        "item" : "46",
+        "count" : "6"
+      }, {
+        "item" : "46.8",
+        "count" : "5"
+      }, {
+        "item" : "52.5",
+        "count" : "5"
+      }, {
+        "item" : "51",
+        "count" : "4"
+      }, {
+        "item" : "46.5",
+        "count" : "4"
+      }, {
+        "item" : "50.7",
+        "count" : "4"
+      }, {
+        "item" : "47.1",
+        "count" : "4"
+      }, {
+        "item" : "36.7",
+        "count" : "4"
+      }, {
+        "item" : "48.3",
+        "count" : "4"
+      }, {
+        "item" : "48",
+        "count" : "4"
+      }, {
+        "item" : "47.9",
+        "count" : "4"
+      }, {
+        "item" : "50.8",
+        "count" : "4"
+      }, {
+        "item" : "50.4",
+        "count" : "4"
+      } ],
+      "smallest" : "30.1",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639421,
+    "name" : "TRUCK_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Truck Tonnage (Truck Tonnage Index)",
+    "fieldName" : "truck_d11",
+    "position" : 45,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072804,
+    "width" : 121,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "120.4",
+      "null" : "0",
+      "top" : [ {
+        "item" : "114",
+        "count" : "6"
+      }, {
+        "item" : "113.3",
+        "count" : "5"
+      }, {
+        "item" : "113.1",
+        "count" : "5"
+      }, {
+        "item" : "85.4",
+        "count" : "5"
+      }, {
+        "item" : "74.6",
+        "count" : "4"
+      }, {
+        "item" : "113",
+        "count" : "4"
+      }, {
+        "item" : "82",
+        "count" : "4"
+      }, {
+        "item" : "88.6",
+        "count" : "3"
+      }, {
+        "item" : "117.6",
+        "count" : "3"
+      }, {
+        "item" : "86.3",
+        "count" : "3"
+      }, {
+        "item" : "114.4",
+        "count" : "3"
+      }, {
+        "item" : "74.8",
+        "count" : "3"
+      }, {
+        "item" : "86.4",
+        "count" : "3"
+      }, {
+        "item" : "84.4",
+        "count" : "3"
+      }, {
+        "item" : "114.1",
+        "count" : "3"
+      }, {
+        "item" : "115.2",
+        "count" : "3"
+      }, {
+        "item" : "84.9",
+        "count" : "3"
+      }, {
+        "item" : "79.3",
+        "count" : "3"
+      }, {
+        "item" : "113.8",
+        "count" : "3"
+      }, {
+        "item" : "86.6",
+        "count" : "3"
+      } ],
+      "smallest" : "72.5",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639422,
+    "name" : "VMT",
+    "dataTypeName" : "number",
+    "description" : "Vehicle Miles Traveled (VMT)",
+    "fieldName" : "vmt",
+    "position" : 46,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072805,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "297770",
+      "null" : "1",
+      "top" : [ {
+        "item" : "241451",
+        "count" : "2"
+      }, {
+        "item" : "245787",
+        "count" : "2"
+      }, {
+        "item" : "223011",
+        "count" : "1"
+      }, {
+        "item" : "263782",
+        "count" : "1"
+      }, {
+        "item" : "222819",
+        "count" : "1"
+      }, {
+        "item" : "265060",
+        "count" : "1"
+      }, {
+        "item" : "249578",
+        "count" : "1"
+      }, {
+        "item" : "268831",
+        "count" : "1"
+      }, {
+        "item" : "267958",
+        "count" : "1"
+      }, {
+        "item" : "261600",
+        "count" : "1"
+      }, {
+        "item" : "261028",
+        "count" : "1"
+      }, {
+        "item" : "258680",
+        "count" : "1"
+      }, {
+        "item" : "284347",
+        "count" : "1"
+      }, {
+        "item" : "273125",
+        "count" : "1"
+      }, {
+        "item" : "282648",
+        "count" : "1"
+      }, {
+        "item" : "282558",
+        "count" : "1"
+      }, {
+        "item" : "275610",
+        "count" : "1"
+      }, {
+        "item" : "261466",
+        "count" : "1"
+      }, {
+        "item" : "237264",
+        "count" : "1"
+      }, {
+        "item" : "220839",
+        "count" : "1"
+      } ],
+      "smallest" : "167617",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639423,
+    "name" : "VMT_D11",
+    "dataTypeName" : "number",
+    "description" : "Seasonally-Adjusted Vehicle Miles Traveled (VMT)",
+    "fieldName" : "vmt_d11",
+    "position" : 47,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072806,
+    "width" : 76,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "285452",
+      "null" : "1",
+      "top" : [ {
+        "item" : "247614",
+        "count" : "2"
+      }, {
+        "item" : "245957",
+        "count" : "2"
+      }, {
+        "item" : "274417",
+        "count" : "1"
+      }, {
+        "item" : "258686",
+        "count" : "1"
+      }, {
+        "item" : "278063",
+        "count" : "1"
+      }, {
+        "item" : "244641",
+        "count" : "1"
+      }, {
+        "item" : "251531",
+        "count" : "1"
+      }, {
+        "item" : "249024",
+        "count" : "1"
+      }, {
+        "item" : "229068",
+        "count" : "1"
+      }, {
+        "item" : "246986",
+        "count" : "1"
+      }, {
+        "item" : "246159",
+        "count" : "1"
+      }, {
+        "item" : "268528",
+        "count" : "1"
+      }, {
+        "item" : "245974",
+        "count" : "1"
+      }, {
+        "item" : "248685",
+        "count" : "1"
+      }, {
+        "item" : "250380",
+        "count" : "1"
+      }, {
+        "item" : "244074",
+        "count" : "1"
+      }, {
+        "item" : "248689",
+        "count" : "1"
+      }, {
+        "item" : "249737",
+        "count" : "1"
+      }, {
+        "item" : "245171",
+        "count" : "1"
+      }, {
+        "item" : "233413",
+        "count" : "1"
+      } ],
+      "smallest" : "167174",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639424,
+    "name" : "TSI_Freight",
+    "dataTypeName" : "number",
+    "description" : "The Transportation Services Freight Index is a weighted average of monthly data for trucking, freight rail, waterborne, pipeline, and air freight. ",
+    "fieldName" : "tsi_freight",
+    "position" : 48,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072807,
+    "width" : 116,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "140.6",
+      "null" : "0",
+      "top" : [ {
+        "item" : "137",
+        "count" : "6"
+      }, {
+        "item" : "137.4",
+        "count" : "6"
+      }, {
+        "item" : "137.7",
+        "count" : "6"
+      }, {
+        "item" : "111.8",
+        "count" : "5"
+      }, {
+        "item" : "99.7",
+        "count" : "5"
+      }, {
+        "item" : "136.2",
+        "count" : "4"
+      }, {
+        "item" : "136.9",
+        "count" : "4"
+      }, {
+        "item" : "136.7",
+        "count" : "4"
+      }, {
+        "item" : "111.7",
+        "count" : "4"
+      }, {
+        "item" : "138.3",
+        "count" : "4"
+      }, {
+        "item" : "110.6",
+        "count" : "3"
+      }, {
+        "item" : "110.3",
+        "count" : "3"
+      }, {
+        "item" : "135.6",
+        "count" : "3"
+      }, {
+        "item" : "109.6",
+        "count" : "3"
+      }, {
+        "item" : "98.9",
+        "count" : "3"
+      }, {
+        "item" : "99.2",
+        "count" : "3"
+      }, {
+        "item" : "135.2",
+        "count" : "3"
+      }, {
+        "item" : "98.6",
+        "count" : "3"
+      }, {
+        "item" : "111.1",
+        "count" : "3"
+      }, {
+        "item" : "138",
+        "count" : "3"
+      } ],
+      "smallest" : "94.9",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639425,
+    "name" : "TSI_Freight_C",
+    "dataTypeName" : "number",
+    "description" : "The monthly change in value of  the Transportation Services Freight Index. ",
+    "fieldName" : "tsi_freight_c",
+    "position" : 49,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072808,
+    "width" : 148,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "3.1",
+      "null" : "1",
+      "top" : [ {
+        "item" : "-0.9",
+        "count" : "16"
+      }, {
+        "item" : "0.5",
+        "count" : "16"
+      }, {
+        "item" : "-0.1",
+        "count" : "16"
+      }, {
+        "item" : "0.8",
+        "count" : "15"
+      }, {
+        "item" : "0.4",
+        "count" : "15"
+      }, {
+        "item" : "0.2",
+        "count" : "13"
+      }, {
+        "item" : "0.1",
+        "count" : "12"
+      }, {
+        "item" : "-0.2",
+        "count" : "11"
+      }, {
+        "item" : "0.7",
+        "count" : "10"
+      }, {
+        "item" : "-0.6",
+        "count" : "10"
+      }, {
+        "item" : "-0.3",
+        "count" : "10"
+      }, {
+        "item" : "0.3",
+        "count" : "9"
+      }, {
+        "item" : "-0.8",
+        "count" : "9"
+      }, {
+        "item" : "1.2",
+        "count" : "9"
+      }, {
+        "item" : "-0.7",
+        "count" : "9"
+      }, {
+        "item" : "1.3",
+        "count" : "8"
+      }, {
+        "item" : "0",
+        "count" : "8"
+      }, {
+        "item" : "-0.5",
+        "count" : "8"
+      }, {
+        "item" : "1",
+        "count" : "7"
+      }, {
+        "item" : "1.5",
+        "count" : "7"
+      } ],
+      "smallest" : "-7.6",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639426,
+    "name" : "TSI_Passenger",
+    "dataTypeName" : "number",
+    "description" : "The Transportation Services Passenger Index is a weighted average of monthly data for passenger aviation, transit, and passenger rail.",
+    "fieldName" : "tsi_passenger",
+    "position" : 50,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072809,
+    "width" : 143,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "137",
+      "null" : "0",
+      "top" : [ {
+        "item" : "113.8",
+        "count" : "5"
+      }, {
+        "item" : "126.8",
+        "count" : "5"
+      }, {
+        "item" : "115.6",
+        "count" : "5"
+      }, {
+        "item" : "115.5",
+        "count" : "4"
+      }, {
+        "item" : "110.3",
+        "count" : "4"
+      }, {
+        "item" : "93.6",
+        "count" : "3"
+      }, {
+        "item" : "110.2",
+        "count" : "3"
+      }, {
+        "item" : "115",
+        "count" : "3"
+      }, {
+        "item" : "125.2",
+        "count" : "3"
+      }, {
+        "item" : "93.8",
+        "count" : "3"
+      }, {
+        "item" : "127.5",
+        "count" : "3"
+      }, {
+        "item" : "109.8",
+        "count" : "3"
+      }, {
+        "item" : "115.4",
+        "count" : "3"
+      }, {
+        "item" : "115.9",
+        "count" : "3"
+      }, {
+        "item" : "116.4",
+        "count" : "3"
+      }, {
+        "item" : "124",
+        "count" : "3"
+      }, {
+        "item" : "101.8",
+        "count" : "2"
+      }, {
+        "item" : "103.4",
+        "count" : "2"
+      }, {
+        "item" : "101.5",
+        "count" : "2"
+      }, {
+        "item" : "108.9",
+        "count" : "2"
+      } ],
+      "smallest" : "13",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639427,
+    "name" : "TSI_Passenger_C",
+    "dataTypeName" : "number",
+    "description" : "The monthly change in value of  the Transportation Services Passenger Index.",
+    "fieldName" : "tsi_passenger_c",
+    "position" : 51,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072810,
+    "width" : 158,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "36.4",
+      "null" : "1",
+      "top" : [ {
+        "item" : "-0.1",
+        "count" : "21"
+      }, {
+        "item" : "0.4",
+        "count" : "16"
+      }, {
+        "item" : "0.5",
+        "count" : "14"
+      }, {
+        "item" : "0.6",
+        "count" : "14"
+      }, {
+        "item" : "0.1",
+        "count" : "14"
+      }, {
+        "item" : "0.2",
+        "count" : "12"
+      }, {
+        "item" : "0.7",
+        "count" : "12"
+      }, {
+        "item" : "0.9",
+        "count" : "11"
+      }, {
+        "item" : "0.3",
+        "count" : "11"
+      }, {
+        "item" : "-0.5",
+        "count" : "11"
+      }, {
+        "item" : "0.8",
+        "count" : "11"
+      }, {
+        "item" : "-0.2",
+        "count" : "10"
+      }, {
+        "item" : "-0.3",
+        "count" : "9"
+      }, {
+        "item" : "0",
+        "count" : "9"
+      }, {
+        "item" : "1.3",
+        "count" : "9"
+      }, {
+        "item" : "1.2",
+        "count" : "8"
+      }, {
+        "item" : "-0.9",
+        "count" : "8"
+      }, {
+        "item" : "-0.7",
+        "count" : "8"
+      }, {
+        "item" : "-0.4",
+        "count" : "8"
+      }, {
+        "item" : "1",
+        "count" : "7"
+      } ],
+      "smallest" : "-81.4",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639428,
+    "name" : "TSI_Total",
+    "dataTypeName" : "number",
+    "description" : "The Transportation Services Combined Index is a weighted average of monthly data for passenger (passenger aviation, transit, and) passenger rail and freight (trucking, freight rail, waterborne, pipeline, and air freight) transportation modes.",
+    "fieldName" : "tsi_total",
+    "position" : 52,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072811,
+    "width" : 106,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "138.8",
+      "null" : "0",
+      "top" : [ {
+        "item" : "111.5",
+        "count" : "5"
+      }, {
+        "item" : "111.3",
+        "count" : "5"
+      }, {
+        "item" : "111.4",
+        "count" : "4"
+      }, {
+        "item" : "111.2",
+        "count" : "4"
+      }, {
+        "item" : "111.1",
+        "count" : "4"
+      }, {
+        "item" : "99.8",
+        "count" : "4"
+      }, {
+        "item" : "130.8",
+        "count" : "4"
+      }, {
+        "item" : "112.5",
+        "count" : "4"
+      }, {
+        "item" : "121.6",
+        "count" : "3"
+      }, {
+        "item" : "99.5",
+        "count" : "3"
+      }, {
+        "item" : "127.6",
+        "count" : "3"
+      }, {
+        "item" : "98.7",
+        "count" : "3"
+      }, {
+        "item" : "101.1",
+        "count" : "3"
+      }, {
+        "item" : "116.5",
+        "count" : "3"
+      }, {
+        "item" : "111.8",
+        "count" : "3"
+      }, {
+        "item" : "108.8",
+        "count" : "3"
+      }, {
+        "item" : "99.9",
+        "count" : "3"
+      }, {
+        "item" : "123.5",
+        "count" : "3"
+      }, {
+        "item" : "112.7",
+        "count" : "3"
+      }, {
+        "item" : "101.8",
+        "count" : "3"
+      } ],
+      "smallest" : "81",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639429,
+    "name" : "TSI_Total_C",
+    "dataTypeName" : "number",
+    "description" : "The monthly change in value of  the Transportation Services Combined Index.",
+    "fieldName" : "tsi_total_c",
+    "position" : 53,
+    "renderTypeName" : "number",
+    "tableColumnId" : 45072812,
+    "width" : 124,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "5.1",
+      "null" : "1",
+      "top" : [ {
+        "item" : "0.3",
+        "count" : "19"
+      }, {
+        "item" : "0.1",
+        "count" : "17"
+      }, {
+        "item" : "0",
+        "count" : "16"
+      }, {
+        "item" : "0.2",
+        "count" : "14"
+      }, {
+        "item" : "0.4",
+        "count" : "14"
+      }, {
+        "item" : "0.7",
+        "count" : "13"
+      }, {
+        "item" : "-0.3",
+        "count" : "13"
+      }, {
+        "item" : "-0.4",
+        "count" : "13"
+      }, {
+        "item" : "-0.6",
+        "count" : "12"
+      }, {
+        "item" : "-0.1",
+        "count" : "12"
+      }, {
+        "item" : "-0.2",
+        "count" : "10"
+      }, {
+        "item" : "0.8",
+        "count" : "10"
+      }, {
+        "item" : "1",
+        "count" : "10"
+      }, {
+        "item" : "0.9",
+        "count" : "9"
+      }, {
+        "item" : "0.5",
+        "count" : "9"
+      }, {
+        "item" : "-1.1",
+        "count" : "9"
+      }, {
+        "item" : "-0.7",
+        "count" : "9"
+      }, {
+        "item" : "1.4",
+        "count" : "8"
+      }, {
+        "item" : "1.1",
+        "count" : "8"
+      }, {
+        "item" : "-0.8",
+        "count" : "7"
+      } ],
+      "smallest" : "-25.8",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  }, {
+    "id" : 627639430,
+    "name" : "IND_PRO",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : "ind_pro",
+    "position" : 54,
+    "renderTypeName" : "number",
+    "tableColumnId" : 91122790,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "106.8982741721734",
+      "null" : "0",
+      "top" : [ {
+        "item" : "101.4154714616412",
+        "count" : "2"
+      }, {
+        "item" : "102.8518665755124",
+        "count" : "1"
+      }, {
+        "item" : "102.2048315731888",
+        "count" : "1"
+      }, {
+        "item" : "104.4420878175348",
+        "count" : "1"
+      }, {
+        "item" : "97.86186198847663",
+        "count" : "1"
+      }, {
+        "item" : "100.7137039317445",
+        "count" : "1"
+      }, {
+        "item" : "98.9468598990545",
+        "count" : "1"
+      }, {
+        "item" : "95.19033959196014",
+        "count" : "1"
+      }, {
+        "item" : "101.0635608200029",
+        "count" : "1"
+      }, {
+        "item" : "104.2624870844664",
+        "count" : "1"
+      }, {
+        "item" : "103.9881056329177",
+        "count" : "1"
+      }, {
+        "item" : "95.48536126497643",
+        "count" : "1"
+      }, {
+        "item" : "97.75465606204816",
+        "count" : "1"
+      }, {
+        "item" : "90.75464304214746",
+        "count" : "1"
+      }, {
+        "item" : "94.37202155775658",
+        "count" : "1"
+      }, {
+        "item" : "93.56746367119804",
+        "count" : "1"
+      }, {
+        "item" : "90.95046842691671",
+        "count" : "1"
+      }, {
+        "item" : "95.47817312814696",
+        "count" : "1"
+      }, {
+        "item" : "105.3975965775128",
+        "count" : "1"
+      }, {
+        "item" : "105.1906809244923",
+        "count" : "1"
+      } ],
+      "smallest" : "86.83464396601657",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : { }
+  }, {
+    "id" : 627639431,
+    "name" : "MANUF",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : "manuf",
+    "position" : 55,
+    "renderTypeName" : "number",
+    "tableColumnId" : 91122789,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "145.8640977593443",
+      "null" : "0",
+      "top" : [ {
+        "item" : "70.18826222385741",
+        "count" : "1"
+      }, {
+        "item" : "104.5927370827479",
+        "count" : "1"
+      }, {
+        "item" : "74.72770820770616",
+        "count" : "1"
+      }, {
+        "item" : "71.96057296177113",
+        "count" : "1"
+      }, {
+        "item" : "71.81851752094599",
+        "count" : "1"
+      }, {
+        "item" : "77.41606923837561",
+        "count" : "1"
+      }, {
+        "item" : "127.7909797395255",
+        "count" : "1"
+      }, {
+        "item" : "100.8899125430214",
+        "count" : "1"
+      }, {
+        "item" : "102.2371480140728",
+        "count" : "1"
+      }, {
+        "item" : "142.6020596873088",
+        "count" : "1"
+      }, {
+        "item" : "73.31217265527492",
+        "count" : "1"
+      }, {
+        "item" : "102.9393514066616",
+        "count" : "1"
+      }, {
+        "item" : "88.81694576186483",
+        "count" : "1"
+      }, {
+        "item" : "107.7026820023178",
+        "count" : "1"
+      }, {
+        "item" : "108.9098259326476",
+        "count" : "1"
+      }, {
+        "item" : "104.1203100022772",
+        "count" : "1"
+      }, {
+        "item" : "145.8640977593443",
+        "count" : "1"
+      }, {
+        "item" : "105.1642320128878",
+        "count" : "1"
+      }, {
+        "item" : "103.7956118518197",
+        "count" : "1"
+      }, {
+        "item" : "114.4825015820986",
+        "count" : "1"
+      } ],
+      "smallest" : "69.83192346062013",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : { }
+  }, {
+    "id" : 627639432,
+    "name" : "INV_TO_SALES",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : "inv_to_sales",
+    "position" : 56,
+    "renderTypeName" : "number",
+    "tableColumnId" : 91122791,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "1.68",
+      "null" : "1",
+      "top" : [ {
+        "item" : "1.49",
+        "count" : "24"
+      }, {
+        "item" : "1.45",
+        "count" : "17"
+      }, {
+        "item" : "1.5",
+        "count" : "17"
+      }, {
+        "item" : "1.39",
+        "count" : "15"
+      }, {
+        "item" : "1.48",
+        "count" : "15"
+      }, {
+        "item" : "1.38",
+        "count" : "15"
+      }, {
+        "item" : "1.54",
+        "count" : "14"
+      }, {
+        "item" : "1.4",
+        "count" : "14"
+      }, {
+        "item" : "1.55",
+        "count" : "11"
+      }, {
+        "item" : "1.44",
+        "count" : "11"
+      }, {
+        "item" : "1.47",
+        "count" : "11"
+      }, {
+        "item" : "1.46",
+        "count" : "10"
+      }, {
+        "item" : "1.43",
+        "count" : "10"
+      }, {
+        "item" : "1.58",
+        "count" : "10"
+      }, {
+        "item" : "1.36",
+        "count" : "9"
+      }, {
+        "item" : "1.41",
+        "count" : "9"
+      }, {
+        "item" : "1.59",
+        "count" : "9"
+      }, {
+        "item" : "1.42",
+        "count" : "7"
+      }, {
+        "item" : "1.37",
+        "count" : "7"
+      }, {
+        "item" : "1.56",
+        "count" : "7"
+      } ],
+      "smallest" : "1.1",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : { }
+  }, {
+    "id" : 627639433,
+    "name" : "IDX_AIR_RPM",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : "idx_air_rpm",
+    "position" : 57,
+    "renderTypeName" : "number",
+    "tableColumnId" : 91122792,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "1.6357",
+      "null" : "1",
+      "top" : [ {
+        "item" : "1.3944",
+        "count" : "2"
+      }, {
+        "item" : "1.5902",
+        "count" : "2"
+      }, {
+        "item" : "1.1733",
+        "count" : "2"
+      }, {
+        "item" : "1.1956",
+        "count" : "2"
+      }, {
+        "item" : "1.1584",
+        "count" : "2"
+      }, {
+        "item" : "1.1923",
+        "count" : "2"
+      }, {
+        "item" : "1.0082",
+        "count" : "2"
+      }, {
+        "item" : "1.1715",
+        "count" : "1"
+      }, {
+        "item" : "1.5149",
+        "count" : "1"
+      }, {
+        "item" : "1.3197",
+        "count" : "1"
+      }, {
+        "item" : "1.0131",
+        "count" : "1"
+      }, {
+        "item" : "1.0111",
+        "count" : "1"
+      }, {
+        "item" : "1.0063",
+        "count" : "1"
+      }, {
+        "item" : "1.4245",
+        "count" : "1"
+      }, {
+        "item" : "1.4567",
+        "count" : "1"
+      }, {
+        "item" : "1.1742",
+        "count" : "1"
+      }, {
+        "item" : "1.592",
+        "count" : "1"
+      }, {
+        "item" : "0.929",
+        "count" : "1"
+      }, {
+        "item" : "1.2636",
+        "count" : "1"
+      }, {
+        "item" : "1.0525",
+        "count" : "1"
+      } ],
+      "smallest" : "0.0489",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : { }
+  }, {
+    "id" : 627639434,
+    "name" : "IDX_AIR_RTMFM",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : "idx_air_rtmfm",
+    "position" : 58,
+    "renderTypeName" : "number",
+    "tableColumnId" : 91122797,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "1.8392",
+      "null" : "1",
+      "top" : [ {
+        "item" : "1.1299",
+        "count" : "2"
+      }, {
+        "item" : "1.1414",
+        "count" : "2"
+      }, {
+        "item" : "1.2043",
+        "count" : "2"
+      }, {
+        "item" : "1.2858",
+        "count" : "2"
+      }, {
+        "item" : "1.2806",
+        "count" : "2"
+      }, {
+        "item" : "1.274",
+        "count" : "2"
+      }, {
+        "item" : "0.969",
+        "count" : "2"
+      }, {
+        "item" : "1.2732",
+        "count" : "1"
+      }, {
+        "item" : "1.5715",
+        "count" : "1"
+      }, {
+        "item" : "1.7201",
+        "count" : "1"
+      }, {
+        "item" : "1.1381",
+        "count" : "1"
+      }, {
+        "item" : "1.6347",
+        "count" : "1"
+      }, {
+        "item" : "1.3064",
+        "count" : "1"
+      }, {
+        "item" : "1.6956",
+        "count" : "1"
+      }, {
+        "item" : "1.2115",
+        "count" : "1"
+      }, {
+        "item" : "1.3828",
+        "count" : "1"
+      }, {
+        "item" : "1.5622",
+        "count" : "1"
+      }, {
+        "item" : "0.8687",
+        "count" : "1"
+      }, {
+        "item" : "1.0964",
+        "count" : "1"
+      }, {
+        "item" : "1.1379",
+        "count" : "1"
+      } ],
+      "smallest" : "0.7963",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : { }
+  }, {
+    "id" : 627639435,
+    "name" : "IDX_RAIL_FRT_CARLOADS",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : "idx_rail_frt_carloads",
+    "position" : 59,
+    "renderTypeName" : "number",
+    "tableColumnId" : 91122801,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "1.0679",
+      "null" : "0",
+      "top" : [ {
+        "item" : "1.0172",
+        "count" : "3"
+      }, {
+        "item" : "0.7133",
+        "count" : "2"
+      }, {
+        "item" : "0.9795",
+        "count" : "2"
+      }, {
+        "item" : "1.0004",
+        "count" : "2"
+      }, {
+        "item" : "1.015",
+        "count" : "2"
+      }, {
+        "item" : "0.825",
+        "count" : "2"
+      }, {
+        "item" : "0.7964",
+        "count" : "2"
+      }, {
+        "item" : "1.0264",
+        "count" : "2"
+      }, {
+        "item" : "1.0043",
+        "count" : "2"
+      }, {
+        "item" : "1.0285",
+        "count" : "2"
+      }, {
+        "item" : "0.7241",
+        "count" : "2"
+      }, {
+        "item" : "0.7178",
+        "count" : "2"
+      }, {
+        "item" : "0.7447",
+        "count" : "2"
+      }, {
+        "item" : "0.81",
+        "count" : "2"
+      }, {
+        "item" : "1.0041",
+        "count" : "2"
+      }, {
+        "item" : "1.0136",
+        "count" : "2"
+      }, {
+        "item" : "0.911",
+        "count" : "2"
+      }, {
+        "item" : "0.8094",
+        "count" : "2"
+      }, {
+        "item" : "0.718",
+        "count" : "2"
+      }, {
+        "item" : "0.7176",
+        "count" : "2"
+      } ],
+      "smallest" : "0.5643",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : { }
+  }, {
+    "id" : 627639436,
+    "name" : "IDX_RAIL_FRT_INTERMODAL",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : "idx_rail_frt_intermodal",
+    "position" : 60,
+    "renderTypeName" : "number",
+    "tableColumnId" : 91122800,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "1.721",
+      "null" : "0",
+      "top" : [ {
+        "item" : "1.3696",
+        "count" : "2"
+      }, {
+        "item" : "1.4789",
+        "count" : "2"
+      }, {
+        "item" : "1.3687",
+        "count" : "2"
+      }, {
+        "item" : "1.6218",
+        "count" : "2"
+      }, {
+        "item" : "1.611",
+        "count" : "2"
+      }, {
+        "item" : "1.3161",
+        "count" : "1"
+      }, {
+        "item" : "0.974",
+        "count" : "1"
+      }, {
+        "item" : "1.6081",
+        "count" : "1"
+      }, {
+        "item" : "1.2442",
+        "count" : "1"
+      }, {
+        "item" : "1.2645",
+        "count" : "1"
+      }, {
+        "item" : "1.6216",
+        "count" : "1"
+      }, {
+        "item" : "1.3407",
+        "count" : "1"
+      }, {
+        "item" : "1.292",
+        "count" : "1"
+      }, {
+        "item" : "0.9586",
+        "count" : "1"
+      }, {
+        "item" : "1.6093",
+        "count" : "1"
+      }, {
+        "item" : "1.4792",
+        "count" : "1"
+      }, {
+        "item" : "1.2651",
+        "count" : "1"
+      }, {
+        "item" : "1.3574",
+        "count" : "1"
+      }, {
+        "item" : "1.118",
+        "count" : "1"
+      }, {
+        "item" : "1.5157",
+        "count" : "1"
+      } ],
+      "smallest" : "0.9462",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : { }
+  }, {
+    "id" : 627639437,
+    "name" : "IDX_RAIL_PM",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : "idx_rail_pm",
+    "position" : 61,
+    "renderTypeName" : "number",
+    "tableColumnId" : 91122796,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "1.3757",
+      "null" : "1",
+      "top" : [ {
+        "item" : "1.0272",
+        "count" : "3"
+      }, {
+        "item" : "1.3052",
+        "count" : "2"
+      }, {
+        "item" : "1.1896",
+        "count" : "2"
+      }, {
+        "item" : "1.1801",
+        "count" : "2"
+      }, {
+        "item" : "1.0032",
+        "count" : "2"
+      }, {
+        "item" : "1.019",
+        "count" : "2"
+      }, {
+        "item" : "1.0943",
+        "count" : "2"
+      }, {
+        "item" : "0.9785",
+        "count" : "2"
+      }, {
+        "item" : "1.176",
+        "count" : "2"
+      }, {
+        "item" : "1.17",
+        "count" : "2"
+      }, {
+        "item" : "0.9683",
+        "count" : "2"
+      }, {
+        "item" : "1.226",
+        "count" : "2"
+      }, {
+        "item" : "1.1826",
+        "count" : "2"
+      }, {
+        "item" : "1.2029",
+        "count" : "2"
+      }, {
+        "item" : "1.2084",
+        "count" : "2"
+      }, {
+        "item" : "1.1602",
+        "count" : "2"
+      }, {
+        "item" : "0.9492",
+        "count" : "2"
+      }, {
+        "item" : "1.069",
+        "count" : "2"
+      }, {
+        "item" : "0.7777",
+        "count" : "1"
+      }, {
+        "item" : "1.1849",
+        "count" : "1"
+      } ],
+      "smallest" : "0.0932",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : { }
+  }, {
+    "id" : 627639438,
+    "name" : "IDX_TRANSIT_D11",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : "idx_transit_d11",
+    "position" : 62,
+    "renderTypeName" : "number",
+    "tableColumnId" : 91122799,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "1.1519",
+      "null" : "1",
+      "top" : [ {
+        "item" : "1.0526",
+        "count" : "3"
+      }, {
+        "item" : "1.0692",
+        "count" : "3"
+      }, {
+        "item" : "1.0741",
+        "count" : "2"
+      }, {
+        "item" : "1.1455",
+        "count" : "2"
+      }, {
+        "item" : "1.0656",
+        "count" : "2"
+      }, {
+        "item" : "1.1172",
+        "count" : "2"
+      }, {
+        "item" : "1.0722",
+        "count" : "2"
+      }, {
+        "item" : "1.1189",
+        "count" : "2"
+      }, {
+        "item" : "1.075",
+        "count" : "2"
+      }, {
+        "item" : "1.0414",
+        "count" : "2"
+      }, {
+        "item" : "1.0982",
+        "count" : "2"
+      }, {
+        "item" : "1.1261",
+        "count" : "2"
+      }, {
+        "item" : "0.9769",
+        "count" : "2"
+      }, {
+        "item" : "1.1112",
+        "count" : "2"
+      }, {
+        "item" : "1.0793",
+        "count" : "2"
+      }, {
+        "item" : "0.9869",
+        "count" : "2"
+      }, {
+        "item" : "0.8485",
+        "count" : "2"
+      }, {
+        "item" : "1.0501",
+        "count" : "2"
+      }, {
+        "item" : "1.0507",
+        "count" : "2"
+      }, {
+        "item" : "1.0962",
+        "count" : "2"
+      } ],
+      "smallest" : "0.1868",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : { }
+  }, {
+    "id" : 627639439,
+    "name" : "IDX_PETROLEUM_D11",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : "idx_petroleum_d11",
+    "position" : 63,
+    "renderTypeName" : "number",
+    "tableColumnId" : 91122793,
+    "cachedContents" : {
+      "non_null" : "320",
+      "largest" : "1.6875",
+      "null" : "1",
+      "top" : [ {
+        "item" : "1.0077",
+        "count" : "3"
+      }, {
+        "item" : "0.9306",
+        "count" : "2"
+      }, {
+        "item" : "0.9935",
+        "count" : "2"
+      }, {
+        "item" : "0.9179",
+        "count" : "2"
+      }, {
+        "item" : "1.5635",
+        "count" : "2"
+      }, {
+        "item" : "0.9148",
+        "count" : "2"
+      }, {
+        "item" : "1.0137",
+        "count" : "2"
+      }, {
+        "item" : "0.9568",
+        "count" : "2"
+      }, {
+        "item" : "0.9359",
+        "count" : "2"
+      }, {
+        "item" : "1.5373",
+        "count" : "2"
+      }, {
+        "item" : "1.5739",
+        "count" : "2"
+      }, {
+        "item" : "0.9717",
+        "count" : "2"
+      }, {
+        "item" : "1.5842",
+        "count" : "2"
+      }, {
+        "item" : "0.9296",
+        "count" : "1"
+      }, {
+        "item" : "1.466",
+        "count" : "1"
+      }, {
+        "item" : "1.1535",
+        "count" : "1"
+      }, {
+        "item" : "0.9866",
+        "count" : "1"
+      }, {
+        "item" : "1.4637",
+        "count" : "1"
+      }, {
+        "item" : "1.4389",
+        "count" : "1"
+      }, {
+        "item" : "0.9673",
+        "count" : "1"
+      } ],
+      "smallest" : "0.7725",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : { }
+  }, {
+    "id" : 627639440,
+    "name" : "IDX_NATURAL_GAS_D11",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : "idx_natural_gas_d11",
+    "position" : 64,
+    "renderTypeName" : "number",
+    "tableColumnId" : 91122798,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "1.577",
+      "null" : "0",
+      "top" : [ {
+        "item" : "1.375",
+        "count" : "2"
+      }, {
+        "item" : "1.4371",
+        "count" : "2"
+      }, {
+        "item" : "1.4349",
+        "count" : "2"
+      }, {
+        "item" : "1.3204",
+        "count" : "2"
+      }, {
+        "item" : "0.9725",
+        "count" : "2"
+      }, {
+        "item" : "1.073",
+        "count" : "2"
+      }, {
+        "item" : "0.9727",
+        "count" : "2"
+      }, {
+        "item" : "0.9802",
+        "count" : "2"
+      }, {
+        "item" : "1.1095",
+        "count" : "2"
+      }, {
+        "item" : "0.9933",
+        "count" : "2"
+      }, {
+        "item" : "1.4919",
+        "count" : "1"
+      }, {
+        "item" : "1.2437",
+        "count" : "1"
+      }, {
+        "item" : "1.1353",
+        "count" : "1"
+      }, {
+        "item" : "1.0282",
+        "count" : "1"
+      }, {
+        "item" : "1.3812",
+        "count" : "1"
+      }, {
+        "item" : "1.1387",
+        "count" : "1"
+      }, {
+        "item" : "1.1808",
+        "count" : "1"
+      }, {
+        "item" : "0.9585",
+        "count" : "1"
+      }, {
+        "item" : "1.436",
+        "count" : "1"
+      }, {
+        "item" : "1.2732",
+        "count" : "1"
+      } ],
+      "smallest" : "0.8365",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : { }
+  }, {
+    "id" : 627639441,
+    "name" : "IDX_WATERBORNE_D11",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : "idx_waterborne_d11",
+    "position" : 65,
+    "renderTypeName" : "number",
+    "tableColumnId" : 91122795,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "1.1204",
+      "null" : "0",
+      "top" : [ {
+        "item" : "0.9142",
+        "count" : "3"
+      }, {
+        "item" : "0.9115",
+        "count" : "3"
+      }, {
+        "item" : "1.0085",
+        "count" : "2"
+      }, {
+        "item" : "0.7887",
+        "count" : "2"
+      }, {
+        "item" : "0.9411",
+        "count" : "2"
+      }, {
+        "item" : "0.952",
+        "count" : "2"
+      }, {
+        "item" : "0.931",
+        "count" : "2"
+      }, {
+        "item" : "0.8623",
+        "count" : "2"
+      }, {
+        "item" : "0.9711",
+        "count" : "2"
+      }, {
+        "item" : "0.9095",
+        "count" : "2"
+      }, {
+        "item" : "1.0619",
+        "count" : "2"
+      }, {
+        "item" : "0.9919",
+        "count" : "2"
+      }, {
+        "item" : "0.7429",
+        "count" : "2"
+      }, {
+        "item" : "0.9925",
+        "count" : "2"
+      }, {
+        "item" : "0.951",
+        "count" : "2"
+      }, {
+        "item" : "0.9518",
+        "count" : "2"
+      }, {
+        "item" : "0.9447",
+        "count" : "2"
+      }, {
+        "item" : "0.95",
+        "count" : "2"
+      }, {
+        "item" : "0.9516",
+        "count" : "2"
+      }, {
+        "item" : "0.9555",
+        "count" : "2"
+      } ],
+      "smallest" : "0.6095",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : { }
+  }, {
+    "id" : 627639442,
+    "name" : "IDX_TRUCK_D11",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : "idx_truck_d11",
+    "position" : 66,
+    "renderTypeName" : "number",
+    "tableColumnId" : 91122794,
+    "cachedContents" : {
+      "non_null" : "321",
+      "largest" : "1.6073",
+      "null" : "0",
+      "top" : [ {
+        "item" : "1.0955",
+        "count" : "3"
+      }, {
+        "item" : "1.0586",
+        "count" : "3"
+      }, {
+        "item" : "1.5089",
+        "count" : "2"
+      }, {
+        "item" : "1.1272",
+        "count" : "2"
+      }, {
+        "item" : "1.1449",
+        "count" : "2"
+      }, {
+        "item" : "1.5668",
+        "count" : "2"
+      }, {
+        "item" : "0.9957",
+        "count" : "2"
+      }, {
+        "item" : "1.5377",
+        "count" : "2"
+      }, {
+        "item" : "1.3471",
+        "count" : "2"
+      }, {
+        "item" : "1.1778",
+        "count" : "2"
+      }, {
+        "item" : "1.5096",
+        "count" : "2"
+      }, {
+        "item" : "1.1401",
+        "count" : "2"
+      }, {
+        "item" : "1.1543",
+        "count" : "2"
+      }, {
+        "item" : "1.1338",
+        "count" : "2"
+      }, {
+        "item" : "1.1526",
+        "count" : "2"
+      }, {
+        "item" : "1.5127",
+        "count" : "2"
+      }, {
+        "item" : "0.9964",
+        "count" : "2"
+      }, {
+        "item" : "1.5219",
+        "count" : "2"
+      }, {
+        "item" : "1.5581",
+        "count" : "2"
+      }, {
+        "item" : "1.0881",
+        "count" : "2"
+      } ],
+      "smallest" : "0.968",
+      "count" : "321",
+      "cardinality" : "321"
+    },
+    "format" : { }
+  } ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "license" : {
+    "name" : "Public Domain U.S. Government",
+    "termsLink" : "https://www.usa.gov/government-works"
+  },
+  "metadata" : {
+    "attachments" : [ {
+      "filename" : "MetaData_All_forSeasonallyAdjusted.xlsx",
+      "assetId" : "3ec9f0e2-3e6e-40b4-9a7f-4c8c28d4de67",
+      "name" : "MetaData_All_forSeasonallyAdjusted.xlsx"
+    }, {
+      "filename" : "SeasonalAdjustmentModels_Documentation.xls",
+      "assetId" : "5f0a53b2-e674-4db1-8206-283ba6a195d6",
+      "name" : "SeasonalAdjustmentModels_Documentation.xls"
+    } ],
+    "custom_fields" : {
+      "Common Core 3" : {
+        "Contact Email" : "bts@dot.gov",
+        "Language" : "en-US",
+        "Contact Name" : "Bureau of Transportation Statistics",
+        "Program Code" : "021:053",
+        "Publisher" : "Bureau of Transportation Statistics",
+        "Bureau Code" : "021:00",
+        "Public Access Level" : "public"
+      }
+    },
+    "rowIdentifier" : 627639377,
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ]
+  },
+  "owner" : {
+    "id" : "q67k-mq78",
+    "displayName" : "BTS Transportation Services Index Program",
+    "screenName" : "BTS Transportation Services Index Program",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "query" : { },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "q67k-mq78",
+    "displayName" : "BTS Transportation Services Index Program",
+    "screenName" : "BTS Transportation Services Index Program",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "tags" : [ "seasonal", "data", "seasonally-adjusted", "transportation", "highway", "vehicle miles", "seat miles", "enplanements", "passenger miles", "ton miles", "truck tonnage", "rail freight carloads", "rail freight intermodal", "transit ridership", "pipeline petroleum", "natural gas pipeline", "pipeline", "waterways tonnage", "tonnage", "transportation services index", "freight", "passenger", "index", "freight transportation services index", "passenger transportation services index", "tsi" ],
+  "flags" : [ "default", "ownerMayBeContacted", "restorable", "restorePossibleForType" ]
+}

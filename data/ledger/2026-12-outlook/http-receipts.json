@@ -1,0 +1,148 @@
+[
+  {
+    "kind": "source",
+    "source_url": "https://data.transportation.gov/resource/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000",
+    "started_at": "2026-11-16T17:38:29.891446+00:00",
+    "timeout_seconds": 30,
+    "maximum_body_bytes": 2097152,
+    "body_complete": true,
+    "request_headers": {
+      "User-agent": "FreightForecastSourceCapture/1.0",
+      "Accept-encoding": "identity"
+    },
+    "http_status": 200,
+    "resolved_source_url": "https://data.bts.gov/api/id/bw6n-ddqk.csv?$select=obs_date,tsi_freight&$order=obs_date&$limit=50000",
+    "response_headers": [
+      [
+        "Server",
+        "nginx"
+      ],
+      [
+        "Date",
+        "Mon, 16 Nov 2026 17:38:37 GMT"
+      ],
+      [
+        "Content-Type",
+        "text/csv; charset=UTF-8"
+      ],
+      [
+        "Transfer-Encoding",
+        "chunked"
+      ],
+      [
+        "Connection",
+        "close"
+      ],
+      [
+        "Access-Control-Allow-Origin",
+        "*"
+      ],
+      [
+        "ETag",
+        "W/\"Z29sZi45MTU5XzVfMzU1dThMSC1lR3JKXzVDaUZTcEZXV1FfM0lDaHBB---gzipoF_fMees5pSColv063CvI0PDbDo--gzip--gzip\""
+      ],
+      [
+        "X-SODA2-Fields",
+        "[\"obs_date\",\"tsi_freight\"]"
+      ],
+      [
+        "X-SODA2-Types",
+        "[\"floating_timestamp\",\"number\"]"
+      ],
+      [
+        "X-SODA2-Data-Out-Of-Date",
+        "false"
+      ],
+      [
+        "X-SODA2-Truth-Last-Modified",
+        "Thu, 12 Nov 2026 15:54:45 GMT"
+      ],
+      [
+        "X-SODA2-Secondary-Last-Modified",
+        "Thu, 12 Nov 2026 15:54:45 GMT"
+      ],
+      [
+        "Last-Modified",
+        "Thu, 12 Nov 2026 15:54:45 GMT"
+      ],
+      [
+        "Vary",
+        "Accept-Encoding"
+      ],
+      [
+        "X-Socrata-Region",
+        "aws-us-east-1-fedramp-prod"
+      ],
+      [
+        "X-Socrata-RequestId",
+        "fb5b0812f0d67de8dbafd3d1e06e9f5a"
+      ],
+      [
+        "Strict-Transport-Security",
+        "max-age=31536000; includeSubDomains"
+      ]
+    ],
+    "retrieved_at": "2026-11-16T17:38:36.429391+00:00",
+    "bytes": 10847,
+    "sha256": "ed40ce1f4cd03968913d72917aa5002200c59b60bf476c1cb8cea167a830788d"
+  },
+  {
+    "kind": "metadata",
+    "source_url": "https://data.transportation.gov/api/views/bw6n-ddqk.json",
+    "started_at": "2026-11-16T17:38:36.429391+00:00",
+    "timeout_seconds": 30,
+    "maximum_body_bytes": 2097152,
+    "body_complete": true,
+    "request_headers": {
+      "User-agent": "FreightForecastSourceCapture/1.0",
+      "Accept-encoding": "identity"
+    },
+    "http_status": 200,
+    "resolved_source_url": "https://data.bts.gov/api/views/bw6n-ddqk.json",
+    "response_headers": [
+      [
+        "Server",
+        "nginx"
+      ],
+      [
+        "Date",
+        "Mon, 16 Nov 2026 17:38:48 GMT"
+      ],
+      [
+        "Content-Type",
+        "application/json; charset=utf-8"
+      ],
+      [
+        "Transfer-Encoding",
+        "chunked"
+      ],
+      [
+        "Connection",
+        "close"
+      ],
+      [
+        "Access-Control-Allow-Origin",
+        "*"
+      ],
+      [
+        "Vary",
+        "Accept-Encoding"
+      ],
+      [
+        "X-Socrata-Region",
+        "aws-us-east-1-fedramp-prod"
+      ],
+      [
+        "X-Socrata-RequestId",
+        "8b87eac7059d85be021dabeb2d7ee815"
+      ],
+      [
+        "Strict-Transport-Security",
+        "max-age=31536000; includeSubDomains"
+      ]
+    ],
+    "retrieved_at": "2026-11-16T17:38:47.844234+00:00",
+    "bytes": 126292,
+    "sha256": "e2dd35e29f45fdefa0e21447da6cfb4111b2a264cb9c4bd7624b7e16a3eef9b5"
+  }
+]
