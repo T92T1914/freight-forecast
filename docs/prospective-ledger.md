@@ -11,9 +11,11 @@ separates real issuances, retrospective replays and synthetic fixtures. Its
 saved example contains no real issued forecast. The small invented fixture exercises
 a first release, a revision, a missing release and an explicit correction.
 The separately labeled BTS replay uses the retained July 2026 input vintage.
-It is not a prediction issued before August began. Separate local records may
-use the declared [three step future outlook](future-outlook.md). The saved public
-fixture and original study are unchanged.
+It is not a prediction issued before August began. On October 14, 2026 the
+committed command created two separate local records, a September nowcast and a
+November outlook under the declared [three step future outlook](future-outlook.md).
+Both are unobserved and unscored, and neither appears in the public fixture. The
+saved public fixture and original study are unchanged.
 
 ## Record and identity boundaries
 
