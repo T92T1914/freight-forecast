@@ -14,8 +14,12 @@ The separately labeled BTS replay uses the retained July 2026 input vintage.
 It is not a prediction issued before August began. On October 14, 2026 the
 committed command created two separate local records, a September nowcast and a
 November outlook under the declared [three step future outlook](future-outlook.md).
-Both are unobserved and unscored, and neither appears in the public fixture. The
-saved public fixture and original study are unchanged.
+Neither appears in the public fixture. I have since lost the local database that
+held them, before either one was observed, so neither was ever scored and
+neither can be. I did not retype them. A record written now would carry an issue
+time after the outcome, and a forecast scored without proof that it was issued
+first proves nothing. No replacement is issued for either month. The saved
+public fixture and original study are unchanged.
 
 ## Record and identity boundaries
 
