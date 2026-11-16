@@ -6,6 +6,16 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-16, the BTS study on real time vintages
+
+* `docs/real-time-evaluation.md` replays the existing model, last observation
+  and the same month last year on only what each origin could have seen, for
+  2020 to 2025, and scores them against the first release and against the latest
+  values. Last observation wins on both, as it did in the earlier study.
+  Nothing was tuned and the estimator is unchanged.
+* `src/real_time_backtest.py` computes it and `docs/real-time-example.json`
+  retains every prediction. A test recomputes the saved report.
+
 ### 2026-11-16, the October 14 records are lost
 
 * The two local records of October 14, 2026, a September nowcast and a November

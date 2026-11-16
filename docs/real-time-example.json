@@ -1,0 +1,2012 @@
+{
+  "schema_version": 1,
+  "evaluation_kind": "real_time_vintage_one_observation_step",
+  "protocol_id": "bts-freight-tsi-real-time-v1",
+  "units": "index_points_2000_average_100",
+  "months": 72,
+  "latest_vintage": "2026-11-01",
+  "results": {
+    "first_release": {
+      "overall": {
+        "model": {
+          "mae": 1.8779520489375594,
+          "rmse": 2.6527466026962765,
+          "mape": 0.013939395040453459
+        },
+        "last_observation": {
+          "mae": 1.5513888888888903,
+          "rmse": 2.301901387983423,
+          "mape": 0.011470824978062375
+        },
+        "seasonal_naive": {
+          "mae": 3.1375000000000006,
+          "rmse": 4.548397153576925,
+          "mape": 0.02328850666965511
+        }
+      },
+      "by_year": {
+        "2020": {
+          "model": {
+            "mae": 2.975448382102112,
+            "rmse": 4.257844137683275,
+            "mape": 0.022974890327426223
+          },
+          "last_observation": {
+            "mae": 2.2666666666666706,
+            "rmse": 3.752998800959048,
+            "mape": 0.017527767550709204
+          },
+          "seasonal_naive": {
+            "mae": 6.325,
+            "rmse": 8.019091802276202,
+            "mape": 0.049027780327781066
+          }
+        },
+        "2021": {
+          "model": {
+            "mae": 2.3463608181266764,
+            "rmse": 3.0198407684617883,
+            "mape": 0.017527676988399757
+          },
+          "last_observation": {
+            "mae": 1.7583333333333375,
+            "rmse": 2.5666125535421225,
+            "mape": 0.013042913690645327
+          },
+          "seasonal_naive": {
+            "mae": 4.4083333333333385,
+            "rmse": 5.536921527347128,
+            "mape": 0.03250186941987343
+          }
+        },
+        "2022": {
+          "model": {
+            "mae": 1.9073424244798407,
+            "rmse": 2.3978730240628323,
+            "mape": 0.013677694430898342
+          },
+          "last_observation": {
+            "mae": 1.5750000000000004,
+            "rmse": 1.8598835088969057,
+            "mape": 0.0112467145503779
+          },
+          "seasonal_naive": {
+            "mae": 4.0916666666666615,
+            "rmse": 4.606607573185857,
+            "mape": 0.029083575840326708
+          }
+        },
+        "2023": {
+          "model": {
+            "mae": 1.0333230757603928,
+            "rmse": 1.2779840575849646,
+            "mape": 0.007488740785371369
+          },
+          "last_observation": {
+            "mae": 1.0666666666666653,
+            "rmse": 1.2020815280171302,
+            "mape": 0.007727683546880244
+          },
+          "seasonal_naive": {
+            "mae": 1.9666666666666661,
+            "rmse": 2.180978373727411,
+            "mape": 0.01426561880825671
+          }
+        },
+        "2024": {
+          "model": {
+            "mae": 1.5523750376231245,
+            "rmse": 2.2186482308946993,
+            "mape": 0.011361567768815077
+          },
+          "last_observation": {
+            "mae": 1.6166666666666671,
+            "rmse": 2.177536834743941,
+            "mape": 0.011815454374346404
+          },
+          "seasonal_naive": {
+            "mae": 0.9250000000000019,
+            "rmse": 1.150724409520658,
+            "mape": 0.006761441807038727
+          }
+        },
+        "2025": {
+          "model": {
+            "mae": 1.4528625555332084,
+            "rmse": 1.6334852303006497,
+            "mape": 0.010605799941809988
+          },
+          "last_observation": {
+            "mae": 1.025000000000001,
+            "rmse": 1.2141526537740939,
+            "mape": 0.007464416155415169
+          },
+          "seasonal_naive": {
+            "mae": 1.1083333333333343,
+            "rmse": 1.3647344063956206,
+            "mape": 0.008090753814654008
+          }
+        }
+      }
+    },
+    "latest_available": {
+      "overall": {
+        "model": {
+          "mae": 2.4942885954111405,
+          "rmse": 3.437686782755143,
+          "mape": 0.018578415200831606
+        },
+        "last_observation": {
+          "mae": 1.8500000000000005,
+          "rmse": 2.7062684436117728,
+          "mape": 0.01376119198896077
+        },
+        "seasonal_naive": {
+          "mae": 2.827777777777778,
+          "rmse": 4.204527982491681,
+          "mape": 0.0212151561638853
+        }
+      },
+      "by_year": {
+        "2020": {
+          "model": {
+            "mae": 3.692437268826654,
+            "rmse": 5.095879555418825,
+            "mape": 0.028611750295211277
+          },
+          "last_observation": {
+            "mae": 2.400000000000002,
+            "rmse": 4.208919101146993,
+            "mape": 0.0186935587174154
+          },
+          "seasonal_naive": {
+            "mae": 7.208333333333332,
+            "rmse": 8.40481013071285,
+            "mape": 0.05584147877106047
+          }
+        },
+        "2021": {
+          "model": {
+            "mae": 2.9356089483799033,
+            "rmse": 3.668709145816084,
+            "mape": 0.022024215340540432
+          },
+          "last_observation": {
+            "mae": 2.4083333333333363,
+            "rmse": 2.993743475984541,
+            "mape": 0.01799217815926865
+          },
+          "seasonal_naive": {
+            "mae": 2.875000000000005,
+            "rmse": 4.287870489337725,
+            "mape": 0.021333115774627973
+          }
+        },
+        "2022": {
+          "model": {
+            "mae": 4.028319792633861,
+            "rmse": 4.711302205729546,
+            "mape": 0.029443615751090706
+          },
+          "last_observation": {
+            "mae": 2.833333333333331,
+            "rmse": 3.2919092737599343,
+            "mape": 0.02069169943639032
+          },
+          "seasonal_naive": {
+            "mae": 2.2166666666666663,
+            "rmse": 2.491652731287674,
+            "mape": 0.01613793232646008
+          }
+        },
+        "2023": {
+          "model": {
+            "mae": 1.1255328186280782,
+            "rmse": 1.342047673918669,
+            "mape": 0.008173542487035664
+          },
+          "last_observation": {
+            "mae": 0.9916666666666671,
+            "rmse": 1.1593820192959121,
+            "mape": 0.007209041442364769
+          },
+          "seasonal_naive": {
+            "mae": 2.3250000000000006,
+            "rmse": 2.5831182706178986,
+            "mape": 0.016915928799320874
+          }
+        },
+        "2024": {
+          "model": {
+            "mae": 1.9754082899041212,
+            "rmse": 2.3781485820991564,
+            "mape": 0.01441709775970631
+          },
+          "last_observation": {
+            "mae": 1.708333333333331,
+            "rmse": 2.0385861113363175,
+            "mape": 0.012475712429051935
+          },
+          "seasonal_naive": {
+            "mae": 1.1333333333333353,
+            "rmse": 1.333541650393169,
+            "mape": 0.008273717457408717
+          }
+        },
+        "2025": {
+          "model": {
+            "mae": 1.2084244540942255,
+            "rmse": 1.3511758385656072,
+            "mape": 0.00880026957140524
+          },
+          "last_observation": {
+            "mae": 0.7583333333333352,
+            "rmse": 0.9639329160614155,
+            "mape": 0.005504961749273536
+          },
+          "seasonal_naive": {
+            "mae": 1.2083333333333286,
+            "rmse": 1.5435349040433155,
+            "mape": 0.008788763854433662
+          }
+        }
+      }
+    }
+  },
+  "predictions": [
+    {
+      "month": "2020-01",
+      "origin_vintage": "2020-02-12",
+      "observed_through": "2019-12",
+      "training_months": 228,
+      "model": 136.94440097264396,
+      "last_observation": 135.5,
+      "seasonal_naive": 137.4,
+      "first_release_vintage": "2020-03-11",
+      "first_release": 137.4,
+      "latest_available": 135.6,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.45559902735604396,
+          "last_observation": 1.9000000000000057,
+          "seasonal_naive": 0.0
+        },
+        "latest_available": {
+          "model": 1.3444009726439674,
+          "last_observation": 0.09999999999999432,
+          "seasonal_naive": 1.8000000000000114
+        }
+      }
+    },
+    {
+      "month": "2020-02",
+      "origin_vintage": "2020-03-11",
+      "observed_through": "2020-01",
+      "training_months": 229,
+      "model": 138.73004117264523,
+      "last_observation": 137.4,
+      "seasonal_naive": 137.2,
+      "first_release_vintage": "2020-04-08",
+      "first_release": 137.2,
+      "latest_available": 135.1,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.530041172645241,
+          "last_observation": 0.20000000000001705,
+          "seasonal_naive": 0.0
+        },
+        "latest_available": {
+          "model": 3.6300411726452353,
+          "last_observation": 2.3000000000000114,
+          "seasonal_naive": 2.0999999999999943
+        }
+      }
+    },
+    {
+      "month": "2020-03",
+      "origin_vintage": "2020-04-08",
+      "observed_through": "2020-02",
+      "training_months": 230,
+      "model": 137.18584000547466,
+      "last_observation": 137.2,
+      "seasonal_naive": 138.0,
+      "first_release_vintage": "2020-05-13",
+      "first_release": 136.8,
+      "latest_available": 133.9,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.38584000547464825,
+          "last_observation": 0.39999999999997726,
+          "seasonal_naive": 1.1999999999999886
+        },
+        "latest_available": {
+          "model": 3.285840005474654,
+          "last_observation": 3.299999999999983,
+          "seasonal_naive": 4.099999999999994
+        }
+      }
+    },
+    {
+      "month": "2020-04",
+      "origin_vintage": "2020-05-13",
+      "observed_through": "2020-03",
+      "training_months": 231,
+      "model": 136.62303613768006,
+      "last_observation": 136.8,
+      "seasonal_naive": 139.3,
+      "first_release_vintage": "2020-06-10",
+      "first_release": 125.1,
+      "latest_available": 123.7,
+      "absolute_errors": {
+        "first_release": {
+          "model": 11.523036137680066,
+          "last_observation": 11.700000000000017,
+          "seasonal_naive": 14.200000000000017
+        },
+        "latest_available": {
+          "model": 12.923036137680057,
+          "last_observation": 13.100000000000009,
+          "seasonal_naive": 15.600000000000009
+        }
+      }
+    },
+    {
+      "month": "2020-05",
+      "origin_vintage": "2020-06-10",
+      "observed_through": "2020-04",
+      "training_months": 232,
+      "model": 130.97594152580547,
+      "last_observation": 125.1,
+      "seasonal_naive": 139.3,
+      "first_release_vintage": "2020-07-09",
+      "first_release": 127.4,
+      "latest_available": 125.5,
+      "absolute_errors": {
+        "first_release": {
+          "model": 3.5759415258054617,
+          "last_observation": 2.3000000000000114,
+          "seasonal_naive": 11.900000000000006
+        },
+        "latest_available": {
+          "model": 5.475941525805467,
+          "last_observation": 0.4000000000000057,
+          "seasonal_naive": 13.800000000000011
+        }
+      }
+    },
+    {
+      "month": "2020-06",
+      "origin_vintage": "2020-07-09",
+      "observed_through": "2020-05",
+      "training_months": 233,
+      "model": 127.5160219294283,
+      "last_observation": 127.4,
+      "seasonal_naive": 138.9,
+      "first_release_vintage": "2020-08-12",
+      "first_release": 128.3,
+      "latest_available": 128.5,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.7839780705717061,
+          "last_observation": 0.9000000000000057,
+          "seasonal_naive": 10.599999999999994
+        },
+        "latest_available": {
+          "model": 0.9839780705716947,
+          "last_observation": 1.0999999999999943,
+          "seasonal_naive": 10.400000000000006
+        }
+      }
+    },
+    {
+      "month": "2020-07",
+      "origin_vintage": "2020-08-12",
+      "observed_through": "2020-06",
+      "training_months": 234,
+      "model": 124.85037123788146,
+      "last_observation": 128.3,
+      "seasonal_naive": 139.7,
+      "first_release_vintage": "2020-09-10",
+      "first_release": 128.9,
+      "latest_available": 132.5,
+      "absolute_errors": {
+        "first_release": {
+          "model": 4.0496287621185445,
+          "last_observation": 0.5999999999999943,
+          "seasonal_naive": 10.799999999999983
+        },
+        "latest_available": {
+          "model": 7.649628762118539,
+          "last_observation": 4.199999999999989,
+          "seasonal_naive": 7.199999999999989
+        }
+      }
+    },
+    {
+      "month": "2020-08",
+      "origin_vintage": "2020-09-10",
+      "observed_through": "2020-07",
+      "training_months": 235,
+      "model": 125.87045200576662,
+      "last_observation": 128.9,
+      "seasonal_naive": 141.3,
+      "first_release_vintage": "2020-10-15",
+      "first_release": 131.1,
+      "latest_available": 130.8,
+      "absolute_errors": {
+        "first_release": {
+          "model": 5.229547994233371,
+          "last_observation": 2.1999999999999886,
+          "seasonal_naive": 10.200000000000017
+        },
+        "latest_available": {
+          "model": 4.929547994233388,
+          "last_observation": 1.9000000000000057,
+          "seasonal_naive": 10.5
+        }
+      }
+    },
+    {
+      "month": "2020-09",
+      "origin_vintage": "2020-10-15",
+      "observed_through": "2020-08",
+      "training_months": 236,
+      "model": 129.94650307699573,
+      "last_observation": 131.1,
+      "seasonal_naive": 137.6,
+      "first_release_vintage": "2020-11-12",
+      "first_release": 132.6,
+      "latest_available": 131.1,
+      "absolute_errors": {
+        "first_release": {
+          "model": 2.653496923004269,
+          "last_observation": 1.5,
+          "seasonal_naive": 5.0
+        },
+        "latest_available": {
+          "model": 1.153496923004269,
+          "last_observation": 0.0,
+          "seasonal_naive": 6.5
+        }
+      }
+    },
+    {
+      "month": "2020-10",
+      "origin_vintage": "2020-11-12",
+      "observed_through": "2020-09",
+      "training_months": 237,
+      "model": 131.7424676522967,
+      "last_observation": 132.6,
+      "seasonal_naive": 138.0,
+      "first_release_vintage": "2020-12-09",
+      "first_release": 131.7,
+      "latest_available": 132.0,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.04246765229672178,
+          "last_observation": 0.9000000000000057,
+          "seasonal_naive": 6.300000000000011
+        },
+        "latest_available": {
+          "model": 0.2575323477032896,
+          "last_observation": 0.5999999999999943,
+          "seasonal_naive": 6.0
+        }
+      }
+    },
+    {
+      "month": "2020-11",
+      "origin_vintage": "2020-12-09",
+      "observed_through": "2020-10",
+      "training_months": 238,
+      "model": 131.16382719568205,
+      "last_observation": 131.7,
+      "seasonal_naive": 138.1,
+      "first_release_vintage": "2021-01-13",
+      "first_release": 132.7,
+      "latest_available": 132.3,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.5361728043179426,
+          "last_observation": 1.0,
+          "seasonal_naive": 5.400000000000006
+        },
+        "latest_available": {
+          "model": 1.1361728043179653,
+          "last_observation": 0.6000000000000227,
+          "seasonal_naive": 5.799999999999983
+        }
+      }
+    },
+    {
+      "month": "2020-12",
+      "origin_vintage": "2021-01-13",
+      "observed_through": "2020-11",
+      "training_months": 239,
+      "model": 132.36036949027869,
+      "last_observation": 132.7,
+      "seasonal_naive": 136.6,
+      "first_release_vintage": "2021-02-10",
+      "first_release": 136.3,
+      "latest_available": 133.9,
+      "absolute_errors": {
+        "first_release": {
+          "model": 3.939630509721326,
+          "last_observation": 3.6000000000000227,
+          "seasonal_naive": 0.29999999999998295
+        },
+        "latest_available": {
+          "model": 1.53963050972132,
+          "last_observation": 1.200000000000017,
+          "seasonal_naive": 2.6999999999999886
+        }
+      }
+    },
+    {
+      "month": "2021-01",
+      "origin_vintage": "2021-02-10",
+      "observed_through": "2020-12",
+      "training_months": 240,
+      "model": 134.1015888901946,
+      "last_observation": 136.3,
+      "seasonal_naive": 136.9,
+      "first_release_vintage": "2021-03-10",
+      "first_release": 136.2,
+      "latest_available": 136.2,
+      "absolute_errors": {
+        "first_release": {
+          "model": 2.0984111098053972,
+          "last_observation": 0.10000000000002274,
+          "seasonal_naive": 0.700000000000017
+        },
+        "latest_available": {
+          "model": 2.0984111098053972,
+          "last_observation": 0.10000000000002274,
+          "seasonal_naive": 0.700000000000017
+        }
+      }
+    },
+    {
+      "month": "2021-02",
+      "origin_vintage": "2021-03-10",
+      "observed_through": "2021-01",
+      "training_months": 241,
+      "model": 137.9451212054735,
+      "last_observation": 136.2,
+      "seasonal_naive": 136.3,
+      "first_release_vintage": "2021-04-14",
+      "first_release": 132.2,
+      "latest_available": 131.7,
+      "absolute_errors": {
+        "first_release": {
+          "model": 5.7451212054735095,
+          "last_observation": 4.0,
+          "seasonal_naive": 4.100000000000023
+        },
+        "latest_available": {
+          "model": 6.2451212054735095,
+          "last_observation": 4.5,
+          "seasonal_naive": 4.600000000000023
+        }
+      }
+    },
+    {
+      "month": "2021-03",
+      "origin_vintage": "2021-04-14",
+      "observed_through": "2021-02",
+      "training_months": 242,
+      "model": 134.98184085022746,
+      "last_observation": 132.2,
+      "seasonal_naive": 135.3,
+      "first_release_vintage": "2021-05-12",
+      "first_release": 130.0,
+      "latest_available": 134.6,
+      "absolute_errors": {
+        "first_release": {
+          "model": 4.9818408502274565,
+          "last_observation": 2.1999999999999886,
+          "seasonal_naive": 5.300000000000011
+        },
+        "latest_available": {
+          "model": 0.38184085022746217,
+          "last_observation": 2.4000000000000057,
+          "seasonal_naive": 0.700000000000017
+        }
+      }
+    },
+    {
+      "month": "2021-04",
+      "origin_vintage": "2021-05-12",
+      "observed_through": "2021-03",
+      "training_months": 243,
+      "model": 134.22252387130536,
+      "last_observation": 130.0,
+      "seasonal_naive": 125.6,
+      "first_release_vintage": "2021-06-09",
+      "first_release": 136.8,
+      "latest_available": 136.1,
+      "absolute_errors": {
+        "first_release": {
+          "model": 2.5774761286946557,
+          "last_observation": 6.800000000000011,
+          "seasonal_naive": 11.200000000000017
+        },
+        "latest_available": {
+          "model": 1.8774761286946386,
+          "last_observation": 6.099999999999994,
+          "seasonal_naive": 10.5
+        }
+      }
+    },
+    {
+      "month": "2021-05",
+      "origin_vintage": "2021-06-09",
+      "observed_through": "2021-04",
+      "training_months": 244,
+      "model": 136.95666459110018,
+      "last_observation": 136.8,
+      "seasonal_naive": 127.5,
+      "first_release_vintage": "2021-07-14",
+      "first_release": 137.7,
+      "latest_available": 135.2,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.7433354088998101,
+          "last_observation": 0.8999999999999773,
+          "seasonal_naive": 10.199999999999989
+        },
+        "latest_available": {
+          "model": 1.75666459110019,
+          "last_observation": 1.6000000000000227,
+          "seasonal_naive": 7.699999999999989
+        }
+      }
+    },
+    {
+      "month": "2021-06",
+      "origin_vintage": "2021-07-14",
+      "observed_through": "2021-05",
+      "training_months": 245,
+      "model": 138.923211979055,
+      "last_observation": 137.7,
+      "seasonal_naive": 129.5,
+      "first_release_vintage": "2021-08-11",
+      "first_release": 136.9,
+      "latest_available": 134.0,
+      "absolute_errors": {
+        "first_release": {
+          "model": 2.0232119790549916,
+          "last_observation": 0.799999999999983,
+          "seasonal_naive": 7.400000000000006
+        },
+        "latest_available": {
+          "model": 4.923211979054997,
+          "last_observation": 3.6999999999999886,
+          "seasonal_naive": 4.5
+        }
+      }
+    },
+    {
+      "month": "2021-07",
+      "origin_vintage": "2021-08-11",
+      "observed_through": "2021-06",
+      "training_months": 246,
+      "model": 139.31447369981333,
+      "last_observation": 136.9,
+      "seasonal_naive": 133.4,
+      "first_release_vintage": "2021-09-09",
+      "first_release": 134.5,
+      "latest_available": 132.9,
+      "absolute_errors": {
+        "first_release": {
+          "model": 4.814473699813334,
+          "last_observation": 2.4000000000000057,
+          "seasonal_naive": 1.0999999999999943
+        },
+        "latest_available": {
+          "model": 6.414473699813328,
+          "last_observation": 4.0,
+          "seasonal_naive": 0.5
+        }
+      }
+    },
+    {
+      "month": "2021-08",
+      "origin_vintage": "2021-09-09",
+      "observed_through": "2021-07",
+      "training_months": 247,
+      "model": 137.49066769091235,
+      "last_observation": 134.5,
+      "seasonal_naive": 132.1,
+      "first_release_vintage": "2021-10-14",
+      "first_release": 134.1,
+      "latest_available": 131.7,
+      "absolute_errors": {
+        "first_release": {
+          "model": 3.390667690912352,
+          "last_observation": 0.4000000000000057,
+          "seasonal_naive": 2.0
+        },
+        "latest_available": {
+          "model": 5.790667690912358,
+          "last_observation": 2.8000000000000114,
+          "seasonal_naive": 0.4000000000000057
+        }
+      }
+    },
+    {
+      "month": "2021-09",
+      "origin_vintage": "2021-10-14",
+      "observed_through": "2021-08",
+      "training_months": 248,
+      "model": 135.96284638212353,
+      "last_observation": 134.1,
+      "seasonal_naive": 132.5,
+      "first_release_vintage": "2021-11-10",
+      "first_release": 135.8,
+      "latest_available": 132.8,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.16284638212351865,
+          "last_observation": 1.700000000000017,
+          "seasonal_naive": 3.3000000000000114
+        },
+        "latest_available": {
+          "model": 3.1628463821235187,
+          "last_observation": 1.299999999999983,
+          "seasonal_naive": 0.30000000000001137
+        }
+      }
+    },
+    {
+      "month": "2021-10",
+      "origin_vintage": "2021-11-10",
+      "observed_through": "2021-09",
+      "training_months": 249,
+      "model": 135.59832826126024,
+      "last_observation": 135.8,
+      "seasonal_naive": 133.3,
+      "first_release_vintage": "2021-12-08",
+      "first_release": 135.7,
+      "latest_available": 134.5,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.10167173873975344,
+          "last_observation": 0.10000000000002274,
+          "seasonal_naive": 2.3999999999999773
+        },
+        "latest_available": {
+          "model": 1.0983282612602352,
+          "last_observation": 1.3000000000000114,
+          "seasonal_naive": 1.1999999999999886
+        }
+      }
+    },
+    {
+      "month": "2021-11",
+      "origin_vintage": "2021-12-08",
+      "observed_through": "2021-10",
+      "training_months": 250,
+      "model": 135.98049592915893,
+      "last_observation": 135.7,
+      "seasonal_naive": 133.1,
+      "first_release_vintage": "2022-01-12",
+      "first_release": 136.9,
+      "latest_available": 135.5,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.9195040708410716,
+          "last_observation": 1.200000000000017,
+          "seasonal_naive": 3.8000000000000114
+        },
+        "latest_available": {
+          "model": 0.48049592915893413,
+          "last_observation": 0.19999999999998863,
+          "seasonal_naive": 2.4000000000000057
+        }
+      }
+    },
+    {
+      "month": "2021-12",
+      "origin_vintage": "2022-01-12",
+      "observed_through": "2021-11",
+      "training_months": 251,
+      "model": 136.99776955293427,
+      "last_observation": 136.9,
+      "seasonal_naive": 135.0,
+      "first_release_vintage": "2022-02-09",
+      "first_release": 136.4,
+      "latest_available": 136.0,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.5977695529342668,
+          "last_observation": 0.5,
+          "seasonal_naive": 1.4000000000000057
+        },
+        "latest_available": {
+          "model": 0.9977695529342725,
+          "last_observation": 0.9000000000000057,
+          "seasonal_naive": 1.0
+        }
+      }
+    },
+    {
+      "month": "2022-01",
+      "origin_vintage": "2022-02-09",
+      "observed_through": "2021-12",
+      "training_months": 252,
+      "model": 137.1809781241373,
+      "last_observation": 136.4,
+      "seasonal_naive": 136.9,
+      "first_release_vintage": "2022-03-09",
+      "first_release": 138.9,
+      "latest_available": 137.5,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.719021875862694,
+          "last_observation": 2.5,
+          "seasonal_naive": 2.0
+        },
+        "latest_available": {
+          "model": 0.3190218758626884,
+          "last_observation": 1.0999999999999943,
+          "seasonal_naive": 0.5999999999999943
+        }
+      }
+    },
+    {
+      "month": "2022-02",
+      "origin_vintage": "2022-03-09",
+      "observed_through": "2022-01",
+      "training_months": 253,
+      "model": 139.20284855772914,
+      "last_observation": 138.9,
+      "seasonal_naive": 133.3,
+      "first_release_vintage": "2022-04-13",
+      "first_release": 138.5,
+      "latest_available": 137.4,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.7028485577291406,
+          "last_observation": 0.4000000000000057,
+          "seasonal_naive": 5.199999999999989
+        },
+        "latest_available": {
+          "model": 1.8028485577291349,
+          "last_observation": 1.5,
+          "seasonal_naive": 4.099999999999994
+        }
+      }
+    },
+    {
+      "month": "2022-03",
+      "origin_vintage": "2022-04-13",
+      "observed_through": "2022-02",
+      "training_months": 254,
+      "model": 139.36176448145838,
+      "last_observation": 138.5,
+      "seasonal_naive": 135.7,
+      "first_release_vintage": "2022-06-08",
+      "first_release": 141.0,
+      "latest_available": 139.1,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.6382355185416202,
+          "last_observation": 2.5,
+          "seasonal_naive": 5.300000000000011
+        },
+        "latest_available": {
+          "model": 0.2617644814583855,
+          "last_observation": 0.5999999999999943,
+          "seasonal_naive": 3.4000000000000057
+        }
+      }
+    },
+    {
+      "month": "2022-04",
+      "origin_vintage": "2022-06-08",
+      "observed_through": "2022-03",
+      "training_months": 255,
+      "model": 140.84632433559358,
+      "last_observation": 141.0,
+      "seasonal_naive": 137.4,
+      "first_release_vintage": "2022-07-13",
+      "first_release": 140.2,
+      "latest_available": 138.3,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.6463243355935901,
+          "last_observation": 0.8000000000000114,
+          "seasonal_naive": 2.799999999999983
+        },
+        "latest_available": {
+          "model": 2.5463243355935674,
+          "last_observation": 2.6999999999999886,
+          "seasonal_naive": 0.9000000000000057
+        }
+      }
+    },
+    {
+      "month": "2022-05",
+      "origin_vintage": "2022-07-13",
+      "observed_through": "2022-04",
+      "training_months": 256,
+      "model": 141.7708719353844,
+      "last_observation": 140.2,
+      "seasonal_naive": 136.5,
+      "first_release_vintage": "2022-08-10",
+      "first_release": 140.1,
+      "latest_available": 138.1,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.6708719353844117,
+          "last_observation": 0.09999999999999432,
+          "seasonal_naive": 3.5999999999999943
+        },
+        "latest_available": {
+          "model": 3.6708719353844117,
+          "last_observation": 2.0999999999999943,
+          "seasonal_naive": 1.5999999999999943
+        }
+      }
+    },
+    {
+      "month": "2022-06",
+      "origin_vintage": "2022-08-10",
+      "observed_through": "2022-05",
+      "training_months": 257,
+      "model": 141.71409972746576,
+      "last_observation": 140.1,
+      "seasonal_naive": 136.3,
+      "first_release_vintage": "2022-09-07",
+      "first_release": 142.4,
+      "latest_available": 138.2,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.6859002725342407,
+          "last_observation": 2.3000000000000114,
+          "seasonal_naive": 6.099999999999994
+        },
+        "latest_available": {
+          "model": 3.5140997274657764,
+          "last_observation": 1.9000000000000057,
+          "seasonal_naive": 1.8999999999999773
+        }
+      }
+    },
+    {
+      "month": "2022-07",
+      "origin_vintage": "2022-09-07",
+      "observed_through": "2022-06",
+      "training_months": 258,
+      "model": 143.26542971228685,
+      "last_observation": 142.4,
+      "seasonal_naive": 134.6,
+      "first_release_vintage": "2022-10-12",
+      "first_release": 139.6,
+      "latest_available": 137.0,
+      "absolute_errors": {
+        "first_release": {
+          "model": 3.6654297122868513,
+          "last_observation": 2.8000000000000114,
+          "seasonal_naive": 5.0
+        },
+        "latest_available": {
+          "model": 6.265429712286846,
+          "last_observation": 5.400000000000006,
+          "seasonal_naive": 2.4000000000000057
+        }
+      }
+    },
+    {
+      "month": "2022-08",
+      "origin_vintage": "2022-10-12",
+      "observed_through": "2022-07",
+      "training_months": 259,
+      "model": 141.97365302702428,
+      "last_observation": 139.6,
+      "seasonal_naive": 134.3,
+      "first_release_vintage": "2022-11-09",
+      "first_release": 141.6,
+      "latest_available": 137.7,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.3736530270242895,
+          "last_observation": 2.0,
+          "seasonal_naive": 7.299999999999983
+        },
+        "latest_available": {
+          "model": 4.273653027024295,
+          "last_observation": 1.9000000000000057,
+          "seasonal_naive": 3.3999999999999773
+        }
+      }
+    },
+    {
+      "month": "2022-09",
+      "origin_vintage": "2022-11-09",
+      "observed_through": "2022-08",
+      "training_months": 260,
+      "model": 142.89568466038418,
+      "last_observation": 141.6,
+      "seasonal_naive": 135.5,
+      "first_release_vintage": "2022-11-09",
+      "first_release": 142.0,
+      "latest_available": 138.3,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.8956846603841768,
+          "last_observation": 0.4000000000000057,
+          "seasonal_naive": 6.5
+        },
+        "latest_available": {
+          "model": 4.5956846603841655,
+          "last_observation": 3.299999999999983,
+          "seasonal_naive": 2.8000000000000114
+        }
+      }
+    },
+    {
+      "month": "2022-10",
+      "origin_vintage": "2022-11-09",
+      "observed_through": "2022-09",
+      "training_months": 261,
+      "model": 143.3157620775537,
+      "last_observation": 142.0,
+      "seasonal_naive": 136.7,
+      "first_release_vintage": "2022-12-07",
+      "first_release": 140.7,
+      "latest_available": 137.0,
+      "absolute_errors": {
+        "first_release": {
+          "model": 2.615762077553711,
+          "last_observation": 1.3000000000000114,
+          "seasonal_naive": 4.0
+        },
+        "latest_available": {
+          "model": 6.3157620775537,
+          "last_observation": 5.0,
+          "seasonal_naive": 0.30000000000001137
+        }
+      }
+    },
+    {
+      "month": "2022-11",
+      "origin_vintage": "2022-12-07",
+      "observed_through": "2022-10",
+      "training_months": 262,
+      "model": 143.3033095312033,
+      "last_observation": 140.7,
+      "seasonal_naive": 137.4,
+      "first_release_vintage": "2023-01-17",
+      "first_release": 137.8,
+      "latest_available": 134.7,
+      "absolute_errors": {
+        "first_release": {
+          "model": 5.503309531203286,
+          "last_observation": 2.8999999999999773,
+          "seasonal_naive": 0.4000000000000057
+        },
+        "latest_available": {
+          "model": 8.603309531203308,
+          "last_observation": 6.0,
+          "seasonal_naive": 2.700000000000017
+        }
+      }
+    },
+    {
+      "month": "2022-12",
+      "origin_vintage": "2023-01-17",
+      "observed_through": "2022-11",
+      "training_months": 263,
+      "model": 141.47106758966007,
+      "last_observation": 137.8,
+      "seasonal_naive": 137.8,
+      "first_release_vintage": "2023-02-08",
+      "first_release": 138.7,
+      "latest_available": 135.3,
+      "absolute_errors": {
+        "first_release": {
+          "model": 2.7710675896600776,
+          "last_observation": 0.8999999999999773,
+          "seasonal_naive": 0.8999999999999773
+        },
+        "latest_available": {
+          "model": 6.171067589660055,
+          "last_observation": 2.5,
+          "seasonal_naive": 2.5
+        }
+      }
+    },
+    {
+      "month": "2023-01",
+      "origin_vintage": "2023-02-08",
+      "observed_through": "2022-12",
+      "training_months": 264,
+      "model": 140.07290291787479,
+      "last_observation": 138.7,
+      "seasonal_naive": 139.2,
+      "first_release_vintage": "2023-03-08",
+      "first_release": 137.8,
+      "latest_available": 138.1,
+      "absolute_errors": {
+        "first_release": {
+          "model": 2.2729029178747737,
+          "last_observation": 0.8999999999999773,
+          "seasonal_naive": 1.3999999999999773
+        },
+        "latest_available": {
+          "model": 1.9729029178747908,
+          "last_observation": 0.5999999999999943,
+          "seasonal_naive": 1.0999999999999943
+        }
+      }
+    },
+    {
+      "month": "2023-02",
+      "origin_vintage": "2023-03-08",
+      "observed_through": "2023-01",
+      "training_months": 265,
+      "model": 138.4797724033377,
+      "last_observation": 137.8,
+      "seasonal_naive": 140.1,
+      "first_release_vintage": "2023-05-10",
+      "first_release": 138.7,
+      "latest_available": 139.0,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.22022759666228353,
+          "last_observation": 0.8999999999999773,
+          "seasonal_naive": 1.4000000000000057
+        },
+        "latest_available": {
+          "model": 0.5202275966622949,
+          "last_observation": 1.1999999999999886,
+          "seasonal_naive": 1.0999999999999943
+        }
+      }
+    },
+    {
+      "month": "2023-03",
+      "origin_vintage": "2023-05-10",
+      "observed_through": "2023-02",
+      "training_months": 266,
+      "model": 138.16780891536817,
+      "last_observation": 138.7,
+      "seasonal_naive": 140.6,
+      "first_release_vintage": "2023-06-07",
+      "first_release": 137.3,
+      "latest_available": 137.7,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.8678089153681583,
+          "last_observation": 1.3999999999999773,
+          "seasonal_naive": 3.299999999999983
+        },
+        "latest_available": {
+          "model": 0.46780891536818103,
+          "last_observation": 1.0,
+          "seasonal_naive": 2.9000000000000057
+        }
+      }
+    },
+    {
+      "month": "2023-04",
+      "origin_vintage": "2023-06-07",
+      "observed_through": "2023-03",
+      "training_months": 267,
+      "model": 137.7639139409178,
+      "last_observation": 137.3,
+      "seasonal_naive": 139.1,
+      "first_release_vintage": "2023-06-07",
+      "first_release": 135.6,
+      "latest_available": 137.0,
+      "absolute_errors": {
+        "first_release": {
+          "model": 2.1639139409178085,
+          "last_observation": 1.700000000000017,
+          "seasonal_naive": 3.5
+        },
+        "latest_available": {
+          "model": 0.7639139409178028,
+          "last_observation": 0.30000000000001137,
+          "seasonal_naive": 2.0999999999999943
+        }
+      }
+    },
+    {
+      "month": "2023-05",
+      "origin_vintage": "2023-06-07",
+      "observed_through": "2023-04",
+      "training_months": 268,
+      "model": 137.8125535352937,
+      "last_observation": 135.6,
+      "seasonal_naive": 139.8,
+      "first_release_vintage": "2023-07-13",
+      "first_release": 137.6,
+      "latest_available": 136.8,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.21255353529369359,
+          "last_observation": 2.0,
+          "seasonal_naive": 2.200000000000017
+        },
+        "latest_available": {
+          "model": 1.0125535352936765,
+          "last_observation": 1.200000000000017,
+          "seasonal_naive": 3.0
+        }
+      }
+    },
+    {
+      "month": "2023-06",
+      "origin_vintage": "2023-07-13",
+      "observed_through": "2023-05",
+      "training_months": 269,
+      "model": 137.19946865495274,
+      "last_observation": 137.6,
+      "seasonal_naive": 140.3,
+      "first_release_vintage": "2023-08-09",
+      "first_release": 139.0,
+      "latest_available": 137.0,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.8005313450472613,
+          "last_observation": 1.4000000000000057,
+          "seasonal_naive": 1.3000000000000114
+        },
+        "latest_available": {
+          "model": 0.1994686549527387,
+          "last_observation": 0.5999999999999943,
+          "seasonal_naive": 3.3000000000000114
+        }
+      }
+    },
+    {
+      "month": "2023-07",
+      "origin_vintage": "2023-08-09",
+      "observed_through": "2023-06",
+      "training_months": 270,
+      "model": 138.37743917339924,
+      "last_observation": 139.0,
+      "seasonal_naive": 140.0,
+      "first_release_vintage": "2023-10-12",
+      "first_release": 138.2,
+      "latest_available": 137.7,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.1774391733992502,
+          "last_observation": 0.8000000000000114,
+          "seasonal_naive": 1.8000000000000114
+        },
+        "latest_available": {
+          "model": 0.6774391733992502,
+          "last_observation": 1.3000000000000114,
+          "seasonal_naive": 2.3000000000000114
+        }
+      }
+    },
+    {
+      "month": "2023-08",
+      "origin_vintage": "2023-10-12",
+      "observed_through": "2023-07",
+      "training_months": 271,
+      "model": 137.74281222493886,
+      "last_observation": 138.2,
+      "seasonal_naive": 141.2,
+      "first_release_vintage": "2023-10-12",
+      "first_release": 138.5,
+      "latest_available": 136.9,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.7571877750611407,
+          "last_observation": 0.30000000000001137,
+          "seasonal_naive": 2.6999999999999886
+        },
+        "latest_available": {
+          "model": 0.8428122249388537,
+          "last_observation": 1.299999999999983,
+          "seasonal_naive": 4.299999999999983
+        }
+      }
+    },
+    {
+      "month": "2023-09",
+      "origin_vintage": "2023-10-12",
+      "observed_through": "2023-08",
+      "training_months": 272,
+      "model": 138.31312263494243,
+      "last_observation": 138.5,
+      "seasonal_naive": 141.0,
+      "first_release_vintage": "2023-12-06",
+      "first_release": 138.6,
+      "latest_available": 137.5,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.28687736505756334,
+          "last_observation": 0.09999999999999432,
+          "seasonal_naive": 2.4000000000000057
+        },
+        "latest_available": {
+          "model": 0.813122634942431,
+          "last_observation": 1.0,
+          "seasonal_naive": 3.5
+        }
+      }
+    },
+    {
+      "month": "2023-10",
+      "origin_vintage": "2023-12-06",
+      "observed_through": "2023-09",
+      "training_months": 273,
+      "model": 139.34785494237207,
+      "last_observation": 138.6,
+      "seasonal_naive": 140.0,
+      "first_release_vintage": "2024-01-11",
+      "first_release": 140.0,
+      "latest_available": 137.7,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.6521450576279335,
+          "last_observation": 1.4000000000000057,
+          "seasonal_naive": 0.0
+        },
+        "latest_available": {
+          "model": 1.6478549423720779,
+          "last_observation": 0.9000000000000057,
+          "seasonal_naive": 2.3000000000000114
+        }
+      }
+    },
+    {
+      "month": "2023-11",
+      "origin_vintage": "2024-01-11",
+      "observed_through": "2023-10",
+      "training_months": 274,
+      "model": 140.29942121921485,
+      "last_observation": 140.0,
+      "seasonal_naive": 137.4,
+      "first_release_vintage": "2024-01-11",
+      "first_release": 138.6,
+      "latest_available": 137.5,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.6994212192148552,
+          "last_observation": 1.4000000000000057,
+          "seasonal_naive": 1.1999999999999886
+        },
+        "latest_available": {
+          "model": 2.7994212192148495,
+          "last_observation": 2.5,
+          "seasonal_naive": 0.09999999999999432
+        }
+      }
+    },
+    {
+      "month": "2023-12",
+      "origin_vintage": "2024-01-11",
+      "observed_through": "2023-11",
+      "training_months": 275,
+      "model": 140.3888680676,
+      "last_observation": 138.6,
+      "seasonal_naive": 136.7,
+      "first_release_vintage": "2024-02-07",
+      "first_release": 139.1,
+      "latest_available": 138.6,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.2888680675999922,
+          "last_observation": 0.5,
+          "seasonal_naive": 2.4000000000000057
+        },
+        "latest_available": {
+          "model": 1.7888680675999922,
+          "last_observation": 0.0,
+          "seasonal_naive": 1.9000000000000057
+        }
+      }
+    },
+    {
+      "month": "2024-01",
+      "origin_vintage": "2024-02-07",
+      "observed_through": "2023-12",
+      "training_months": 276,
+      "model": 140.28848374900514,
+      "last_observation": 139.1,
+      "seasonal_naive": 136.6,
+      "first_release_vintage": "2024-04-10",
+      "first_release": 134.0,
+      "latest_available": 135.2,
+      "absolute_errors": {
+        "first_release": {
+          "model": 6.288483749005138,
+          "last_observation": 5.099999999999994,
+          "seasonal_naive": 2.5999999999999943
+        },
+        "latest_available": {
+          "model": 5.0884837490051495,
+          "last_observation": 3.9000000000000057,
+          "seasonal_naive": 1.4000000000000057
+        }
+      }
+    },
+    {
+      "month": "2024-02",
+      "origin_vintage": "2024-04-10",
+      "observed_through": "2024-01",
+      "training_months": 277,
+      "model": 137.08819951368596,
+      "last_observation": 134.0,
+      "seasonal_naive": 139.6,
+      "first_release_vintage": "2024-04-10",
+      "first_release": 138.1,
+      "latest_available": 136.7,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.01180048631403,
+          "last_observation": 4.099999999999994,
+          "seasonal_naive": 1.5
+        },
+        "latest_available": {
+          "model": 0.3881995136859757,
+          "last_observation": 2.6999999999999886,
+          "seasonal_naive": 2.9000000000000057
+        }
+      }
+    },
+    {
+      "month": "2024-03",
+      "origin_vintage": "2024-04-10",
+      "observed_through": "2024-02",
+      "training_months": 278,
+      "model": 137.44958210402615,
+      "last_observation": 138.1,
+      "seasonal_naive": 137.5,
+      "first_release_vintage": "2024-06-12",
+      "first_release": 136.2,
+      "latest_available": 136.7,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.2495821040261603,
+          "last_observation": 1.9000000000000057,
+          "seasonal_naive": 1.3000000000000114
+        },
+        "latest_available": {
+          "model": 0.7495821040261603,
+          "last_observation": 1.4000000000000057,
+          "seasonal_naive": 0.8000000000000114
+        }
+      }
+    },
+    {
+      "month": "2024-04",
+      "origin_vintage": "2024-06-12",
+      "observed_through": "2024-03",
+      "training_months": 279,
+      "model": 136.07444144268837,
+      "last_observation": 136.2,
+      "seasonal_naive": 136.4,
+      "first_release_vintage": "2024-07-11",
+      "first_release": 135.5,
+      "latest_available": 135.2,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.5744414426883679,
+          "last_observation": 0.6999999999999886,
+          "seasonal_naive": 0.9000000000000057
+        },
+        "latest_available": {
+          "model": 0.8744414426883793,
+          "last_observation": 1.0,
+          "seasonal_naive": 1.200000000000017
+        }
+      }
+    },
+    {
+      "month": "2024-05",
+      "origin_vintage": "2024-07-11",
+      "observed_through": "2024-04",
+      "training_months": 280,
+      "model": 137.24395889381466,
+      "last_observation": 135.5,
+      "seasonal_naive": 137.5,
+      "first_release_vintage": "2024-07-11",
+      "first_release": 137.8,
+      "latest_available": 138.6,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.5560411061853472,
+          "last_observation": 2.3000000000000114,
+          "seasonal_naive": 0.30000000000001137
+        },
+        "latest_available": {
+          "model": 1.3560411061853301,
+          "last_observation": 3.0999999999999943,
+          "seasonal_naive": 1.0999999999999943
+        }
+      }
+    },
+    {
+      "month": "2024-06",
+      "origin_vintage": "2024-07-11",
+      "observed_through": "2024-05",
+      "training_months": 281,
+      "model": 137.32093030530518,
+      "last_observation": 137.8,
+      "seasonal_naive": 137.7,
+      "first_release_vintage": "2024-08-08",
+      "first_release": 138.6,
+      "latest_available": 137.9,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.2790696946948117,
+          "last_observation": 0.799999999999983,
+          "seasonal_naive": 0.9000000000000057
+        },
+        "latest_available": {
+          "model": 0.5790696946948231,
+          "last_observation": 0.09999999999999432,
+          "seasonal_naive": 0.20000000000001705
+        }
+      }
+    },
+    {
+      "month": "2024-07",
+      "origin_vintage": "2024-08-08",
+      "observed_through": "2024-06",
+      "training_months": 282,
+      "model": 139.04396433491993,
+      "last_observation": 138.6,
+      "seasonal_naive": 139.0,
+      "first_release_vintage": "2024-09-12",
+      "first_release": 139.0,
+      "latest_available": 137.4,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.043964334919934345,
+          "last_observation": 0.4000000000000057,
+          "seasonal_naive": 0.0
+        },
+        "latest_available": {
+          "model": 1.6439643349199287,
+          "last_observation": 1.1999999999999886,
+          "seasonal_naive": 1.5999999999999943
+        }
+      }
+    },
+    {
+      "month": "2024-08",
+      "origin_vintage": "2024-09-12",
+      "observed_through": "2024-07",
+      "training_months": 283,
+      "model": 140.41597204678592,
+      "last_observation": 139.0,
+      "seasonal_naive": 139.8,
+      "first_release_vintage": "2024-10-30",
+      "first_release": 139.9,
+      "latest_available": 138.5,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.5159720467859188,
+          "last_observation": 0.9000000000000057,
+          "seasonal_naive": 0.09999999999999432
+        },
+        "latest_available": {
+          "model": 1.9159720467859245,
+          "last_observation": 0.5,
+          "seasonal_naive": 1.3000000000000114
+        }
+      }
+    },
+    {
+      "month": "2024-09",
+      "origin_vintage": "2024-10-30",
+      "observed_through": "2024-08",
+      "training_months": 284,
+      "model": 139.95782018752388,
+      "last_observation": 139.9,
+      "seasonal_naive": 138.6,
+      "first_release_vintage": "2024-12-11",
+      "first_release": 139.0,
+      "latest_available": 137.3,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.957820187523879,
+          "last_observation": 0.9000000000000057,
+          "seasonal_naive": 0.4000000000000057
+        },
+        "latest_available": {
+          "model": 2.6578201875238676,
+          "last_observation": 2.5999999999999943,
+          "seasonal_naive": 1.299999999999983
+        }
+      }
+    },
+    {
+      "month": "2024-10",
+      "origin_vintage": "2024-12-11",
+      "observed_through": "2024-09",
+      "training_months": 285,
+      "model": 140.61380712789767,
+      "last_observation": 139.0,
+      "seasonal_naive": 138.4,
+      "first_release_vintage": "2024-12-11",
+      "first_release": 139.3,
+      "latest_available": 138.3,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.313807127897661,
+          "last_observation": 0.30000000000001137,
+          "seasonal_naive": 0.9000000000000057
+        },
+        "latest_available": {
+          "model": 2.313807127897661,
+          "last_observation": 0.6999999999999886,
+          "seasonal_naive": 0.09999999999999432
+        }
+      }
+    },
+    {
+      "month": "2024-11",
+      "origin_vintage": "2024-12-11",
+      "observed_through": "2024-10",
+      "training_months": 286,
+      "model": 140.8591776705346,
+      "last_observation": 139.3,
+      "seasonal_naive": 137.7,
+      "first_release_vintage": "2025-01-17",
+      "first_release": 138.6,
+      "latest_available": 137.2,
+      "absolute_errors": {
+        "first_release": {
+          "model": 2.259177670534598,
+          "last_observation": 0.700000000000017,
+          "seasonal_naive": 0.9000000000000057
+        },
+        "latest_available": {
+          "model": 3.6591776705346035,
+          "last_observation": 2.1000000000000227,
+          "seasonal_naive": 0.5
+        }
+      }
+    },
+    {
+      "month": "2024-12",
+      "origin_vintage": "2025-01-17",
+      "observed_through": "2024-11",
+      "training_months": 287,
+      "model": 139.87834050090166,
+      "last_observation": 138.6,
+      "seasonal_naive": 138.6,
+      "first_release_vintage": "2025-02-12",
+      "first_release": 137.3,
+      "latest_available": 137.4,
+      "absolute_errors": {
+        "first_release": {
+          "model": 2.5783405009016462,
+          "last_observation": 1.299999999999983,
+          "seasonal_naive": 1.299999999999983
+        },
+        "latest_available": {
+          "model": 2.478340500901652,
+          "last_observation": 1.1999999999999886,
+          "seasonal_naive": 1.1999999999999886
+        }
+      }
+    },
+    {
+      "month": "2025-01",
+      "origin_vintage": "2025-02-12",
+      "observed_through": "2024-12",
+      "training_months": 288,
+      "model": 139.17301091820332,
+      "last_observation": 137.3,
+      "seasonal_naive": 134.2,
+      "first_release_vintage": "2025-03-12",
+      "first_release": 137.1,
+      "latest_available": 137.8,
+      "absolute_errors": {
+        "first_release": {
+          "model": 2.073010918203323,
+          "last_observation": 0.20000000000001705,
+          "seasonal_naive": 2.9000000000000057
+        },
+        "latest_available": {
+          "model": 1.3730109182033061,
+          "last_observation": 0.5,
+          "seasonal_naive": 3.6000000000000227
+        }
+      }
+    },
+    {
+      "month": "2025-02",
+      "origin_vintage": "2025-03-12",
+      "observed_through": "2025-01",
+      "training_months": 289,
+      "model": 138.42793448321083,
+      "last_observation": 137.1,
+      "seasonal_naive": 138.0,
+      "first_release_vintage": "2025-04-10",
+      "first_release": 137.9,
+      "latest_available": 136.8,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.5279344832108279,
+          "last_observation": 0.8000000000000114,
+          "seasonal_naive": 0.09999999999999432
+        },
+        "latest_available": {
+          "model": 1.6279344832108222,
+          "last_observation": 0.29999999999998295,
+          "seasonal_naive": 1.1999999999999886
+        }
+      }
+    },
+    {
+      "month": "2025-03",
+      "origin_vintage": "2025-04-10",
+      "observed_through": "2025-02",
+      "training_months": 290,
+      "model": 138.2970986081186,
+      "last_observation": 137.9,
+      "seasonal_naive": 136.6,
+      "first_release_vintage": "2025-05-15",
+      "first_release": 137.0,
+      "latest_available": 137.7,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.2970986081186027,
+          "last_observation": 0.9000000000000057,
+          "seasonal_naive": 0.4000000000000057
+        },
+        "latest_available": {
+          "model": 0.597098608118614,
+          "last_observation": 0.20000000000001705,
+          "seasonal_naive": 1.0999999999999943
+        }
+      }
+    },
+    {
+      "month": "2025-04",
+      "origin_vintage": "2025-05-15",
+      "observed_through": "2025-03",
+      "training_months": 291,
+      "model": 138.02297563276105,
+      "last_observation": 137.0,
+      "seasonal_naive": 134.7,
+      "first_release_vintage": "2025-06-11",
+      "first_release": 136.3,
+      "latest_available": 137.4,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.7229756327610346,
+          "last_observation": 0.6999999999999886,
+          "seasonal_naive": 1.6000000000000227
+        },
+        "latest_available": {
+          "model": 0.6229756327610403,
+          "last_observation": 0.4000000000000057,
+          "seasonal_naive": 2.700000000000017
+        }
+      }
+    },
+    {
+      "month": "2025-05",
+      "origin_vintage": "2025-06-11",
+      "observed_through": "2025-04",
+      "training_months": 292,
+      "model": 137.74683647467822,
+      "last_observation": 136.3,
+      "seasonal_naive": 138.2,
+      "first_release_vintage": "2025-07-10",
+      "first_release": 137.0,
+      "latest_available": 137.0,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.7468364746782186,
+          "last_observation": 0.6999999999999886,
+          "seasonal_naive": 1.1999999999999886
+        },
+        "latest_available": {
+          "model": 0.7468364746782186,
+          "last_observation": 0.6999999999999886,
+          "seasonal_naive": 1.1999999999999886
+        }
+      }
+    },
+    {
+      "month": "2025-06",
+      "origin_vintage": "2025-07-10",
+      "observed_through": "2025-05",
+      "training_months": 293,
+      "model": 137.8243775822212,
+      "last_observation": 137.0,
+      "seasonal_naive": 137.7,
+      "first_release_vintage": "2025-09-10",
+      "first_release": 136.3,
+      "latest_available": 136.9,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.5243775822211774,
+          "last_observation": 0.6999999999999886,
+          "seasonal_naive": 1.3999999999999773
+        },
+        "latest_available": {
+          "model": 0.924377582221183,
+          "last_observation": 0.09999999999999432,
+          "seasonal_naive": 0.799999999999983
+        }
+      }
+    },
+    {
+      "month": "2025-07",
+      "origin_vintage": "2025-09-10",
+      "observed_through": "2025-06",
+      "training_months": 294,
+      "model": 138.26662860863388,
+      "last_observation": 136.3,
+      "seasonal_naive": 137.6,
+      "first_release_vintage": "2025-09-10",
+      "first_release": 137.4,
+      "latest_available": 138.6,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.8666286086338744,
+          "last_observation": 1.0999999999999943,
+          "seasonal_naive": 0.19999999999998863
+        },
+        "latest_available": {
+          "model": 0.33337139136611427,
+          "last_observation": 2.299999999999983,
+          "seasonal_naive": 1.0
+        }
+      }
+    },
+    {
+      "month": "2025-08",
+      "origin_vintage": "2025-09-10",
+      "observed_through": "2025-07",
+      "training_months": 295,
+      "model": 137.63596233715532,
+      "last_observation": 137.4,
+      "seasonal_naive": 139.1,
+      "first_release_vintage": "2025-10-15",
+      "first_release": 138.9,
+      "latest_available": 138.5,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.2640376628446859,
+          "last_observation": 1.5,
+          "seasonal_naive": 0.19999999999998863
+        },
+        "latest_available": {
+          "model": 0.8640376628446802,
+          "last_observation": 1.0999999999999943,
+          "seasonal_naive": 0.5999999999999943
+        }
+      }
+    },
+    {
+      "month": "2025-09",
+      "origin_vintage": "2025-10-15",
+      "observed_through": "2025-08",
+      "training_months": 296,
+      "model": 139.3340155609587,
+      "last_observation": 138.9,
+      "seasonal_naive": 137.8,
+      "first_release_vintage": "2025-11-13",
+      "first_release": 136.2,
+      "latest_available": 138.1,
+      "absolute_errors": {
+        "first_release": {
+          "model": 3.1340155609587157,
+          "last_observation": 2.700000000000017,
+          "seasonal_naive": 1.6000000000000227
+        },
+        "latest_available": {
+          "model": 1.23401556095871,
+          "last_observation": 0.8000000000000114,
+          "seasonal_naive": 0.29999999999998295
+        }
+      }
+    },
+    {
+      "month": "2025-10",
+      "origin_vintage": "2025-11-13",
+      "observed_through": "2025-09",
+      "training_months": 297,
+      "model": 139.1216024181015,
+      "last_observation": 136.2,
+      "seasonal_naive": 138.2,
+      "first_release_vintage": "2025-12-10",
+      "first_release": 136.7,
+      "latest_available": 136.8,
+      "absolute_errors": {
+        "first_release": {
+          "model": 2.4216024181015143,
+          "last_observation": 0.5,
+          "seasonal_naive": 1.5
+        },
+        "latest_available": {
+          "model": 2.3216024181014916,
+          "last_observation": 0.6000000000000227,
+          "seasonal_naive": 1.3999999999999773
+        }
+      }
+    },
+    {
+      "month": "2025-11",
+      "origin_vintage": "2025-12-10",
+      "observed_through": "2025-10",
+      "training_months": 298,
+      "model": 139.15088601684752,
+      "last_observation": 136.7,
+      "seasonal_naive": 136.9,
+      "first_release_vintage": "2026-02-02",
+      "first_release": 138.5,
+      "latest_available": 137.3,
+      "absolute_errors": {
+        "first_release": {
+          "model": 0.6508860168475223,
+          "last_observation": 1.8000000000000114,
+          "seasonal_naive": 1.5999999999999943
+        },
+        "latest_available": {
+          "model": 1.850886016847511,
+          "last_observation": 0.6000000000000227,
+          "seasonal_naive": 0.4000000000000057
+        }
+      }
+    },
+    {
+      "month": "2025-12",
+      "origin_vintage": "2026-02-02",
+      "observed_through": "2025-11",
+      "training_months": 299,
+      "model": 139.00494669981902,
+      "last_observation": 138.5,
+      "seasonal_naive": 137.2,
+      "first_release_vintage": "2026-03-02",
+      "first_release": 137.8,
+      "latest_available": 137.0,
+      "absolute_errors": {
+        "first_release": {
+          "model": 1.2049466998190042,
+          "last_observation": 0.6999999999999886,
+          "seasonal_naive": 0.6000000000000227
+        },
+        "latest_available": {
+          "model": 2.0049466998190155,
+          "last_observation": 1.5,
+          "seasonal_naive": 0.19999999999998863
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "ALFRED vintage dates are when FRED took the data in. They trail the BTS release by days or weeks, so a replay keyed on them is slightly kinder to the forecaster than the real wait. The report says so.",
+    "ALFRED vintages for this series begin in October 2014, so the development years of the earlier study cannot be replayed.",
+    "One observation step is not a publication date simulation. Each target is already underway when its origin vintage appears.",
+    "72 dependent months on one national index and seven component series are not a general result. No significance tests and no winner selected after outcomes.",
+    "The study does not change the serving model, its features or its gate."
+  ],
+  "provenance": {
+    "vintage_manifest": {
+      "schema_version": 1,
+      "series": "TSIFRGHT",
+      "source": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=TSIFRGHT&vintage_date=VINTAGE_DATE",
+      "vintage_list_source": "https://alfred.stlouisfed.org/series/downloaddata?seid=TSIFRGHT",
+      "retrieved_utc": "2026-11-16T00:31:20+00:00",
+      "vintage_dates": 136,
+      "first_vintage": "2014-10-08",
+      "last_vintage": "2026-11-01",
+      "rows": 33428,
+      "raw_responses_sha256": "65140a62aa1a9ac11861ba4662d5d911a8cfd00e8eac2161bc9ac93812147d49",
+      "table_sha256": "ed5fcfc7afd9a47ec9d4f86d68296acddff51e787789e618ba9f58460df97069",
+      "account_or_key_used": false,
+      "note": "ALFRED vintage dates are when FRED took the data in. They trail the BTS release."
+    },
+    "protocol_sha256": "371f1b21144a22469d7df2b60f9ac60ea5846c4a5524c556ea74e92d796a1f15",
+    "protocol_hash_line_endings": "LF"
+  }
+}
