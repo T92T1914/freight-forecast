@@ -142,6 +142,17 @@ or download all 648 issued intervals from that report. This is a retrospective
 comparison on already inspected outcomes, without a new model fit, untouched
 test claim or operational coverage guarantee. The API still serves point forecasts.
 
+The [real time replay](docs/real-time-evaluation.md) repeats that BTS study on
+the values each origin could have seen, from the retained ALFRED vintages of the
+index. Against first releases the monthly refit model scores 1.878 MAE, against
+1.551 for last observation and 3.138 for the same month last year. Against the
+latest values the three score 2.494, 1.850 and 2.828. Last observation wins both
+times, as it did before. The [same test on seven component series](docs/real-time-components.md)
+has the model ahead of last observation on one series of seven and ahead of the
+same month last year on all seven, against first releases. ALFRED vintage dates
+trail the BTS release, so the replay is slightly kinder than the real wait. The
+estimator did not change and nothing was tuned.
+
 Using the same month last year gives this synthetic experiment a simple baseline.
 The comparison asks whether the learned model adds value on the declared series.
 The separate BTS study also includes last observation, which beat the learned
