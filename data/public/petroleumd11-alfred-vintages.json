@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "series": "PETROLEUMD11",
+  "source": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=PETROLEUMD11&vintage_date=VINTAGE_DATE",
+  "vintage_list_source": "https://alfred.stlouisfed.org/series/downloaddata?seid=PETROLEUMD11",
+  "retrieved_utc": "2026-11-16T00:44:16+00:00",
+  "vintage_dates": 130,
+  "first_vintage": "2015-03-12",
+  "last_vintage": "2026-11-01",
+  "rows": 32212,
+  "raw_responses_sha256": "d43a81a0d57cae8278d58adfef76b414d7823e163df27945cdf14f767d927836",
+  "table_sha256": "abafda33c43bec095b1fe00bf254e049489f4d99f9fe7ffa0cf555b8cea44bb9",
+  "account_or_key_used": false,
+  "note": "ALFRED vintage dates are when FRED took the data in. They trail the BTS release."
+}
