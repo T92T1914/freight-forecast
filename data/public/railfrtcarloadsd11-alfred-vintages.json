@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "series": "RAILFRTCARLOADSD11",
+  "source": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=RAILFRTCARLOADSD11&vintage_date=VINTAGE_DATE",
+  "vintage_list_source": "https://alfred.stlouisfed.org/series/downloaddata?seid=RAILFRTCARLOADSD11",
+  "retrieved_utc": "2026-11-16T00:51:39+00:00",
+  "vintage_dates": 129,
+  "first_vintage": "2015-03-12",
+  "last_vintage": "2026-11-01",
+  "rows": 32032,
+  "raw_responses_sha256": "79ac48050c3ac01a20c00f5bf15cdf48b53bb54394fcd4736ed6739251fcc3ac",
+  "table_sha256": "32ccf225be018cdb7edc3474dc561e459158164475c15b1640536fc149d5f795",
+  "account_or_key_used": false,
+  "note": "ALFRED vintage dates are when FRED took the data in. They trail the BTS release."
+}

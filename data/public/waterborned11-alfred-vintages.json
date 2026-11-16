@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "series": "WATERBORNED11",
+  "source": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WATERBORNED11&vintage_date=VINTAGE_DATE",
+  "vintage_list_source": "https://alfred.stlouisfed.org/series/downloaddata?seid=WATERBORNED11",
+  "retrieved_utc": "2026-11-16T00:41:47+00:00",
+  "vintage_dates": 130,
+  "first_vintage": "2015-03-12",
+  "last_vintage": "2026-11-01",
+  "rows": 32339,
+  "raw_responses_sha256": "66852ec9078a60d58cd6a9a0f9cdcd7de352504bc6f1f3e49bfc55dc38360ebe",
+  "table_sha256": "ba34e089353d027570879524b4acbb688f2b42038fa3eb79675fb6bce7e505bf",
+  "account_or_key_used": false,
+  "note": "ALFRED vintage dates are when FRED took the data in. They trail the BTS release."
+}

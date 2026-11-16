@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "evaluation_kind": "real_time_component_series_one_observation_step",
+  "protocol_id": "bts-freight-tsi-real-time-v1",
+  "protocol_sha256": "371f1b21144a22469d7df2b60f9ac60ea5846c4a5524c556ea74e92d796a1f15",
+  "series": {
+    "TRUCKD11": {
+      "months": 72,
+      "first_vintage": "2015-03-12",
+      "latest_vintage": "2026-11-01",
+      "table_sha256": "ed1d50932df44f89650b265d1a1cda9477c30520c74b27d51e294dfadf63267b",
+      "retrieved_utc": "2026-11-16T00:49:08+00:00",
+      "first_release": {
+        "model_mae": 2.092251570228429,
+        "last_observation_mae": 1.8916666666666673,
+        "seasonal_naive_mae": 2.9652777777777777,
+        "scaled_vs_last_observation": 1.1060360723674512,
+        "scaled_vs_seasonal_naive": 0.705583667711695
+      },
+      "latest_available": {
+        "model_mae": 1.8606022732839145,
+        "last_observation_mae": 1.5638888888888893,
+        "seasonal_naive_mae": 2.7513888888888887,
+        "scaled_vs_last_observation": 1.1897279189737282,
+        "scaled_vs_seasonal_naive": 0.67624110891692
+      }
+    },
+    "RAILFRTCARLOADSD11": {
+      "months": 72,
+      "first_vintage": "2015-03-12",
+      "latest_vintage": "2026-11-01",
+      "table_sha256": "32ccf225be018cdb7edc3474dc561e459158164475c15b1640536fc149d5f795",
+      "retrieved_utc": "2026-11-16T00:51:39+00:00",
+      "first_release": {
+        "model_mae": 24266.30462292906,
+        "last_observation_mae": 21509.958333333332,
+        "seasonal_naive_mae": 53831.416666666664,
+        "scaled_vs_last_observation": 1.1281428000408675,
+        "scaled_vs_seasonal_naive": 0.450783318098243
+      },
+      "latest_available": {
+        "model_mae": 35617.57005152,
+        "last_observation_mae": 29226.972222222223,
+        "seasonal_naive_mae": 60347.48611111111,
+        "scaled_vs_last_observation": 1.2186541178712587,
+        "scaled_vs_seasonal_naive": 0.5902080160545765
+      }
+    },
+    "RAILFRTINTERMODALD11": {
+      "months": 72,
+      "first_vintage": "2015-03-12",
+      "latest_vintage": "2026-11-01",
+      "table_sha256": "2c8d6e90546b30de664ab86e371938aaf0655c6efd724c60dd2ad038284edcb1",
+      "retrieved_utc": "2026-11-16T00:54:24+00:00",
+      "first_release": {
+        "model_mae": 42569.486760345404,
+        "last_observation_mae": 30341.208333333332,
+        "seasonal_naive_mae": 88162.0,
+        "scaled_vs_last_observation": 1.4030254264322721,
+        "scaled_vs_seasonal_naive": 0.48285527506573583
+      },
+      "latest_available": {
+        "model_mae": 42731.81466669726,
+        "last_observation_mae": 33168.125,
+        "seasonal_naive_mae": 89108.69444444444,
+        "scaled_vs_last_observation": 1.2883397740058342,
+        "scaled_vs_seasonal_naive": 0.4795470849742813
+      }
+    },
+    "WATERBORNED11": {
+      "months": 72,
+      "first_vintage": "2015-03-12",
+      "latest_vintage": "2026-11-01",
+      "table_sha256": "ba34e089353d027570879524b4acbb688f2b42038fa3eb79675fb6bce7e505bf",
+      "retrieved_utc": "2026-11-16T00:41:47+00:00",
+      "first_release": {
+        "model_mae": 1.7008223107696745,
+        "last_observation_mae": 1.5888888888888881,
+        "seasonal_naive_mae": 2.8819444444444446,
+        "scaled_vs_last_observation": 1.0704476081767187,
+        "scaled_vs_seasonal_naive": 0.5901648500020075
+      },
+      "latest_available": {
+        "model_mae": 5.35547978201318,
+        "last_observation_mae": 5.519444444444444,
+        "seasonal_naive_mae": 4.934722222222222,
+        "scaled_vs_last_observation": 0.9702932669978587,
+        "scaled_vs_seasonal_naive": 1.0852646898535012
+      }
+    },
+    "AIRRTMFMD11": {
+      "months": 72,
+      "first_vintage": "2015-03-12",
+      "latest_vintage": "2026-11-01",
+      "table_sha256": "ea3ec356e2ee5670b834da1f2b155167b735667fc2cabe78b13445f37ad0267a",
+      "retrieved_utc": "2026-11-16T00:39:21+00:00",
+      "first_release": {
+        "model_mae": 163810.8609105969,
+        "last_observation_mae": 126291.125,
+        "seasonal_naive_mae": 265925.6111111111,
+        "scaled_vs_last_observation": 1.297089252396769,
+        "scaled_vs_seasonal_naive": 0.6160025739008349
+      },
+      "latest_available": {
+        "model_mae": 158578.30462174898,
+        "last_observation_mae": 116115.40277777778,
+        "seasonal_naive_mae": 255309.0,
+        "scaled_vs_last_observation": 1.365695685741511,
+        "scaled_vs_seasonal_naive": 0.6211230494097308
+      }
+    },
+    "PETROLEUMD11": {
+      "months": 72,
+      "first_vintage": "2015-03-12",
+      "latest_vintage": "2026-11-01",
+      "table_sha256": "abafda33c43bec095b1fe00bf254e049489f4d99f9fe7ffa0cf555b8cea44bb9",
+      "retrieved_utc": "2026-11-16T00:44:16+00:00",
+      "first_release": {
+        "model_mae": 10920.457314679941,
+        "last_observation_mae": 7311.444444444444,
+        "seasonal_naive_mae": 21532.125,
+        "scaled_vs_last_observation": 1.493611474129135,
+        "scaled_vs_seasonal_naive": 0.5071704401994667
+      },
+      "latest_available": {
+        "model_mae": 11163.159616876359,
+        "last_observation_mae": 7577.75,
+        "seasonal_naive_mae": 21477.625,
+        "scaled_vs_last_observation": 1.4731496310747068,
+        "scaled_vs_seasonal_naive": 0.519757636930357
+      }
+    },
+    "NATURALGASD11": {
+      "months": 72,
+      "first_vintage": "2015-03-12",
+      "latest_vintage": "2026-11-01",
+      "table_sha256": "e484c98b062b384ddc006b5b90cc17f71e16c6ab3d99588b97dde9cea162fec4",
+      "retrieved_utc": "2026-11-16T00:46:43+00:00",
+      "first_release": {
+        "model_mae": 77.83045091295243,
+        "last_observation_mae": 89.41527777777775,
+        "seasonal_naive_mae": 96.30833333333334,
+        "scaled_vs_last_observation": 0.8704379480471236,
+        "scaled_vs_seasonal_naive": 0.8081382806571161
+      },
+      "latest_available": {
+        "model_mae": 71.38748774346541,
+        "last_observation_mae": 92.38055555555555,
+        "seasonal_naive_mae": 88.28750000000004,
+        "scaled_vs_last_observation": 0.7727544753780423,
+        "scaled_vs_seasonal_naive": 0.8085797847199817
+      }
+    }
+  },
+  "across_series": {
+    "first_release": {
+      "scaled_vs_last_observation": {
+        "mean": 1.1955415116557624,
+        "median": 1.1281428000408675,
+        "series_where_model_wins": 1,
+        "series": 7
+      },
+      "scaled_vs_seasonal_naive": {
+        "mean": 0.5943854865192999,
+        "median": 0.5901648500020075,
+        "series_where_model_wins": 7,
+        "series": 7
+      }
+    },
+    "latest_available": {
+      "scaled_vs_last_observation": {
+        "mean": 1.1826592671489915,
+        "median": 1.2186541178712587,
+        "series_where_model_wins": 2,
+        "series": 7
+      },
+      "scaled_vs_seasonal_naive": {
+        "mean": 0.6829601958370498,
+        "median": 0.6211230494097308,
+        "series_where_model_wins": 6,
+        "series": 7
+      }
+    }
+  }
+}

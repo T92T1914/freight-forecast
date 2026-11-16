@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "series": "NATURALGASD11",
+  "source": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=NATURALGASD11&vintage_date=VINTAGE_DATE",
+  "vintage_list_source": "https://alfred.stlouisfed.org/series/downloaddata?seid=NATURALGASD11",
+  "retrieved_utc": "2026-11-16T00:46:43+00:00",
+  "vintage_dates": 130,
+  "first_vintage": "2015-03-12",
+  "last_vintage": "2026-11-01",
+  "rows": 32343,
+  "raw_responses_sha256": "8a660b35c1a9a3e0eb207d7954287e261bae1c31770f3e55aeaa879edfe6cacd",
+  "table_sha256": "e484c98b062b384ddc006b5b90cc17f71e16c6ab3d99588b97dde9cea162fec4",
+  "account_or_key_used": false,
+  "note": "ALFRED vintage dates are when FRED took the data in. They trail the BTS release."
+}

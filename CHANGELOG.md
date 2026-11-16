@@ -6,6 +6,18 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-16, the real time test on seven component series
+
+* `docs/real-time-components.md` runs the same protocol on the seven component
+  series of the index and reports the scaled error against last observation and
+  the same month last year, with the mean and median across series. The model
+  beats last observation on one series of seven and the same month last year on
+  all seven, against first releases.
+* Values are committed for air freight, waterway tonnage, pipeline petroleum and
+  natural gas. Truck tonnage and the two rail series keep only a manifest with
+  its hash, because their sources are private bodies. A test recomputes the
+  saved result for the four committed series.
+
 ### 2026-11-16, the BTS study on real time vintages
 
 * `docs/real-time-evaluation.md` replays the existing model, last observation
