@@ -6,6 +6,16 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-16, retained vintages of the freight index
+
+* `data/public/tsifrght-alfred-vintages.csv` holds every ALFRED vintage of
+  `TSIFRGHT` from October 8, 2014 to November 1, 2026, with its manifest and
+  hashes. `tools/fetch_alfred_vintages.py` fetched it once by hand with no
+  account and no key. ALFRED vintage dates trail the BTS release.
+* `src/vintages.py` returns the history an origin could have seen, and a test
+  fails if any of the 72 origins reads a later vintage or a month from its
+  target on. No error on this data has been computed yet.
+
 ### 2026-11-16, real time protocol
 
 * `docs/real-time-protocol.json` declares the real time replay of the BTS study
