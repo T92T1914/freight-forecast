@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "id": "bts-freight-tsi-real-time-v1",
+  "declared_utc": "2026-11-16T00:20:00Z",
+  "question": "Does the monthly refit Ridge model still lose to last observation when each origin sees only the values that had been published at that origin?",
+  "series": "TSIFRGHT",
+  "series_description": "BTS Freight Transportation Services Index, seasonally adjusted, 2000 average equal to 100, as carried by ALFRED.",
+  "vintage_source": {
+    "primary": "ALFRED download form for TSIFRGHT, initial releases and observations by real time period, fetched once by a script run by hand with no account and no key.",
+    "fallback": "The monthly BTS Freight TSI releases, read by hand and transcribed with the release URL for each value.",
+    "if_an_account_or_key_is_needed": "Stop that step, write it up for my desk and go on with the component series and the ledger score. Create no account and no key.",
+    "retention": "Commit the vintage table with its source, retrieval date and SHA256. A retrieval script stays with it."
+  },
+  "origins": {
+    "first_target": "2020-01",
+    "last_target": "2025-12",
+    "count": 72,
+    "rule": "The origin for target month m is the first vintage that contains month m minus 1. It holds every month through m minus 1 as published on that vintage date. No later vintage is read."
+  },
+  "forecasters": [
+    "monthly_refit_ridge",
+    "last_observation",
+    "seasonal_naive"
+  ],
+  "forecaster_rules": {
+    "monthly_refit_ridge": "The existing StandardScaler and Ridge(alpha=1.0) estimator with a log target and the existing features, refit at every origin on the history of that origin's vintage only. The estimator, its features and the build gate do not change.",
+    "last_observation": "The value of month m minus 1 on the origin's vintage.",
+    "seasonal_naive": "The value of month m minus 12 on the origin's vintage."
+  },
+  "nothing_is_tuned": "No hyperparameter, feature, window or policy is selected on any result of this study. The only policy is monthly refit, as it won on development in the earlier study, which is disclosed here as prior knowledge.",
+  "outcome_policies": [
+    "first_release",
+    "latest_available"
+  ],
+  "outcome_rules": {
+    "first_release": "The value of the target month on the first vintage that contains it.",
+    "latest_available": "The value of the target month on the latest vintage retrieved, with its retrieval date recorded."
+  },
+  "metrics": [
+    "mae",
+    "rmse",
+    "mape",
+    "paired absolute errors",
+    "each calendar year"
+  ],
+  "leak_rule": "A test fails if any origin reads a value from a vintage dated after that origin. The test also fails when one later value is planted.",
+  "comparison": "The report sets the result beside docs/real-data-evaluation.md, which uses one latest vintage. Every loss stays on record.",
+  "component_series": {
+    "ids": [
+      "TRUCKD11",
+      "RAILFRTCARLOADSD11",
+      "RAILFRTINTERMODALD11",
+      "WATERBORNED11",
+      "AIRRTMFMD11",
+      "PETROLEUMD11",
+      "NATURALGASD11"
+    ],
+    "design": "Rolling origins over 2020-01 through 2025-12 on the same three forecasters, nothing tuned.",
+    "scaled_error": "Mean absolute error of the model divided by the mean absolute error of each naive baseline on the same origins, for the last observation and for the same month last year.",
+    "aggregates": [
+      "mean across series",
+      "median across series"
+    ],
+    "rights_rule": "Commit values only for a series whose source page settles the rights. Keep a retrieval script and hashes for the rest. The Cass index stays out.",
+    "vintage_rule": "A component series uses real time vintages only where ALFRED holds them. Where it does not, the report says it uses latest values and labels that series as a latest vintage result."
+  },
+  "ledger_score": {
+    "record": "The September 2026 record issued October 14, 2026.",
+    "rule": "Scored by the ledger's own rule against the first release of the target month, published strictly after issuance, with a receipt for the publication. Reported as one scored forecast and nothing more.",
+    "not_scored": "The November 2026 record stays unobserved until its first release. No new record is issued."
+  },
+  "data_access_disclosure": "As of this declaration no vintage was fetched and no error on real time data was computed. Test years 2020 to 2025 were already inspected on the latest vintage in the earlier study. The research notes read three BTS first values for 2026 and no value inside the test years.",
+  "limits": [
+    "ALFRED vintage dates are when FRED took the data in. They trail the BTS release by days or weeks, so a replay keyed on them is slightly kinder to the forecaster than the real wait. The report says so.",
+    "ALFRED vintages for this series begin in October 2014, so the development years of the earlier study cannot be replayed.",
+    "One observation step is not a publication date simulation. Each target is already underway when its origin vintage appears.",
+    "72 dependent months on one national index and seven component series are not a general result. No significance tests and no winner selected after outcomes.",
+    "The study does not change the serving model, its features or its gate."
+  ]
+}
