@@ -6,6 +6,13 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-16, real time protocol
+
+* `docs/real-time-protocol.json` declares the real time replay of the BTS study
+  before any vintage is fetched or any error on it is computed. It fixes the
+  series, the origins, the three forecasters, the two outcome policies, the
+  metrics and the rule that nothing is tuned.
+
 ### 2026-11-15, ledger guide and README order
 
 * The ledger guide now says what the changelog already said about October 14,
