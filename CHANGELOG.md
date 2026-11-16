@@ -16,6 +16,14 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 * `src/real_time_backtest.py` computes it and `docs/real-time-example.json`
   retains every prediction. A test recomputes the saved report.
 
+### 2026-11-16, the October 14 records are lost
+
+* The two local records of October 14, 2026, a September nowcast and a November
+  outlook, were lost before either one was observed. Neither was ever scored,
+  and no replacement is issued, since a record written now would carry an issue
+  time after the outcome. The entries of October 14 and November 15 below
+  describe them as they stood on those days. The ledger guide now says the same.
+
 ### 2026-11-16, retained vintages of the freight index
 
 * `data/public/tsifrght-alfred-vintages.csv` holds every ALFRED vintage of
