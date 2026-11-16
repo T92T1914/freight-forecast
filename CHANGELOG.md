@@ -6,6 +6,14 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-15, ledger guide and README order
+
+* The ledger guide now says what the changelog already said about October 14,
+  2026. Two local records exist, a September nowcast and a November outlook,
+  both unobserved and unscored.
+* The README sections that sat after License now sit above it. No claim,
+  number or limit changed, and the opening is untouched.
+
 ### 2026-11-15, newer fastapi patch
 
 * The requirements move fastapi from 0.163.0 to 0.163.1. I could not read the

@@ -384,10 +384,6 @@ These are the limits I would address before using this with operational data.
   distinguish loaded artifacts and histories. They do not create a monitoring
   response policy, a full external data registry or an accuracy guarantee.
 
-## License
-
-MIT licensed. The full text is in [LICENSE](LICENSE).
-
 ## Prospective issuance ledger
 
 The [local ledger](docs/prospective-ledger.md) retains predictions, information
@@ -434,3 +430,7 @@ I use this project to connect the operational questions I knew from logistics wi
 These are transferable skills for backend and MLOps work. The data is synthetic, so this is not evidence of savings or accuracy in a live logistics operation.
 
 See [sharing previews](docs/sharing-preview.md) for the maintained link image and its source.
+
+## License
+
+MIT licensed. The full text is in [LICENSE](LICENSE).
