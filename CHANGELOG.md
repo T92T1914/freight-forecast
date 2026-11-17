@@ -21,6 +21,11 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 * This is the first record since I lost the two local ones of October 14, and
   it is the first of the one a month I decided to issue.
 
+### 2026-11-16, README results for the real time tests
+
+* The README results section states the real time replay and the component
+  series results in the words of their reports. The opening is untouched.
+
 ### 2026-11-16, the real time test on seven component series
 
 * `docs/real-time-components.md` runs the same protocol on the seven component
