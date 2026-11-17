@@ -422,6 +422,12 @@ With August observations available during October, its target is November.
 The original one step policy still classifies a September estimate as a nowcast.
 Neither path supplies prospective accuracy before qualified outcomes arrive.
 
+I now issue one real record each month and commit it before its target month
+begins. The [first one](docs/prospective-ledger.md#issued-records) targets
+December 2026 and was issued on November 16, 2026. It sits in
+`data/ledger/2026-12-outlook/` and is not shown in the public reading view.
+Nothing is scored until the February 2027 release.
+
 ## Serving performance
 
 [Feature reuse measurement](docs/serving-performance.md): a matched local in process check measured 4.534 ms → 1.278 ms for one request shape, with identical predictions. The report includes raw samples, reproduction instructions and limits.
