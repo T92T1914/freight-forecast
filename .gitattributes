@@ -11,3 +11,6 @@ docs/freight-forecast-obscur-wide.svg text eol=lf
 
 # The inert evaluated source fixture retains its original digest on every host.
 tests/fixtures/backtest-evaluated.txt -text
+
+# Captured ledger records keep their exact bytes.
+data/ledger/** -text
