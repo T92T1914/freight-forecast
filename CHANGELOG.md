@@ -6,6 +6,12 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-16, the README points to the first record
+
+* The README ledger section now says I issue one real record each month and
+  links the first one, for December 2026. It also says the public reading view
+  does not show it and that nothing is scored until the February 2027 release.
+
 ### 2026-11-16, the first monthly ledger record
 
 * `data/ledger/2026-12-outlook/` holds one real issuance under the declared
