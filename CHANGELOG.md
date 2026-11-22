@@ -6,6 +6,13 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-21, three pins move
+
+* `fastapi` moves from 0.163.1 to 0.165.0, `pydantic` from 2.14.3 to 2.14.4 and
+  `ruff` from 0.17.5 to 0.17.6. I did not read the release notes for these
+  three. The checks on the card and the image build are the evidence. Nothing
+  in `src`, `tools` or the tests changed.
+
 ### 2026-11-16, the README points to the first record
 
 * The README ledger section now says I issue one real record each month and
