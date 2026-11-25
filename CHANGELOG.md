@@ -6,6 +6,13 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-25, a walkthrough for the planner
+
+* `docs/planner-walkthrough.md` explains what the service returns, how to read a
+  forecast and a range, why the latest value is the better input for the national
+  index today and what the ledger proves. It opens with one page for a reader who
+  is not an engineer. It quotes results already in the repository and adds none.
+
 ### 2026-11-25, the comparison test protocol
 
 * `docs/forecast-comparison-protocol.json` fixes how I will test whether the
