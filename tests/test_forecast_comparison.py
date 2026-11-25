@@ -152,8 +152,8 @@ def test_holm_covers_the_component_series_only():
     components = PROTOCOL["data"]["component_series"]
     single = PROTOCOL["data"]["series"]
 
-    def series():
-        pair = {name: {"p_value": 0.02} for name in comparison.TESTS}
+    def series(p_value=0.02):
+        pair = {name: {"p_value": p_value} for name in comparison.TESTS}
         return {
             outcome: {
                 loss: {"pairs": [json.loads(json.dumps(pair)) for _ in range(3)]}
@@ -175,3 +175,42 @@ def test_holm_covers_the_component_series_only():
     # The test that was not computed still counts toward a family of 7.
     assert member["fixed_smoothing"]["p_adjusted"] == pytest.approx(0.14)
     assert member["verdict"] == "not_told_apart"
+
+
+def test_holm_values_return_to_their_own_series_and_test():
+    components = PROTOCOL["data"]["component_series"]
+    names = [PROTOCOL["data"]["series"], *components]
+    results = {}
+    for index, name in enumerate(names):
+        results[name] = {
+            outcome: {
+                loss: {
+                    "pairs": [
+                        {
+                            test: {"p_value": (index + 1) * scale}
+                            for test, scale in zip(
+                                comparison.TESTS, (0.001, 0.01), strict=True
+                            )
+                        }
+                        for _ in range(3)
+                    ]
+                }
+                for loss in PROTOCOL["losses"]
+            }
+            for outcome in PROTOCOL["data"]["outcomes"]
+        }
+    results[components[0]], results[components[-1]] = (
+        results[components[-1]],
+        results[components[0]],
+    )
+    comparison.adjust_and_read(results, PROTOCOL)
+    for test in comparison.TESTS:
+        raw = [
+            results[s]["first_release"]["absolute"]["pairs"][0][test]["p_value"]
+            for s in components
+        ]
+        got = [
+            results[s]["first_release"]["absolute"]["pairs"][0][test]["p_adjusted"]
+            for s in components
+        ]
+        assert got == pytest.approx(list(multipletests(raw, method="holm")[1]))

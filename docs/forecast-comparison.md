@@ -43,7 +43,7 @@ the value one month back.
 The Ridge model is refit on an expanding window. The Giacomini and White theory
 for comparing forecasting methods assumes a window of limited length, so these
 tests describe the average loss difference of the saved forecasts and assume that
-difference is stationary.
+difference is covariance stationary.
 
 ## What came out
 
@@ -59,32 +59,38 @@ not told apart.
 * The Ridge model has the lower loss, told apart, on natural gas against the
   latest values under both losses.
 * On the freight index against first releases, the comparison the real time
-  report leads with, the gap is not settled. Under absolute loss only the primary
-  test falls below 0.05. Under squared loss neither does.
+  report leads with, absolute loss is unsettled, with only the primary test below
+  0.05. Squared loss is not told apart, with neither test below 0.05.
 * Truck tonnage, rail carloads and inland waterway tonnage are not told apart
   under any outcome or loss.
 
 **Ridge against the same month last year.** 3 are told apart, 21 are unsettled and
 8 are not told apart. All 3 are rail intermodal, with the lower loss for the
-Ridge model. The build gate compares against this baseline on the synthetic data.
-These real series do not repeat that result strongly enough for both tests,
-except in those 3 readings.
+Ridge model. The 8 are inland waterway and natural gas readings and the freight
+index against the latest values. The Ridge model has the lower mean loss in 30 of
+the 32 readings and the higher one on inland waterway against the latest values,
+under both losses. The build gate compares against this baseline on the synthetic
+data. On these real series both tests support a lower loss for the model only in
+those 3 readings.
 
 **Last observation against the same month last year.** 7 are told apart, 19 are
 unsettled and 6 are not told apart. All 7 have the lower loss for last
-observation, on the freight index, rail intermodal and pipeline petroleum.
+observation, on the freight index, rail intermodal and pipeline petroleum. The 6
+are inland waterway against the latest values and natural gas.
 
-Nearly every unsettled reading is the same shape. The primary test falls below
-0.05 and the fixed smoothing check does not. The check has few degrees of freedom
-and, on the component series, has to pass the Holm adjustment, so it needs a large
-statistic. An unsettled gap is not a finding.
+In 46 of the 47 unsettled readings across the three pairs, the primary test is the
+one below 0.05. In 31 of those 46 the fixed smoothing check is at or above 0.05
+even before any Holm adjustment, and in the other 15 the adjustment decides it. In
+all 46 the fixed statistic is the smaller of the two in size. I have not measured
+why. An unsettled gap is not a finding.
 
 **Confidence sets.** At block length 4, last observation stays in the set in 29 of
 32 cases. The 3 exceptions are natural gas. The Ridge model is left out in 11,
 among them all four freight index cases and all four pipeline petroleum cases.
-The sets reject more often than the pair readings here. On the freight index
-against first releases the set holds only last observation, with a p value for
-the Ridge model just under 0.05, while the pair tests do not both agree. The
+A set can leave a method out where the pair reading does not tell it apart. On the
+freight index against first releases the set holds only last observation under both
+losses, with a p value for the Ridge model just under 0.05, while the pair reading
+is unsettled under absolute loss and not told apart under squared loss. The
 protocol reports the two side by side and lets neither overrule the other. At
 block length 12, 8 of the 32 sets differ, which is one more reason to read a
 single exclusion with care.
@@ -315,7 +321,7 @@ the saved results for the freight index and the four committed series.
    dropped before forecasting, but those months are not one step ahead in
    publication time. They all stay in, and the last table counts them.
 3. The yearly tables of the real time report show the gap between methods moving
-   over time. The tests assume a stable average.
+   over time, which the stationarity assumption does not cover.
 4. 72 months is a short sample. These tests can reject too often or have little
    power in it.
 5. Three pairs, two outcomes and two losses are not adjusted against each other,

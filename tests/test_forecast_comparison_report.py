@@ -6,6 +6,7 @@ from collections import Counter
 from pathlib import Path
 
 import pytest
+from scipy import stats
 
 from src import forecast_comparison as comparison
 from src.real_time_backtest import PROTOCOL as REAL_TIME_PROTOCOL
@@ -64,6 +65,64 @@ def test_retained_series_reproduce(series):
     got = comparison.compare_series(rows, PROTOCOL)
     # Adjusted values and readings are checked across all series below.
     _close(SAVED["results"][series], got)
+    same = sum(row["origin_vintage"] == row["first_release_vintage"] for row in rows)
+    assert SAVED["inputs"][series]["same_vintage_targets"] == same
+
+
+@pytest.mark.parametrize("series", ["TSIFRGHT", *COMPONENTS])
+def test_every_series_agrees_with_its_own_saved_errors(series):
+    # This also covers the three series whose tables are not committed.
+    if series == "TSIFRGHT":
+        report = json.loads(comparison.SINGLE.read_bytes())
+        errors = {
+            outcome: {
+                name: report["results"][outcome]["overall"][key]["mae"]
+                for name, key in comparison.KEYS.items()
+            }
+            for outcome in PROTOCOL["data"]["outcomes"]
+        }
+    else:
+        panel = json.loads(comparison.COMPONENTS.read_bytes())["series"][series]
+        errors = {
+            outcome: {
+                RIDGE: panel[outcome]["model_mae"],
+                LAST: panel[outcome]["last_observation_mae"],
+                YEAR: panel[outcome]["seasonal_naive_mae"],
+            }
+            for outcome in PROTOCOL["data"]["outcomes"]
+        }
+        assert SAVED["inputs"][series]["table_sha256"] == panel["table_sha256"]
+    months = SAVED["inputs"][series]["months"]
+    freedom = {"diebold_mariano_hln": months - 1, "fixed_smoothing": 8}
+    for outcome, by_loss in SAVED["results"][series].items():
+        for loss, cell in by_loss.items():
+            for pair in cell["pairs"]:
+                if loss == "absolute":
+                    gap = errors[outcome][pair["first"]]
+                    gap -= errors[outcome][pair["second"]]
+                    assert pair["mean_difference"] == pytest.approx(gap, rel=1e-5)
+                for test, df in freedom.items():
+                    result = pair[test]
+                    p_value = 2 * stats.t.sf(abs(result["statistic"]), df)
+                    assert result["p_value"] == pytest.approx(p_value, rel=1e-9)
+                    assert ("p_adjusted" in result) == (series in COMPONENTS)
+
+
+def test_a_replay_that_drifts_from_the_saved_errors_stops(tmp_path, monkeypatch):
+    report = json.loads(comparison.SINGLE.read_bytes())
+    report["predictions"][0]["model"] += 1
+    changed = tmp_path / "changed.json"
+    changed.write_text(json.dumps(report), encoding="utf-8")
+    monkeypatch.setattr(comparison, "SINGLE", changed)
+    with pytest.raises(ValueError, match="does not reproduce"):
+        comparison.load_single()
+    panel = json.loads(comparison.COMPONENTS.read_bytes())
+    panel["series"]["AIRRTMFMD11"]["first_release"]["model_mae"] *= 1.01
+    drifted = tmp_path / "panel.json"
+    drifted.write_text(json.dumps(panel), encoding="utf-8")
+    monkeypatch.setattr(comparison, "COMPONENTS", drifted)
+    with pytest.raises(ValueError, match="does not reproduce"):
+        comparison.load_component("AIRRTMFMD11", ROOT / "data/public")
 
 
 def test_adjustments_and_readings_follow_from_the_raw_statistics():
@@ -82,6 +141,23 @@ def test_adjustments_and_readings_follow_from_the_raw_statistics():
 def test_report_tables_are_the_saved_statistics():
     inside = DOCUMENT.split(START)[1].split(END)[0].strip()
     assert inside == render(SAVED)
+    # Pinned rows, so swapped or mislabeled columns cannot pass.
+    assert (
+        "| Series | Pair | Mean difference | DM statistic | DM p | DM Holm p "
+        "| Fixed statistic | Fixed p | Fixed Holm p | Reading |"
+    ) in inside
+    assert (
+        "| Freight index | Ridge minus last | 0.3266 | 2.016 | 0.0476 | none "
+        "| 1.947 | 0.0874 | none | Unsettled |"
+    ) in inside
+    assert (
+        "| Series | Outcome | Loss | Set at block 4 | Ridge p | Last p "
+        "| Last year p | Set at block 12 |"
+    ) in inside
+    assert (
+        "| Freight index | first release | absolute loss | Last | 0.0482 "
+        "| 1.0000 | 0.0089 | Last |"
+    ) in inside
 
 
 @pytest.mark.parametrize(
@@ -152,3 +228,51 @@ def test_unsettled_readings_are_mostly_the_primary_test_alone():
             if pair["verdict"] == "unsettled":
                 shapes[pair["diebold_mariano_hln"][key] < 0.05] += 1
     assert shapes == {True: 46, False: 1}
+
+
+def test_where_the_report_says_nothing_is_told_apart():
+    quiet = {}
+    for series, outcome, loss, cell in _readings():
+        for pair in cell["pairs"]:
+            if pair["verdict"] == "not_told_apart":
+                key = (pair["first"], pair["second"])
+                quiet.setdefault(key, set()).add((series, outcome, loss))
+    for series in ("TRUCKD11", "RAILFRTCARLOADSD11", "WATERBORNED11"):
+        assert sum(s == series for s, *_ in quiet[RIDGE, LAST]) == 4
+    assert ("TSIFRGHT", "first_release", "squared") in quiet[RIDGE, LAST]
+    assert ("TSIFRGHT", "first_release", "absolute") not in quiet[RIDGE, LAST]
+    for series, outcome, _ in quiet[RIDGE, YEAR]:
+        assert series in ("WATERBORNED11", "NATURALGASD11") or (
+            series == "TSIFRGHT" and outcome == "latest_available"
+        )
+    for series, outcome, _ in quiet[LAST, YEAR]:
+        assert series == "NATURALGASD11" or (
+            series == "WATERBORNED11" and outcome == "latest_available"
+        )
+
+
+def test_ridge_against_last_year_direction():
+    higher = [
+        (series, outcome, loss)
+        for series, outcome, loss, cell in _readings()
+        if cell["pairs"][1]["mean_difference"] >= 0
+    ]
+    assert higher == [
+        ("WATERBORNED11", "latest_available", "absolute"),
+        ("WATERBORNED11", "latest_available", "squared"),
+    ]
+
+
+def test_shape_of_the_unsettled_readings():
+    raw_misses = holm_decides = smaller = 0
+    for series, _, _, cell in _readings():
+        key = "p_adjusted" if series in COMPONENTS else "p_value"
+        for pair in cell["pairs"]:
+            primary = pair["diebold_mariano_hln"]
+            check = pair["fixed_smoothing"]
+            if pair["verdict"] != "unsettled" or not primary[key] < 0.05:
+                continue
+            raw_misses += check["p_value"] >= 0.05
+            holm_decides += check["p_value"] < 0.05
+            smaller += abs(check["statistic"]) < abs(primary["statistic"])
+    assert (raw_misses, holm_decides, smaller) == (31, 15, 46)
