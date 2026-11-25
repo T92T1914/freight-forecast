@@ -1,0 +1,2504 @@
+{
+  "schema_version": 1,
+  "protocol_id": "freight-forecast-comparison-v1",
+  "protocol_sha256": "7286efb81a2eb834ee64b1c6eb6031a850db217f7d21f71c09c0466a1342f35c",
+  "protocol_hash_line_endings": "LF",
+  "packages": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "arch": "9.0.0"
+  },
+  "inputs": {
+    "TSIFRGHT": {
+      "source": "docs/real-time-example.json",
+      "months": 72,
+      "same_vintage_targets": 8
+    },
+    "TRUCKD11": {
+      "table_sha256": "ed1d50932df44f89650b265d1a1cda9477c30520c74b27d51e294dfadf63267b",
+      "months": 72,
+      "same_vintage_targets": 9
+    },
+    "RAILFRTCARLOADSD11": {
+      "table_sha256": "32ccf225be018cdb7edc3474dc561e459158164475c15b1640536fc149d5f795",
+      "months": 72,
+      "same_vintage_targets": 9
+    },
+    "RAILFRTINTERMODALD11": {
+      "table_sha256": "2c8d6e90546b30de664ab86e371938aaf0655c6efd724c60dd2ad038284edcb1",
+      "months": 72,
+      "same_vintage_targets": 9
+    },
+    "WATERBORNED11": {
+      "table_sha256": "ba34e089353d027570879524b4acbb688f2b42038fa3eb79675fb6bce7e505bf",
+      "months": 72,
+      "same_vintage_targets": 9
+    },
+    "AIRRTMFMD11": {
+      "table_sha256": "ea3ec356e2ee5670b834da1f2b155167b735667fc2cabe78b13445f37ad0267a",
+      "months": 72,
+      "same_vintage_targets": 10
+    },
+    "PETROLEUMD11": {
+      "table_sha256": "abafda33c43bec095b1fe00bf254e049489f4d99f9fe7ffa0cf555b8cea44bb9",
+      "months": 72,
+      "same_vintage_targets": 8
+    },
+    "NATURALGASD11": {
+      "table_sha256": "e484c98b062b384ddc006b5b90cc17f71e16c6ab3d99588b97dde9cea162fec4",
+      "months": 72,
+      "same_vintage_targets": 8
+    }
+  },
+  "results": {
+    "TSIFRGHT": {
+      "first_release": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 0.3265631600486688,
+              "diebold_mariano_hln": {
+                "statistic": 2.016209529169366,
+                "p_value": 0.04756253104873252
+              },
+              "fixed_smoothing": {
+                "statistic": 1.9469628019933316,
+                "p_value": 0.08740132990917948
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -1.2595479510624414,
+              "diebold_mariano_hln": {
+                "statistic": -3.455368101601166,
+                "p_value": 0.0009313678226145553
+              },
+              "fixed_smoothing": {
+                "statistic": -2.1809165184095227,
+                "p_value": 0.060775565425445426
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -1.5861111111111101,
+              "diebold_mariano_hln": {
+                "statistic": -4.489059438924567,
+                "p_value": 2.7014851122633715e-05
+              },
+              "fixed_smoothing": {
+                "statistic": -2.384444936104739,
+                "p_value": 0.044237709822163455
+              },
+              "verdict": "told_apart"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0482,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0089
+              }
+            },
+            "12": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0372,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.027
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 1.738314538116626,
+              "diebold_mariano_hln": {
+                "statistic": 1.8158789552740338,
+                "p_value": 0.07361100885748253
+              },
+              "fixed_smoothing": {
+                "statistic": 2.250433287513934,
+                "p_value": 0.05453042333258305
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -13.650852128550042,
+              "diebold_mariano_hln": {
+                "statistic": -3.49803345377947,
+                "p_value": 0.0008131207728548346
+              },
+              "fixed_smoothing": {
+                "statistic": -2.044854997476968,
+                "p_value": 0.07510570792492505
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -15.38916666666667,
+              "diebold_mariano_hln": {
+                "statistic": -4.059327554316202,
+                "p_value": 0.00012496976151510044
+              },
+              "fixed_smoothing": {
+                "statistic": -2.123587900496505,
+                "p_value": 0.06645302631049937
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0464,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0277
+              }
+            },
+            "12": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0304,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0304
+              }
+            }
+          }
+        }
+      },
+      "latest_available": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 0.6442885954111401,
+              "diebold_mariano_hln": {
+                "statistic": 3.810620174011718,
+                "p_value": 0.0002920952691167425
+              },
+              "fixed_smoothing": {
+                "statistic": 3.233730763231102,
+                "p_value": 0.01198974287505922
+              },
+              "verdict": "told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -0.33348918236663727,
+              "diebold_mariano_hln": {
+                "statistic": -0.8990323675353836,
+                "p_value": 0.37167438232764644
+              },
+              "fixed_smoothing": {
+                "statistic": -0.4847067849016015,
+                "p_value": 0.6408769979035384
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -0.9777777777777774,
+              "diebold_mariano_hln": {
+                "statistic": -2.80535761482649,
+                "p_value": 0.006480074782547574
+              },
+              "fixed_smoothing": {
+                "statistic": -1.324142406950065,
+                "p_value": 0.22203593521254877
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0053,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0545
+              }
+            },
+            "12": {
+              "set": [
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.001,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.1044
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 4.493801527440518,
+              "diebold_mariano_hln": {
+                "statistic": 3.510778221070475,
+                "p_value": 0.0007806538401521501
+              },
+              "fixed_smoothing": {
+                "statistic": 2.888690897598766,
+                "p_value": 0.02023976784828967
+              },
+              "verdict": "told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -5.860365139226155,
+              "diebold_mariano_hln": {
+                "statistic": -1.4735806425908997,
+                "p_value": 0.1450144879340124
+              },
+              "fixed_smoothing": {
+                "statistic": -0.782502925751934,
+                "p_value": 0.45645410731646935
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -10.354166666666673,
+              "diebold_mariano_hln": {
+                "statistic": -2.711347707376826,
+                "p_value": 0.008398226046893336
+              },
+              "fixed_smoothing": {
+                "statistic": -1.3192907820598692,
+                "p_value": 0.2235786631407442
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0161,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0662
+              }
+            },
+            "12": {
+              "set": [
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0064,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.1379
+              }
+            }
+          }
+        }
+      }
+    },
+    "TRUCKD11": {
+      "first_release": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 0.2005849035617613,
+              "diebold_mariano_hln": {
+                "statistic": 1.1061779462066599,
+                "p_value": 0.2723835512347814,
+                "p_adjusted": 0.8171506537043443
+              },
+              "fixed_smoothing": {
+                "statistic": 1.0053430689030896,
+                "p_value": 0.34416775634801267,
+                "p_adjusted": 1.0
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -0.8730262075493493,
+              "diebold_mariano_hln": {
+                "statistic": -2.7197412797951155,
+                "p_value": 0.008207927029103253,
+                "p_adjusted": 0.016415854058206506
+              },
+              "fixed_smoothing": {
+                "statistic": -1.4337341014368257,
+                "p_value": 0.18955290661128082,
+                "p_adjusted": 0.3448593162292167
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -1.0736111111111106,
+              "diebold_mariano_hln": {
+                "statistic": -3.7773610646649534,
+                "p_value": 0.00032647987438913533,
+                "p_adjusted": 0.0006529597487782707
+              },
+              "fixed_smoothing": {
+                "statistic": -2.144474694240401,
+                "p_value": 0.06432653698606608,
+                "p_adjusted": 0.19395202100458123
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.2383,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0186
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.2088,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0335
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 1.15131821097167,
+              "diebold_mariano_hln": {
+                "statistic": 0.8356015077584392,
+                "p_value": 0.40618234123203395,
+                "p_adjusted": 0.8123646824640679
+              },
+              "fixed_smoothing": {
+                "statistic": 1.0642270289486875,
+                "p_value": 0.31829023247559163,
+                "p_adjusted": 1.0
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -8.151320677917209,
+              "diebold_mariano_hln": {
+                "statistic": -2.8745070168614664,
+                "p_value": 0.005335776840721625,
+                "p_adjusted": 0.01067155368144325
+              },
+              "fixed_smoothing": {
+                "statistic": -1.690944581304575,
+                "p_value": 0.12931222824114574,
+                "p_adjusted": 0.3237363551527101
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -9.302638888888875,
+              "diebold_mariano_hln": {
+                "statistic": -3.305083556658312,
+                "p_value": 0.0014906423059722533,
+                "p_adjusted": 0.00447192691791676
+              },
+              "fixed_smoothing": {
+                "statistic": -1.9534900552919632,
+                "p_value": 0.08652430747279563,
+                "p_adjusted": 0.3460972298911825
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.2781,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0372
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.2055,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0542
+              }
+            }
+          }
+        }
+      },
+      "latest_available": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 0.2967133843950251,
+              "diebold_mariano_hln": {
+                "statistic": 1.6995031162861107,
+                "p_value": 0.09360204517909555,
+                "p_adjusted": 0.1872040903581911
+              },
+              "fixed_smoothing": {
+                "statistic": 1.6329595557200043,
+                "p_value": 0.14112040333875744,
+                "p_adjusted": 0.31783186937886015
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -0.8907866156049743,
+              "diebold_mariano_hln": {
+                "statistic": -3.2422725584167855,
+                "p_value": 0.001807638240939147,
+                "p_adjusted": 0.0056583073713691485
+              },
+              "fixed_smoothing": {
+                "statistic": -1.5924081950907276,
+                "p_value": 0.14995815546228308,
+                "p_adjusted": 0.6312885016559497
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -1.1874999999999993,
+              "diebold_mariano_hln": {
+                "statistic": -5.004601474313516,
+                "p_value": 3.9155503371044874e-06,
+                "p_adjusted": 1.9577751685522436e-05
+              },
+              "fixed_smoothing": {
+                "statistic": -2.381805102799798,
+                "p_value": 0.04442035135314709,
+                "p_adjusted": 0.22210175676573546
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0896,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0027
+              }
+            },
+            "12": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.049,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0048
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 1.0109821400164523,
+              "diebold_mariano_hln": {
+                "statistic": 0.8926487878288536,
+                "p_value": 0.37506083217017033,
+                "p_adjusted": 0.37506083217017033
+              },
+              "fixed_smoothing": {
+                "statistic": 1.2046078299395713,
+                "p_value": 0.26277944411764514,
+                "p_adjusted": 0.7255888579272299
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -6.244990082205763,
+              "diebold_mariano_hln": {
+                "statistic": -3.137258071937153,
+                "p_value": 0.002482628718807778,
+                "p_adjusted": 0.01046231086510849
+              },
+              "fixed_smoothing": {
+                "statistic": -1.7908058597933239,
+                "p_value": 0.11110271463766783,
+                "p_adjusted": 0.4825808518072833
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -7.255972222222214,
+              "diebold_mariano_hln": {
+                "statistic": -4.2135615391949335,
+                "p_value": 7.277304000305716e-05,
+                "p_adjusted": 0.0003638652000152858
+              },
+              "fixed_smoothing": {
+                "statistic": -2.053175056939374,
+                "p_value": 0.07414173669591395,
+                "p_adjusted": 0.37070868347956976
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.2765,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0155
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.2189,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0166
+              }
+            }
+          }
+        }
+      }
+    },
+    "RAILFRTCARLOADSD11": {
+      "first_release": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 2756.346289595725,
+              "diebold_mariano_hln": {
+                "statistic": 1.052570185917716,
+                "p_value": 0.2961071496027409,
+                "p_adjusted": 0.8171506537043443
+              },
+              "fixed_smoothing": {
+                "statistic": 0.9684904292255392,
+                "p_value": 0.3611636137119606,
+                "p_adjusted": 1.0
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -29565.11204373761,
+              "diebold_mariano_hln": {
+                "statistic": -4.856863093950222,
+                "p_value": 6.874857282138455e-06,
+                "p_adjusted": 4.124914369283073e-05
+              },
+              "fixed_smoothing": {
+                "statistic": -2.5320519857955683,
+                "p_value": 0.03514297045631958,
+                "p_adjusted": 0.21085782273791748
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -32321.458333333332,
+              "diebold_mariano_hln": {
+                "statistic": -4.695198351711546,
+                "p_value": 1.2621668972317903e-05,
+                "p_adjusted": 6.310834486158951e-05
+              },
+              "fixed_smoothing": {
+                "statistic": -2.5153121994719085,
+                "p_value": 0.03607119848982048,
+                "p_adjusted": 0.18035599244910241
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.324,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0085
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.2056,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0258
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 558139522.4764086,
+              "diebold_mariano_hln": {
+                "statistic": 1.256736826669378,
+                "p_value": 0.2129678636839433,
+                "p_adjusted": 0.6389035910518299
+              },
+              "fixed_smoothing": {
+                "statistic": 0.9678011423982219,
+                "p_value": 0.3614874146536832,
+                "p_adjusted": 1.0
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -5813057101.120814,
+              "diebold_mariano_hln": {
+                "statistic": -3.359868985212432,
+                "p_value": 0.0012576058451600793,
+                "p_adjusted": 0.005030423380640317
+              },
+              "fixed_smoothing": {
+                "statistic": -1.8098697826436618,
+                "p_value": 0.1079121183842367,
+                "p_adjusted": 0.3237363551527101
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -6371196623.597222,
+              "diebold_mariano_hln": {
+                "statistic": -3.1440828179865936,
+                "p_value": 0.002432434624417476,
+                "p_adjusted": 0.004864869248834952
+              },
+              "fixed_smoothing": {
+                "statistic": -1.7291205264679086,
+                "p_value": 0.12204473505429057,
+                "p_adjusted": 0.3661342051628717
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.3123,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0519
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.2397,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0697
+              }
+            }
+          }
+        }
+      },
+      "latest_available": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 6390.59782929778,
+              "diebold_mariano_hln": {
+                "statistic": 2.4910590999508875,
+                "p_value": 0.015075867205003915,
+                "p_adjusted": 0.06030346882001566
+              },
+              "fixed_smoothing": {
+                "statistic": 2.0590254252239344,
+                "p_value": 0.0734711340419481,
+                "p_adjusted": 0.2938845361677924
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -24729.91605959111,
+              "diebold_mariano_hln": {
+                "statistic": -3.8666133972665584,
+                "p_value": 0.00024189391586765778,
+                "p_adjusted": 0.0012094695793382888
+              },
+              "fixed_smoothing": {
+                "statistic": -1.7067406241312832,
+                "p_value": 0.12625770033118994,
+                "p_adjusted": 0.6312885016559497
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -31120.51388888889,
+              "diebold_mariano_hln": {
+                "statistic": -4.423545512524446,
+                "p_value": 3.428922410996955e-05,
+                "p_adjusted": 0.00010286767232990865
+              },
+              "fixed_smoothing": {
+                "statistic": -2.025229635229789,
+                "p_value": 0.07742807519753676,
+                "p_adjusted": 0.30971230079014705
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0374,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.019
+              }
+            },
+            "12": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0258,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0301
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 1162545490.5391662,
+              "diebold_mariano_hln": {
+                "statistic": 2.0087331816079206,
+                "p_value": 0.048369339127752216,
+                "p_adjusted": 0.19347735651100886
+              },
+              "fixed_smoothing": {
+                "statistic": 1.463821060220782,
+                "p_value": 0.18139721448180748,
+                "p_adjusted": 0.7255888579272299
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -5733119666.14139,
+              "diebold_mariano_hln": {
+                "statistic": -3.100714890587553,
+                "p_value": 0.0027682579326562444,
+                "p_adjusted": 0.01046231086510849
+              },
+              "fixed_smoothing": {
+                "statistic": -1.416141803225948,
+                "p_value": 0.1944698502571736,
+                "p_adjusted": 0.5834095507715208
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -6895665156.680555,
+              "diebold_mariano_hln": {
+                "statistic": -3.0312948972208513,
+                "p_value": 0.0033970405247895157,
+                "p_adjusted": 0.010191121574368547
+              },
+              "fixed_smoothing": {
+                "statistic": -1.4510079551622717,
+                "p_value": 0.18483176749493876,
+                "p_adjusted": 0.7393270699797551
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0807,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0729
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0838,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0838
+              }
+            }
+          }
+        }
+      }
+    },
+    "RAILFRTINTERMODALD11": {
+      "first_release": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 12228.278427012072,
+              "diebold_mariano_hln": {
+                "statistic": 3.174651547881755,
+                "p_value": 0.002219030882437406,
+                "p_adjusted": 0.013314185294624435
+              },
+              "fixed_smoothing": {
+                "statistic": 4.10124076935979,
+                "p_value": 0.0034318752849992105,
+                "p_adjusted": 0.024023126994994475
+              },
+              "verdict": "told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -45592.513239654596,
+              "diebold_mariano_hln": {
+                "statistic": -4.774960303402246,
+                "p_value": 9.363342442518147e-06,
+                "p_adjusted": 4.6816712212590736e-05
+              },
+              "fixed_smoothing": {
+                "statistic": -4.484227058459334,
+                "p_value": 0.002044316304594102,
+                "p_adjusted": 0.014310214132158714
+              },
+              "verdict": "told_apart"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -57820.791666666664,
+              "diebold_mariano_hln": {
+                "statistic": -7.17937193905322,
+                "p_value": 5.500111743032536e-10,
+                "p_adjusted": 3.3000670458195215e-09
+              },
+              "fixed_smoothing": {
+                "statistic": -5.625721056080968,
+                "p_value": 0.0004951894244861418,
+                "p_adjusted": 0.003466325971402993
+              },
+              "verdict": "told_apart"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0096,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0
+              }
+            },
+            "12": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0003,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 1334322463.4010792,
+              "diebold_mariano_hln": {
+                "statistic": 2.064480816731478,
+                "p_value": 0.04262652242318777,
+                "p_adjusted": 0.21548741035250382
+              },
+              "fixed_smoothing": {
+                "statistic": 2.7048501108134557,
+                "p_value": 0.026871475270525486,
+                "p_adjusted": 0.16122885162315292
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -8367612628.279476,
+              "diebold_mariano_hln": {
+                "statistic": -3.7342675518497375,
+                "p_value": 0.0003768126856090816,
+                "p_adjusted": 0.0018840634280454078
+              },
+              "fixed_smoothing": {
+                "statistic": -3.3007489976250897,
+                "p_value": 0.010846731991449648,
+                "p_adjusted": 0.07592712394014754
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -9701935091.680555,
+              "diebold_mariano_hln": {
+                "statistic": -4.877788150693607,
+                "p_value": 6.3507820512971735e-06,
+                "p_adjusted": 3.810469230778304e-05
+              },
+              "fixed_smoothing": {
+                "statistic": -3.624407974808508,
+                "p_value": 0.006739404575613773,
+                "p_adjusted": 0.04717583202929641
+              },
+              "verdict": "told_apart"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0707,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0013
+              }
+            },
+            "12": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.008,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.001
+              }
+            }
+          }
+        }
+      },
+      "latest_available": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 9563.689666697266,
+              "diebold_mariano_hln": {
+                "statistic": 2.4787542541841514,
+                "p_value": 0.015561926908675392,
+                "p_adjusted": 0.06030346882001566
+              },
+              "fixed_smoothing": {
+                "statistic": 2.710222356051503,
+                "p_value": 0.02664892428335268,
+                "p_adjusted": 0.15989354570011607
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -46376.87977774718,
+              "diebold_mariano_hln": {
+                "statistic": -5.029077520198926,
+                "p_value": 3.5644829937556677e-06,
+                "p_adjusted": 2.1386897962534006e-05
+              },
+              "fixed_smoothing": {
+                "statistic": -5.764275253099747,
+                "p_value": 0.00042203838132476773,
+                "p_adjusted": 0.002954268669273374
+              },
+              "verdict": "told_apart"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -55940.569444444445,
+              "diebold_mariano_hln": {
+                "statistic": -7.641913766111025,
+                "p_value": 7.70415531833705e-11,
+                "p_adjusted": 5.392908722835934e-10
+              },
+              "fixed_smoothing": {
+                "statistic": -6.680891481359726,
+                "p_value": 0.00015574768108181781,
+                "p_adjusted": 0.0010902337675727247
+              },
+              "verdict": "told_apart"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0551,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0
+              }
+            },
+            "12": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0041,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 1389297780.7713766,
+              "diebold_mariano_hln": {
+                "statistic": 2.320858139799286,
+                "p_value": 0.023171072951056956,
+                "p_adjusted": 0.11585536475528478
+              },
+              "fixed_smoothing": {
+                "statistic": 2.7810751098467525,
+                "p_value": 0.023884905206362037,
+                "p_adjusted": 0.14330943123817222
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -7736834362.15918,
+              "diebold_mariano_hln": {
+                "statistic": -4.101822243422166,
+                "p_value": 0.00010778542736476794,
+                "p_adjusted": 0.0006467125641886076
+              },
+              "fixed_smoothing": {
+                "statistic": -5.017738524402614,
+                "p_value": 0.0010297756311678796,
+                "p_adjusted": 0.007208429418175157
+              },
+              "verdict": "told_apart"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -9126132142.930555,
+              "diebold_mariano_hln": {
+                "statistic": -5.678949202381157,
+                "p_value": 2.765098336006857e-07,
+                "p_adjusted": 1.8436876305530823e-06
+              },
+              "fixed_smoothing": {
+                "statistic": -4.940858050084494,
+                "p_value": 0.0011338392986023715,
+                "p_adjusted": 0.007936875090216601
+              },
+              "verdict": "told_apart"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0515,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0001
+              }
+            },
+            "12": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0075,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0
+              }
+            }
+          }
+        }
+      }
+    },
+    "WATERBORNED11": {
+      "first_release": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 0.11193342188078621,
+              "diebold_mariano_hln": {
+                "statistic": 0.9042605482601338,
+                "p_value": 0.3689153373107573,
+                "p_adjusted": 0.8171506537043443
+              },
+              "fixed_smoothing": {
+                "statistic": 0.8814710519439175,
+                "p_value": 0.4037679752811833,
+                "p_adjusted": 1.0
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -1.1811221336747701,
+              "diebold_mariano_hln": {
+                "statistic": -4.108278486994871,
+                "p_value": 0.00010538250385624392,
+                "p_adjusted": 0.0004215300154249757
+              },
+              "fixed_smoothing": {
+                "statistic": -2.2233855331212493,
+                "p_value": 0.05688091128910593,
+                "p_adjusted": 0.22752364515642373
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -1.2930555555555563,
+              "diebold_mariano_hln": {
+                "statistic": -4.116036451116025,
+                "p_value": 0.00010256333185084048,
+                "p_adjusted": 0.00030768999555252143
+              },
+              "fixed_smoothing": {
+                "statistic": -2.325674406050029,
+                "p_value": 0.04848800525114531,
+                "p_adjusted": 0.19395202100458123
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.3831,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0096
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.3342,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0255
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 0.42306813622299083,
+              "diebold_mariano_hln": {
+                "statistic": 0.7587216683722283,
+                "p_value": 0.4505305011242075,
+                "p_adjusted": 0.8123646824640679
+              },
+              "fixed_smoothing": {
+                "statistic": 0.8796261726007926,
+                "p_value": 0.40470895970023635,
+                "p_adjusted": 1.0
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -10.532070752665902,
+              "diebold_mariano_hln": {
+                "statistic": -3.9053090227302474,
+                "p_value": 0.00021214952195394688,
+                "p_adjusted": 0.0012728971317236813
+              },
+              "fixed_smoothing": {
+                "statistic": -2.288027307643591,
+                "p_value": 0.05142295259988334,
+                "p_adjusted": 0.21102841248896792
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -10.95513888888889,
+              "diebold_mariano_hln": {
+                "statistic": -3.838509783334763,
+                "p_value": 0.0002659585452982149,
+                "p_adjusted": 0.0013297927264910745
+              },
+              "fixed_smoothing": {
+                "statistic": -2.224779120390863,
+                "p_value": 0.056757387615781286,
+                "p_adjusted": 0.2837869380789064
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.4184,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0147
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.3954,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.019
+              }
+            }
+          }
+        }
+      },
+      "latest_available": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": -0.16396466243126342,
+              "diebold_mariano_hln": {
+                "statistic": -1.1320595276095222,
+                "p_value": 0.2614183172658291,
+                "p_adjusted": 0.2614183172658291
+              },
+              "fixed_smoothing": {
+                "statistic": -1.0326277194453155,
+                "p_value": 0.3319825523898148,
+                "p_adjusted": 0.3319825523898148
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": 0.42075755979095875,
+              "diebold_mariano_hln": {
+                "statistic": 1.0575373371605594,
+                "p_value": 0.2938513494696004,
+                "p_adjusted": 0.2938513494696004
+              },
+              "fixed_smoothing": {
+                "statistic": 0.42832433685181964,
+                "p_value": 0.6797136372128121,
+                "p_adjusted": 0.6797136372128121
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": 0.5847222222222221,
+              "diebold_mariano_hln": {
+                "statistic": 1.3247510697401996,
+                "p_value": 0.18950183327518044,
+                "p_adjusted": 0.3790036665503609
+              },
+              "fixed_smoothing": {
+                "statistic": 0.5557868346158418,
+                "p_value": 0.5935551088099901,
+                "p_adjusted": 1.0
+              },
+              "verdict": "not_told_apart"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.5419,
+                "last_observation": 0.5315,
+                "seasonal_naive": 1.0
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.6236,
+                "last_observation": 0.4893,
+                "seasonal_naive": 1.0
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": -3.5466028601285533,
+              "diebold_mariano_hln": {
+                "statistic": -1.5772049758412714,
+                "p_value": 0.1191938546806443,
+                "p_adjusted": 0.32596581252281775
+              },
+              "fixed_smoothing": {
+                "statistic": -1.2065528678736726,
+                "p_value": 0.26206972742785956,
+                "p_adjusted": 0.7255888579272299
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": 5.895758250982557,
+              "diebold_mariano_hln": {
+                "statistic": 0.812002679966523,
+                "p_value": 0.419504219636213,
+                "p_adjusted": 0.419504219636213
+              },
+              "fixed_smoothing": {
+                "statistic": 0.33999988351179805,
+                "p_value": 0.7426113915723759,
+                "p_adjusted": 0.7426113915723759
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": 9.442361111111111,
+              "diebold_mariano_hln": {
+                "statistic": 1.1481456833504526,
+                "p_value": 0.2547621768577691,
+                "p_adjusted": 0.5095243537155382
+              },
+              "fixed_smoothing": {
+                "statistic": 0.4873900210282595,
+                "p_value": 0.6390565191639562,
+                "p_adjusted": 1.0
+              },
+              "verdict": "not_told_apart"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.6367,
+                "last_observation": 0.3007,
+                "seasonal_naive": 1.0
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.7196,
+                "last_observation": 0.2751,
+                "seasonal_naive": 1.0
+              }
+            }
+          }
+        }
+      }
+    },
+    "AIRRTMFMD11": {
+      "first_release": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 37519.73591059692,
+              "diebold_mariano_hln": {
+                "statistic": 2.4301241681132235,
+                "p_value": 0.017623574036284746,
+                "p_adjusted": 0.08811787018142372
+              },
+              "fixed_smoothing": {
+                "statistic": 1.6195554116226216,
+                "p_value": 0.1439875438864703,
+                "p_adjusted": 0.5759501755458812
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -102114.75020051419,
+              "diebold_mariano_hln": {
+                "statistic": -3.5818236273586037,
+                "p_value": 0.0006210435913165132,
+                "p_adjusted": 0.0018631307739495396
+              },
+              "fixed_smoothing": {
+                "statistic": -1.5935027879735948,
+                "p_value": 0.1497131136584038,
+                "p_adjusted": 0.3448593162292167
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -139634.48611111112,
+              "diebold_mariano_hln": {
+                "statistic": -4.695123360533925,
+                "p_value": 1.2625199586360378e-05,
+                "p_adjusted": 6.310834486158951e-05
+              },
+              "fixed_smoothing": {
+                "statistic": -1.8683913913245467,
+                "p_value": 0.09865058497481623,
+                "p_adjusted": 0.19730116994963245
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.071,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0159
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.1176,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.067
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 12820292414.521858,
+              "diebold_mariano_hln": {
+                "statistic": 1.537586760037133,
+                "p_value": 0.128594585167721,
+                "p_adjusted": 0.514378340670884
+              },
+              "fixed_smoothing": {
+                "statistic": 1.1619365017287904,
+                "p_value": 0.27875151800743525,
+                "p_adjusted": 1.0
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -77414920352.85313,
+              "diebold_mariano_hln": {
+                "statistic": -3.0993225570373815,
+                "p_value": 0.00277972444429213,
+                "p_adjusted": 0.00833917333287639
+              },
+              "fixed_smoothing": {
+                "statistic": -1.3481664542758858,
+                "p_value": 0.21453045517615155,
+                "p_adjusted": 0.3237363551527101
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -90235212767.375,
+              "diebold_mariano_hln": {
+                "statistic": -3.521144104738123,
+                "p_value": 0.0007551570665869653,
+                "p_adjusted": 0.0030206282663478613
+              },
+              "fixed_smoothing": {
+                "statistic": -1.4201376863574307,
+                "p_value": 0.1933433039870443,
+                "p_adjusted": 0.3866866079740886
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.2146,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0809
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.2593,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.1771
+              }
+            }
+          }
+        }
+      },
+      "latest_available": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 42462.90184397119,
+              "diebold_mariano_hln": {
+                "statistic": 2.759277810209685,
+                "p_value": 0.007363462246530738,
+                "p_adjusted": 0.03681731123265369
+              },
+              "fixed_smoothing": {
+                "statistic": 1.8218967749364117,
+                "p_value": 0.10594395645962006,
+                "p_adjusted": 0.31783186937886015
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -96730.69537825104,
+              "diebold_mariano_hln": {
+                "statistic": -3.322021066531857,
+                "p_value": 0.0014145768428422871,
+                "p_adjusted": 0.0056583073713691485
+              },
+              "fixed_smoothing": {
+                "statistic": -1.446025487523744,
+                "p_value": 0.18618276647652648,
+                "p_adjusted": 0.6312885016559497
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -139193.59722222222,
+              "diebold_mariano_hln": {
+                "statistic": -4.530971046326166,
+                "p_value": 2.317250383302946e-05,
+                "p_adjusted": 9.269001533211784e-05
+              },
+              "fixed_smoothing": {
+                "statistic": -1.7962407263021598,
+                "p_value": 0.11018416982406917,
+                "p_adjusted": 0.3305525094722075
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0409,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0188
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0874,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0874
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 13327402909.36135,
+              "diebold_mariano_hln": {
+                "statistic": 1.6247124445385843,
+                "p_value": 0.10865527084093926,
+                "p_adjusted": 0.32596581252281775
+              },
+              "fixed_smoothing": {
+                "statistic": 1.2760356734299507,
+                "p_value": 0.23774122357872318,
+                "p_adjusted": 0.7255888579272299
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -75986591047.34698,
+              "diebold_mariano_hln": {
+                "statistic": -3.1941086508314878,
+                "p_value": 0.0020924621730216983,
+                "p_adjusted": 0.01046231086510849
+              },
+              "fixed_smoothing": {
+                "statistic": -1.3122650852729323,
+                "p_value": 0.22582893524412875,
+                "p_adjusted": 0.5834095507715208
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -89313993956.70833,
+              "diebold_mariano_hln": {
+                "statistic": -3.5347437147104874,
+                "p_value": 0.0007229021954318463,
+                "p_adjusted": 0.002891608781727385
+              },
+              "fixed_smoothing": {
+                "statistic": -1.3963384501681189,
+                "p_value": 0.20013816905747558,
+                "p_adjusted": 0.7393270699797551
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.1741,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0812
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.2174,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.1898
+              }
+            }
+          }
+        }
+      }
+    },
+    "PETROLEUMD11": {
+      "first_release": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 3609.0128702354964,
+              "diebold_mariano_hln": {
+                "statistic": 3.968033669855845,
+                "p_value": 0.00017124519279977036,
+                "p_adjusted": 0.0011987163495983926
+              },
+              "fixed_smoothing": {
+                "statistic": 3.253100572168518,
+                "p_value": 0.011646901577072225,
+                "p_adjusted": 0.06988140946243335
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -10611.667685320059,
+              "diebold_mariano_hln": {
+                "statistic": -5.438154343146137,
+                "p_value": 7.224090849094281e-07,
+                "p_adjusted": 5.056863594365997e-06
+              },
+              "fixed_smoothing": {
+                "statistic": -2.506736875983209,
+                "p_value": 0.03655630041477262,
+                "p_adjusted": 0.21085782273791748
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -14220.680555555555,
+              "diebold_mariano_hln": {
+                "statistic": -7.733838558469303,
+                "p_value": 5.2066606519422114e-11,
+                "p_adjusted": 3.644662456359548e-10
+              },
+              "fixed_smoothing": {
+                "statistic": -3.4922986111766265,
+                "p_value": 0.008170824395798226,
+                "p_adjusted": 0.04902494637478935
+              },
+              "verdict": "told_apart"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0014,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0
+              }
+            },
+            "12": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0022,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0002
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 110650757.47902471,
+              "diebold_mariano_hln": {
+                "statistic": 3.844246693734664,
+                "p_value": 0.0002608671269762301,
+                "p_adjusted": 0.001826069888833611
+              },
+              "fixed_smoothing": {
+                "statistic": 2.6023532188649727,
+                "p_value": 0.031502394017581536,
+                "p_adjusted": 0.16122885162315292
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -530595944.75708646,
+              "diebold_mariano_hln": {
+                "statistic": -5.145795459477066,
+                "p_value": 2.271692177515115e-06,
+                "p_adjusted": 1.5901845242605805e-05
+              },
+              "fixed_smoothing": {
+                "statistic": -2.4145772478978773,
+                "p_value": 0.042205682497793585,
+                "p_adjusted": 0.21102841248896792
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -641246702.2361112,
+              "diebold_mariano_hln": {
+                "statistic": -5.905664992866239,
+                "p_value": 1.1060146707171996e-07,
+                "p_adjusted": 7.742102695020397e-07
+              },
+              "fixed_smoothing": {
+                "statistic": -2.7124135012556096,
+                "p_value": 0.026558697975930613,
+                "p_adjusted": 0.1593521878555837
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0062,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0016
+              }
+            },
+            "12": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0114,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0114
+              }
+            }
+          }
+        }
+      },
+      "latest_available": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 3585.4096168763595,
+              "diebold_mariano_hln": {
+                "statistic": 3.5898043282923218,
+                "p_value": 0.0006051892141656952,
+                "p_adjusted": 0.004236324499159866
+              },
+              "fixed_smoothing": {
+                "statistic": 2.6598515973826404,
+                "p_value": 0.02881210890217724,
+                "p_adjusted": 0.15989354570011607
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -10314.465383123641,
+              "diebold_mariano_hln": {
+                "statistic": -5.188218571084841,
+                "p_value": 1.9266301790348086e-06,
+                "p_adjusted": 1.3486411253243661e-05
+              },
+              "fixed_smoothing": {
+                "statistic": -2.499414102065309,
+                "p_value": 0.036975779182438544,
+                "p_adjusted": 0.22185467509463125
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -13899.875,
+              "diebold_mariano_hln": {
+                "statistic": -7.286655006854994,
+                "p_value": 3.4902259216508963e-10,
+                "p_adjusted": 2.0941355529905377e-09
+              },
+              "fixed_smoothing": {
+                "statistic": -3.5837256253278182,
+                "p_value": 0.007149417972408003,
+                "p_adjusted": 0.04289650783444802
+              },
+              "verdict": "told_apart"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0049,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0
+              }
+            },
+            "12": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0135,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0001
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": 95167782.22259198,
+              "diebold_mariano_hln": {
+                "statistic": 3.4702035956994055,
+                "p_value": 0.0008885176521062861,
+                "p_adjusted": 0.006219623564744003
+              },
+              "fixed_smoothing": {
+                "statistic": 2.348661310274071,
+                "p_value": 0.04677891040967035,
+                "p_adjusted": 0.23389455204835177
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -525212372.2357414,
+              "diebold_mariano_hln": {
+                "statistic": -4.958264270946668,
+                "p_value": 4.675209225195852e-06,
+                "p_adjusted": 3.272646457637097e-05
+              },
+              "fixed_smoothing": {
+                "statistic": -2.4406309461194957,
+                "p_value": 0.04052460555749511,
+                "p_adjusted": 0.24314763334497067
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -620380154.4583334,
+              "diebold_mariano_hln": {
+                "statistic": -5.691052358829775,
+                "p_value": 2.633839472218689e-07,
+                "p_adjusted": 1.8436876305530823e-06
+              },
+              "fixed_smoothing": {
+                "statistic": -2.773952236306779,
+                "p_value": 0.024148904509848513,
+                "p_adjusted": 0.14489342705909108
+              },
+              "verdict": "unsettled"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0092,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0016
+              }
+            },
+            "12": {
+              "set": [
+                "last_observation"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 0.0234,
+                "last_observation": 1.0,
+                "seasonal_naive": 0.0056
+              }
+            }
+          }
+        }
+      }
+    },
+    "NATURALGASD11": {
+      "first_release": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": -11.584826864825326,
+              "diebold_mariano_hln": {
+                "statistic": -1.5202243747196165,
+                "p_value": 0.13289566344546844,
+                "p_adjusted": 0.5315826537818737
+              },
+              "fixed_smoothing": {
+                "statistic": -2.3768608785505525,
+                "p_value": 0.04476446646035159,
+                "p_adjusted": 0.22382233230175796
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -18.477882420380904,
+              "diebold_mariano_hln": {
+                "statistic": -1.8663143387141083,
+                "p_value": 0.06612751089068601,
+                "p_adjusted": 0.06612751089068601
+              },
+              "fixed_smoothing": {
+                "statistic": -1.7684744295718886,
+                "p_value": 0.1149531054097389,
+                "p_adjusted": 0.3448593162292167
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -6.893055555555577,
+              "diebold_mariano_hln": {
+                "statistic": -0.6027542283295442,
+                "p_value": 0.5485926717560791,
+                "p_adjusted": 0.5485926717560791
+              },
+              "fixed_smoothing": {
+                "statistic": -0.7469469699608033,
+                "p_value": 0.4764724246566081,
+                "p_adjusted": 0.4764724246566081
+              },
+              "verdict": "not_told_apart"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 1.0,
+                "last_observation": 0.116,
+                "seasonal_naive": 0.116
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "last_observation",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 1.0,
+                "last_observation": 0.0685,
+                "seasonal_naive": 0.0837
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": -4415.7483455826,
+              "diebold_mariano_hln": {
+                "statistic": -2.138540072314107,
+                "p_value": 0.03591456839208397,
+                "p_adjusted": 0.21548741035250382
+              },
+              "fixed_smoothing": {
+                "statistic": -3.823316876234082,
+                "p_value": 0.00506578442935903,
+                "p_adjusted": 0.03546049100551321
+              },
+              "verdict": "unsettled"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -6775.8970955826,
+              "diebold_mariano_hln": {
+                "statistic": -1.9933420132169608,
+                "p_value": 0.05006728684088033,
+                "p_adjusted": 0.05006728684088033
+              },
+              "fixed_smoothing": {
+                "statistic": -2.9501359375695033,
+                "p_value": 0.01842186072468957,
+                "p_adjusted": 0.11053116434813742
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": -2360.1487499999985,
+              "diebold_mariano_hln": {
+                "statistic": -0.5861399261446028,
+                "p_value": 0.5596403071839781,
+                "p_adjusted": 0.5596403071839781
+              },
+              "fixed_smoothing": {
+                "statistic": -1.121199028068752,
+                "p_value": 0.29472784876198327,
+                "p_adjusted": 0.3866866079740886
+              },
+              "verdict": "not_told_apart"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 1.0,
+                "last_observation": 0.0376,
+                "seasonal_naive": 0.0376
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 1.0,
+                "last_observation": 0.0022,
+                "seasonal_naive": 0.0022
+              }
+            }
+          }
+        }
+      },
+      "latest_available": {
+        "absolute": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": -20.993067812090132,
+              "diebold_mariano_hln": {
+                "statistic": -3.289267095752255,
+                "p_value": 0.0015651331266652501,
+                "p_adjusted": 0.0093907987599915
+              },
+              "fixed_smoothing": {
+                "statistic": -4.186664257433401,
+                "p_value": 0.0030516543671330184,
+                "p_adjusted": 0.021361580569931128
+              },
+              "verdict": "told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -16.900012256534623,
+              "diebold_mariano_hln": {
+                "statistic": -1.7644996364141192,
+                "p_value": 0.08194886310207408,
+                "p_adjusted": 0.16389772620414816
+              },
+              "fixed_smoothing": {
+                "statistic": -1.289668967798464,
+                "p_value": 0.23319754444419213,
+                "p_adjusted": 0.6312885016559497
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": 4.093055555555509,
+              "diebold_mariano_hln": {
+                "statistic": 0.37281873869829824,
+                "p_value": 0.7103940394504377,
+                "p_adjusted": 0.7103940394504377
+              },
+              "fixed_smoothing": {
+                "statistic": 0.27080849883212366,
+                "p_value": 0.7933942764669556,
+                "p_adjusted": 1.0
+              },
+              "verdict": "not_told_apart"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 1.0,
+                "last_observation": 0.0004,
+                "seasonal_naive": 0.1016
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 1.0,
+                "last_observation": 0.0,
+                "seasonal_naive": 0.1832
+              }
+            }
+          }
+        },
+        "squared": {
+          "pairs": [
+            {
+              "first": "monthly_refit_ridge",
+              "second": "last_observation",
+              "mean_difference": -6405.676278439421,
+              "diebold_mariano_hln": {
+                "statistic": -3.0219178348598774,
+                "p_value": 0.003491499648114046,
+                "p_adjusted": 0.020948997888684276
+              },
+              "fixed_smoothing": {
+                "statistic": -5.377122579509883,
+                "p_value": 0.0006639186554017665,
+                "p_adjusted": 0.004647430587812366
+              },
+              "verdict": "told_apart"
+            },
+            {
+              "first": "monthly_refit_ridge",
+              "second": "seasonal_naive",
+              "mean_difference": -5758.966972883874,
+              "diebold_mariano_hln": {
+                "statistic": -2.1691161722847743,
+                "p_value": 0.03342394795358497,
+                "p_adjusted": 0.06684789590716994
+              },
+              "fixed_smoothing": {
+                "statistic": -1.8826172606187346,
+                "p_value": 0.09651617036145665,
+                "p_adjusted": 0.4825808518072833
+              },
+              "verdict": "not_told_apart"
+            },
+            {
+              "first": "last_observation",
+              "second": "seasonal_naive",
+              "mean_difference": 646.7093055555478,
+              "diebold_mariano_hln": {
+                "statistic": 0.19040275364155027,
+                "p_value": 0.8495369031346591,
+                "p_adjusted": 0.8495369031346591
+              },
+              "fixed_smoothing": {
+                "statistic": 0.19159247067553686,
+                "p_value": 0.8528349493726759,
+                "p_adjusted": 1.0
+              },
+              "verdict": "not_told_apart"
+            }
+          ],
+          "confidence_sets": {
+            "4": {
+              "set": [
+                "monthly_refit_ridge"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 1.0,
+                "last_observation": 0.0024,
+                "seasonal_naive": 0.0254
+              }
+            },
+            "12": {
+              "set": [
+                "monthly_refit_ridge",
+                "seasonal_naive"
+              ],
+              "p_values": {
+                "monthly_refit_ridge": 1.0,
+                "last_observation": 0.0,
+                "seasonal_naive": 0.0611
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
