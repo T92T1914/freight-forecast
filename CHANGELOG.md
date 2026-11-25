@@ -6,6 +6,16 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-25, the comparison test protocol
+
+* `docs/forecast-comparison-protocol.json` fixes how I will test whether the
+  differences in the two real time reports can be told apart from noise. It
+  names a Diebold Mariano test with the Harvey, Leybourne and Newbold
+  correction, a fixed smoothing check, a Holm adjustment across the seven
+  component series, a model confidence set, the rule for reading them and why
+  the Clark and West test does not apply. It was declared before any of those
+  statistics was computed. No result, model or published number changes.
+
 ### 2026-11-21, three pins move
 
 * `fastapi` moves from 0.163.1 to 0.165.0, `pydantic` from 2.14.3 to 2.14.4 and

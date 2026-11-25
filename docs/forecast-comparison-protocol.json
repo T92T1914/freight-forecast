@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "id": "freight-forecast-comparison-v1",
+  "declared_utc": "2026-11-25T22:00:26Z",
+  "question": "Which differences between the three forecasters in the two real time reports can be told apart from noise?",
+  "extends": "bts-freight-tsi-real-time-v1",
+  "data": {
+    "series": "TSIFRGHT",
+    "component_series": [
+      "TRUCKD11",
+      "RAILFRTCARLOADSD11",
+      "RAILFRTINTERMODALD11",
+      "WATERBORNED11",
+      "AIRRTMFMD11",
+      "PETROLEUMD11",
+      "NATURALGASD11"
+    ],
+    "inputs": "Only retained data. TSIFRGHT uses the predictions saved in docs/real-time-example.json, whose key model is the monthly_refit_ridge forecaster. The component series are replayed with src/real_time_backtest.py from the retrieved vintage tables, each checked against the SHA256 in its committed manifest. The truck and rail tables are not committed, so their copies come from the earlier retrieval and nothing is fetched again.",
+    "reproduction_rule": "Before any statistic, each mean absolute error computed from the inputs must equal the saved value to a relative difference of 1e-6, against docs/real-time-example.json for TSIFRGHT and docs/real-time-components.json for the component series. If one does not, the study stops and the report says why.",
+    "targets": "2020-01 through 2025-12, 72 origins.",
+    "outcomes": [
+      "first_release",
+      "latest_available"
+    ]
+  },
+  "forecasters": [
+    "monthly_refit_ridge",
+    "last_observation",
+    "seasonal_naive"
+  ],
+  "pairs": [
+    [
+      "monthly_refit_ridge",
+      "last_observation"
+    ],
+    [
+      "monthly_refit_ridge",
+      "seasonal_naive"
+    ],
+    [
+      "last_observation",
+      "seasonal_naive"
+    ]
+  ],
+  "losses": [
+    "absolute",
+    "squared"
+  ],
+  "loss_differential": "The loss of the first method of a pair minus the loss of the second at each target month. A negative mean says the first method had the lower loss. Values are in the units of the series, squared for squared loss.",
+  "horizon": {
+    "h": 1,
+    "meaning": "One observation step. Each origin holds every month through the month before the target."
+  },
+  "significance_level": 0.05,
+  "tests": {
+    "diebold_mariano_hln": {
+      "role": "primary",
+      "long_run_variance": "The lag 0 sample variance of the loss differential with divisor T. The rectangular window uses h minus 1 lags, which is a bandwidth of 0 here.",
+      "statistic": "mean(d) / sqrt(variance / T), multiplied by the Harvey, Leybourne and Newbold factor sqrt((T + 1 - 2h + h(h - 1) / T) / T)",
+      "distribution": "Student t with T minus 1 degrees of freedom, two sided",
+      "reference_implementation": "dieboldmariano 1.1.0, dm_test with h of 1, harvey_correction on and the acf variance estimator",
+      "reference_precision": {
+        "statistic_relative": 1e-10,
+        "p_value_absolute": 1e-08
+      }
+    },
+    "fixed_smoothing": {
+      "role": "check",
+      "method": "Fixed m with equal weights on periodogram ordinates, the Daniell kernel",
+      "bandwidth_m": 4,
+      "bandwidth_rule": "The floor of the cube root of T, which is 4 for 72 months",
+      "long_run_variance": "The mean over j from 1 to m of the squared modulus of the sum over t of d_t exp(-2 pi i j t / T), divided by T",
+      "statistic": "sqrt(T) mean(d) / sqrt(long run variance)",
+      "distribution": "Student t with 2m degrees of freedom, two sided",
+      "reference_implementation": "The ordinates from scipy.signal.periodogram with a boxcar window, no detrending, density scaling, a two sided spectrum and a sampling frequency of 1, with scipy.stats.t for the p value. I know of no packaged Python version of the whole test, so the reference covers its parts.",
+      "reference_precision": {
+        "statistic_relative": 1e-10,
+        "p_value_absolute": 1e-10
+      }
+    },
+    "degenerate_case": "A test is not computed when the largest and smallest loss differential differ by no more than 1e-12 times the largest absolute differential, which includes differentials that are all zero. A test whose long run variance is exactly zero is not computed either. No other estimator replaces it."
+  },
+  "multiple_comparisons": {
+    "method": "Holm step down adjusted p values",
+    "family": "The seven component series, separately for each pair, outcome, loss and test",
+    "not_adjusted": "TSIFRGHT is one series declared on its own and its p values are not adjusted. Nothing adjusts across pairs, losses, outcomes or the two tests.",
+    "not_computed_rule": "The family size stays 7. A test that was not computed enters the adjustment as a p value of 1 and is still reported as not computed.",
+    "reference_implementation": "statsmodels 0.15.0, multipletests with method holm",
+    "reference_precision": {
+      "p_value_absolute": 1e-12
+    }
+  },
+  "model_confidence_set": {
+    "implementation": "arch 9.0.0, arch.bootstrap.MCS",
+    "inputs": "The 72 by 3 table of losses of the three methods, for each of the eight series, both outcomes and both losses",
+    "size": 0.05,
+    "method": "r",
+    "bootstrap": "circular",
+    "block_length": 4,
+    "sensitivity_block_length": 12,
+    "replications": 10000,
+    "seed": 20261125,
+    "seed_rule": "Each set is computed by a new instance with this seed.",
+    "membership": "A method is in the set when its MCS p value is at or above the size, which is the included property of arch.",
+    "sensitivity_rule": "Block length 4 gives the stated set. The report also gives the set at block length 12 and says where the two differ.",
+    "not_adjusted": "No Holm adjustment across series applies to the confidence sets.",
+    "degenerate_case": "When two methods have losses that differ by no more than 1e-12 times the largest loss at every target, the set for that series, outcome and loss is not computed and the report says so.",
+    "relation_to_pairs": "The confidence set is reported beside the pairwise verdicts. Neither overrides the other."
+  },
+  "verdict_rule": {
+    "p_values": "Holm adjusted p values for a component series and unadjusted p values for TSIFRGHT",
+    "told_apart": "Both tests are computed and both have a p value below 0.05.",
+    "unsettled": "Exactly one test is computed with a p value below 0.05.",
+    "not_told_apart": "At least one test is computed and no computed test has a p value below 0.05.",
+    "not_computed": "Neither test is computed."
+  },
+  "clark_west": {
+    "applies": false,
+    "reason": "Clark and West adjust a squared error comparison between nested models. src/features.py gives the model a time index, the value 12 months back, the mean of the last 3 months and month indicators. The value 1 month back is not a feature. The estimator in src/train.py is a Ridge fit to the log of the target. Neither the last observation nor the same month last year is a restriction of that fit, so no pair is nested."
+  },
+  "reference_check": "Unit tests run both tests and the Holm adjustment on a synthetic fixture committed with the tests and compare them with the named references to the stated precision. The fixture keeps each statistic at 0.001 or more in size, because the dieboldmariano p value routine fails or loses precision near zero. The study computes its own p values with scipy.stats.t.",
+  "report": {
+    "document": "docs/forecast-comparison.md",
+    "content": "For every series, outcome, loss and pair: the mean loss difference, both statistics, both p values, the adjusted values and the verdict. For every series, outcome and loss: the confidence set at both block lengths. For every series, the number of targets whose month before and target month first appear on the same vintage. The two real time reports drop their statement that there are no significance tests and link this report."
+  },
+  "nothing_is_chosen_after_results": "No test, loss, bandwidth, block length, level, seed or rule changes after a statistic is computed. A change would be a new protocol with a new id, and both results would stay on record. No published number changes and no model is selected from these tests.",
+  "data_access_disclosure": "These tests were chosen after the results of the two real time reports were known. Their protocol, bts-freight-tsi-real-time-v1, declared no significance tests, and this protocol departs from that. As of this declaration the mean errors, the yearly tables and the scaled errors are merged and I have seen them, and docs/real-time-example.json holds the paired absolute errors of every month for TSIFRGHT. No loss differential statistic, p value or confidence set has been computed on any of these series.",
+  "limits": [
+    "The primary test takes no autocorrelation of the loss differential into account at h of 1. That holds for optimal one step forecasts, and none of the three methods is shown to be optimal. The same month last year uses a value 12 months old, so its errors can be strongly autocorrelated, and a test can then reject too often. The verdict rule also asks the fixed smoothing check, which allows for it.",
+    "On some targets the vintage that first holds the month before the target also holds the target month. The report counts those targets for every series. The target value is dropped before forecasting, but those origins are not one step ahead in publication time. They all stay in.",
+    "The Ridge model is refit on an expanding window. The Giacomini and White theory for comparing forecasting methods assumes a window of limited length, so these tests describe the average loss difference of the saved forecasts and assume that difference is covariance stationary.",
+    "The yearly tables show the gap between methods moving over time, which the stationarity assumption does not cover.",
+    "72 months is a short sample, and tests of this kind can reject too often or have little power in it.",
+    "Twelve families of tests per test type, three pairs by two outcomes by two losses, are not adjusted against each other.",
+    "The earlier protocol names the seven as component series of the freight index, so the eight series are not independent. They also come from one publisher.",
+    "A difference that cannot be told apart is not evidence that two methods are equal.",
+    "The study does not change the serving model, its features, its policy or its gate."
+  ],
+  "dev_dependencies": "arch 9.0.0, statsmodels 0.15.0, scipy 1.17.1 and dieboldmariano 1.1.0, pinned as dev dependencies when the test code lands. None enters the serving image."
+}
