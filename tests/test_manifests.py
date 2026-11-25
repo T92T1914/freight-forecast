@@ -77,8 +77,9 @@ def test_release_publishes_only_on_version_tags():
     token scope are contracts worth pinning: version tags only, packages
     writable, and the tests run again before anything is pushed."""
     release = _workflow(".github/workflows/release.yml")
-    assert release["on"] == {"push": {"tags": ["v*"]}}
+    assert release["on"] == {"push": {"tags": ["v*"]}, "workflow_dispatch": None}
     assert release["permissions"] == {"contents": "read"}
+    assert set(release["jobs"]) == {"dry-run", "publish-image"}
     job = release["jobs"]["publish-image"]
     assert job["permissions"] == {
         "contents": "read",
@@ -86,13 +87,34 @@ def test_release_publishes_only_on_version_tags():
         "id-token": "write",
         "attestations": "write",
     }
-    assert job["if"] == "github.repository == 'T92T1914/freight-forecast'"
+    assert job["if"] == (
+        "github.repository == 'T92T1914/freight-forecast' "
+        "&& github.event_name == 'push'"
+    )
     steps = job["steps"]
     runs = [s.get("run", "") for s in steps]
     gate = next(i for i, r in enumerate(runs) if "make check" in r)
     push = next(i for i, r in enumerate(runs) if "docker buildx build --push" in r)
     assert gate < push
     assert any("ghcr.io" in r for r in runs)
+
+
+def test_release_dry_run_cannot_push_or_attest():
+    """A manual run builds the image and nothing leaves the runner."""
+    job = _workflow(".github/workflows/release.yml")["jobs"]["dry-run"]
+    assert job["if"] == "github.event_name == 'workflow_dispatch'"
+    assert job["permissions"] == {"contents": "read"}
+    assert "needs" not in job
+    steps = job["steps"]
+    uses = [s["uses"].split("@")[0] for s in steps if "uses" in s]
+    assert uses == ["actions/checkout", "actions/setup-python"]
+    assert all(re.fullmatch(r"[^@]+@[0-9a-f]{40}", s["uses"]) for s in steps[:2])
+    assert steps[0]["with"] == {"persist-credentials": False}
+    runs = " ".join(s.get("run", "") for s in steps)
+    assert "make check" in runs and "docker buildx build --load" in runs
+    for forbidden in ("--push", "docker push", "login", "ghcr.io", "secrets."):
+        assert forbidden not in runs
+    assert "secrets." not in json.dumps(job) and "token" not in json.dumps(job)
 
 
 def test_release_binds_inventory_attestations_and_consumer_to_one_digest():
