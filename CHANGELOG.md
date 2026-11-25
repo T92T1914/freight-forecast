@@ -10,8 +10,8 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 * `release.yml` can now be started by hand. That run checks and builds the image
   in a job with a read only token and pushes and attests nothing. The publication
-  job runs only on a pushed version tag, as before, and now says so itself. No
-  tag or release exists.
+  job still starts only from a pushed version tag, and its condition now also
+  requires a push event. No tag or release exists.
 
 ### 2026-11-25, the comparison test protocol
 

@@ -100,21 +100,35 @@ def test_release_publishes_only_on_version_tags():
 
 
 def test_release_dry_run_cannot_push_or_attest():
-    """A manual run builds the image and nothing leaves the runner."""
-    job = _workflow(".github/workflows/release.yml")["jobs"]["dry-run"]
+    """A manual run builds the image and publishes no image or attestation."""
+    release = _workflow(".github/workflows/release.yml")
+    job = release["jobs"]["dry-run"]
+    assert set(job) == {"if", "runs-on", "timeout-minutes", "permissions", "steps"}
     assert job["if"] == "github.event_name == 'workflow_dispatch'"
     assert job["permissions"] == {"contents": "read"}
-    assert "needs" not in job
+    assert "env" not in release
+    assert "secrets" not in json.dumps(job)
     steps = job["steps"]
-    uses = [s["uses"].split("@")[0] for s in steps if "uses" in s]
-    assert uses == ["actions/checkout", "actions/setup-python"]
-    assert all(re.fullmatch(r"[^@]+@[0-9a-f]{40}", s["uses"]) for s in steps[:2])
+    uses = [s["uses"] for s in steps if "uses" in s]
+    assert [u.split("@")[0] for u in uses] == [
+        "actions/checkout",
+        "actions/setup-python",
+    ]
+    assert all(re.fullmatch(r"[^@]+@[0-9a-f]{40}", u) for u in uses)
     assert steps[0]["with"] == {"persist-credentials": False}
-    runs = " ".join(s.get("run", "") for s in steps)
-    assert "make check" in runs and "docker buildx build --load" in runs
-    for forbidden in ("--push", "docker push", "login", "ghcr.io", "secrets."):
-        assert forbidden not in runs
-    assert "secrets." not in json.dumps(job) and "token" not in json.dumps(job)
+    assert steps[1]["with"] == {"python-version": "3.11"}
+    # The commands are pinned whole, so a new way to push cannot slip in.
+    assert [" ".join(s["run"].replace("\\\n", " ").split()) for s in steps[2:]] == [
+        "make install",
+        "make check",
+        "docker buildx build --load --platform linux/amd64 --provenance=false "
+        '--label "org.opencontainers.image.source=$SOURCE" '
+        '--label "org.opencontainers.image.revision=$GITHUB_SHA" '
+        '--label "org.opencontainers.image.version=dry-run" '
+        '--label "org.opencontainers.image.licenses=MIT" '
+        "-t freight-forecast:dry-run . "
+        "docker image inspect --format '{{.Id}}' freight-forecast:dry-run",
+    ]
 
 
 def test_release_binds_inventory_attestations_and_consumer_to_one_digest():
