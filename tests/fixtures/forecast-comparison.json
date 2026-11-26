@@ -1,0 +1,437 @@
+{
+ "note": "Synthetic values from a seeded generator. No freight data.",
+ "rows": [
+  {
+   "first_release": 100.00123,
+   "model": 99.560158,
+   "last_observation": 99.894215,
+   "seasonal_naive": 103.020872
+  },
+  {
+   "first_release": 100.299976,
+   "model": 101.703022,
+   "last_observation": 99.940041,
+   "seasonal_naive": 98.767963
+  },
+  {
+   "first_release": 100.025838,
+   "model": 99.925525,
+   "last_observation": 101.70172,
+   "seasonal_naive": 98.327368
+  },
+  {
+   "first_release": 99.135246,
+   "model": 98.949357,
+   "last_observation": 99.523094,
+   "seasonal_naive": 98.297089
+  },
+  {
+   "first_release": 98.680575,
+   "model": 98.66492,
+   "last_observation": 97.455101,
+   "seasonal_naive": 98.148315
+  },
+  {
+   "first_release": 97.688929,
+   "model": 97.279199,
+   "last_observation": 98.971669,
+   "seasonal_naive": 99.017576
+  },
+  {
+   "first_release": 97.749072,
+   "model": 98.010442,
+   "last_observation": 98.484291,
+   "seasonal_naive": 96.297438
+  },
+  {
+   "first_release": 99.089288,
+   "model": 101.07269,
+   "last_observation": 99.083348,
+   "seasonal_naive": 100.222758
+  },
+  {
+   "first_release": 98.597081,
+   "model": 96.831652,
+   "last_observation": 98.978429,
+   "seasonal_naive": 93.370109
+  },
+  {
+   "first_release": 97.976606,
+   "model": 95.02008,
+   "last_observation": 97.641682,
+   "seasonal_naive": 94.956809
+  },
+  {
+   "first_release": 98.466448,
+   "model": 99.028933,
+   "last_observation": 100.93568,
+   "seasonal_naive": 95.637623
+  },
+  {
+   "first_release": 98.823335,
+   "model": 98.125025,
+   "last_observation": 99.049279,
+   "seasonal_naive": 99.703772
+  },
+  {
+   "first_release": 98.928749,
+   "model": 98.9465,
+   "last_observation": 98.702226,
+   "seasonal_naive": 100.395646
+  },
+  {
+   "first_release": 97.998281,
+   "model": 99.130134,
+   "last_observation": 96.861238,
+   "seasonal_naive": 97.276574
+  },
+  {
+   "first_release": 97.96903,
+   "model": 98.325488,
+   "last_observation": 96.809096,
+   "seasonal_naive": 98.196579
+  },
+  {
+   "first_release": 98.664333,
+   "model": 97.591602,
+   "last_observation": 99.733606,
+   "seasonal_naive": 98.704021
+  },
+  {
+   "first_release": 97.320118,
+   "model": 97.763009,
+   "last_observation": 96.669987,
+   "seasonal_naive": 96.488011
+  },
+  {
+   "first_release": 96.862502,
+   "model": 93.966108,
+   "last_observation": 95.617954,
+   "seasonal_naive": 97.378454
+  },
+  {
+   "first_release": 94.96128,
+   "model": 91.855572,
+   "last_observation": 95.892549,
+   "seasonal_naive": 89.57221
+  },
+  {
+   "first_release": 93.671742,
+   "model": 95.182524,
+   "last_observation": 92.741695,
+   "seasonal_naive": 95.352917
+  },
+  {
+   "first_release": 91.830007,
+   "model": 92.339529,
+   "last_observation": 90.139488,
+   "seasonal_naive": 94.827623
+  },
+  {
+   "first_release": 91.594916,
+   "model": 94.201647,
+   "last_observation": 91.52253,
+   "seasonal_naive": 90.32795
+  },
+  {
+   "first_release": 90.327469,
+   "model": 90.371682,
+   "last_observation": 89.254802,
+   "seasonal_naive": 92.903512
+  },
+  {
+   "first_release": 90.598734,
+   "model": 90.030107,
+   "last_observation": 90.542424,
+   "seasonal_naive": 87.877504
+  },
+  {
+   "first_release": 90.755485,
+   "model": 90.053768,
+   "last_observation": 89.349987,
+   "seasonal_naive": 93.775279
+  },
+  {
+   "first_release": 90.568554,
+   "model": 90.622014,
+   "last_observation": 91.631068,
+   "seasonal_naive": 90.105863
+  },
+  {
+   "first_release": 88.051794,
+   "model": 87.240748,
+   "last_observation": 87.69244,
+   "seasonal_naive": 85.983147
+  },
+  {
+   "first_release": 87.513101,
+   "model": 87.825836,
+   "last_observation": 87.100308,
+   "seasonal_naive": 86.17332
+  },
+  {
+   "first_release": 87.4646,
+   "model": 85.558881,
+   "last_observation": 86.57707,
+   "seasonal_naive": 91.595961
+  },
+  {
+   "first_release": 87.577909,
+   "model": 86.803936,
+   "last_observation": 86.418406,
+   "seasonal_naive": 88.022423
+  },
+  {
+   "first_release": 86.047773,
+   "model": 88.599409,
+   "last_observation": 84.448347,
+   "seasonal_naive": 84.963912
+  },
+  {
+   "first_release": 85.57002,
+   "model": 84.858736,
+   "last_observation": 83.632899,
+   "seasonal_naive": 87.127815
+  },
+  {
+   "first_release": 84.591501,
+   "model": 84.853991,
+   "last_observation": 84.670087,
+   "seasonal_naive": 81.985029
+  },
+  {
+   "first_release": 83.782664,
+   "model": 84.810319,
+   "last_observation": 83.189437,
+   "seasonal_naive": 82.882535
+  },
+  {
+   "first_release": 84.843562,
+   "model": 83.370345,
+   "last_observation": 83.505849,
+   "seasonal_naive": 88.083052
+  },
+  {
+   "first_release": 84.036028,
+   "model": 83.52466,
+   "last_observation": 84.356876,
+   "seasonal_naive": 83.441415
+  },
+  {
+   "first_release": 84.003506,
+   "model": 83.597674,
+   "last_observation": 83.444749,
+   "seasonal_naive": 85.267737
+  },
+  {
+   "first_release": 84.887896,
+   "model": 84.704908,
+   "last_observation": 84.721308,
+   "seasonal_naive": 84.450116
+  },
+  {
+   "first_release": 84.304296,
+   "model": 86.486709,
+   "last_observation": 85.052858,
+   "seasonal_naive": 84.875576
+  },
+  {
+   "first_release": 84.192594,
+   "model": 83.590879,
+   "last_observation": 82.672428,
+   "seasonal_naive": 86.351277
+  },
+  {
+   "first_release": 84.303058,
+   "model": 86.149373,
+   "last_observation": 84.148278,
+   "seasonal_naive": 85.320332
+  },
+  {
+   "first_release": 84.36684,
+   "model": 85.917148,
+   "last_observation": 85.281142,
+   "seasonal_naive": 86.446713
+  },
+  {
+   "first_release": 83.141784,
+   "model": 82.712795,
+   "last_observation": 84.808254,
+   "seasonal_naive": 79.151323
+  },
+  {
+   "first_release": 83.217924,
+   "model": 84.896681,
+   "last_observation": 83.761249,
+   "seasonal_naive": 85.164057
+  },
+  {
+   "first_release": 84.576747,
+   "model": 87.883161,
+   "last_observation": 86.209637,
+   "seasonal_naive": 80.870252
+  },
+  {
+   "first_release": 83.029603,
+   "model": 80.627728,
+   "last_observation": 83.928181,
+   "seasonal_naive": 79.687568
+  },
+  {
+   "first_release": 83.888985,
+   "model": 84.169137,
+   "last_observation": 84.812686,
+   "seasonal_naive": 78.786353
+  },
+  {
+   "first_release": 84.008339,
+   "model": 80.932371,
+   "last_observation": 84.293568,
+   "seasonal_naive": 83.63262
+  },
+  {
+   "first_release": 83.366869,
+   "model": 83.273584,
+   "last_observation": 83.409257,
+   "seasonal_naive": 80.457425
+  },
+  {
+   "first_release": 85.367286,
+   "model": 83.245694,
+   "last_observation": 85.183965,
+   "seasonal_naive": 82.146501
+  },
+  {
+   "first_release": 86.129545,
+   "model": 83.799975,
+   "last_observation": 86.685794,
+   "seasonal_naive": 85.457629
+  },
+  {
+   "first_release": 84.930256,
+   "model": 85.880702,
+   "last_observation": 83.842032,
+   "seasonal_naive": 82.587692
+  },
+  {
+   "first_release": 85.004773,
+   "model": 83.706304,
+   "last_observation": 84.029467,
+   "seasonal_naive": 85.051915
+  },
+  {
+   "first_release": 85.581462,
+   "model": 84.628703,
+   "last_observation": 85.973135,
+   "seasonal_naive": 86.032779
+  },
+  {
+   "first_release": 85.39268,
+   "model": 88.932938,
+   "last_observation": 83.860612,
+   "seasonal_naive": 87.378807
+  },
+  {
+   "first_release": 86.07559,
+   "model": 86.23241,
+   "last_observation": 86.060158,
+   "seasonal_naive": 81.515972
+  },
+  {
+   "first_release": 86.009073,
+   "model": 85.572763,
+   "last_observation": 86.82659,
+   "seasonal_naive": 85.278134
+  },
+  {
+   "first_release": 86.676321,
+   "model": 87.106008,
+   "last_observation": 86.356532,
+   "seasonal_naive": 89.409116
+  },
+  {
+   "first_release": 88.114843,
+   "model": 88.380487,
+   "last_observation": 85.694386,
+   "seasonal_naive": 85.67704
+  },
+  {
+   "first_release": 87.439181,
+   "model": 84.589106,
+   "last_observation": 83.862599,
+   "seasonal_naive": 85.454858
+  },
+  {
+   "first_release": 87.642319,
+   "model": 90.076015,
+   "last_observation": 87.694151,
+   "seasonal_naive": 83.859191
+  },
+  {
+   "first_release": 87.179012,
+   "model": 85.973892,
+   "last_observation": 88.422686,
+   "seasonal_naive": 87.120366
+  },
+  {
+   "first_release": 87.30628,
+   "model": 87.683079,
+   "last_observation": 87.247472,
+   "seasonal_naive": 86.913801
+  },
+  {
+   "first_release": 86.119086,
+   "model": 87.707735,
+   "last_observation": 86.72691,
+   "seasonal_naive": 86.223059
+  },
+  {
+   "first_release": 85.539784,
+   "model": 84.171195,
+   "last_observation": 86.102004,
+   "seasonal_naive": 83.123892
+  },
+  {
+   "first_release": 85.343588,
+   "model": 87.393741,
+   "last_observation": 83.945432,
+   "seasonal_naive": 84.458249
+  },
+  {
+   "first_release": 86.242352,
+   "model": 86.530579,
+   "last_observation": 84.785242,
+   "seasonal_naive": 90.563873
+  },
+  {
+   "first_release": 87.387574,
+   "model": 90.024225,
+   "last_observation": 86.877632,
+   "seasonal_naive": 89.048393
+  },
+  {
+   "first_release": 86.064046,
+   "model": 86.969928,
+   "last_observation": 83.189131,
+   "seasonal_naive": 86.265161
+  },
+  {
+   "first_release": 85.269404,
+   "model": 85.471253,
+   "last_observation": 85.360943,
+   "seasonal_naive": 81.754154
+  },
+  {
+   "first_release": 85.916307,
+   "model": 85.785352,
+   "last_observation": 85.720223,
+   "seasonal_naive": 88.742971
+  },
+  {
+   "first_release": 83.923888,
+   "model": 84.758971,
+   "last_observation": 83.917777,
+   "seasonal_naive": 87.705004
+  }
+ ]
+}
