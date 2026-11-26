@@ -40,6 +40,19 @@ def test_every_origin_precedes_its_first_release(recomputed):
         assert row["observed_through"] < row["month"]
 
 
+def test_the_report_states_how_many_origins_already_hold_the_target():
+    saved = json.loads(SAVED.read_text(encoding="utf-8"))
+    held = [
+        row
+        for row in saved["predictions"]
+        if row["origin_vintage"] == row["first_release_vintage"]
+    ]
+    report = (SAVED.parent / "real-time-evaluation.md").read_text(encoding="utf-8")
+    prose = " ".join(report.split())
+    assert f"On {len(held)} of the {saved['months']} origins" in prose
+    assert f"Those {len(held)} months are not one step ahead" in prose
+
+
 def test_last_observation_is_the_origin_vintage_value(recomputed):
     first = recomputed["predictions"][0]
     assert first["month"] == "2020-01"

@@ -28,6 +28,14 @@ planner should remember ([real data study](real-data-evaluation.md),
 [replay on the values published at the time](real-time-evaluation.md)). The program
 you can run was not itself tested on the real index.
 
+**How firm that is.** I tested these gaps afterwards
+([comparison tests](forecast-comparison.md)). Against the index as later revised,
+both of my paired tests tell the lead of the latest month over the model apart from
+chance variation. Against the figure first published for each month they do not
+both do so, although a second method does set the model aside. On this index the
+two tests never both support the lead of the model over the same month last year,
+whichever figure is used.
+
 **What to do with that.** For the next value of the national index, start from the
 latest published one. Do not carry that over to your own freight, which may well have
 a season in it, until the same comparison has been run on your own history.
@@ -135,6 +143,44 @@ it needs no model to run or maintain. Keep these points beside it.
   than the real wait.
 * These are averages over one stretch of 72 months. An average gap alone does not
   show that it would appear again in other months.
+
+### How far the ranking holds
+
+I tested the gaps in the two replay rows afterwards. The
+[protocol](forecast-comparison-protocol.json) was merged before any test statistic
+was computed, and written after I knew the averages. The
+[comparison report](forecast-comparison.md) calls a gap told apart from noise when
+two tests both give a p value below 0.05, unsettled when only one does and not told
+apart when neither does. The row from one later snapshot was not tested this way.
+
+| Freight index comparison | Scored on | Miss as it is | Miss squared |
+|---|---|---|---|
+| Model against the latest month | First releases | Unsettled | Not told apart |
+| Model against the latest month | Latest values | Told apart | Told apart |
+| Model against last year | First releases | Unsettled | Unsettled |
+| Model against last year | Latest values | Not told apart | Not told apart |
+| Latest month against last year | First releases | Told apart | Unsettled |
+| Latest month against last year | Latest values | Unsettled | Unsettled |
+
+Here "last year" is the same month last year, and squaring counts large misses more
+heavily. Wherever the table says told apart, the latest month has the lower miss.
+
+* A second method in the report, a model confidence set, keeps only the latest
+  month on first releases both ways, with the p value of the model just under 0.05.
+  The report lets neither method overrule the other.
+* The index and the seven related series give 32 readings of the model against the
+  latest month. 5 are told apart, 7 are unsettled and 20 are not told apart. The
+  seven related series are read after an adjustment for testing seven of them.
+* Of the 5, the latest month has the lower miss in 3. The model has it in 2, both
+  on natural gas consumption against latest values.
+* Of the 32 readings of the model against the same month last year, 3 are told
+  apart, 21 are unsettled and 8 are not told apart. All 3 are on rail intermodal,
+  with the lower miss for the model.
+* The readings are not independent pieces of evidence. Nothing adjusts across the
+  three comparisons, the two figures scored on or the two ways of counting a miss.
+* A gap that cannot be told apart is not evidence that two methods are equal.
+* 72 months is a short sample for these tests. The report
+  [lists their limits](forecast-comparison.md#limits).
 
 ## What the ledger proves, and what it does not
 
