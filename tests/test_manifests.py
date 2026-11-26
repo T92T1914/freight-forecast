@@ -77,8 +77,9 @@ def test_release_publishes_only_on_version_tags():
     token scope are contracts worth pinning: version tags only, packages
     writable, and the tests run again before anything is pushed."""
     release = _workflow(".github/workflows/release.yml")
-    assert release["on"] == {"push": {"tags": ["v*"]}}
+    assert release["on"] == {"push": {"tags": ["v*"]}, "workflow_dispatch": None}
     assert release["permissions"] == {"contents": "read"}
+    assert set(release["jobs"]) == {"dry-run", "publish-image"}
     job = release["jobs"]["publish-image"]
     assert job["permissions"] == {
         "contents": "read",
@@ -86,13 +87,48 @@ def test_release_publishes_only_on_version_tags():
         "id-token": "write",
         "attestations": "write",
     }
-    assert job["if"] == "github.repository == 'T92T1914/freight-forecast'"
+    assert job["if"] == (
+        "github.repository == 'T92T1914/freight-forecast' "
+        "&& github.event_name == 'push'"
+    )
     steps = job["steps"]
     runs = [s.get("run", "") for s in steps]
     gate = next(i for i, r in enumerate(runs) if "make check" in r)
     push = next(i for i, r in enumerate(runs) if "docker buildx build --push" in r)
     assert gate < push
     assert any("ghcr.io" in r for r in runs)
+
+
+def test_release_dry_run_cannot_push_or_attest():
+    """A manual run builds the image and publishes no image or attestation."""
+    release = _workflow(".github/workflows/release.yml")
+    job = release["jobs"]["dry-run"]
+    assert set(job) == {"if", "runs-on", "timeout-minutes", "permissions", "steps"}
+    assert job["if"] == "github.event_name == 'workflow_dispatch'"
+    assert job["permissions"] == {"contents": "read"}
+    assert "env" not in release
+    assert "secrets" not in json.dumps(job)
+    steps = job["steps"]
+    uses = [s["uses"] for s in steps if "uses" in s]
+    assert [u.split("@")[0] for u in uses] == [
+        "actions/checkout",
+        "actions/setup-python",
+    ]
+    assert all(re.fullmatch(r"[^@]+@[0-9a-f]{40}", u) for u in uses)
+    assert steps[0]["with"] == {"persist-credentials": False}
+    assert steps[1]["with"] == {"python-version": "3.11"}
+    # The commands are pinned whole, so a new way to push cannot slip in.
+    assert [" ".join(s["run"].replace("\\\n", " ").split()) for s in steps[2:]] == [
+        "make install",
+        "make check",
+        "docker buildx build --load --platform linux/amd64 --provenance=false "
+        '--label "org.opencontainers.image.source=$SOURCE" '
+        '--label "org.opencontainers.image.revision=$GITHUB_SHA" '
+        '--label "org.opencontainers.image.version=dry-run" '
+        '--label "org.opencontainers.image.licenses=MIT" '
+        "-t freight-forecast:dry-run . "
+        "docker image inspect --format '{{.Id}}' freight-forecast:dry-run",
+    ]
 
 
 def test_release_binds_inventory_attestations_and_consumer_to_one_digest():

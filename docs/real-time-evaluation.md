@@ -85,6 +85,8 @@ report retains every prediction, both outcomes and every paired absolute error.
    chosen on that earlier study, which the protocol discloses.
 3. One observation step is not a publication date simulation. Each target month
    is already underway when its origin vintage appears.
-4. 72 dependent months on one national index are not a general result. There are
-   no significance tests, and no winner was chosen after the outcomes.
+4. 72 dependent months on one national index are not a general result. No winner
+   was chosen after the outcomes. Which of these gaps can be told apart from noise
+   was tested later, under its own protocol, in the
+   [comparison report](forecast-comparison.md).
 5. The model does not change, so nothing here is a claim about a better model.

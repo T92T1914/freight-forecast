@@ -62,6 +62,7 @@ again with the script, check the hash and run the panel to reproduce them.
 1. These series are seasonally adjusted national totals, not shipment counts.
 2. ALFRED vintage dates trail the BTS release, and the vintages begin in March 2015.
 3. Seven series from one agency are not independent. Their errors move together.
-4. 72 dependent months per series, no significance tests, and no winner chosen
-   after the outcomes.
+4. 72 dependent months per series, and no winner chosen after the outcomes. Which
+   of these gaps can be told apart from noise was tested later, under its own
+   protocol, in the [comparison report](forecast-comparison.md).
 5. The model does not change, so nothing here is a claim about a better model.

@@ -13,6 +13,23 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
   index today and what the ledger proves. It opens with one page for a reader who
   is not an engineer. It quotes results already in the repository and adds none.
 
+### 2026-11-25, a dry run for the release workflow
+
+* `release.yml` can now be started by hand. That run checks and builds the image
+  in a job with a read only token and pushes and attests nothing. The publication
+  job still starts only from a pushed version tag, and its condition now also
+  requires a push event. No tag or release exists.
+
+### 2026-11-25, which forecast differences can be told apart
+
+* `docs/forecast-comparison.md` tests every pair of forecasters in the two real
+  time reports under the protocol declared first. For the Ridge model against
+  last observation 5 of 32 readings are told apart, 7 are unsettled and 20 are
+  not told apart. The two earlier reports now link it and no longer say there
+  are no significance tests. No forecast, model or published error changes.
+* `arch` 9.0.0, `scipy` 1.17.1, `statsmodels` 0.15.0 and `dieboldmariano` 1.1.0
+  are new dev pins. None enters the serving image.
+
 ### 2026-11-25, the comparison test protocol
 
 * `docs/forecast-comparison-protocol.json` fixes how I will test whether the

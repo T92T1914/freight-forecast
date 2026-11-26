@@ -4,16 +4,49 @@ name: Release
 # ghcr.io/<owner>/freight-forecast:<tag> and :latest. Branch pushes never
 # publish. ci.yml still runs on the tag push; this workflow re-checks anyway,
 # because a tag is not proof that CI passed on the commit it points at.
+#
+# A manual run is a dry run. It runs the checks, builds from the same Dockerfile
+# and keeps the image on the runner. Its job holds a read only token.
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
+  dry-run:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.11"
+      - run: make install
+      - run: make check
+
+      - name: Build without pushing
+        env:
+          SOURCE: ${{ github.server_url }}/${{ github.repository }}
+        run: |
+          docker buildx build --load --platform linux/amd64 --provenance=false \
+            --label "org.opencontainers.image.source=$SOURCE" \
+            --label "org.opencontainers.image.revision=$GITHUB_SHA" \
+            --label "org.opencontainers.image.version=dry-run" \
+            --label "org.opencontainers.image.licenses=MIT" \
+            -t freight-forecast:dry-run .
+          docker image inspect --format '{{.Id}}' freight-forecast:dry-run
+
   publish-image:
-    if: github.repository == 'T92T1914/freight-forecast'
+    # A manual run can name a tag, so the event is checked as well as the filter.
+    if: github.repository == 'T92T1914/freight-forecast' && github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
