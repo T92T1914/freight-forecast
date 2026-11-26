@@ -6,6 +6,13 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-25, a dry run for the release workflow
+
+* `release.yml` can now be started by hand. That run checks and builds the image
+  in a job with a read only token and pushes and attests nothing. The publication
+  job still starts only from a pushed version tag, and its condition now also
+  requires a push event. No tag or release exists.
+
 ### 2026-11-25, which forecast differences can be told apart
 
 * `docs/forecast-comparison.md` tests every pair of forecasters in the two real

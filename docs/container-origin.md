@@ -43,6 +43,18 @@ failure does not retract that push or restore the previous `latest` tag.
 Consumers must require successful verification for the chosen digest. A
 published tag or an incomplete release run is not an accepted origin check.
 
+## Dry run
+
+I can start the release workflow by hand to see that the release path still
+builds. That manual run is a separate job with a read only token. It runs
+`make check`, builds the `linux/amd64` image on the runner and stops. It does not
+sign in to GHCR, push, take an inventory or attest, and the publication job is
+skipped even when the manual run names a tag.
+
+A passing dry run shows that the image built from that commit. It says nothing
+about publication, inventory, attestation or verification, which have still not
+run.
+
 ## Verify a release before using it
 
 Choose the manifest digest, full source commit and version tag from the
