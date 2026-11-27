@@ -6,6 +6,13 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-27, the HTTPX test pin
+
+* The development pin of HTTPX moves from 0.28.1 to 0.29.0. The release notes
+  were read. They raise the minimum Python to 3.10, below the 3.11 this project
+  needs, and expose `FunctionAuth` in the public API. Only the tests use it. No
+  forecast, model or published error changes.
+
 ### 2026-11-27, the README links the comparison and the walkthrough
 
 * The results section of the README now links `docs/forecast-comparison.md` and
