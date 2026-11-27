@@ -153,6 +153,13 @@ same month last year on all seven, against first releases. ALFRED vintage dates
 trail the BTS release, so the replay is slightly kinder than the real wait. The
 estimator did not change and nothing was tuned.
 
+The [comparison tests](docs/forecast-comparison.md) ask which gaps in those two
+replays can be told apart from noise. Their protocol was declared before any
+test statistic was computed, after I knew the average errors. Many gaps cannot be
+told apart. The [planner walkthrough](docs/planner-walkthrough.md) explains what
+the service returns and how far to trust it, for a freight planner, with a first
+page for a reader who is not an engineer.
+
 Using the same month last year gives this synthetic experiment a simple baseline.
 The comparison asks whether the learned model adds value on the declared series.
 The separate BTS study also includes last observation, which beat the learned

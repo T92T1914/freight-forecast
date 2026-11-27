@@ -6,6 +6,11 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-27, the README links the comparison and the walkthrough
+
+* The results section of the README now links `docs/forecast-comparison.md` and
+  `docs/planner-walkthrough.md`. It adds no number, and the opening is unchanged.
+
 ### 2026-11-27, when the origin vintages are dated
 
 * Limit 3 of `docs/real-time-evaluation.md` said each target month was already
