@@ -53,6 +53,31 @@ def test_the_report_states_how_many_origins_already_hold_the_target():
     assert f"Those {len(held)} months are not one step ahead" in prose
 
 
+def test_the_documents_say_every_origin_is_dated_after_its_target_month():
+    saved = json.loads(SAVED.read_text(encoding="utf-8"))
+    # A date's month sorts after the target month only once that month has ended.
+    after = [
+        row for row in saved["predictions"] if row["origin_vintage"][:7] > row["month"]
+    ]
+    assert len(after) == saved["months"]
+    for name, sentence in [
+        (
+            "real-time-evaluation.md",
+            f"All {len(after)} origins use a vintage dated after their target month "
+            "has ended.",
+        ),
+        (
+            "planner-walkthrough.md",
+            f"all {len(after)} forecasts start from figures dated after the month "
+            "being estimated had ended.",
+        ),
+    ]:
+        prose = " ".join((SAVED.parent / name).read_text(encoding="utf-8").split())
+        assert sentence in prose, name
+        assert "underway when its origin vintage" not in prose, name
+        assert "already started when" not in prose, name
+
+
 def test_last_observation_is_the_origin_vintage_value(recomputed):
     first = recomputed["predictions"][0]
     assert first["month"] == "2020-01"

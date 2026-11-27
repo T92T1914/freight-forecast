@@ -136,8 +136,8 @@ it needs no model to run or maintain. Keep these points beside it.
 * The index gets revised after it is published. Between first release and the version
   of November 1, 2026, the mean size of the change was 1.49 index points and the
   largest was 4.60. The report calls that the same size as the errors being compared.
-* One step ahead is not a month of notice. The month being estimated has already
-  started when the figures for the month before it appear.
+* One step ahead is not a month of notice. In the replay of published values, all
+  72 forecasts start from figures dated after the month being estimated had ended.
 * The replay dates each figure by when an archive took it in, which trails the real
   release by days or weeks. The report says this makes the replay slightly kinder
   than the real wait.
