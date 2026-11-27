@@ -3,7 +3,7 @@
 pytest==9.2.0
 httpx==0.28.1
 ruff==0.17.6
-pyyaml==6.0.3
+pyyaml==6.0.4
 # The forecast comparison tests and the references their unit tests check.
 arch==9.0.0
 scipy==1.17.1

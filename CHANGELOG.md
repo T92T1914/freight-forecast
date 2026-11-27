@@ -6,6 +6,13 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-27, the PyYAML test pin
+
+* The development pin of PyYAML moves from 6.0.3 to 6.0.4. The release notes
+  were read. They add Python 3.15 support, drop 3.8 and 3.9, fix exponential
+  expansion of merge keys and move the wheels to libyaml 0.2.6. Only the tests
+  use it. No forecast, model or published error changes.
+
 ### 2026-11-26, how far the ranking holds
 
 * `docs/planner-walkthrough.md` now says how far the comparison tests support
