@@ -6,6 +6,16 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-27, the API tests move to HTTPX2
+
+* The development pin `httpx==0.29.0` is replaced by `httpx2==2.16.2`, because
+  Starlette 1.10.0 warns that its test client with HTTPX is deprecated and names
+  HTTPX2 instead. Its changelog was read from 2.16.2 back to its first release.
+  It describes a fork of HTTPX 0.28.1 maintained by Pydantic, and lists the
+  renamed package and the renamed `httpcore2` as the breaking changes. Only the
+  tests use it, and no test file changes. No forecast, model or published error
+  changes.
+
 ### 2026-11-27, the HTTPX test pin
 
 * The development pin of HTTPX moves from 0.28.1 to 0.29.0. The release notes

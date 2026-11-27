@@ -1,7 +1,7 @@
 # Test and dev tools, needed to develop and test, never inside the serving image.
 -r requirements.txt
 pytest==9.2.0
-httpx==0.29.0
+httpx2==2.16.2
 ruff==0.17.6
 pyyaml==6.0.4
 # The forecast comparison tests and the references their unit tests check.
