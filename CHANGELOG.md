@@ -6,6 +6,16 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-26, how far the ranking holds
+
+* `docs/planner-walkthrough.md` now says how far the comparison tests support
+  each ranking. On the freight index the lead of the latest month over the model
+  is told apart from noise against latest values. Against first releases it is
+  unsettled on the miss as it is and not told apart on the squared miss.
+* `docs/real-time-evaluation.md` adds a limit. On 8 of 72 origins the vintage
+  already holds the target month. The value is dropped before forecasting. No
+  forecast, model or published error changes.
+
 ### 2026-11-25, a walkthrough for the planner
 
 * `docs/planner-walkthrough.md` explains what the service returns, how to read a

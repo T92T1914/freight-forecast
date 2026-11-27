@@ -90,3 +90,7 @@ report retains every prediction, both outcomes and every paired absolute error.
    was tested later, under its own protocol, in the
    [comparison report](forecast-comparison.md).
 5. The model does not change, so nothing here is a claim about a better model.
+6. On 8 of the 72 origins the vintage already holds the target month, because the
+   first vintage with the month before the target has the target too. That value is
+   dropped before forecasting, so no forecast reads it. Those 8 months are not one
+   step ahead in publication time, and they stay in every average.
