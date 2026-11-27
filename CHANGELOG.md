@@ -6,6 +6,15 @@ first `v*` tag is what publishes the image (`.github/workflows/release.yml`).
 
 ## [Unreleased]
 
+### 2026-11-27, when the origin vintages are dated
+
+* Limit 3 of `docs/real-time-evaluation.md` said each target month was already
+  underway when its origin vintage appeared. All 72 saved origins use a vintage
+  dated after their target month ended. The report and
+  `docs/planner-walkthrough.md` now say that, and a test counts it from the saved
+  predictions. The declared protocol and the saved report keep their original
+  sentence. No forecast, model or published error changes.
+
 ### 2026-11-27, the PyYAML test pin
 
 * The development pin of PyYAML moves from 6.0.3 to 6.0.4. The release notes

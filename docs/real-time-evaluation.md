@@ -83,8 +83,10 @@ report retains every prediction, both outcomes and every paired absolute error.
 2. ALFRED vintages for this series begin in October 2014, so the development
    years of the earlier study cannot be replayed. The monthly refit policy was
    chosen on that earlier study, which the protocol discloses.
-3. One observation step is not a publication date simulation. Each target month
-   is already underway when its origin vintage appears.
+3. One observation step is not a publication date simulation. All 72 origins use
+   a vintage dated after their target month has ended. The protocol and the saved
+   report say each target is already underway at that point, and the saved dates
+   show it is over.
 4. 72 dependent months on one national index are not a general result. No winner
    was chosen after the outcomes. Which of these gaps can be told apart from noise
    was tested later, under its own protocol, in the
